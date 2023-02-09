@@ -32,6 +32,12 @@ export class NavService {
   
     },  
     {
+      name: 'أمر الصرف',
+      iconComponent: { name: 'cil-pencil' },
+      url: 'exchangeOrder/module',
+  
+    },  
+    {
       name: 'جداول الترميز',
       url: 'codingTable/module',
       iconComponent: { name: 'cil-pencil' },

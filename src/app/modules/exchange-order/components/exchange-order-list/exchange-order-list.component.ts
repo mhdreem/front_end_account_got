@@ -43,7 +43,7 @@ export class ExchangeOrderListComponent {
 
   dataSource = new MatTableDataSource<ExchangeOrder>();
   displayedColumns: string[] =
-   ['sanad_kid_fk','sanad_kid_date', 'sanad_kid_type_fk', 'total_value', 'incumbent_id', 'incumbent_date', 'sanad_close', 'name_of_owner', 'branch_name', 'action' ];
+   ['sanad_kid_fk','sanad_kid_date', 'sanad_kid_type_fk', 'total_value', 'incumbent_id', 'incumbent_date', 'name_of_owner', 'branch_name', 'action' ];
 
   fromSanadDateDay: string= '';
   fromSanadDateMonth: string= '';
@@ -234,12 +234,12 @@ export class ExchangeOrderListComponent {
   }
 
   Update(order: ExchangeOrder){
-    this.router.navigate(['/sanadKid/module/exchangeOrderEdit', { id: order.exchange_order_seq }])
+    this.router.navigate(['/exchangeOrder/module/exchangeOrderEdit', { id: order.exchange_order_seq }])
 
   }
 
   add(){
-    this.router.navigate(['/sanadKid/module/exchangeOrderEdit', { id: 0 }]);
+    this.router.navigate(['/exchangeOrder/module/exchangeOrderEdit', { id: 0 }]);
   }
 
 
