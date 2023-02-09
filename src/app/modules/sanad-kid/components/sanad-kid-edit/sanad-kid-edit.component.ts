@@ -136,9 +136,7 @@ export class SanadKidEditComponent implements OnInit {
         this.sanad_kid= {};
         this.sanad_kid.sanad_kid_details= [];
       }
-    // Load from service  and set it in Page Service 
-//new 
-       console.log('this.sanad_kid.sanad_kid_details', this.sanad_kid.sanad_kid_details);
+  
     }
 
   public SetValue() {
