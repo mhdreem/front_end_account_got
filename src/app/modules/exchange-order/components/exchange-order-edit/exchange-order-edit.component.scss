@@ -1,0 +1,101 @@
+@import '../../../../../theme.scss';
+
+
+.small-width{
+    width: 90px;
+    margin-left: 10px;
+  }
+
+  .date{
+    width: fit-content;
+  }
+
+  mat-form-field{
+    width: fit-content;
+  }
+
+  .up{
+    display: flex;
+
+    .right{
+        display:flex
+    }
+  }
+
+  .inputGroup3, .inputGroup4, .inputGroup5, .left{
+    margin-top: 30px;
+  }
+
+  .inputGroup5{
+    margin-inline: 10px;
+  }
+
+  .left {
+
+    span, button{
+        margin-left: 10px
+
+    }
+  }
+
+  
+mat-toolbar{
+    margin-bottom: 20px;
+  }
+
+  mat-form-field, ::ng-deep .mat-mdc-form-field-label{
+    color: black !important;
+}
+
+.save{
+    color: white !important;
+    background-color: $lightPrimary !important;
+}
+
+::ng-deep .mat-mdc-form-field-underline::before{
+    background-color: black !important;
+}
+
+mat-form-field ::ng-deep .mat-mdc-form-field-flex, mat-form-field ::ng-deep .mat-mdc-text-field-wrapper{
+    background-color: white !important;
+}
+
+.add, .edit{
+    color: white !important;
+    background-color: $lightPrimary !important;
+    margin-block: 10px;
+  }
+
+  form, .down{
+    background-color: $lightBackground;
+    padding: 10px;
+    margin-top: 10px;
+  }
+
+  button{
+    margin-left: 10px
+  }
+
+  span{
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  button, span, mat-form-field,:ng-deep .mat-mdc-form-field , ::ng-deep mat-label, th, td, label, output{
+    font-family: 'Noto Sans Arabic', sans-serif !important;
+}
+
+  .add:disabled, .edit:disabled{
+    background-color: rgba(0,0,0,.12) !important;
+    color: rgba(0,0,0,.26);
+}
+
+.detail{
+    background: transparent;
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgb(0 0 0 / 10%);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding-block: 20px;
+    margin-block: 20px;
+}

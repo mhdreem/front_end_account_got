@@ -1,0 +1,57 @@
+<c-container>
+
+    <mat-card>
+
+        <mat-card-header>
+            <mat-card-title>نوع الحساب</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <form [formGroup]="Form">
+
+                <c-container>
+                    <c-row>
+                        <c-col>
+                            <mat-form-field>
+                                <mat-label #label_account_type_name>اسم نوع الحساب</mat-label>
+                                <input matInput [formControl]="account_type_name" id="account_type_name"
+                                    (keyup.enter)="focusNext('account_center_id')">
+                                <mat-error *ngIf="fieldHasErrors(Form, 'account_type_name')">
+                                    {{
+                                    autoPrintFirstErrorMessage(
+                                    Form,
+                                    "account_type_name",
+                                    label_account_type_name.innerHTML
+                                    )
+                                    }}
+                                </mat-error>
+                            </mat-form-field>
+                        </c-col>
+                    </c-row>
+                    
+                    <c-row>
+                        <c-col>
+                            <mat-form-field>
+                                <mat-label>ترتيب نوع الحساب</mat-label>
+                                <input matInput [formControl]="account_type_order" id="account_type_order"
+                                    (keyup.enter)="focusNext('account_class_order')">
+                            </mat-form-field>
+                        </c-col>
+                    </c-row>
+
+
+
+                </c-container>
+
+             
+            </form>
+
+
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button class="add" (click)="save()" [disabled]="!Form.valid">F9 حفظ </button>
+            <button mat-raised-button (click)="closeDialog()" color="warn">إلغاء</button>
+        </mat-card-actions>
+    </mat-card>
+</c-container>

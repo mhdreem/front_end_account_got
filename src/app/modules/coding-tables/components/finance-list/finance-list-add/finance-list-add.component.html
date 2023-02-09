@@ -1,0 +1,57 @@
+<c-container>
+
+    <mat-card>
+
+        <mat-card-header>
+            <mat-card-title>القائمة المالية</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <form [formGroup]="Form">
+
+                <c-container>
+                    <c-row>
+                        <c-col>
+                            <mat-form-field>
+                                <mat-label #label_finance_list_name>اسم القائمة المالية</mat-label>
+                                <input matInput [formControl]="finance_list_name" id="finance_list_name"
+                                    (keyup.enter)="focusNext('account_center_id')">
+                                <mat-error *ngIf="fieldHasErrors(Form, 'finance_list_name')">
+                                    {{
+                                    autoPrintFirstErrorMessage(
+                                    Form,
+                                    "finance_list_name",
+                                    label_finance_list_name.innerHTML
+                                    )
+                                    }}
+                                </mat-error>
+                            </mat-form-field>
+                        </c-col>
+                    </c-row>
+                    
+                    <c-row>
+                        <c-col>
+                            <mat-form-field>
+                                <mat-label>ترتيب القائمة المالية</mat-label>
+                                <input matInput [formControl]="finance_list_order" id="finance_list_order"
+                                    (keyup.enter)="focusNext('account_class_order')">
+                            </mat-form-field>
+                        </c-col>
+                    </c-row>
+
+
+
+                </c-container>
+
+             
+            </form>
+
+
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button class="add" (click)="save()" [disabled]="!Form.valid">F9 حفظ </button>
+            <button mat-raised-button (click)="closeDialog()" color="warn">إلغاء</button>
+        </mat-card-actions>
+    </mat-card>
+</c-container>

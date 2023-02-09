@@ -1,0 +1,68 @@
+
+
+<c-container>
+
+    <mat-card>
+
+        <mat-card-header>
+            <mat-card-title>مراحل أمر الصرف</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <form [formGroup]="Form">
+
+                <c-container>
+                    <c-row>
+                        <c-col>
+                            <mat-form-field >
+                                <mat-label #label_ex_ord_stg_name>اسم مرحلة أمر الصرف</mat-label>
+                                <input matInput [formControl]="ex_ord_stg_name" id="ex_ord_stg_name">
+                                <mat-error *ngIf="fieldHasErrors(Form, 'ex_ord_stg_name')">
+                                    {{
+                                    autoPrintFirstErrorMessage(
+                                        Form,
+                                    "ex_ord_stg_name",
+                                    label_ex_ord_stg_name.innerHTML
+                                    )
+                                    }}
+                                  </mat-error>
+                            </mat-form-field>
+
+                        </c-col>
+                    </c-row>
+
+                    <c-row>
+                        <c-col>
+                            <mat-form-field>
+                                <mat-label>ترتيب مرحلة أمر الصرف</mat-label>
+                                <input matInput [formControl]="ex_ord_stg_order" id="ex_ord_stg_order"
+                                    (keyup.enter)="focusNext('account_center_name')">
+                            </mat-form-field>
+                        </c-col>
+                    </c-row>
+
+                    <c-row>
+                        <c-col>
+                            <span>المستخدمون:</span>
+                            <div formArrayName="users">
+                                <div *ngFor="let user of users_list; let i=index">
+                                    <mat-checkbox color="primary" [formControlName]="i">{{user.user_first_name}} {{user.user_last_name}} ({{user.user_name}})</mat-checkbox>
+                                </div>
+                            </div>
+                        </c-col>
+                    </c-row>
+                    
+                </c-container>
+
+             
+            </form>
+
+
+        </mat-card-content>
+        <mat-card-actions style="margin-top: 40px;">
+            <button mat-raised-button class="add" (click)="save()" [disabled]="!Form.valid">F9 حفظ </button>
+            <button mat-raised-button (click)="closeDialog()" mat-flat-button color="warn">إلغاء</button>
+        </mat-card-actions>
+    </mat-card>
+</c-container>

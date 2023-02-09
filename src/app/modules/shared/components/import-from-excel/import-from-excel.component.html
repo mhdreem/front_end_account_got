@@ -1,0 +1,13 @@
+<mat-dialog-content>
+    
+    <label for="IFormFile" class="form-label">تحميل ملف اكسيل</label>
+    <input type="file" class="form-control" accept=".xlsx, .xls, .csv" id="IFormFile"
+        [formControl]="IFormFile" (change)="chooseFile($event)">
+    <button #import mat-raised-button id="excel" (click)="onConfirmClick()" [disabled]="!fileIsUploaded">
+        <mat-icon>view_comfy</mat-icon>استيراد الان
+    </button>
+</mat-dialog-content>
+
+<mat-dialog-actions >
+	<button mat-raised-button class="add" mat-dialog-close="false"  >إغلاق</button>
+</mat-dialog-actions>

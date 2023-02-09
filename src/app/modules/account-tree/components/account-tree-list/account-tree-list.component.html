@@ -1,0 +1,281 @@
+<!-- <mat-progress-bar *ngIf="LoadingFinish == false" mode="indeterminate" #progressbar></mat-progress-bar> -->
+<!-- <ngx-hover-opacity [isHoverVisible]="!LoadingFinish"> -->
+    <mat-toolbar>
+        <button class="add" mat-raised-button class="add" (click)="add()">
+            <mat-icon>add</mat-icon>
+            إدخال F12
+        </button>
+        <button class="add" mat-raised-button class="add" (click)="View()">
+            <mat-icon>view_list</mat-icon>
+            عرض F8
+        </button>
+        <button mat-raised-button id="excel" (click)="exportToExcel()">
+            <mat-icon>view_comfy</mat-icon>
+            تصدير الى اكسل F7
+        </button>
+        <button id="print"  mat-raised-button class="add" [disabled]="!dataSource.data[0]" printSectionId="rank-section" ngxPrint accessControl>
+            <mat-icon>print</mat-icon>
+            طباعة
+        </button>
+    
+    </mat-toolbar>
+
+    <div class="con">
+        <div class="right">
+            <span style="cursor: pointer;">الحسابات</span>
+            <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
+                <!-- This is the tree node template for leaf nodes -->
+                <!-- There is inline padding applied to this node using styles.
+                  This padding value depends on the mat-icon-button width. -->
+                <mat-tree-node *matTreeNodeDef="let node"   >
+                  <span matTreeNodeToggle>{{node.account_name}}</span>
+                  <button *ngIf="node.accIndex_NodeType_FK ==1" mat-icon-button [matMenuTriggerFor]="appMenu" [matMenuTriggerData]="{node: node}">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                </mat-tree-node>
+                <!-- This is the tree node template for expandable nodes -->
+                <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild" >
+                  <div class="Row">
+                    <div class=" mat-tree-node Column" >
+                      <button mat-icon-button matTreeNodeToggle>
+                        <mat-icon class="mat-icon-rtl-mirror">
+                          {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_left'}}
+                        </mat-icon>
+                      </button>
+                      <span matTreeNodeToggle>
+                        {{node.account_name}}
+                      </span>
+                      <button *ngIf="node.accIndex_NodeType_FK ==1" class="Column" mat-icon-button [matMenuTriggerFor]="appMenu" [matMenuTriggerData]="{node: node}">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                    </div>
+    
+                    
+                  </div>
+                  
+                   
+    
+                    <!-- There is inline padding applied to this div using styles.
+                        This padding value depends on the mat-icon-button width.  -->
+                    <div [class.example-tree-invisible]="!treeControl.isExpanded(node)"
+                        role="group">
+                      <ng-container matTreeNodeOutlet></ng-container>
+                  </div>
+                </mat-nested-tree-node>
+              </mat-tree>
+        </div>
+        <div class="left">
+            <form class="example-form" [formGroup]="Form" #form="ngForm">
+                <div class="inputGroup1" style="display: flex; flex-direction: column;">
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label>من رقم حساب</mat-label>
+                        <input type="number" matInput [formControl]="account_id_from"
+                                id="account_id_from" (keyup.enter)="focusNext('account_id_to')">
+                    </mat-form-field>
+        
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label>الى رقم حساب</mat-label>
+                        <input type="number" matInput [formControl]="account_id_to"
+                                id="account_id_to" (keyup.enter)="focusNext('account_name')">
+                    </mat-form-field>
+            
+                    
+            
+                    
+                </div>
+                
+                <div class="inputGroup2" style="display: flex; flex-direction: column;">
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label>اسم الحساب</mat-label>
+                        <input matInput [formControl]="account_name"
+                                id="account_name" (keyup.enter)="focusNext('account_type')">
+                    </mat-form-field>
+        
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label>رصيد الحساب</mat-label>
+                        <input matInput [formControl]="account_type_fk" [matAutocomplete]="autoaccountType"
+                                id="account_type" (keyup.enter)="focusNext('account_level')">
+                        <mat-autocomplete #autoaccountType="matAutocomplete" 
+                        [displayWith]="displayAccountTypeProperty.bind(this)"
+                        (optionSelected)="clearDataSource()">
+                            <mat-option *ngFor="let option of filteredAccountTypeOptions | async" [value]="option.account_type_seq">
+                            {{option.account_type_name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    
+                    
+            
+                    
+                </div>
+        
+                <div class="inputGroup3" style="display: flex; flex-direction: column;">
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label>مستوى الحساب</mat-label>
+                        <input matInput [formControl]="account_level_fk" [matAutocomplete]="autoaccountLevel"
+                                id="account_level" (keyup.enter)="focusNext('account_group')">
+                        <mat-autocomplete #autoaccountLevel="matAutocomplete" 
+                        [displayWith]="displayAccountLevelProperty.bind(this)"
+                        (optionSelected)="clearDataSource()">
+                            <mat-option *ngFor="let option of filteredAccountLevelOptions | async" [value]="option.account_level_seq">
+                            {{option.account_level_name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+        
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label>مجموعة الحساب</mat-label>
+                        <input matInput [formControl]="account_group_fk" [matAutocomplete]="autoaccountGroup"
+                                id="account_group" (keyup.enter)="focusNext('account_class')">
+                        <mat-autocomplete #autoaccountGroup="matAutocomplete" 
+                        [displayWith]="displayAccountGroupProperty.bind(this)"
+                        (optionSelected)="clearDataSource()">
+                            <mat-option *ngFor="let option of filteredAccountGroupOptions | async" [value]="option.account_group_seq">
+                            {{option.account_group_name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+            
+                    
+                </div>
+                <div class="inputGroup4" style="display: flex; flex-direction: column;">
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label>تصنيف الحساب</mat-label>
+                        <input matInput [formControl]="account_class_fk" [matAutocomplete]="autoaccountClass"
+                                id="account_class" (keyup.enter)="focusNext('finance_list')">
+                        <mat-autocomplete #autoaccountClass="matAutocomplete" 
+                        [displayWith]="displayAccountClassProperty.bind(this)"
+                        (optionSelected)="clearDataSource()">
+                            <mat-option *ngFor="let option of filteredAccountClassOptions | async" [value]="option.account_class_seq">
+                            {{option.account_class_name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label>القائمة المالية</mat-label>
+                        <input matInput [formControl]="finance_list_fk" [matAutocomplete]="autofinanceList"
+                                id="finance_list" (keyup.enter)="focusNext('account_id_from')">
+                        <mat-autocomplete #autofinanceList="matAutocomplete" 
+                        [displayWith]="displayFinanceListProperty.bind(this)"
+                        (optionSelected)="clearDataSource()">
+                            <mat-option *ngFor="let option of filteredfinanceListOptions | async" [value]="option.finance_list_seq">
+                            {{option.finance_list_name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+            
+                </div>
+                
+            </form>
+            
+                
+            <!-- <div class="table-wrap"> -->
+            
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+            
+            
+                <!-- Year_ID Column -->
+                <ng-container matColumnDef="Year_ID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>عام الترفيع </th>
+                    <td mat-cell *matCellDef="let element">{{element?.Year_ID}}</td>
+                </ng-container>
+            
+                
+        
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef> حذف\تعديل </th>
+                
+                    <td mat-cell *matCellDef="let element" style="width:20%">
+                        <button class="delete" mat-icon-button color="warn" (click)="Delete(element)"
+                            title="Delete Contact">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                        <button class="edit" mat-icon-button color="primary" (click)="Update(element)" title="Edit Contact">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </td>
+            </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;let idx=index;"
+                [style.background-color]="rowClicked == idx ? 'yellow': 'none'"
+                (click)="changeTableRowColor(idx)"></tr>
+            </table>
+            
+            <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>
+            
+            
+            <!-- </div> -->
+        </div>
+    </div>
+
+
+    <div class="statistics">
+            <div class="up" style="display: flex; align-items: center;">
+                <label style="margin-left: 10px">مدين</label>
+                <div class="outputCon">
+                    <label for="total1">اجمالي</label>
+                    <output type="number" id="total1"></output>
+                </div>
+                <div class="outputCon">
+                    <label for="public1">عام</label>
+                    <output type="number" id="public1"></output>
+                </div>
+                <div class="outputCon">
+                    <label for="helper1">مساعد</label>
+                    <output type="number" id="helper1"></output>
+                </div>
+                <div class="outputCon">
+                    <label for="sub1">فرعي</label>
+                    <output type="number" id="sub1"></output>
+                </div>
+                <div class="outputCon">
+                    <label for="fractional1">جزئي</label>
+                    <output type="number" id="fractional1"></output>
+                </div>
+                <div class="outputCon">
+                    <label for="Analytical1">تحليلي</label>
+                    <output type="number" id="Analytical1"></output>
+                </div>
+            </div>
+            <div class="down" style="display: flex; align-items: center;">
+                <label style="margin-left: 10px">دائن</label>
+                <div class="outputCon">
+                    <label for="total2">اجمالي</label>
+                    <output type="number" id="total2"></output>
+                </div>
+                <div class="outputCon">
+                    <label for="public2">عام</label>
+                    <output type="number" id="public2"></output>
+                </div>
+                <div class="outputCon">
+                    <label for="helper2">مساعد</label>
+                    <output type="number" id="helper2"></output>
+                </div>
+                <div class="outputCon">
+                    <label for="sub2">فرعي</label>
+                    <output type="number" id="sub2"></output>
+                </div>
+                <div class="outputCon">
+                    <label for="fractional2">جزئي</label>
+                    <output type="number" id="fractional2"></output>
+                </div>
+                <div class="outputCon">
+                    <label for="Analytical2">تحليلي</label>
+                    <output type="number" id="Analytical2"></output>
+                </div>
+            </div>
+    </div>
+    
+    <mat-menu #appMenu="matMenu" xPosition="after">
+        <ng-template matMenuContent let-node="node" >
+          <button mat-menu-item (click)="addAccount(node)">إضافة حساب جديد +</button>
+        </ng-template>
+      </mat-menu>
+
+    <!-- <div id="rank-section">
+        <app-print-rank [data]="rankInput"></app-print-rank>
+    </div> -->
+<!-- </ngx-hover-opacity> -->

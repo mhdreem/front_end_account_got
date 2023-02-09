@@ -1,0 +1,107 @@
+
+<c-container>
+
+    <mat-card>
+
+        <mat-card-header>
+            <mat-card-title>مراكز الكلفة</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <form [formGroup]="Form">
+
+                <c-container>
+                    <c-row>
+                        <c-col>
+
+                            <mat-form-field >
+                                <mat-label >الاسم الأول للمستخدم</mat-label>
+                                <input matInput [formControl]="user_first_name" id="user_first_name" (keyup.enter)="focusNext('frm_user_last_name')">
+                            </mat-form-field>
+
+                            
+                        </c-col>
+
+                        <c-col>
+                            <mat-form-field >
+                                <mat-label >كنية المستخدم</mat-label>
+                                <input matInput [formControl]="user_last_name" id="user_last_name" (keyup.enter)="focusNext('frm_user_name')">
+                            </mat-form-field>
+                        </c-col>
+                    </c-row>
+                    <c-row>
+                        <c-col>
+                            <mat-form-field >
+                                <mat-label #user_name_element>اسم تسجيل الدخول</mat-label>
+                                <input matInput [formControl]="user_name" id="user_name" (keyup.enter)="focusNext('frm_user_password')">
+                                <mat-error *ngIf="fieldHasErrors(Form, 'user_name')">
+                                    {{
+                                    autoPrintFirstErrorMessage(
+                                        Form,
+                                    "user_name",
+                                    user_name_element.innerHTML
+                                    )
+                                    }}
+                                  </mat-error>
+                            </mat-form-field>
+                    
+                            
+                        </c-col>
+                        
+                        <c-col>
+                            <mat-form-field >
+                                <mat-label>كلمة المرور</mat-label>
+                                <input matInput [formControl]="user_password" id="user_password" (keyup.enter)="focusNext('frm_user_first_name')">
+                            </mat-form-field>
+                        </c-col>
+                    </c-row>
+                    
+                    <c-row>
+                        <c-col>
+                            <mat-form-field class="fitContent" appearance="fill">
+                                <mat-label>القسم</mat-label>
+                                <input matInput [formControl]="department_fk" [matAutocomplete]="autodepartment"
+                                        id="account_level" (keyup.enter)="focusNext('Class')">
+                                <mat-autocomplete #autodepartment="matAutocomplete" 
+                                [displayWith]="displayDepartmentProperty.bind(this)"
+                                >
+                                    <mat-option *ngFor="let option of filteredDepartmentLevelOptions | async" [value]="option.department_seq">
+                                    {{option.department_name}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                    
+                            
+                        </c-col>
+                        
+                        <c-col>
+                            <mat-form-field class="fitContent" appearance="fill">
+                                <mat-label>الفرع</mat-label>
+                                <input matInput [formControl]="branch_fk" [matAutocomplete]="autobranch"
+                                        id="frm_branch_fk" (keyup.enter)="focusNext('Class')">
+                                <mat-autocomplete #autobranch="matAutocomplete" 
+                                [displayWith]="displayBranchProperty.bind(this)"
+                                >
+                                    <mat-option *ngFor="let option of filteredBranchOptions | async" [value]="option.branch_seq">
+                                    {{option.branch_name}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </c-col>
+                    </c-row>
+
+                </c-container>
+
+             
+            </form>
+
+
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button class="add" (click)="save()" [disabled]="!Form.valid">F9 حفظ </button>
+            <button mat-raised-button (click)="closeDialog()" mat-flat-button color="warn">إلغاء</button>
+        </mat-card-actions>
+    </mat-card>
+</c-container>
+

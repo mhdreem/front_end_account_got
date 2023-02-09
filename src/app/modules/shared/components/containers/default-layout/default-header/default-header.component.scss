@@ -1,0 +1,45 @@
+.darkTheme .anc{
+    color: white !important;
+}
+
+
+
+
+.links{
+    display: flex;
+}
+
+.anc{
+    color: #6E60D2 !important;
+    display: flex;
+    align-items: center;
+    padding: var(--cui-sidebar-nav-link-padding-y) var(--cui-sidebar-nav-link-padding-x);
+}
+
+.svgCon{
+    width: 22px;
+}
+
+.anc svg{
+    margin-right: calc(var(--cui-sidebar-nav-link-padding-x) * -1);
+    margin-left: calc(var(--cui-sidebar-nav-link-padding-x) * -1);
+    overflow: hidden;
+    flex: 0 0 var(--cui-sidebar-nav-icon-width);
+    height: var(--cui-sidebar-nav-icon-height);
+    font-size: var(--cui-sidebar-nav-icon-font-size);
+    text-align: center;
+    pointer-events: none;
+    fill: currentcolor;
+    transition: inherit;
+    color: #6E60D2 !important;
+    // vertical-align: middle;
+    overflow-clip-margin: content-box;
+    white-space: nowrap;
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+button, span, mat-form-field,:ng-deep .mat-mdc-form-field , ::ng-deep mat-label, th, td, label, output{
+    font-family: 'Noto Sans Arabic', sans-serif !important;
+}
