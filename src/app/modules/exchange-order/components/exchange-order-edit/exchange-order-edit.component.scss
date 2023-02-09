@@ -18,7 +18,9 @@
     display: flex;
 
     .right{
-        display:flex
+        display:flex;
+        // align-items: baseline;
+        
     }
   }
 
@@ -99,3 +101,20 @@ mat-form-field ::ng-deep .mat-mdc-form-field-flex, mat-form-field ::ng-deep .mat
     padding-block: 20px;
     margin-block: 20px;
 }
+
+.donwLeft{
+    width: 50%;
+}
+
+.donwRight{
+    width: 45%;
+}
+
+.small-width{
+    width: 90px;
+    margin-left: 10px;
+  }
+
+  .date{
+    width: fit-content;
+  }

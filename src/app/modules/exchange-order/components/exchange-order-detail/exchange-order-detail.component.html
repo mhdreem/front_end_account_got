@@ -58,9 +58,7 @@
                 </mat-form-field>
             </c-col>
 
-            <c-col>
-                <button mat-raised-button (click)="delete()" color="warn">حذف</button>
-            </c-col>
+            
         </c-row>
     
         <c-row>
@@ -71,6 +69,10 @@
                     id="account_notice" (keyup.enter)="focusNext('account_type')">
                 </mat-form-field>
 
+            </c-col>
+
+            <c-col>
+                <button mat-raised-button (click)="delete()" color="warn">حذف</button>
             </c-col>
         </c-row>
     </form>

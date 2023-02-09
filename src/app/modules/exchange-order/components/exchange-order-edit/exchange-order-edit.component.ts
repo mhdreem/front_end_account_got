@@ -1,11 +1,15 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, HostListener, Inject } from '@angular/core';
+import { Component, HostListener, Inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { ExchangeOrder } from 'src/app/modules/shared/models/exchange-order';
+import { ExchangeOrderEntry } from 'src/app/modules/shared/models/exchange-order-entry';
 import { result } from 'src/app/modules/shared/models/result';
 import { ExchangeOrderService } from 'src/app/modules/shared/services/exchange-order.service';
 import { PageExchangeOrderService } from '../../pageservice/page-exchange-order.service';
@@ -79,6 +83,18 @@ export class ExchangeOrderEditComponent {
 
   LoadingFinish : boolean;
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  dataSource = new MatTableDataSource<ExchangeOrderEntry>();
+  displayedColumns: string[] =
+   ["ex_ord_stg_name", 'user_entry' ,'date_entry'  ];
+
+   totalRows = 0;
+  pageSize = 5;
+  currentPage = 1;
+  pageSizeOptions: number[] = [5, 10, 25, 100];
+
   constructor(
     private router:Router,
     private route: ActivatedRoute,
@@ -138,10 +154,25 @@ export class ExchangeOrderEditComponent {
         this.Exchange_order.exchange_order_attachements= [];
         this.Exchange_order.exchange_order_entries= [];
       }
-    // Load from service  and set it in Page Service 
-//new 
+
+      this.loadEntry();
       //  console.log('this.sanad_kid.sanad_kid_details', this.sanad_kid.sanad_kid_details);
     }
+
+    ngAfterViewInit() {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }
+
+    rowClicked!: number;
+  changeTableRowColor(idx: any) { 
+    if(this.rowClicked === idx) this.rowClicked = -1;
+    else this.rowClicked = idx;
+  }
+
+  loadEntry(){
+    this.dataSource.data= this.Exchange_order.exchange_order_entries!;
+  }
 
   public SetValue() {
     if (this.selected_Order != null && this.selected_Order.sanad_kid_date != null){

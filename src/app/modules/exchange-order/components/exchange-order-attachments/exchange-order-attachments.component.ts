@@ -14,7 +14,7 @@ import { PageExchangeOrderService } from '../../pageservice/page-exchange-order.
 @Component({
   selector: 'app-exchange-order-attachments',
   templateUrl: './exchange-order-attachments.component.html',
-  styleUrls: ['./exchange-order-attachments.component.css']
+  styleUrls: ['./exchange-order-attachments.component.scss']
 })
 export class ExchangeOrderAttachmentsComponent {
   _index :number ;

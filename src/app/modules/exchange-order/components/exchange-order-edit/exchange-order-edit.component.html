@@ -41,43 +41,40 @@
                                 </mat-form-field>
                               </div>
                             </div>
-                      </div>
-  
-                      <div class="inputGroup2" style="display: flex; flex-direction: column;">
-                          <div class="date">
-                              <span class="white" style="margin-bottom: 10px; display: block;">تاريخ المذكرة</span>
-                              <div class="content">
-                                <mat-form-field class="example-full-width small-width" appearance="fill">
-                                  <mat-label>اليوم</mat-label>
-                                  <input  matInput placeholder="ex: 21" (change)="incumbentDateChange('day')"
-                                  [(ngModel)]='incumbentDateDay' [ngModelOptions]="{standalone: true}"
-                                  id="incumbentDateDay" (keyup.enter)="focusNext('QararDateMonth')">
-                                </mat-form-field>
-                                <mat-form-field class="example-full-width small-width" appearance="fill">
-                                  <mat-label>الشهر</mat-label>
-                                  <input  matInput placeholder="ex: 1" (change)="incumbentDateChange('month')"
-                                  [(ngModel)]='incumbentDateMonth' [ngModelOptions]="{standalone: true}"
-                                  id="incumbentDateMonth" (keyup.enter)="focusNext('QararDateYear')">
-                                </mat-form-field>
-                                <mat-form-field class="example-full-width small-width" appearance="fill">
-                                  <mat-label>العام</mat-label>
-                                  <input  matInput placeholder="ex: 2023" (change)="incumbentDateChange('year')"
-                                  [(ngModel)]='incumbentDateYear' [ngModelOptions]="{standalone: true}"
-                                  id="incumbentDateYear" (keyup.enter)="focusNext('QararDateDay')">
-                                </mat-form-field>
+
+                            <div class="date">
+                                <span class="white" style="margin-bottom: 10px; display: block;">تاريخ المذكرة</span>
+                                <div class="content">
+                                  <mat-form-field class="example-full-width small-width" appearance="fill">
+                                    <mat-label>اليوم</mat-label>
+                                    <input  matInput placeholder="ex: 21" (change)="incumbentDateChange('day')"
+                                    [(ngModel)]='incumbentDateDay' [ngModelOptions]="{standalone: true}"
+                                    id="incumbentDateDay" (keyup.enter)="focusNext('QararDateMonth')">
+                                  </mat-form-field>
+                                  <mat-form-field class="example-full-width small-width" appearance="fill">
+                                    <mat-label>الشهر</mat-label>
+                                    <input  matInput placeholder="ex: 1" (change)="incumbentDateChange('month')"
+                                    [(ngModel)]='incumbentDateMonth' [ngModelOptions]="{standalone: true}"
+                                    id="incumbentDateMonth" (keyup.enter)="focusNext('QararDateYear')">
+                                  </mat-form-field>
+                                  <mat-form-field class="example-full-width small-width" appearance="fill">
+                                    <mat-label>العام</mat-label>
+                                    <input  matInput placeholder="ex: 2023" (change)="incumbentDateChange('year')"
+                                    [(ngModel)]='incumbentDateYear' [ngModelOptions]="{standalone: true}"
+                                    id="incumbentDateYear" (keyup.enter)="focusNext('QararDateDay')">
+                                  </mat-form-field>
+                                </div>
                               </div>
-                            </div>
-  
                       </div>
   
                       <div class="inputGroup3" style="display: flex; justify-content: space-between; width: 435px;">
-                          <mat-form-field class="fitContent" appearance="fill">
+                          <mat-form-field class="fitContent" appearance="fill" style="height: fit-content;">
                               <mat-label>رقم المذكرة</mat-label>
                               <input matInput [formControl]="incumbent_id"
                                       id="incumbent_id" (keyup.enter)="focusNext('account_type')">
                           </mat-form-field>
   
-                          <mat-form-field class="fitContent" appearance="fill">
+                          <mat-form-field class="fitContent" appearance="fill" style="height: fit-content;">
                               <mat-label>رقم السند</mat-label>
                               <input matInput [formControl]="sanad_kid_id"
                                       id="sanad_kid_id" (keyup.enter)="focusNext('account_type')">
@@ -94,7 +91,7 @@
                                       id="book_fk" (keyup.enter)="focusNext('account_type')">
                           </mat-form-field>
 
-                          <mat-form-field class="fitContent" appearance="fill">
+                          <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px;">
                               <mat-label>اسم صاحب الاستحقاق</mat-label>
                               <input matInput [formControl]="name_of_owner"
                                       id="name_of_owner" (keyup.enter)="focusNext('account_type')">
@@ -121,18 +118,49 @@
               
           </form>
   
-          <div class="down" >
-            <span>المرفقات</span>
-            <div class="detail" *ngFor="let attachment of Exchange_order.exchange_order_attachements; let i=index;">
-              <app-exchange-order-attachments [index]="i" (onDelete)="onAttachmentDelete($event)"></app-exchange-order-attachments>
+          <div class="down" style="display: flex; justify-content: space-between;">
+            <div class="donwLeft" >
+                <span>المرفقات</span>
+                <div class="detail" *ngFor="let attachment of Exchange_order.exchange_order_attachements; let i=index;">
+                  <app-exchange-order-attachments [index]="i" (onDelete)="onAttachmentDelete($event)"></app-exchange-order-attachments>
+                </div>
+                <button class="add" mat-raised-button class="add" (click)="addAttachment()">إضافة مرفق+</button>
+    
+                <span>تفاصيل أمر الصرف</span>
+                <div class="detail" *ngFor="let details of Exchange_order.exchange_order_details; let i=index;">
+                  <app-exchange-order-detail [index]="i" (onDelete)="onDetailsDelete($event)"></app-exchange-order-detail>
+                </div>
+                <button class="add" mat-raised-button class="add" (click)="addDetails()">إضافة تفصيل+</button>
             </div>
-            <button class="add" mat-raised-button class="add" (click)="addAttachment()">إضافة مرفق+</button>
+            <div class="donwRight">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+    
+                    <ng-container matColumnDef="ex_ord_stg_name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>المرحلة </th>
+                        <td mat-cell *matCellDef="let element">{{element?.exchange_order_stage.ex_ord_stg_name}}</td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="user_entry">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>المستخدم </th>
+                        <td mat-cell *matCellDef="let element">{{element?.user_entry.user_first_name}} {{element?.user_entry.user_last_name}}</td>
+                    </ng-container>
 
-            <span>تفاصيل أمر الصرف</span>
-            <div class="detail" *ngFor="let details of Exchange_order.exchange_order_details; let i=index;">
-              <app-exchange-order-detail [index]="i" (onDelete)="onDetailsDelete($event)"></app-exchange-order-detail>
+                    <ng-container matColumnDef="date_entry">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>تاريخ الحفظ </th>
+                        <td mat-cell *matCellDef="let element">{{element?.date_entry | date:'yyyy/MM/dd'}}</td>
+                    </ng-container>
+            
+            
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;let idx=index;"
+                    [style.background-color]="rowClicked == idx ? 'yellow': 'none'"
+                    (click)="changeTableRowColor(idx)"></tr>
+                </table>
+                
+                <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>
             </div>
-            <button class="add" mat-raised-button class="add" (click)="addDetails()">إضافة تفصيل+</button>
+            
           </div>
           <!-- </ngx-hover-opacity> -->
   
