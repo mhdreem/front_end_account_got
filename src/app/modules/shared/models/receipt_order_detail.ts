@@ -1,5 +1,6 @@
 import { accounts_tree } from "./accounts_tree";
 import { account_center } from "./account_center";
+import { branch } from "./branch";
 import { receipt_order } from "./receipt_order";
 
 export interface receipt_order_detail
@@ -22,4 +23,7 @@ export interface receipt_order_detail
     account_center?: account_center;
 
     account_notice?: string;
+
+    branch_fk?: number;
+    branch?: branch;
 }
