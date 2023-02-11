@@ -4,18 +4,18 @@ import { FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
-import { account_class } from 'src/app/modules/shared/models/account-class';
-import { account_final } from 'src/app/modules/shared/models/account-final';
-import { account_group } from 'src/app/modules/shared/models/account-group';
-import { account_level } from 'src/app/modules/shared/models/account-level';
-import { finance_list } from 'src/app/modules/shared/models/finance-list';
+import { account_class } from 'src/app/modules/shared/models/account_class';
+import { account_final } from 'src/app/modules/shared/models/account_final';
+import { account_group } from 'src/app/modules/shared/models/account_group';
+import { account_level } from 'src/app/modules/shared/models/account_level';
+import { finance_list } from 'src/app/modules/shared/models/finance_list';
 import { AccountClassService } from 'src/app/modules/shared/services/account-class.service';
 import { AccountFinalService } from 'src/app/modules/shared/services/account-final.service';
 import { AccountGroupService } from 'src/app/modules/shared/services/account-group.service';
 import { AccountLevelService } from 'src/app/modules/shared/services/account-level.service';
 import { AccountTreeService } from 'src/app/modules/shared/services/account-tree.service';
 import { FinanceListService } from 'src/app/modules/shared/services/finance-list.service';
-import {accounts_tree} from '../../../shared/models/account-tree'
+import {accounts_tree} from '../../../shared/models/accounts_tree'
 @Component({
   selector: 'app-account-tree-edit',
   templateUrl: './account-tree-edit.component.html',

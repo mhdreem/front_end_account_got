@@ -1,16 +1,16 @@
 import { HttpClient, HttpHeaders, HttpParamsOptions } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ExchangeOrder } from '../models/exchange-order';
+import { exchange_order } from '../models/exchange_order';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExchangeOrderService {
 
-  public List_ExchangeOrder:ExchangeOrder[] = [];
+  public List_ExchangeOrder:exchange_order[] = [];
 
-  public List_ExchangeOrder_BehaviorSubject:BehaviorSubject<ExchangeOrder[]> = new BehaviorSubject<ExchangeOrder[]>([]);
+  public List_ExchangeOrder_BehaviorSubject:BehaviorSubject<exchange_order[]> = new BehaviorSubject<exchange_order[]>([]);
 
 
 
@@ -25,7 +25,7 @@ export class ExchangeOrderService {
   list()  {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     const options = {  headers: headers };  
-    return this.httpClient.get(this.RestUrl +"Sanad_Kid/list",options) as Observable<ExchangeOrder[]>;  
+    return this.httpClient.get(this.RestUrl +"Sanad_Kid/list",options) as Observable<exchange_order[]>;  
     
   }
 
@@ -36,7 +36,7 @@ export class ExchangeOrderService {
     return this.httpClient.delete(this.RestUrl +"Exchange_Order/delete/"+id,options);  
   }
 
-  add(obj : ExchangeOrder )  {
+  add(obj : exchange_order )  {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     const httpParams: HttpParamsOptions= { 'obj': obj } as HttpParamsOptions;
   
@@ -44,7 +44,7 @@ export class ExchangeOrderService {
     return this.httpClient.post(this.RestUrl +"Exchange_Order/add",obj,options);  
   }
 
-  update(obj : ExchangeOrder )  {
+  update(obj : exchange_order )  {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     const httpParams: HttpParamsOptions = { 'obj': obj } as HttpParamsOptions;
   
@@ -63,14 +63,14 @@ export class ExchangeOrderService {
   getById(id: number){
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     const options = {  headers: headers };  
-    return this.httpClient.get(this.RestUrl +"Exchange_Order/GetByID/"+id,options) as Observable<ExchangeOrder>;  
+    return this.httpClient.get(this.RestUrl +"Exchange_Order/GetByID/"+id,options) as Observable<exchange_order>;  
     
   }
 
   getBySeq(seq: number){
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     const options = {  headers: headers };  
-    return this.httpClient.get(this.RestUrl +"Exchange_Order/GetBySeq/"+seq,options) as Observable<ExchangeOrder>;  
+    return this.httpClient.get(this.RestUrl +"Exchange_Order/GetBySeq/"+seq,options) as Observable<exchange_order>;  
     
   }
 }

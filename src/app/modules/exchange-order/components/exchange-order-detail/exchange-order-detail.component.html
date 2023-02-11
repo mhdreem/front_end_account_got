@@ -4,31 +4,32 @@
             <c-col>
                 <mat-form-field class="fitContent" appearance="fill">
                     <mat-label>مبلغ مدين</mat-label>
-                    <input matInput [formControl]="creditor" (input)="onCreditorFilling()"
-                    id="creditor" (keyup.enter)="focusNext('account_type')">
+                    <input matInput [formControl]="creditor" (input)="onCreditorFilling()" id="creditor"
+                        (keyup.enter)="focusNext('account_type')">
                 </mat-form-field>
             </c-col>
 
             <c-col>
                 <mat-form-field class="fitContent" appearance="fill">
                     <mat-label>مبلغ دائن</mat-label>
-                    <input matInput [formControl]="debtor" (input)="onDebtorFilling()"
-                    id="debtor" (keyup.enter)="focusNext('account_type')">
+                    <input matInput [formControl]="debtor" (input)="onDebtorFilling()" id="debtor"
+                        (keyup.enter)="focusNext('account_type')">
                 </mat-form-field>
             </c-col>
-        
-          
-        
+
+
+
             <c-col>
-                <mat-form-field class="fitContent" appearance="fill" >
+                <mat-form-field class="fitContent" appearance="fill">
                     <mat-label #label_accounts_tree_fk>رقم الحساب</mat-label>
-                    <input matInput [formControl]="accounts_tree_fk" [matAutocomplete]="autoaccounts_tree_fk" (input)="onAccountNameFilling()" 
-                            id="accounts_tree_fk" (keyup.enter)="focusNext('account_center_fk')" >
-                    <mat-autocomplete #autoaccounts_tree_fk="matAutocomplete"  (optionSelected)="onAccountNameSelecting($event)"
-                    [displayWith]="display_Account_Tree_Property.bind(this)"
-                    >
+                    <input matInput [formControl]="accounts_tree_fk" [matAutocomplete]="autoaccounts_tree_fk"
+                        (input)="onAccountNameFilling()" id="accounts_tree_fk"
+                        (keyup.enter)="focusNext('account_center_fk')">
+                    <mat-autocomplete #autoaccounts_tree_fk="matAutocomplete"
+                        (optionSelected)="onAccountNameSelecting($event)"
+                        [displayWith]="display_Account_Tree_Property.bind(this)">
                         <mat-option *ngFor="let option of accounts_tree_filter | async" [value]="option.seq">
-                        {{option.account_id + " - " + option.account_name}}
+                            {{option.account_id + " - " + option.account_name}}
                         </mat-option>
                     </mat-autocomplete>
                     <mat-error *ngIf="fieldHasErrors(Form, 'accounts_tree_fk')">
@@ -42,31 +43,32 @@
                     </mat-error>
                 </mat-form-field>
             </c-col>
-        
+
             <c-col>
                 <mat-form-field class="fitContent" appearance="fill">
                     <mat-label>مركز الكلفة</mat-label>
                     <input matInput [formControl]="account_center_fk" [matAutocomplete]="autoaccount_center_fk"
-                            id="account_center_fk" (keyup.enter)="focusNext('account_id')">
-                    <mat-autocomplete #autoaccount_center_fk="matAutocomplete"  (optionSelected)="onAccountCenterSelecting($event)"
-                    [displayWith]="display_Account_Center_Property.bind(this)"
-                    >
-                        <mat-option *ngFor="let option of account_center_filter | async" [value]="option.account_center_seq">
-                        {{option.account_center_name}}
+                        id="account_center_fk" (keyup.enter)="focusNext('account_id')">
+                    <mat-autocomplete #autoaccount_center_fk="matAutocomplete"
+                        (optionSelected)="onAccountCenterSelecting($event)"
+                        [displayWith]="display_Account_Center_Property.bind(this)">
+                        <mat-option *ngFor="let option of account_center_filter | async"
+                            [value]="option.account_center_seq">
+                            {{option.account_center_name}}
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
             </c-col>
 
-            
+
         </c-row>
-    
+
         <c-row>
             <c-col>
                 <mat-form-field class="fitContent" appearance="fill" style="width: 80%;">
                     <mat-label>بيان الحساب</mat-label>
-                    <input matInput [formControl]="account_notice"
-                    id="account_notice" (keyup.enter)="focusNext('account_type')">
+                    <input matInput [formControl]="account_notice" id="account_notice"
+                        (keyup.enter)="focusNext('account_type')">
                 </mat-form-field>
 
             </c-col>
@@ -76,5 +78,5 @@
             </c-col>
         </c-row>
     </form>
-    
+
 </c-container>

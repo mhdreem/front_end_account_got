@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AttachmentType } from '../models/attachment-type';
+import { attachement_type } from '../models/attachement_type';
 import { BaseAPIService } from './base/base-api.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -9,21 +9,21 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class AttachmentTypeService extends BaseAPIService{
 
-  public List_attachment_type:AttachmentType[] = [];
-  public List_attachment_type_BehaviorSubject:BehaviorSubject<AttachmentType[]> = new BehaviorSubject<AttachmentType[]>([]);
+  public List_attachment_type:attachement_type[] = [];
+  public List_attachment_type_BehaviorSubject:BehaviorSubject<attachement_type[]> = new BehaviorSubject<attachement_type[]>([]);
   
 
   constructor(protected override httpClient: HttpClient) {
     super(httpClient);
   }
 
-  list() :Observable<AttachmentType[]> {
-    return this.httpClient.get<AttachmentType[]>(this.RestUrl +"Attachement_Type/list",this.httpOptions) ;      
+  list() :Observable<attachement_type[]> {
+    return this.httpClient.get<attachement_type[]>(this.RestUrl +"Attachement_Type/list",this.httpOptions) ;      
   }
 
 
   fill()  {
-    this.Subscription =  this.httpClient.get<AttachmentType[]>(this.RestUrl +"Attachement_Type/list",this.httpOptions) .subscribe    (
+    this.Subscription =  this.httpClient.get<attachement_type[]>(this.RestUrl +"Attachement_Type/list",this.httpOptions) .subscribe    (
       data=>
       {
         this.List_attachment_type = data;
@@ -36,15 +36,15 @@ export class AttachmentTypeService extends BaseAPIService{
     return this.httpClient.delete(this.RestUrl +"Attachement_Type/delete/"+id);  
   }
 
-  add(obj : AttachmentType )  {    
+  add(obj : attachement_type )  {    
     return this.httpClient.post(this.RestUrl +"Attachement_Type/add",obj,this.httpOptions);  
   }
 
-  update(obj : AttachmentType )  {   
+  update(obj : attachement_type )  {   
     return this.httpClient.put(this.RestUrl +"Attachement_Type/update",this.httpOptions);  
   }
 
-  validate_name(obj: AttachmentType) {
+  validate_name(obj: attachement_type) {
     return this.httpClient.post(this.RestUrl + "Attachement_Type/Validate_Name", obj, this.httpOptions);
   }
 

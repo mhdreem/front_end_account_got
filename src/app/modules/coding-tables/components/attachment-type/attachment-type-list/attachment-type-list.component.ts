@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { AttachmentType } from 'src/app/modules/shared/models/attachment-type';
+import { attachement_type } from 'src/app/modules/shared/models/attachement_type';
 import { result } from 'src/app/modules/shared/models/result';
 import { AttachmentTypeService } from 'src/app/modules/shared/services/attachment-type.service';
 import { Subscription } from 'rxjs';
@@ -23,8 +23,8 @@ export class AttachmentTypeListComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  attachment_type_List: AttachmentType[] = [];
-  dataSource = new MatTableDataSource<AttachmentType>();
+  attachment_type_List: attachement_type[] = [];
+  dataSource = new MatTableDataSource<attachement_type>();
   displayedColumns: string[] = ['attachement_type_name', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
 
@@ -105,7 +105,7 @@ export class AttachmentTypeListComponent {
     });
   }
 
-  update(obj: AttachmentType) {
+  update(obj: attachement_type) {
 
     const dialogRef = this.dialog.open(AttachmentTypeAddComponent, {
       width: '300px',
@@ -126,7 +126,7 @@ export class AttachmentTypeListComponent {
 
 
 
-  delete(obj: AttachmentType) {
+  delete(obj: attachement_type) {
 
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
       width: '300px',

@@ -1,17 +1,17 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
 import { PageSanadKidService } from 'src/app/modules/sanad-kid/pageservice/page-sanad-kid.service';
-import { account_center } from 'src/app/modules/shared/models/account-center';
-import { accounts_tree } from 'src/app/modules/shared/models/account-tree';
-import { ExchangeOrderDetails } from 'src/app/modules/shared/models/exchange-order-details';
+import { account_center } from 'src/app/modules/shared/models/account_center';
+import { accounts_tree } from 'src/app/modules/shared/models/accounts_tree';
 import { account_centerService } from 'src/app/modules/shared/services/account-center.service';
 import { AccountTreeService } from 'src/app/modules/shared/services/account-tree.service';
 import { FormValidationHelpersService } from 'src/app/modules/shared/services/form-validation-helpers.service';
 import { PageExchangeOrderService } from '../../pageservice/page-exchange-order.service';
 import { validate_account_tree } from '../../../sanad-kid/components/sanad-kid-detail/validators/validate_account_tree';
+import { exchange_order_detail } from 'src/app/modules/shared/models/exchange_order_detail';
 
 @Component({
   selector: 'app-exchange-order-detail',
@@ -25,7 +25,7 @@ export class ExchangeOrderDetailComponent {
   @Input() set index(i: number) {
     this._index = i;
   }
-  get exchange_order_details(): ExchangeOrderDetails {
+  get exchange_order_details(): exchange_order_detail {
     if (
       this.PageExchangeOrderService.exchange_order != null &&
       this.PageExchangeOrderService.exchange_order.exchange_order_details != null &&
@@ -38,7 +38,7 @@ export class ExchangeOrderDetailComponent {
     return {};
   }
 
-  set exchange_order_details(obj: ExchangeOrderDetails) {
+  set exchange_order_details(obj: exchange_order_detail) {
     if (
       this.PageExchangeOrderService.exchange_order != null &&
       this.PageExchangeOrderService.exchange_order.exchange_order_details != null &&

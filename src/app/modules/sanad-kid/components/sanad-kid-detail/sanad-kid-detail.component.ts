@@ -5,8 +5,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
-import { account_center } from 'src/app/modules/shared/models/account-center';
-import { accounts_tree } from 'src/app/modules/shared/models/account-tree';
+import { account_center } from 'src/app/modules/shared/models/account_center';
+import { accounts_tree } from 'src/app/modules/shared/models/accounts_tree';
 import { sanad_kid } from 'src/app/modules/shared/models/sanad-kid';
 import { sanad_kid_detail } from 'src/app/modules/shared/models/sanad_kid_detail';
 import { account_centerService } from 'src/app/modules/shared/services/account-center.service';

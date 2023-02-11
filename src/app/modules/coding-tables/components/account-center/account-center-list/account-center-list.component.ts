@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { account_center } from 'src/app/modules/shared/models/account-center';
+import { account_center } from 'src/app/modules/shared/models/account_center';
 import { account_centerService } from 'src/app/modules/shared/services/account-center.service';
 import { AccountCenterAddComponent } from '../account-center-add/account-center-add.component';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';

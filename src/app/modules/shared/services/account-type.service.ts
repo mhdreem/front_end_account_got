@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParamsOptions } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { SubscriptSizing } from '@angular/material/form-field';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { account_type } from '../models/account-type';
+import { account_type } from '../models/account_type';
 import { BaseAPIService } from './base/base-api.service';
 
 @Injectable({

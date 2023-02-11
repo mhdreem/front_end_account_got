@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ExchangeOrder } from '../../shared/models/exchange-order';
+import { exchange_order } from '../../shared/models/exchange_order';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PageExchangeOrderService {
 
-  public exchange_order : ExchangeOrder;
-  public $exchange_order : BehaviorSubject<ExchangeOrder> ;
+  public exchange_order : exchange_order;
+  public $exchange_order : BehaviorSubject<exchange_order> ;
 
 
   
@@ -17,7 +17,7 @@ export class PageExchangeOrderService {
     this.exchange_order.exchange_order_details=[];
     this.exchange_order.exchange_order_attachements=[];
     this.exchange_order.exchange_order_entries=[];
-    this.$exchange_order  = new  BehaviorSubject<ExchangeOrder>({});
+    this.$exchange_order  = new  BehaviorSubject<exchange_order>({});
   }
 
   new()
@@ -29,7 +29,7 @@ export class PageExchangeOrderService {
     this.$exchange_order.next(this.exchange_order);
   } 
 
-  set(exchange_order:ExchangeOrder)
+  set(exchange_order:exchange_order)
   {
     this.exchange_order = exchange_order;
     this.$exchange_order.next( this.exchange_order);

@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
-import { account_class } from 'src/app/modules/shared/models/account-class';
+import { account_class } from 'src/app/modules/shared/models/account_class';
 import { result } from 'src/app/modules/shared/models/result';
 import { FormValidationHelpersService } from 'src/app/modules/shared/services/form-validation-helpers.service';
 import {AccountClassService} from '../../../../shared/services/account-class.service'

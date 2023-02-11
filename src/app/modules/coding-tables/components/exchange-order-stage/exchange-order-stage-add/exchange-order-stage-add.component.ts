@@ -3,7 +3,7 @@ import { Component, HostListener, Inject, OnInit, Optional } from '@angular/core
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ExchangeOrderStage } from 'src/app/modules/shared/models/exchange-order-stage';
+import {  exchange_order_stage } from 'src/app/modules/shared/models/exchange_order_stage';
 import { ExchangeOrderStageService } from 'src/app/modules/shared/services/exchange-order-stage.service';
 import { FormValidationHelpersService } from 'src/app/modules/shared/services/form-validation-helpers.service';
 import { Subscription } from 'rxjs';
@@ -27,13 +27,13 @@ export class ExchangeOrderStageAddComponent {
     }
     
   }
-  _selected_Exchange_order_stage:ExchangeOrderStage= {};
-  set selected_Exchange_order_stage(obj:ExchangeOrderStage)
+  _selected_Exchange_order_stage:exchange_order_stage= {};
+  set selected_Exchange_order_stage(obj:exchange_order_stage)
   {
     this._selected_Exchange_order_stage =  obj;
     this.setValue();
   }
-  get  selected_Exchange_order_stage():ExchangeOrderStage
+  get  selected_Exchange_order_stage():exchange_order_stage
   {
     return this._selected_Exchange_order_stage ;
   }

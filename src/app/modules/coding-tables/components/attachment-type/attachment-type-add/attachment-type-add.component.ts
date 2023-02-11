@@ -1,6 +1,6 @@
 import { Component, HostListener, Inject, Optional } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AttachmentType } from 'src/app/modules/shared/models/attachment-type';
+import { attachement_type } from 'src/app/modules/shared/models/attachement_type';
 import { Subscription } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -24,13 +24,13 @@ export class AttachmentTypeAddComponent {
     }
     
   }
-  _selected_attachment_type:AttachmentType= {};
-  set selected_attachment_type(obj:AttachmentType)
+  _selected_attachment_type:attachement_type= {};
+  set selected_attachment_type(obj:attachement_type)
   {
     this._selected_attachment_type =  obj;
     this.setValue();
   }
-  get  selected_attachment_type():AttachmentType
+  get  selected_attachment_type():attachement_type
   {
     return this._selected_attachment_type ;
   }

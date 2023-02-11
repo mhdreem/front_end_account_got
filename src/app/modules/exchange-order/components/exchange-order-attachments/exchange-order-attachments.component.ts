@@ -4,8 +4,8 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as moment from 'moment';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
-import { AttachmentType } from 'src/app/modules/shared/models/attachment-type';
-import { ExchangeOrderAttachements } from 'src/app/modules/shared/models/exchange-order-attachements';
+import { attachement_type } from 'src/app/modules/shared/models/attachement_type';
+import { exchange_order_attachement } from 'src/app/modules/shared/models/exchange_order_attachement';
 import { account_typeService } from 'src/app/modules/shared/services/account-type.service';
 import { AttachmentTypeService } from 'src/app/modules/shared/services/attachment-type.service';
 import { FormValidationHelpersService } from 'src/app/modules/shared/services/form-validation-helpers.service';
@@ -25,7 +25,7 @@ export class ExchangeOrderAttachmentsComponent {
     this._index = i;      
   }
 
-  get exchange_order_attachments():ExchangeOrderAttachements 
+  get exchange_order_attachments():exchange_order_attachement 
   {
     if (
       this.PageExchangeOrderService.exchange_order!= null &&
@@ -39,8 +39,8 @@ export class ExchangeOrderAttachmentsComponent {
       }
       return {};
   }
-
-  set  exchange_order_attachments(obj:ExchangeOrderAttachements) 
+  
+  set  exchange_order_attachments(obj:exchange_order_attachement) 
   {
     if (
       this.PageExchangeOrderService.exchange_order!= null &&
@@ -63,8 +63,8 @@ export class ExchangeOrderAttachmentsComponent {
   attachement_type!: FormControl<number | null>;
   exchange_order_attachement_note!: FormControl<string | null>;
 
-  attachment_type_list:AttachmentType[];
-  attachment_type_filter:Observable< AttachmentType[]>;
+  attachment_type_list:attachement_type[];
+  attachment_type_filter:Observable< attachement_type[]>;
 
   LoadingFinish : boolean;
 
@@ -138,7 +138,7 @@ export class ExchangeOrderAttachmentsComponent {
           )
         }
       
-        Load_attachment_type():Observable<AttachmentType[]>{
+        Load_attachment_type():Observable<attachement_type[]>{
           if (this.attachmentTypeService.List_attachment_type == null ||
             this.attachmentTypeService.List_attachment_type == undefined ||
             this.attachmentTypeService.List_attachment_type.length == 0)
@@ -158,12 +158,12 @@ export class ExchangeOrderAttachmentsComponent {
         }
 
 
-        private _filter_attachement_type(value: string): AttachmentType[] {
+        private _filter_attachement_type(value: string): attachement_type[] {
           const filterValue = value.toLowerCase();      
           return this.attachment_type_list.filter(option => option.attachement_type_name!= null  &&  option.attachement_type_name.includes(filterValue));
         }
 
-        public display_Attachement_Type_Property(value: AttachmentType): string {
+        public display_Attachement_Type_Property(value: attachement_type): string {
           if (value && value.attachement_type_seq) {            
               return value.attachement_type_name!;
           }

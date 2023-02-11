@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ExchangeOrderStage } from '../models/exchange-order-stage';
+import { exchange_order_stage } from '../models/exchange_order_stage';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { BaseAPIService } from './base/base-api.service';
@@ -9,9 +9,9 @@ import { BaseAPIService } from './base/base-api.service';
 })
 export class ExchangeOrderStageService extends BaseAPIService {
 
-  public List_ExchangeOrderStage: ExchangeOrderStage[] = [];
+  public List_ExchangeOrderStage: exchange_order_stage[] = [];
 
-  public List_ExchangeOrderStage_BehaviorSubject: BehaviorSubject<ExchangeOrderStage[]> = new BehaviorSubject<ExchangeOrderStage[]>([]);
+  public List_ExchangeOrderStage_BehaviorSubject: BehaviorSubject<exchange_order_stage[]> = new BehaviorSubject<exchange_order_stage[]>([]);
 
 
 
@@ -19,15 +19,15 @@ export class ExchangeOrderStageService extends BaseAPIService {
     super(httpClient)
   }
 
-  list(): Observable<ExchangeOrderStage[]> {
-    return this.httpClient.get<ExchangeOrderStage[]>(this.RestUrl + "Exchange_Order_Stage/list", this.httpOptions);
+  list(): Observable<exchange_order_stage[]> {
+    return this.httpClient.get<exchange_order_stage[]>(this.RestUrl + "Exchange_Order_Stage/list", this.httpOptions);
 
   }
 
 
   fill() {
 
-    this.Subscription.add(this.httpClient.get<ExchangeOrderStage[]>(this.RestUrl + "Exchange_Order_Stage/list", this.httpOptions).subscribe(
+    this.Subscription.add(this.httpClient.get<exchange_order_stage[]>(this.RestUrl + "Exchange_Order_Stage/list", this.httpOptions).subscribe(
       data => {
         this.List_ExchangeOrderStage = data;
         this.List_ExchangeOrderStage_BehaviorSubject.next(this.List_ExchangeOrderStage);
@@ -40,15 +40,15 @@ export class ExchangeOrderStageService extends BaseAPIService {
     return this.httpClient.delete(this.RestUrl + "Exchange_Order_Stage/delete/" + id, this.httpOptions);
   }
 
-  add(obj: ExchangeOrderStage) {
+  add(obj: exchange_order_stage) {
     return this.httpClient.post(this.RestUrl + "Exchange_Order_Stage/add", obj, this.httpOptions);
   }
 
-  update(obj: ExchangeOrderStage) {
+  update(obj: exchange_order_stage) {
     return this.httpClient.put(this.RestUrl + "Exchange_Order_Stage/update", obj, this.httpOptions);
   }
 
-  validate_name(obj: ExchangeOrderStage) {
+  validate_name(obj: exchange_order_stage) {
     return this.httpClient.post(this.RestUrl + "Exchange_Order_Stage/Validate_Stage_Name", obj, this.httpOptions);
   }
 

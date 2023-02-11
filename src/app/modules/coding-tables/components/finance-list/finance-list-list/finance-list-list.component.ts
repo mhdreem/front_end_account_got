@@ -11,7 +11,7 @@ import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/c
 import { ImportFromExcelComponent } from 'src/app/modules/shared/components/import-from-excel/import-from-excel.component';
 import { result } from 'src/app/modules/shared/models/result';
 import { FinanceListService } from 'src/app/modules/shared/services/finance-list.service';
-import {finance_list} from '../../../../shared/models/finance-list'
+import {finance_list} from '../../../../shared/models/finance_list'
 import { FinanceListAddComponent } from '../finance-list-add/finance-list-add.component';
 @Component({
   selector: 'app-finance-list-list',

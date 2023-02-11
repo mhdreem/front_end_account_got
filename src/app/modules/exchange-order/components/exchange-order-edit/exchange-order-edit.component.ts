@@ -7,11 +7,13 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
-import { Subscription } from 'rxjs';
-import { ExchangeOrder } from 'src/app/modules/shared/models/exchange-order';
-import { ExchangeOrderEntry } from 'src/app/modules/shared/models/exchange-order-entry';
+import { forkJoin, Observable, of, Subscription } from 'rxjs';
+import { exchange_order } from 'src/app/modules/shared/models/exchange_order';
+import { exchange_order_entry } from 'src/app/modules/shared/models/exchange_order_entry';
 import { result } from 'src/app/modules/shared/models/result';
+import { sanad_kid_book } from 'src/app/modules/shared/models/sanad_kid_book';
 import { ExchangeOrderService } from 'src/app/modules/shared/services/exchange-order.service';
+import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-book.service';
 import { PageExchangeOrderService } from '../../pageservice/page-exchange-order.service';
 
 @Component({
@@ -33,7 +35,7 @@ export class ExchangeOrderEditComponent {
     
   }
 
-  get Exchange_order():ExchangeOrder 
+  get exchange_order():exchange_order 
   {
     if (
       this.PageExchangeOrderService.exchange_order!= null  )
@@ -43,7 +45,7 @@ export class ExchangeOrderEditComponent {
       return {};
   }
 
-  set Exchange_order(obj:ExchangeOrder) 
+  set exchange_order(obj:exchange_order) 
   {
     this.PageExchangeOrderService.exchange_order= obj;
   }
@@ -52,10 +54,8 @@ export class ExchangeOrderEditComponent {
  
   Form!: FormGroup;
   sanad_kid_fk!: FormControl<number | null>;
-  sanad_kid_id!: FormControl<number | null>;
-  sanad_kid_date!: FormControl<Date | null>;
-  operation_type_fk!: FormControl<number | null>;
-  operation_code_fk!: FormControl<number | null>;
+  document_id!: FormControl<number | null>;
+  document_date!: FormControl<Date | null>;
   incumbent_id!: FormControl<number | null>;
   incumbent_date!: FormControl<Date | null>;
   sanad_kid_type_fk!: FormControl<number | null>;
@@ -65,6 +65,10 @@ export class ExchangeOrderEditComponent {
   book_fk: FormControl<number | null>;
   
  
+  List_sanad_kid_book ?: sanad_kid_book[];
+  filter_List_sanad_kid_book ?: Observable<sanad_kid_book[]>;
+
+
   sanadDateDay: string= '';
   sanadDateMonth: string= '';
   sanadDateYear: string= '';
@@ -79,14 +83,14 @@ export class ExchangeOrderEditComponent {
   incumbentDateMonthIsFilled: boolean= false;
   incumbentDateYearIsFilled: boolean= false;
 
-  selected_Order: ExchangeOrder= {};
+  selected_Order: exchange_order= {};
 
   LoadingFinish : boolean;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  dataSource = new MatTableDataSource<ExchangeOrderEntry>();
+  dataSource_exchange_order_entry = new MatTableDataSource<exchange_order_entry>();
   displayedColumns: string[] =
    ["ex_ord_stg_name", 'user_entry' ,'date_entry'  ];
 
@@ -101,12 +105,47 @@ export class ExchangeOrderEditComponent {
     private fb: FormBuilder,
     private PageExchangeOrderService:PageExchangeOrderService,
     private snackBar: MatSnackBar,
+    private SanadKidBookService:SanadKidBookService,
     @Inject(DOCUMENT) private _document: Document,
     private exchangeOrderService: ExchangeOrderService
     ) { 
       this.LoadingFinish = true;
       this.BuildForm();
-      
+      this.loadData();      
+    }
+    
+    load_sanad_kid_book():Observable<sanad_kid_book[]>
+    {
+      if (this.SanadKidBookService.List_sanad_kid_book!= null &&
+        this.SanadKidBookService.List_sanad_kid_book.length>0)
+        {
+          return of (this.SanadKidBookService.List_sanad_kid_book);
+        }
+     
+        return this.SanadKidBookService.list();
+
+    }
+
+    loadData()
+    {
+      this._Subscription.add
+      (
+        forkJoin(
+          this.load_sanad_kid_book()
+  
+        ).subscribe(
+          res=>
+          {
+            
+            this.List_sanad_kid_book = res[0];
+            this.filter_List_sanad_kid_book =  of (res[0]);
+            this.SanadKidBookService.List_sanad_kid_book =  res[0];
+            this.SanadKidBookService.List_sanad_kid_book_BehaviorSubject.next(res[0]);
+  
+          }
+        )
+      );
+   
     }
 
     public BuildForm() {
@@ -115,10 +154,8 @@ export class ExchangeOrderEditComponent {
         this.Form = this.fb.group(
           {
             'sanad_kid_fk': this.sanad_kid_fk = new FormControl<number | null>(null, [Validators.required]),
-            'sanad_kid_id': this.sanad_kid_id = new FormControl<number | null>(null, [Validators.required]),
-            'sanad_kid_date': this.sanad_kid_date = new FormControl<Date | null>(null, [Validators.required]),
-            'operation_type_fk': this.operation_type_fk = new FormControl<number | null>(null, []),
-            'operation_code_fk': this.operation_code_fk = new FormControl<number | null>(null, []),
+            'document_id': this.document_id = new FormControl<number | null>(null, [Validators.required]),
+            'document_date': this.document_date = new FormControl<Date | null>(null, [Validators.required]),           
             'incumbent_date': this.incumbent_date = new FormControl<Date | null>(null, []),
             'incumbent_id': this.incumbent_id = new FormControl<number | null>(null, []),
             'sanad_close': this.sanad_close = new FormControl<boolean | null>(null, []),
@@ -144,15 +181,15 @@ export class ExchangeOrderEditComponent {
       if (seq!= null && seq>0){
         this.exchangeOrderService.getBySeq(seq).subscribe(res =>{
           this.selected_Order = res;
-          this.Exchange_order= this.selected_Order;
+          this.exchange_order= this.selected_Order;
           this.SetValue();
         })
       }
       else{
-        this.Exchange_order= {};
-        this.Exchange_order.exchange_order_details= [];
-        this.Exchange_order.exchange_order_attachements= [];
-        this.Exchange_order.exchange_order_entries= [];
+        this.exchange_order= {};
+        this.exchange_order.exchange_order_details= [];
+        this.exchange_order.exchange_order_attachements= [];
+        this.exchange_order.exchange_order_entries= [];
       }
 
       this.loadEntry();
@@ -160,8 +197,8 @@ export class ExchangeOrderEditComponent {
     }
 
     ngAfterViewInit() {
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      this.dataSource_exchange_order_entry.paginator = this.paginator;
+      this.dataSource_exchange_order_entry.sort = this.sort;
     }
 
     rowClicked!: number;
@@ -171,15 +208,15 @@ export class ExchangeOrderEditComponent {
   }
 
   loadEntry(){
-    this.dataSource.data= this.Exchange_order.exchange_order_entries!;
+    this.dataSource_exchange_order_entry.data= this.exchange_order.exchange_order_entries!;
   }
 
   public SetValue() {
-    if (this.selected_Order != null && this.selected_Order.sanad_kid_date != null){
-      this.sanad_kid_date.setValue(this.selected_Order.sanad_kid_date);
-      this.sanadDateDay= moment(this.sanad_kid_date.value).date()+'';
-      this.sanadDateMonth= moment(this.sanad_kid_date.value).month()+'';
-      this.sanadDateYear= moment(this.sanad_kid_date.value).year()+'';
+    if (this.selected_Order != null && this.selected_Order.document_date != null){
+      this.document_date.setValue(this.selected_Order.document_date);
+      this.sanadDateDay= moment(this.document_date.value).date()+'';
+      this.sanadDateMonth= moment(this.document_date.value).month()+'';
+      this.sanadDateYear= moment(this.document_date.value).year()+'';
     }
 
     if (this.selected_Order != null && this.selected_Order.incumbent_date != null)
@@ -189,8 +226,8 @@ export class ExchangeOrderEditComponent {
       this.incumbentDateYear= moment(this.incumbent_date.value).year()+'';
 
 
-    if (this.selected_Order != null && this.selected_Order.sanad_kid_id != null)
-      this.sanad_kid_id.setValue(this.selected_Order?.sanad_kid_id!);
+    if (this.selected_Order != null && this.selected_Order.document_id != null)
+      this.document_id.setValue(this.selected_Order?.document_id!);
 
       
     if (this.selected_Order != null && this.selected_Order.incumbent_id != null)
@@ -202,9 +239,9 @@ export class ExchangeOrderEditComponent {
     }
   
   getValue(){
-  this.selected_Order.sanad_kid_date= moment(this.sanadDateMonth+'/'+this.sanadDateDay+'/'+this.sanadDateYear).set({hour: 2}).toDate();
+  this.selected_Order.document_date= moment(this.sanadDateMonth+'/'+this.sanadDateDay+'/'+this.sanadDateYear).set({hour: 2}).toDate();
   this.selected_Order.incumbent_date= moment(this.incumbentDateMonth+'/'+this.incumbentDateDay+'/'+this.incumbentDateYear).set({hour: 2}).toDate();
-  this.selected_Order.sanad_kid_id= this.sanad_kid_id.value!;
+  this.selected_Order.document_id= this.document_id.value!;
   this.selected_Order.incumbent_id= this.incumbent_id.value!;
   this.selected_Order.name_of_owner= this.name_of_owner.value!;
   }
@@ -246,7 +283,7 @@ export class ExchangeOrderEditComponent {
       this.sanadDateYearIsFilled= true;
 
     if (this.sanadDateDayIsFilled && this.sanadDateMonthIsFilled && this.sanadDateYearIsFilled){
-      this.sanad_kid_date.setValue(moment(this.sanadDateMonth+'/'+this.sanadDateDay+'/'+this.sanadDateYear).set({hour: 2}).toDate());
+      this.document_date.setValue(moment(this.sanadDateMonth+'/'+this.sanadDateDay+'/'+this.sanadDateYear).set({hour: 2}).toDate());
     }
     }
 
@@ -264,31 +301,31 @@ export class ExchangeOrderEditComponent {
     }
 
   onAttachmentDelete(index: number){
-    this.selected_Order= this.Exchange_order;
+    this.selected_Order= this.exchange_order;
     this.getValue();
     this.selected_Order.exchange_order_attachements?.splice(index, 1);
   }
 
   onDetailsDelete(index: number){
-    this.selected_Order= this.Exchange_order;
+    this.selected_Order= this.exchange_order;
     this.getValue();
     this.selected_Order.exchange_order_details?.splice(index, 1);
   }
 
   addAttachment(){
-    this.Exchange_order.exchange_order_attachements?.push({exchange_order_fk: this.Exchange_order.exchange_order_seq});
+    this.exchange_order.exchange_order_attachements?.push({exchange_order_fk: this.exchange_order.exchange_order_seq});
     // console.log('this.sanad_kid', this.sanad_kid);
     // console.log('this.sanad_kid.sanad_kid_details', this.sanad_kid.sanad_kid_details);
   }
 
   addDetails(){
-    this.Exchange_order.exchange_order_details?.push({exchange_order_fk: this.Exchange_order.exchange_order_seq});
+    this.exchange_order.exchange_order_details?.push({exchange_order_fk: this.exchange_order.exchange_order_seq});
     // console.log('this.sanad_kid', this.sanad_kid);
     // console.log('this.sanad_kid.sanad_kid_details', this.sanad_kid.sanad_kid_details);
   }
 
   save(){
-    this.selected_Order= this.Exchange_order;
+    this.selected_Order= this.exchange_order;
     this.getValue();
     if( this.selected_Order.exchange_order_seq!= null && this.selected_Order.exchange_order_seq > 0){
       this.exchangeOrderService.update(this.selected_Order).subscribe(res=>{

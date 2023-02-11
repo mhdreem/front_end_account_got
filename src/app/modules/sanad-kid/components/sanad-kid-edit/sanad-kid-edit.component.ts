@@ -5,9 +5,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
-import { forkJoin, Subscription } from 'rxjs';
+import { forkJoin, Observable, of, Subscription } from 'rxjs';
 import { result } from 'src/app/modules/shared/models/result';
 import { sanad_kid } from 'src/app/modules/shared/models/sanad-kid';
+import { sanad_kid_book } from 'src/app/modules/shared/models/sanad_kid_book';
+import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-book.service';
 import { SanadKidService } from 'src/app/modules/shared/services/sanad-kid.service';
 import { PageSanadKidService } from '../../pageservice/page-sanad-kid.service';
 
@@ -50,8 +52,8 @@ export class SanadKidEditComponent implements OnInit {
  
   Form!: FormGroup;
   sanad_kid_seq!: FormControl<number | null>;
-  sanad_kid_id!: FormControl<number | null>;
-  sanad_kid_date!: FormControl<Date | null>;
+  document_id!: FormControl<number | null>;
+  document_date!: FormControl<Date | null>;
   operation_type_fk!: FormControl<number | null>;
   operation_code_fk!: FormControl<number | null>;
   incumbent_id!: FormControl<number | null>;
@@ -63,6 +65,9 @@ export class SanadKidEditComponent implements OnInit {
   name_of_owner: FormControl<string | null>;
   
  
+  List_sanad_kid_book ?: sanad_kid_book[];
+  filter_List_sanad_kid_book ?: Observable<sanad_kid_book[]>;
+
   sanadDateDay: string= '';
   sanadDateMonth: string= '';
   sanadDateYear: string= '';
@@ -84,13 +89,49 @@ export class SanadKidEditComponent implements OnInit {
   constructor(
     private router:Router,private route: ActivatedRoute,
     private fb: FormBuilder,
+    private SanadKidBookService:SanadKidBookService,
     private PageSanadKidService:PageSanadKidService,
     private snackBar: MatSnackBar,
     @Inject(DOCUMENT) private _document: Document,
     private sanadKidService: SanadKidService) { 
       this.LoadingFinish = true;
       this.BuildForm();
+      this.loadData();
       
+    }
+
+    load_sanad_kid_book():Observable<sanad_kid_book[]>
+    {
+      if (this.SanadKidBookService.List_sanad_kid_book!= null &&
+        this.SanadKidBookService.List_sanad_kid_book.length>0)
+        {
+          return of (this.SanadKidBookService.List_sanad_kid_book);
+        }
+     
+        return this.SanadKidBookService.list();
+
+    }
+
+    loadData()
+    {
+      this._Subscription.add
+      (
+        forkJoin(
+          this.load_sanad_kid_book()
+  
+        ).subscribe(
+          res=>
+          {
+            
+            this.List_sanad_kid_book = res[0];
+            this.filter_List_sanad_kid_book =  of (res[0]);
+            this.SanadKidBookService.List_sanad_kid_book =  res[0];
+            this.SanadKidBookService.List_sanad_kid_book_BehaviorSubject.next(res[0]);
+  
+          }
+        )
+      );
+   
     }
 
     public BuildForm() {
@@ -99,8 +140,8 @@ export class SanadKidEditComponent implements OnInit {
         this.Form = this.fb.group(
           {
             'sanad_kid_seq': this.sanad_kid_seq = new FormControl<number | null>(null, [Validators.required]),
-            'sanad_kid_id': this.sanad_kid_id = new FormControl<number | null>(null, [Validators.required]),
-            'sanad_kid_date': this.sanad_kid_date = new FormControl<Date | null>(null, [Validators.required]),
+            'document_id': this.document_id = new FormControl<number | null>(null, [Validators.required]),
+            'document_date': this.document_date = new FormControl<Date | null>(null, [Validators.required]),
             'operation_type_fk': this.operation_type_fk = new FormControl<number | null>(null, []),
             'operation_code_fk': this.operation_code_fk = new FormControl<number | null>(null, []),
             'incumbent_date': this.incumbent_date = new FormControl<Date | null>(null, []),
@@ -140,11 +181,11 @@ export class SanadKidEditComponent implements OnInit {
     }
 
   public SetValue() {
-    if (this.selected_Sanad != null && this.selected_Sanad.sanad_kid_date != null){
-      this.sanad_kid_date.setValue(this.selected_Sanad.sanad_kid_date);
-      this.sanadDateDay= moment(this.sanad_kid_date.value).date()+'';
-      this.sanadDateMonth= moment(this.sanad_kid_date.value).month()+'';
-      this.sanadDateYear= moment(this.sanad_kid_date.value).year()+'';
+    if (this.selected_Sanad != null && this.selected_Sanad.document_date != null){
+      this.document_date.setValue(this.selected_Sanad.document_date);
+      this.sanadDateDay= moment(this.document_date.value).date()+'';
+      this.sanadDateMonth= moment(this.document_date.value).month()+'';
+      this.sanadDateYear= moment(this.document_date.value).year()+'';
     }
 
     if (this.selected_Sanad != null && this.selected_Sanad.incumbent_date != null)
@@ -154,8 +195,8 @@ export class SanadKidEditComponent implements OnInit {
       this.incumbentDateYear= moment(this.incumbent_date.value).year()+'';
 
 
-    if (this.selected_Sanad != null && this.selected_Sanad.sanad_kid_id != null)
-      this.sanad_kid_id.setValue(this.selected_Sanad?.sanad_kid_id!);
+    if (this.selected_Sanad != null && this.selected_Sanad.document_id != null)
+      this.document_id.setValue(this.selected_Sanad?.document_id!);
 
       
     if (this.selected_Sanad != null && this.selected_Sanad.incumbent_id != null)
@@ -170,9 +211,9 @@ export class SanadKidEditComponent implements OnInit {
     }
   
   getValue(){
-  this.selected_Sanad.sanad_kid_date= moment(this.sanadDateMonth+'/'+this.sanadDateDay+'/'+this.sanadDateYear).set({hour: 2}).toDate();
+  this.selected_Sanad.document_date= moment(this.sanadDateMonth+'/'+this.sanadDateDay+'/'+this.sanadDateYear).set({hour: 2}).toDate();
   this.selected_Sanad.incumbent_date= moment(this.incumbentDateMonth+'/'+this.incumbentDateDay+'/'+this.incumbentDateYear).set({hour: 2}).toDate();
-  this.selected_Sanad.sanad_kid_id= this.sanad_kid_id.value!;
+  this.selected_Sanad.document_id= this.document_id.value!;
   this.selected_Sanad.incumbent_id= this.incumbent_id.value!;
   this.selected_Sanad.sanad_close= (this.sanad_close.value==true? 1:0)!;
   this.selected_Sanad.name_of_owner= this.name_of_owner.value!;
@@ -215,7 +256,7 @@ export class SanadKidEditComponent implements OnInit {
       this.sanadDateYearIsFilled= true;
 
     if (this.sanadDateDayIsFilled && this.sanadDateMonthIsFilled && this.sanadDateYearIsFilled){
-      this.sanad_kid_date.setValue(moment(this.sanadDateMonth+'/'+this.sanadDateDay+'/'+this.sanadDateYear).set({hour: 2}).toDate());
+      this.document_date.setValue(moment(this.sanadDateMonth+'/'+this.sanadDateDay+'/'+this.sanadDateYear).set({hour: 2}).toDate());
     }
     }
 

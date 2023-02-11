@@ -7,7 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/confirmationdialog/confirmationdialog.component';
-import { ExchangeOrderStage } from 'src/app/modules/shared/models/exchange-order-stage';
+import { exchange_order_stage } from 'src/app/modules/shared/models/exchange_order_stage';
 import { result } from 'src/app/modules/shared/models/result';
 import { ExchangeOrderStageService } from 'src/app/modules/shared/services/exchange-order-stage.service';
 import { ExchangeOrderStageAddComponent } from '../exchange-order-stage-add/exchange-order-stage-add.component';
@@ -21,8 +21,8 @@ export class ExchangeOrderStageListComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  Exchange_order_stage_List: ExchangeOrderStage[] = [];
-  dataSource = new MatTableDataSource<ExchangeOrderStage>();
+  Exchange_order_stage_List: exchange_order_stage[] = [];
+  dataSource = new MatTableDataSource<exchange_order_stage>();
   displayedColumns: string[] = ['ex_ord_stg_name', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
 
@@ -85,7 +85,7 @@ export class ExchangeOrderStageListComponent {
     });
   }
 
-  update(obj: ExchangeOrderStage) {
+  update(obj: exchange_order_stage) {
 
     const dialogRef = this.dialog.open(ExchangeOrderStageAddComponent, {
       width: '400px',
@@ -106,7 +106,7 @@ export class ExchangeOrderStageListComponent {
 
 
 
-  delete(obj: ExchangeOrderStage) {
+  delete(obj: exchange_order_stage) {
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
       width: '300px',
       data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },

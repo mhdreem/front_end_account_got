@@ -1,5 +1,4 @@
-export interface orderrow
-{
-    pk?:number;
-    order?:number;
+export interface orderrow {
+    pk?: number;
+    order?: number;
 }

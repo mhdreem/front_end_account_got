@@ -9,7 +9,7 @@ import { ExportToCsv } from 'export-to-csv';
 import { Subscription } from 'rxjs';
 import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/confirmationdialog/confirmationdialog.component';
 import { ImportFromExcelComponent } from 'src/app/modules/shared/components/import-from-excel/import-from-excel.component';
-import { account_group } from 'src/app/modules/shared/models/account-group';
+import { account_group } from 'src/app/modules/shared/models/account_group';
 import { result } from 'src/app/modules/shared/models/result';
 import { AccountGroupService } from 'src/app/modules/shared/services/account-group.service';
 import { AccountGroupAddComponent } from '../account-group-add/account-group-add.component';

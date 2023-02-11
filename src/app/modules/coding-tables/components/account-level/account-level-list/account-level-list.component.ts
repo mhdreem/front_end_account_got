@@ -11,7 +11,7 @@ import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/c
 import { ImportFromExcelComponent } from 'src/app/modules/shared/components/import-from-excel/import-from-excel.component';
 import { result } from 'src/app/modules/shared/models/result';
 import { AccountLevelService } from 'src/app/modules/shared/services/account-level.service';
-import {account_level} from '../../../../shared/models/account-level'
+import {account_level} from '../../../../shared/models/account_level'
 import { AccountLevelAddComponent } from '../account-level-add/account-level-add.component';
 @Component({
   selector: 'app-account-level-list',

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParamsOptions } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { accounts_tree } from '../models/account-tree';
+import { accounts_tree } from '../models/accounts_tree';
 import { BaseAPIService } from './base/base-api.service';
 
 @Injectable({

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParamsOptions } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { finance_list } from '../models/finance-list';
+import { finance_list } from '../models/finance_list';
 
 @Injectable({
   providedIn: 'root'

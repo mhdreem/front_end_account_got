@@ -9,7 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/confirmationdialog/confirmationdialog.component';
-import { ExchangeOrder } from 'src/app/modules/shared/models/exchange-order';
+import { exchange_order } from 'src/app/modules/shared/models/exchange_order';
 import { ExchangeOrderService } from 'src/app/modules/shared/services/exchange-order.service';
 
 @Component({
@@ -41,9 +41,9 @@ export class ExchangeOrderListComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  dataSource = new MatTableDataSource<ExchangeOrder>();
+  dataSource = new MatTableDataSource<exchange_order>();
   displayedColumns: string[] =
-   ['sanad_kid_fk','sanad_kid_date', 'sanad_kid_type_fk', 'total_value', 'incumbent_id', 'incumbent_date', 'name_of_owner', 'branch_name', 'action' ];
+   ['sanad_kid_fk','document_date', 'sanad_kid_type_fk', 'total_value', 'incumbent_id', 'incumbent_date', 'name_of_owner', 'branch_name', 'action' ];
 
   fromSanadDateDay: string= '';
   fromSanadDateMonth: string= '';
@@ -105,7 +105,7 @@ export class ExchangeOrderListComponent {
   currentPage = 1;
   pageSizeOptions: number[] = [5, 10, 25, 100];
 
-  selected_order: ExchangeOrder= {};
+  selected_order: exchange_order= {};
 
 
 
@@ -216,7 +216,7 @@ export class ExchangeOrderListComponent {
 
   }
 
-  Delete(order: ExchangeOrder){
+  Delete(order: exchange_order){
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
       data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },
     });
@@ -233,7 +233,7 @@ export class ExchangeOrderListComponent {
     });
   }
 
-  Update(order: ExchangeOrder){
+  Update(order: exchange_order){
     this.router.navigate(['/exchangeOrder/module/exchangeOrderEdit', { id: order.exchange_order_seq }])
 
   }

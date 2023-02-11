@@ -14,9 +14,9 @@ import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/c
 import { SanadKidEditComponent } from '../sanad-kid-edit/sanad-kid-edit.component';
 import * as moment from 'moment';
 import { account_centerService } from 'src/app/modules/shared/services/account-center.service';
-import { account_center } from 'src/app/modules/shared/models/account-center';
+import { account_center } from 'src/app/modules/shared/models/account_center';
 import { sanad_kid_detail } from 'src/app/modules/shared/models/sanad_kid_detail';
-import { accounts_tree } from 'src/app/modules/shared/models/account-tree';
+import { accounts_tree } from 'src/app/modules/shared/models/accounts_tree';
 import { AccountTreeService } from 'src/app/modules/shared/services/account-tree.service';
 import { Route, Router } from '@angular/router';
 
@@ -53,7 +53,7 @@ export class SanadKidListComponent implements OnInit {
 
   dataSource = new MatTableDataSource<sanad_kid>();
   displayedColumns: string[] =
-   ['date_time_create', 'sanad_kid_id','sanad_kid_date', 'sanad_total_value', 'incumbent_id', 'incumbent_date', 'sanad_close', 'name_of_owner', 'branch_name', 'action' ];
+   ['date_time_create', 'document_id','document_date', 'sanad_total_value', 'incumbent_id', 'incumbent_date', 'sanad_close', 'name_of_owner', 'branch_name', 'action' ];
 
   fromDateDay: string= '';
   fromDateMonth: string= '';

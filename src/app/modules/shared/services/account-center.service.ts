@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { account_center } from '../models/account-center';
+import { account_center } from '../models/account_center';
 import { BaseAPIService } from './base/base-api.service';
 
 
