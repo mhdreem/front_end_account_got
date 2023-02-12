@@ -56,11 +56,8 @@ export class ExchangeOrderEditComponent {
   sanad_kid_fk!: FormControl<number | null>;
   document_id!: FormControl<number | null>;
   document_date!: FormControl<Date | null>;
-<<<<<<< Updated upstream
-=======
   operation_type_fk!: FormControl<number | null>;
   operation_code_fk!: FormControl<number | null>;
->>>>>>> Stashed changes
   incumbent_id!: FormControl<number | null>;
   incumbent_date!: FormControl<Date | null>;
   sanad_kid_type_fk!: FormControl<number | null>;
@@ -121,10 +118,10 @@ export class ExchangeOrderEditComponent {
     
     load_sanad_kid_book():Observable<sanad_kid_book[]>
     {
-      if (this.SanadKidBookService.List_sanad_kid_book!= null &&
-        this.SanadKidBookService.List_sanad_kid_book.length>0)
+      if (this.SanadKidBookService.List_SanadKidBook!= null &&
+        this.SanadKidBookService.List_SanadKidBook.length>0)
         {
-          return of (this.SanadKidBookService.List_sanad_kid_book);
+          return of (this.SanadKidBookService.List_SanadKidBook);
         }
      
         return this.SanadKidBookService.list();
@@ -144,8 +141,8 @@ export class ExchangeOrderEditComponent {
             
             this.List_sanad_kid_book = res[0];
             this.filter_List_sanad_kid_book =  of (res[0]);
-            this.SanadKidBookService.List_sanad_kid_book =  res[0];
-            this.SanadKidBookService.List_sanad_kid_book_BehaviorSubject.next(res[0]);
+            this.SanadKidBookService.List_SanadKidBook =  res[0];
+            this.SanadKidBookService.List_SanadKidBook_BehaviorSubject.next(res[0]);
   
           }
         )
@@ -160,13 +157,9 @@ export class ExchangeOrderEditComponent {
           {
             'sanad_kid_fk': this.sanad_kid_fk = new FormControl<number | null>(null, [Validators.required]),
             'document_id': this.document_id = new FormControl<number | null>(null, [Validators.required]),
-<<<<<<< Updated upstream
-            'document_date': this.document_date = new FormControl<Date | null>(null, [Validators.required]),           
-=======
             'document_date': this.document_date = new FormControl<Date | null>(null, [Validators.required]),
             'operation_type_fk': this.operation_type_fk = new FormControl<number | null>(null, []),
             'operation_code_fk': this.operation_code_fk = new FormControl<number | null>(null, []),
->>>>>>> Stashed changes
             'incumbent_date': this.incumbent_date = new FormControl<Date | null>(null, []),
             'incumbent_id': this.incumbent_id = new FormControl<number | null>(null, []),
             'sanad_close': this.sanad_close = new FormControl<boolean | null>(null, []),

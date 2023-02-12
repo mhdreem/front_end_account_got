@@ -126,21 +126,11 @@
                 </div>
                 <button class="add" mat-raised-button class="add" (click)="addAttachment()">إضافة مرفق+</button>
     
-<<<<<<< Updated upstream
-                <span>تفاصيل أمر الصرف</span>
-                <div class="detail" *ngFor="let details of exchange_order.exchange_order_details; let i=index;">
-                  <app-exchange-order-detail [index]="i" (onDelete)="onDetailsDelete($event)"></app-exchange-order-detail>
-                </div>
-                <button class="add" mat-raised-button class="add" (click)="addDetails()">إضافة تفصيل+</button>
-            </div>
-            <div class="donwRight">
-                <table mat-table [dataSource]="dataSource_exchange_order_entry" class="mat-elevation-z8" matSort>
-=======
+
                 
             </div>
             <div class="donwmiddle">
-                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
->>>>>>> Stashed changes
+                <table mat-table [dataSource]="dataSource_exchange_order_entry" class="mat-elevation-z8" matSort>
     
                     <ng-container matColumnDef="ex_ord_stg_name">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>المرحلة </th>
@@ -170,7 +160,7 @@
             
             <div class="downRight">
               <span>تفاصيل أمر الصرف</span>
-                <div class="detail" *ngFor="let details of Exchange_order.exchange_order_details; let i=index;">
+                <div class="detail" *ngFor="let details of exchange_order.exchange_order_details; let i=index;">
                   <app-exchange-order-detail [index]="i" (onDelete)="onDetailsDelete($event)"></app-exchange-order-detail>
                 </div>
                 <button class="add" mat-raised-button class="add" (click)="addDetails()">إضافة تفصيل+</button>

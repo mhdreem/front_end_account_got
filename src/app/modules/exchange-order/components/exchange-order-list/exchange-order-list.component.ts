@@ -10,12 +10,9 @@ import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
 import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/confirmationdialog/confirmationdialog.component';
-<<<<<<< Updated upstream
 import { exchange_order } from 'src/app/modules/shared/models/exchange_order';
-=======
 import { ExchangeOrder } from 'src/app/modules/shared/models/exchange-order';
 import { SanadKidBook } from 'src/app/modules/shared/models/sanad-kid-book';
->>>>>>> Stashed changes
 import { ExchangeOrderService } from 'src/app/modules/shared/services/exchange-order.service';
 import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-book.service';
 

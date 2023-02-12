@@ -7,16 +7,8 @@ import { user } from "./user";
 export interface sanad_kid {
 
     sanad_kid_seq?: number;
-<<<<<<< Updated upstream
-
-    document_id?: number;
-
-    document_date?: Date;
-
-=======
     document_id?: number;
     document_date?: Date;
->>>>>>> Stashed changes
     incumbent_id?: number;
 
     incumbent_date?: Date;

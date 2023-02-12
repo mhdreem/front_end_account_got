@@ -102,10 +102,10 @@ export class SanadKidEditComponent implements OnInit {
 
     load_sanad_kid_book():Observable<sanad_kid_book[]>
     {
-      if (this.SanadKidBookService.List_sanad_kid_book!= null &&
-        this.SanadKidBookService.List_sanad_kid_book.length>0)
+      if (this.SanadKidBookService.List_SanadKidBook!= null &&
+        this.SanadKidBookService.List_SanadKidBook.length>0)
         {
-          return of (this.SanadKidBookService.List_sanad_kid_book);
+          return of (this.SanadKidBookService.List_SanadKidBook);
         }
      
         return this.SanadKidBookService.list();
@@ -125,8 +125,8 @@ export class SanadKidEditComponent implements OnInit {
             
             this.List_sanad_kid_book = res[0];
             this.filter_List_sanad_kid_book =  of (res[0]);
-            this.SanadKidBookService.List_sanad_kid_book =  res[0];
-            this.SanadKidBookService.List_sanad_kid_book_BehaviorSubject.next(res[0]);
+            this.SanadKidBookService.List_SanadKidBook =  res[0];
+            this.SanadKidBookService.List_SanadKidBook_BehaviorSubject.next(res[0]);
   
           }
         )
