@@ -81,6 +81,11 @@ export class CodingTablesComponent implements OnInit {
       url: 'codingTable/module/attachmentType',
       iconComponent: { name: 'cil-pencil' },
     },
+    {
+      name: 'دفتر سند القيد' ,
+      url: 'codingTable/module/sanadKidBook',
+      iconComponent: { name: 'cil-pencil' },
+    },
 
   ];
   constructor(private navService:NavService,

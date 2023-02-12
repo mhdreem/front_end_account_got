@@ -8,9 +8,16 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
 import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/confirmationdialog/confirmationdialog.component';
+<<<<<<< Updated upstream
 import { exchange_order } from 'src/app/modules/shared/models/exchange_order';
+=======
+import { ExchangeOrder } from 'src/app/modules/shared/models/exchange-order';
+import { SanadKidBook } from 'src/app/modules/shared/models/sanad-kid-book';
+>>>>>>> Stashed changes
 import { ExchangeOrderService } from 'src/app/modules/shared/services/exchange-order.service';
+import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-book.service';
 
 @Component({
   selector: 'app-exchange-order-list',
@@ -88,9 +95,11 @@ export class ExchangeOrderListComponent {
   name_of_owner!: FormControl<string | null>;
 
   
-
+  book_list:SanadKidBook[];
+  book_filter:Observable< SanadKidBook[]>;
   
   
+  _Subscription!: Subscription;
 
  
 
@@ -115,11 +124,14 @@ export class ExchangeOrderListComponent {
     public dialog: MatDialog,
     @Inject(DOCUMENT) private _document: Document,
     private router: Router,
-    private exchangeOrderService: ExchangeOrderService
+    private exchangeOrderService: ExchangeOrderService,
+    private sanadKidBookService: SanadKidBookService
     ) {
     this.LoadingFinish = true;
 
       this.BuildForm();
+     this.Load_Data(); 
+
 
      }
 
@@ -149,10 +161,55 @@ export class ExchangeOrderListComponent {
       }
     }
   
+    Load_Data() {
+      this.LoadingFinish = false;
+      this._Subscription = forkJoin(
+        this.Load_branch(),
+        ).subscribe(
+          res => {
+            this.book_list = res[0];
+            this.book_filter = of(this.book_list);
+            this.sanadKidBookService.List_SanadKidBook = this.book_list;
+            this.sanadKidBookService.List_SanadKidBook_BehaviorSubject.next(this.sanadKidBookService.List_SanadKidBook);
+        
+            this.LoadingFinish = true;
   
-    
+          }
+          )
+        }
+      
+        Load_branch():Observable<SanadKidBook[]>{
+          if (this.sanadKidBookService.List_SanadKidBook == null ||
+            this.sanadKidBookService.List_SanadKidBook == undefined ||
+            this.sanadKidBookService.List_SanadKidBook.length == 0)
+            return this.sanadKidBookService.list();
+          return of(this.sanadKidBookService.List_SanadKidBook);
+        }
+      
+        public async Init_AutoComplete() {
+          try {
+            this.book_filter = this.book_fk.valueChanges
+              .pipe(
+                startWith(''),
+                map((value) => value && typeof value === 'string' ? this._filter_book(value) : this.book_list.slice())
+              );
+      
+          } catch (Exception: any) { }
+        }
   
-    
+  
+        private _filter_book(value: string): SanadKidBook[] {
+          const filterValue = value.toLowerCase();      
+          return this.book_list.filter(option => option.sanad_kid_book_name!= null  &&  option.sanad_kid_book_name.includes(filterValue));
+        }
+        
+        public display_Book_Property(value: SanadKidBook): string {
+          if (value && value.sanad_kid_book_seq) {            
+              return value.sanad_kid_book_name!;
+          }
+          return '';
+        }
+        
    
 
   ngOnInit(): void {

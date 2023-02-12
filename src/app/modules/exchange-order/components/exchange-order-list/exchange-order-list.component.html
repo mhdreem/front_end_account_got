@@ -40,7 +40,7 @@
                         </mat-panel-title>
                         <mat-panel-description>
                             اكتب ما تريد ان تبحث عنه
-                            <mat-icon>account_circle</mat-icon>
+                            <mat-icon>search</mat-icon>
                         </mat-panel-description>
                     </mat-expansion-panel-header>
     
@@ -114,7 +114,7 @@
                             
                         </div>
                         
-                        <div class="inputGroup2" style="display: flex; flex-direction: column; margin-top: 30px;">
+                        <div class="inputGroup2" style="display: flex; flex-direction: column;">
                             <div class="date">
                                 <span class="white" style="margin-bottom: 10px; display: block;">من تاريخ مذكرة</span>
                                 <div class="content">
@@ -176,7 +176,7 @@
                             </mat-form-field>
                             
                             <div>
-                                <button mat-button [matMenuTriggerFor]="menu">نوع سند القيد</button>
+                                <button mat-button [matMenuTriggerFor]="menu"><mat-icon>expand_more</mat-icon> نوع سند القيد </button>
                                 <mat-menu #menu="matMenu">
                                 <button mat-menu-item (click)="onSanadTypeSelect(1)">محفوظ</button>
                                 <button mat-menu-item (click)="onSanadTypeSelect(2)">مسوده</button>
@@ -187,21 +187,27 @@
                 
                         <div class="inputGroup3" style="display: flex; flex-direction: column; margin-top: 30px;">
                 
-                            <mat-form-field class="fitContent" appearance="fill">
-                                <mat-label>رقم الدفتر</mat-label>
-                                <input matInput [formControl]="book_fk"
-                                        id="book_fk" (keyup.enter)="focusNext('account_type')">
+                            <mat-form-field class="fitContent" appearance="fill" >
+                                <mat-label >رقم الدفتر</mat-label>
+                                <input matInput [formControl]="book_fk" [matAutocomplete]="autoBook_fk" 
+                                        id="book_fk" (keyup.enter)="focusNext('account_center_fk')" >
+                                <mat-autocomplete #autoBook_fk="matAutocomplete" 
+                                [displayWith]="display_Book_Property.bind(this)"
+                                >
+                                    <mat-option *ngFor="let option of book_filter | async" [value]="option.sanad_kid_book_seq">
+                                    {{option.sanad_kid_book_name}}
+                                    </mat-option>
+                                </mat-autocomplete>
                             </mat-form-field>
-                            
-                        </div>
-                        
-                        <div class="inputGroup4" style="display: flex; flex-direction: column; margin-top: 30px;">
-                            <mat-form-field class="fitContent" appearance="fill">
+
+                            <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px"> 
                                 <mat-label>اسم صاحب الاستحقاق</mat-label>
                                 <input matInput [formControl]="name_of_owner"
                                         id="name_of_owner" (keyup.enter)="focusNext('account_type')">
                             </mat-form-field>
                         </div>
+                        
+                        
                         
                     </form>
                     

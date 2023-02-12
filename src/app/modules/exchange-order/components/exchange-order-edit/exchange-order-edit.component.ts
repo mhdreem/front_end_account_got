@@ -56,6 +56,11 @@ export class ExchangeOrderEditComponent {
   sanad_kid_fk!: FormControl<number | null>;
   document_id!: FormControl<number | null>;
   document_date!: FormControl<Date | null>;
+<<<<<<< Updated upstream
+=======
+  operation_type_fk!: FormControl<number | null>;
+  operation_code_fk!: FormControl<number | null>;
+>>>>>>> Stashed changes
   incumbent_id!: FormControl<number | null>;
   incumbent_date!: FormControl<Date | null>;
   sanad_kid_type_fk!: FormControl<number | null>;
@@ -155,7 +160,13 @@ export class ExchangeOrderEditComponent {
           {
             'sanad_kid_fk': this.sanad_kid_fk = new FormControl<number | null>(null, [Validators.required]),
             'document_id': this.document_id = new FormControl<number | null>(null, [Validators.required]),
+<<<<<<< Updated upstream
             'document_date': this.document_date = new FormControl<Date | null>(null, [Validators.required]),           
+=======
+            'document_date': this.document_date = new FormControl<Date | null>(null, [Validators.required]),
+            'operation_type_fk': this.operation_type_fk = new FormControl<number | null>(null, []),
+            'operation_code_fk': this.operation_code_fk = new FormControl<number | null>(null, []),
+>>>>>>> Stashed changes
             'incumbent_date': this.incumbent_date = new FormControl<Date | null>(null, []),
             'incumbent_id': this.incumbent_id = new FormControl<number | null>(null, []),
             'sanad_close': this.sanad_close = new FormControl<boolean | null>(null, []),

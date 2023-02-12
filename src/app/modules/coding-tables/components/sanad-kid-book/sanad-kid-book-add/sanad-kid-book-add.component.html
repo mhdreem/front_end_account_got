@@ -1,0 +1,86 @@
+<c-container>
+
+    <mat-card>
+
+        <mat-card-header>
+            <mat-card-title>دفتر سند القيد</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <form [formGroup]="Form">
+
+                <c-container>
+                    <c-row>
+                        <c-col>
+                            <mat-form-field>
+                                <mat-label #label_account_center_name>اسم الدفتر</mat-label>
+                                <input matInput [formControl]="sanad_kid_book_name" id="sanad_kid_book_name"
+                                    (keyup.enter)="focusNext('account_center_id')">
+                            </mat-form-field>
+                        </c-col>
+
+                        <c-col>
+                            <mat-form-field class="fitContent" appearance="fill" >
+                                <mat-label >اسم الفرع</mat-label>
+                                <input matInput [formControl]="branch_fk" [matAutocomplete]="autoBranch_fk" 
+                                        id="branch_fk" (keyup.enter)="focusNext('account_center_fk')" >
+                                <mat-autocomplete #autoBranch_fk="matAutocomplete" 
+                                [displayWith]="display_Branch_Property.bind(this)"
+                                >
+                                    <mat-option *ngFor="let option of branch_filter | async" [value]="option.branch_seq">
+                                    {{option.branch_name}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </c-col>
+
+                        <c-col>
+                            <mat-form-field class="fitContent" appearance="fill" >
+                                <mat-label >اسم الحساب</mat-label>
+                                <input matInput [formControl]="cash_account_fk" [matAutocomplete]="autoCash_account_fk" 
+                                        id="cash_account_fk" (keyup.enter)="focusNext('account_center_fk')" >
+                                <mat-autocomplete #autoCash_account_fk="matAutocomplete" 
+                                [displayWith]="display_Accounts_tree_Property.bind(this)"
+                                >
+                                    <mat-option *ngFor="let option of cash_account_filter | async" [value]="option.seq">
+                                    {{option.account_name}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </c-col>
+                    </c-row>
+
+                    <c-row>
+                        <c-col>
+                            <mat-form-field appearance="fill">
+                                <mat-label>طريقة توليد رقم المذكرة</mat-label>
+                                <mat-select [formControl]="incumbent_id_generate_type_fk" id="incumbent_id_generate_type_fk" (keyup.enter)="focusNext('account_center_fk')">
+                                  <mat-option [value]="1">على مدار الشهر</mat-option>
+                                  <mat-option [value]="2">على مدار السنة</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                        </c-col>
+
+                        <c-col>
+                            <mat-form-field>
+                                <mat-label>ترتيب الدفتر</mat-label>
+                                <input matInput [formControl]="sanad_kid_book_order" id="sanad_kid_book_order"
+                                    (keyup.enter)="focusNext('account_center_name')">
+                            </mat-form-field>
+                        </c-col>
+                    </c-row>
+
+                </c-container>
+
+             
+            </form>
+
+
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button class="add" (click)="save()" [disabled]="!Form.valid">F9 حفظ </button>
+            <button mat-raised-button (click)="closeDialog()" color="warn">إلغاء</button>
+        </mat-card-actions>
+    </mat-card>
+</c-container>

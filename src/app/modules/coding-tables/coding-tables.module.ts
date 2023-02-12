@@ -43,6 +43,8 @@ import { ExchangeOrderStageListComponent } from './components/exchange-order-sta
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { AttachmentTypeListComponent } from './components/attachment-type/attachment-type-list/attachment-type-list.component';
 import { AttachmentTypeAddComponent } from './components/attachment-type/attachment-type-add/attachment-type-add.component';
+import { SanadKidBookListComponent } from './components/sanad-kid-book/sanad-kid-book-list/sanad-kid-book-list.component';
+import { SanadKidBookAddComponent } from './components/sanad-kid-book/sanad-kid-book-add/sanad-kid-book-add.component';
 
 const Import_Materail = [
   MatDialogModule,
@@ -96,6 +98,8 @@ const Import_Corui = [
     ExchangeOrderStageListComponent,
     AttachmentTypeListComponent,
     AttachmentTypeAddComponent,
+    SanadKidBookListComponent,
+    SanadKidBookAddComponent,
   ],
   imports: [
     CommonModule,

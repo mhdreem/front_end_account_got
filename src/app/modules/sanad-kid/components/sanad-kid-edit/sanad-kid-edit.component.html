@@ -71,13 +71,13 @@
                     </div>
 
                     <div class="inputGroup3" style="display: flex; justify-content: space-between; width: 435px;">
-                        <mat-form-field class="fitContent" appearance="fill">
+                        <mat-form-field class="fitContent" appearance="fill" style="height: fit-content;">
                             <mat-label>رقم المذكرة</mat-label>
                             <input matInput [formControl]="incumbent_id"
                                     id="incumbent_id" (keyup.enter)="focusNext('account_type')">
                         </mat-form-field>
 
-                        <mat-form-field class="fitContent" appearance="fill">
+                        <mat-form-field class="fitContent" appearance="fill" style="height: fit-content;">
                             <mat-label>رقم السند</mat-label>
                             <input matInput [formControl]="document_id"
                                     id="document_id" (keyup.enter)="focusNext('account_type')">

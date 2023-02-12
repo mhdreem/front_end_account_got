@@ -49,6 +49,14 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
         url: 'sanadKid/module',
     
       },  
+
+      {
+        name: 'أمر الصرف',
+        iconComponent: { name: 'cil-pencil' },
+        url: 'exchangeOrder/module',
+    
+      }, 
+      
       {
         name: 'جداول الترميز',
         url: 'codingTable/module',

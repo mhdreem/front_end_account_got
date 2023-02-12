@@ -12,6 +12,8 @@ import { BranchListComponent } from './components/branch/branch-list/branch-list
 import { DepartmentListComponent } from './components/department/department-list/department-list.component';
 import { ExchangeOrderStageListComponent } from './components/exchange-order-stage/exchange-order-stage-list/exchange-order-stage-list.component';
 import { FinanceListListComponent } from './components/finance-list/finance-list-list/finance-list-list.component';
+import { SanadKidBookAddComponent } from './components/sanad-kid-book/sanad-kid-book-add/sanad-kid-book-add.component';
+import { SanadKidBookListComponent } from './components/sanad-kid-book/sanad-kid-book-list/sanad-kid-book-list.component';
 import { UserListComponent } from './components/user/user-list/user-list.component';
 
 const routes: Routes = [
@@ -104,7 +106,14 @@ const routes: Routes = [
           path: 'attachmentType', component: AttachmentTypeListComponent,
           data:
           {
-            title: 'مرحلة أمر الصرف'
+            title: 'نوع المرفق'
+          }
+        },
+        { 
+          path: 'sanadKidBook', component: SanadKidBookListComponent,
+          data:
+          {
+            title: 'دفتر سند القيد'
           }
         },
       ]
