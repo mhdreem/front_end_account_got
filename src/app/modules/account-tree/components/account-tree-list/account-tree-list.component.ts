@@ -446,7 +446,8 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
 
   add(){
     const dialogRef = this.dialog.open(AccountTreeEditComponent, {
-      position: {top: "8%" },
+      position: {top: "8%", left: "3%"},
+      width: "1150px",
       data: { action: 'add', account: {} },
     });
 
@@ -461,7 +462,8 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
   addAccount(ParentNode: accounts_tree) {
 
     const dialogRef = this.dialog.open(AccountTreeEditComponent, {
-      position: {top: "8%" },
+      position: {top: "8%" , left: "3%"},
+      width: "1150px",
       data: {action: 'add', account: ParentNode },
     });
 

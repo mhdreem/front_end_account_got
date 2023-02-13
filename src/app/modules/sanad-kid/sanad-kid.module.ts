@@ -19,6 +19,7 @@ import { GridModule } from '@coreui/angular';
 import {MatButtonModule} from '@angular/material/button';
 import {MatExpansionModule} from '@angular/material/expansion'; 
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { SanadKidAttachmentsComponent } from './components/sanad-kid-attachments/sanad-kid-attachments.component';
 
 const Import_Corui = [
   GridModule
@@ -29,7 +30,8 @@ const Import_Corui = [
     SanadKidComponent,
     SanadKidListComponent,
     SanadKidEditComponent,
-    SanadKidDetailComponent
+    SanadKidDetailComponent,
+    SanadKidAttachmentsComponent
   ],
   imports: [
     CommonModule,

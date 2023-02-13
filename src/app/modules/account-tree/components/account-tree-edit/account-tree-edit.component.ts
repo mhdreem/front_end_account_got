@@ -9,6 +9,7 @@ import { account_final } from 'src/app/modules/shared/models/account_final';
 import { account_group } from 'src/app/modules/shared/models/account_group';
 import { account_level } from 'src/app/modules/shared/models/account_level';
 import { finance_list } from 'src/app/modules/shared/models/finance_list';
+import { result } from 'src/app/modules/shared/models/result';
 import { AccountClassService } from 'src/app/modules/shared/services/account-class.service';
 import { AccountFinalService } from 'src/app/modules/shared/services/account-final.service';
 import { AccountGroupService } from 'src/app/modules/shared/services/account-group.service';
@@ -95,7 +96,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
   
         this.Form = this.fb.group(
           {
-            'parentAccountName:': this.parentAccountName = new FormControl<string | undefined>(undefined, [Validators.required]),
+            'parentAccountName:': this.parentAccountName = new FormControl<string | undefined>(undefined, []),
             'account_id:': this.account_id = new FormControl<number | undefined>(undefined, [Validators.required]),
             'account_name:': this.account_name = new FormControl<string | undefined>(undefined, [Validators.required]),
             'account_level:': this.account_level = new FormControl<number | undefined>(undefined, [Validators.required]),
@@ -437,9 +438,11 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
 
     // fill this.selected_AccountsIndex
     this.getValue();
+    console.log('this.selected_Account', this.selected_Account);
     if (this.data.action== 'add'){
       this.accountTreeService.add( this.selected_Account).subscribe(res =>{
-        if (res != null && (res as accounts_tree) != null && (res as accounts_tree).seq!= null ){
+        console.log('res', res);
+        if (res != null && (res as result)!= null &&  (res as result).success ){
           this.snackBar.open('تمت الإضافة بنجاح', '', {
             duration: 3000,
             panelClass: ['green-snackbar'],

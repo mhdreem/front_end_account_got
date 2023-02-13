@@ -60,9 +60,9 @@ export class ExchangeOrderStageListComponent {
   LoadData() {
     this.Subscription.add(
       this.exchangeOrderStageService.list().subscribe(
-        res => {
+        (res: any) => {
           if (res != null)
-            this.Exchange_order_stage_List = res;
+            this.Exchange_order_stage_List = res.value;
           this.dataSource.data = this.Exchange_order_stage_List;
         }
       )

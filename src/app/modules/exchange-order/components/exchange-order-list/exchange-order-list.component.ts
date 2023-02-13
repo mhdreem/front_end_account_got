@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Component , HostListener, Inject, OnInit, ViewChild} from '@angular/core';
 import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -11,8 +11,7 @@ import * as moment from 'moment';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
 import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/confirmationdialog/confirmationdialog.component';
 import { exchange_order } from 'src/app/modules/shared/models/exchange_order';
-import { ExchangeOrder } from 'src/app/modules/shared/models/exchange-order';
-import { SanadKidBook } from 'src/app/modules/shared/models/sanad-kid-book';
+import { sanad_kid_book } from 'src/app/modules/shared/models/sanad_kid_book';
 import { ExchangeOrderService } from 'src/app/modules/shared/services/exchange-order.service';
 import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-book.service';
 
@@ -80,8 +79,8 @@ export class ExchangeOrderListComponent {
   Form!: FormGroup;
   sanad_kid_from!: FormControl<number | null>;
   sanad_kid_to!: FormControl<number | null>;
-  sanad_kid_date_from!: FormControl<Date | null>;
-  sanad_kid_date_to!: FormControl<Date | null>;
+  document_date_from!: FormControl<Date | null>;
+  document_date_to!: FormControl<Date | null>;
   sanad_kid_fk!: FormControl<number | null>;
   incumbent_id_from!: FormControl<number | null>;
   incumbent_id_to!: FormControl<number | null>;
@@ -92,8 +91,8 @@ export class ExchangeOrderListComponent {
   name_of_owner!: FormControl<string | null>;
 
   
-  book_list:SanadKidBook[];
-  book_filter:Observable< SanadKidBook[]>;
+  book_list:sanad_kid_book[];
+  book_filter:Observable< sanad_kid_book[]>;
   
   
   _Subscription!: Subscription;
@@ -110,6 +109,12 @@ export class ExchangeOrderListComponent {
   pageSize = 5;
   currentPage = 1;
   pageSizeOptions: number[] = [5, 10, 25, 100];
+
+  pageChanged(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex;
+    this.View();
+  }
 
   selected_order: exchange_order= {};
 
@@ -139,8 +144,8 @@ export class ExchangeOrderListComponent {
           {
             'sanad_kid_from': this.sanad_kid_from = new FormControl<number | null>(null, []),
             'sanad_kid_to': this.sanad_kid_to = new FormControl<number | null>(null, []),
-            'sanad_kid_date_from': this.sanad_kid_date_from = new FormControl<Date | null>(null, []),
-            'sanad_kid_date_to': this.sanad_kid_date_to = new FormControl<Date | null>(null, []),
+            'document_date_from': this.document_date_from = new FormControl<Date | null>(null, []),
+            'document_date_to': this.document_date_to = new FormControl<Date | null>(null, []),
             'sanad_kid_fk': this.sanad_kid_fk = new FormControl<number | null>(null, []),
             'incumbent_id_from': this.incumbent_id_from = new FormControl<number | null>(null, []),
             'incumbent_id_to': this.incumbent_id_to = new FormControl<number | null>(null, []),
@@ -175,7 +180,7 @@ export class ExchangeOrderListComponent {
           )
         }
       
-        Load_branch():Observable<SanadKidBook[]>{
+        Load_branch():Observable<sanad_kid_book[]>{
           if (this.sanadKidBookService.List_SanadKidBook == null ||
             this.sanadKidBookService.List_SanadKidBook == undefined ||
             this.sanadKidBookService.List_SanadKidBook.length == 0)
@@ -195,12 +200,12 @@ export class ExchangeOrderListComponent {
         }
   
   
-        private _filter_book(value: string): SanadKidBook[] {
+        private _filter_book(value: string): sanad_kid_book[] {
           const filterValue = value.toLowerCase();      
           return this.book_list.filter(option => option.sanad_kid_book_name!= null  &&  option.sanad_kid_book_name.includes(filterValue));
         }
         
-        public display_Book_Property(value: SanadKidBook): string {
+        public display_Book_Property(value: sanad_kid_book): string {
           if (value && value.sanad_kid_book_seq) {            
               return value.sanad_kid_book_name!;
           }
@@ -228,10 +233,26 @@ export class ExchangeOrderListComponent {
   }
 
   View(){
+    console.log('this.Form.value', this.Form.value);
+    let SearchRequest =
+    {
+      // ...this.Form.value,
+      // row_count: this.pageSize-1,  
+      // page_index: this.currentPage+1
+    }
     this.exchangeOrderService.search(this.Form.value).subscribe(
       (res: any) =>{
+        console.log('res', res);
+        let result: any[]=[];
+        result.push(res.value);
+
+        // this.allData.push(...data.Item1);
+        // this.dataSource.data = this.allData;
+        // this.totalRows= data.Item2;
+        // this.dataSource._updatePaginator(this.totalRows);
+
+        this.dataSource.data = result;
         this.dataSource.paginator= this.paginator;
-        this.dataSource.data = res;
       }
     );
 
@@ -316,7 +337,7 @@ export class ExchangeOrderListComponent {
       this.fromSanadDateYearIsFilled= true;
 
     if (this.fromSanadDateDayIsFilled && this.fromSanadDateMonthIsFilled && this.fromSanadDateYearIsFilled){
-      this.sanad_kid_date_from.setValue(moment(this.fromSanadDateMonth+'/'+this.fromSanadDateDay+'/'+this.fromSanadDateYear).set({hour: 2}).toDate());
+      this.document_date_from.setValue(moment(this.fromSanadDateMonth+'/'+this.fromSanadDateDay+'/'+this.fromSanadDateYear).set({hour: 2}).toDate());
     }
    }
 
@@ -329,7 +350,7 @@ export class ExchangeOrderListComponent {
       this.toSanadDateYearIsFilled= true;
 
     if (this.toSanadDateDayIsFilled && this.toSanadDateMonthIsFilled && this.toSanadDateYearIsFilled){
-      this.sanad_kid_date_to.setValue(moment(this.toSanadDateMonth+'/'+this.toSanadDateDay+'/'+this.toSanadDateYear).set({hour: 2}).toDate());
+      this.document_date_to.setValue(moment(this.toSanadDateMonth+'/'+this.toSanadDateDay+'/'+this.toSanadDateYear).set({hour: 2}).toDate());
     }
    }
 

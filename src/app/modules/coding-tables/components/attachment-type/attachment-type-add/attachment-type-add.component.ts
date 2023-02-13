@@ -13,7 +13,7 @@ import { validateAttachmentTypeName } from './Validators/validateAttachmentTypeN
 @Component({
   selector: 'app-attachment-type-add',
   templateUrl: './attachment-type-add.component.html',
-  styleUrls: ['./attachment-type-add.component.css']
+  styleUrls: ['./attachment-type-add.component.scss']
 })
 export class AttachmentTypeAddComponent {
   @HostListener('window:keydown', ['$event'])

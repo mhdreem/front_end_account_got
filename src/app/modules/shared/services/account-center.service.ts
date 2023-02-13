@@ -4,7 +4,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { account_center } from '../models/account_center';
 import { BaseAPIService } from './base/base-api.service';
 
-
 @Injectable({
   providedIn: 'root'
 })

@@ -48,7 +48,7 @@ export class SanadKidEditComponent implements OnInit {
     this.PageSanadKidService.sanad_kid= obj;
   }
 
-  _Subscription!: Subscription;
+  _Subscription: Subscription = new Subscription();
  
   Form!: FormGroup;
   sanad_kid_seq!: FormControl<number | null>;
@@ -167,9 +167,11 @@ export class SanadKidEditComponent implements OnInit {
     ngOnInit() { 
       let seq : number = this.route.snapshot.params['seq'];
       if (seq!= null && seq>0){
-        this.sanadKidService.getBySeq(seq).subscribe(res =>{
-          this.selected_Sanad = res;
+        this.sanadKidService.getBySeq(seq).subscribe((res: any) =>{
+          this.selected_Sanad = res.value;
           this.sanad_kid= this.selected_Sanad;
+          if(this.sanad_kid.sanad_kid_details == null)
+            this.sanad_kid.sanad_kid_details= [];
           this.SetValue();
         })
       }
@@ -186,6 +188,9 @@ export class SanadKidEditComponent implements OnInit {
       this.sanadDateDay= moment(this.document_date.value).date()+'';
       this.sanadDateMonth= moment(this.document_date.value).month()+'';
       this.sanadDateYear= moment(this.document_date.value).year()+'';
+      this.sanadDateDayIsFilled= true;
+      this.sanadDateMonthIsFilled= true;
+      this.sanadDateYearIsFilled= true;
     }
 
     if (this.selected_Sanad != null && this.selected_Sanad.incumbent_date != null)
@@ -193,7 +198,9 @@ export class SanadKidEditComponent implements OnInit {
       this.incumbentDateDay= moment(this.incumbent_date.value).date()+'';
       this.incumbentDateMonth= moment(this.incumbent_date.value).month()+'';
       this.incumbentDateYear= moment(this.incumbent_date.value).year()+'';
-
+      this.incumbentDateDayIsFilled= true;
+      this.incumbentDateMonthIsFilled= true;
+      this.incumbentDateYearIsFilled= true;
 
     if (this.selected_Sanad != null && this.selected_Sanad.document_id != null)
       this.document_id.setValue(this.selected_Sanad?.document_id!);
@@ -211,8 +218,8 @@ export class SanadKidEditComponent implements OnInit {
     }
   
   getValue(){
-  this.selected_Sanad.document_date= moment(this.sanadDateMonth+'/'+this.sanadDateDay+'/'+this.sanadDateYear).set({hour: 2}).toDate();
-  this.selected_Sanad.incumbent_date= moment(this.incumbentDateMonth+'/'+this.incumbentDateDay+'/'+this.incumbentDateYear).set({hour: 2}).toDate();
+  this.selected_Sanad.document_date= moment(this.sanadDateMonth+'/'+this.sanadDateDay+'/'+this.sanadDateYear).set({hour: 4}).toDate();
+  this.selected_Sanad.incumbent_date= moment(this.incumbentDateMonth+'/'+this.incumbentDateDay+'/'+this.incumbentDateYear).set({hour: 4}).toDate();
   this.selected_Sanad.document_id= this.document_id.value!;
   this.selected_Sanad.incumbent_id= this.incumbent_id.value!;
   this.selected_Sanad.sanad_close= (this.sanad_close.value==true? 1:0)!;
@@ -256,7 +263,7 @@ export class SanadKidEditComponent implements OnInit {
       this.sanadDateYearIsFilled= true;
 
     if (this.sanadDateDayIsFilled && this.sanadDateMonthIsFilled && this.sanadDateYearIsFilled){
-      this.document_date.setValue(moment(this.sanadDateMonth+'/'+this.sanadDateDay+'/'+this.sanadDateYear).set({hour: 2}).toDate());
+      this.document_date.setValue(moment(this.sanadDateMonth+'/'+this.sanadDateDay+'/'+this.sanadDateYear).set({hour: 4}).toDate());
     }
     }
 
@@ -269,7 +276,7 @@ export class SanadKidEditComponent implements OnInit {
       this.incumbentDateYearIsFilled= true;
 
     if (this.incumbentDateDayIsFilled && this.incumbentDateMonthIsFilled && this.incumbentDateYearIsFilled){
-      this.incumbent_date.setValue(moment(this.incumbentDateMonth+'/'+this.incumbentDateDay+'/'+this.incumbentDateYear).set({hour: 2}).toDate());
+      this.incumbent_date.setValue(moment(this.incumbentDateMonth+'/'+this.incumbentDateDay+'/'+this.incumbentDateYear).set({hour: 4}).toDate());
     }
     }
 
@@ -320,5 +327,17 @@ export class SanadKidEditComponent implements OnInit {
           });
       });
     }
+  }
+
+  addAttachment(){
+    this.sanad_kid.sanad_kid_attachements?.push({sanad_kid_fk: this.sanad_kid.sanad_kid_seq});
+    // console.log('this.sanad_kid', this.sanad_kid);
+    // console.log('this.sanad_kid.sanad_kid_details', this.sanad_kid.sanad_kid_details);
+  }
+
+  onAttachmentDelete(index: number){
+    this.selected_Sanad= this.sanad_kid;
+    this.getValue();
+    this.selected_Sanad.sanad_kid_attachements?.splice(index, 1);
   }
 }

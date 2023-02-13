@@ -161,8 +161,8 @@ export class AccountClassAddComponent {
 
 
   closeDialog(){
-    console.log('this.Form.errors', this.Form.errors);
-    // this.dialogRef.close({event:'إلغاء'});
+    // console.log('this.Form.errors', this.Form.errors);
+    this.dialogRef.close({event:'إلغاء'});
   }
 
   ngOnInit(): void {

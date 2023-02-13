@@ -194,8 +194,8 @@ export class ExchangeOrderStageAddComponent {
 
 
   closeDialog(){
-    console.log('this.users', this.users);
-    // this.dialogRef.close({event:'إلغاء'});
+    // console.log('this.users', this.users);
+    this.dialogRef.close({event:'إلغاء'});
   }
 
   ngOnInit(): void {

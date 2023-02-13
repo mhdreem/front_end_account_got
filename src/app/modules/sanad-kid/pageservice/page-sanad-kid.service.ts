@@ -15,6 +15,8 @@ export class PageSanadKidService {
   constructor() { 
     this.sanad_kid = {};
     this.sanad_kid.sanad_kid_details=[];
+    this.sanad_kid.sanad_kid_attachements=[];
+
     this.$sanad_kid  = new  BehaviorSubject<sanad_kid>({});
   }
 
@@ -22,6 +24,7 @@ export class PageSanadKidService {
   {
     this.sanad_kid = {};
     this.sanad_kid.sanad_kid_details=[];
+    this.sanad_kid.sanad_kid_attachements=[];
     this.$sanad_kid.next(this.sanad_kid);
   } 
 
@@ -30,5 +33,5 @@ export class PageSanadKidService {
     this.sanad_kid = sanad_kid;
     this.$sanad_kid.next( this.sanad_kid);
   } 
-
+ 
 }

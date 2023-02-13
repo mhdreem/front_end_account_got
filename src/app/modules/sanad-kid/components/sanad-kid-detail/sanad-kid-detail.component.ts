@@ -202,8 +202,11 @@ export class SanadKidDetailComponent implements OnChanges, OnDestroy, OnInit {
 
 
   public display_Account_Tree_Property(value: accounts_tree): string {
-    if (value && value.account_name) {
-      return value.account_id + " - " + value.account_name;
+    if (value && this.accounts_tree_list) {      
+      let account: any = this.accounts_tree_list.find(account => account.seq!.toString() == value);      
+      if (account)
+        return account.account_id + " - " + account.account_name!;
+        
     }
     return '';
   }
@@ -211,8 +214,11 @@ export class SanadKidDetailComponent implements OnChanges, OnDestroy, OnInit {
 
 
   public display_Account_Center_Property(value: account_center): string {
-    if (value && value.account_center_name) {
-      return value.account_center_name;
+    if (value && this.account_center_list) {      
+      let center: any = this.account_center_list.find(center => center.account_center_seq!.toString() == value);      
+      if (center)
+        return center.account_center_name!;
+        
     }
     return '';
   }

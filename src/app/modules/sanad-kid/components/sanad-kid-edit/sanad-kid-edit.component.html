@@ -41,10 +41,8 @@
                               </mat-form-field>
                             </div>
                           </div>
-                    </div>
 
-                    <div class="inputGroup2" style="display: flex; flex-direction: column;">
-                        <div class="date">
+                          <div class="date">
                             <span class="white" style="margin-bottom: 10px; display: block;">تاريخ المذكرة</span>
                             <div class="content">
                               <mat-form-field class="example-full-width small-width" appearance="fill">
@@ -67,6 +65,10 @@
                               </mat-form-field>
                             </div>
                           </div>
+                    </div>
+
+                    <div class="inputGroup2" style="display: flex; flex-direction: column;">
+                        
 
                     </div>
 
@@ -125,6 +127,14 @@
             <app-sanad-kid-detail [index]="i" (onDelete)="onDelete($event)"></app-sanad-kid-detail>
           </div>
           <button class="add" mat-raised-button class="add" (click)="addDetails()">إضافة معلومات للسند+</button>
+        </div>
+
+        <div class="down" >
+          <span>المرفقات</span>
+          <div class="detail" *ngFor="let attachment of sanad_kid.sanad_kid_attachements; let i=index;">
+            <app-sanad-kid-attachments [index]="i" (onDelete)="onAttachmentDelete($event)"></app-sanad-kid-attachments>
+          </div>
+          <button class="add" mat-raised-button class="add" (click)="addAttachment()">إضافة مرفق+</button>
         </div>
         <!-- </ngx-hover-opacity> -->
 

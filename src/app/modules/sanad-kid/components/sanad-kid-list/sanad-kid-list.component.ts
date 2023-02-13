@@ -168,8 +168,10 @@ export class SanadKidListComponent implements OnInit {
   View(){
     this.sanadKidService.search(this.Form.value).subscribe(
       (res: any) =>{
+        let result: any[]=[];
+        result.push(res.value);
+        this.dataSource.data = result;
         this.dataSource.paginator= this.paginator;
-        this.dataSource.data = res;
       }
     );
 

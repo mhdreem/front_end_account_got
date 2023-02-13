@@ -8,8 +8,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/confirmationdialog/confirmationdialog.component';
 import { result } from 'src/app/modules/shared/models/result';
+import { sanad_kid_book } from 'src/app/modules/shared/models/sanad_kid_book';
 import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-book.service';
-import {SanadKidBook} from '../../../../shared/models/sanad-kid-book'
 import { SanadKidBookAddComponent } from '../sanad-kid-book-add/sanad-kid-book-add.component';
 
 @Component({
@@ -21,8 +21,8 @@ export class SanadKidBookListComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  sanadKidBook_List: SanadKidBook[] = [];
-  dataSource = new MatTableDataSource<SanadKidBook>();
+  sanadKidBook_List: sanad_kid_book[] = [];
+  dataSource = new MatTableDataSource<sanad_kid_book>();
   displayedColumns: string[] = ['sanad_kid_book_name', 'account_name', 'incumbent_id_generate_type_fk', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
 
@@ -85,7 +85,7 @@ export class SanadKidBookListComponent implements OnInit, OnDestroy {
     });
   }
 
-  update(obj: SanadKidBook) {
+  update(obj: sanad_kid_book) {
 
     const dialogRef = this.dialog.open(SanadKidBookAddComponent, {
       width: '350px',
@@ -106,7 +106,7 @@ export class SanadKidBookListComponent implements OnInit, OnDestroy {
 
 
 
-  delete(obj: SanadKidBook) {
+  delete(obj: sanad_kid_book) {
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
       width: '300px',
       data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },

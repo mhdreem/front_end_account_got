@@ -50,7 +50,7 @@ export class ExchangeOrderEditComponent {
     this.PageExchangeOrderService.exchange_order= obj;
   }
 
-  _Subscription!: Subscription;
+  _Subscription: Subscription = new Subscription;
  
   Form!: FormGroup;
   sanad_kid_fk!: FormControl<number | null>;
@@ -181,11 +181,17 @@ export class ExchangeOrderEditComponent {
     }
           
     ngOnInit() { 
-      let seq : number = this.route.snapshot.params['seq'];
+      let seq : number = this.route.snapshot.params['id'];
       if (seq!= null && seq>0){
-        this.exchangeOrderService.getBySeq(seq).subscribe(res =>{
-          this.selected_Order = res;
+        this.exchangeOrderService.getBySeq(seq).subscribe((res: any) =>{
+          this.selected_Order = res.value;
           this.exchange_order= this.selected_Order;
+          if(this.exchange_order.exchange_order_details == null)
+            this.exchange_order.exchange_order_details= [];
+          if(this.exchange_order.exchange_order_attachements == null)
+            this.exchange_order.exchange_order_attachements= [];
+          if(this.exchange_order.exchange_order_entries == null)
+            this.exchange_order.exchange_order_entries= [];
           this.SetValue();
         })
       }
@@ -216,18 +222,25 @@ export class ExchangeOrderEditComponent {
   }
 
   public SetValue() {
+    console.log('this.selected_Order', this.selected_Order);
     if (this.selected_Order != null && this.selected_Order.document_date != null){
       this.document_date.setValue(this.selected_Order.document_date);
       this.sanadDateDay= moment(this.document_date.value).date()+'';
-      this.sanadDateMonth= moment(this.document_date.value).month()+'';
+      this.sanadDateMonth= (moment(this.document_date.value).month()+1)+'';
       this.sanadDateYear= moment(this.document_date.value).year()+'';
+      this.sanadDateDayIsFilled= true;
+      this.sanadDateMonthIsFilled= true;
+      this.sanadDateYearIsFilled= true;
     }
 
     if (this.selected_Order != null && this.selected_Order.incumbent_date != null)
       this.incumbent_date.setValue(this.selected_Order?.incumbent_date!);
       this.incumbentDateDay= moment(this.incumbent_date.value).date()+'';
-      this.incumbentDateMonth= moment(this.incumbent_date.value).month()+'';
+      this.incumbentDateMonth= (moment(this.incumbent_date.value).month()+1)+'';
       this.incumbentDateYear= moment(this.incumbent_date.value).year()+'';
+      this.incumbentDateDayIsFilled= true;
+      this.incumbentDateMonthIsFilled= true;
+      this.incumbentDateYearIsFilled= true;
 
 
     if (this.selected_Order != null && this.selected_Order.document_id != null)
@@ -243,8 +256,8 @@ export class ExchangeOrderEditComponent {
     }
   
   getValue(){
-  this.selected_Order.document_date= moment(this.sanadDateMonth+'/'+this.sanadDateDay+'/'+this.sanadDateYear).set({hour: 2}).toDate();
-  this.selected_Order.incumbent_date= moment(this.incumbentDateMonth+'/'+this.incumbentDateDay+'/'+this.incumbentDateYear).set({hour: 2}).toDate();
+  this.selected_Order.document_date= moment(this.sanadDateMonth+'/'+this.sanadDateDay+'/'+this.sanadDateYear).set({hour: 4}).toDate();
+  this.selected_Order.incumbent_date= moment(this.incumbentDateMonth+'/'+this.incumbentDateDay+'/'+this.incumbentDateYear).set({hour: 4}).toDate();
   this.selected_Order.document_id= this.document_id.value!;
   this.selected_Order.incumbent_id= this.incumbent_id.value!;
   this.selected_Order.name_of_owner= this.name_of_owner.value!;
@@ -287,7 +300,7 @@ export class ExchangeOrderEditComponent {
       this.sanadDateYearIsFilled= true;
 
     if (this.sanadDateDayIsFilled && this.sanadDateMonthIsFilled && this.sanadDateYearIsFilled){
-      this.document_date.setValue(moment(this.sanadDateMonth+'/'+this.sanadDateDay+'/'+this.sanadDateYear).set({hour: 2}).toDate());
+      this.document_date.setValue(moment(this.sanadDateMonth+'/'+this.sanadDateDay+'/'+this.sanadDateYear).set({hour: 4}).toDate());
     }
     }
 
@@ -300,7 +313,7 @@ export class ExchangeOrderEditComponent {
       this.incumbentDateYearIsFilled= true;
 
     if (this.incumbentDateDayIsFilled && this.incumbentDateMonthIsFilled && this.incumbentDateYearIsFilled){
-      this.incumbent_date.setValue(moment(this.incumbentDateMonth+'/'+this.incumbentDateDay+'/'+this.incumbentDateYear).set({hour: 2}).toDate());
+      this.incumbent_date.setValue(moment(this.incumbentDateMonth+'/'+this.incumbentDateDay+'/'+this.incumbentDateYear).set({hour: 4}).toDate());
     }
     }
 
@@ -324,6 +337,8 @@ export class ExchangeOrderEditComponent {
 
   addDetails(){
     this.exchange_order.exchange_order_details?.push({exchange_order_fk: this.exchange_order.exchange_order_seq});
+    console.log('this.exchange_order', this.exchange_order);
+    console.log('this.exchange_order.exchange_order_details', this.exchange_order.exchange_order_details);
     // console.log('this.sanad_kid', this.sanad_kid);
     // console.log('this.sanad_kid.sanad_kid_details', this.sanad_kid.sanad_kid_details);
   }

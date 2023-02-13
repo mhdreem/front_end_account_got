@@ -17,7 +17,7 @@ import { ExportToCsv } from 'export-to-csv';
 @Component({
   selector: 'app-attachment-type-list',
   templateUrl: './attachment-type-list.component.html',
-  styleUrls: ['./attachment-type-list.component.css']
+  styleUrls: ['./attachment-type-list.component.scss']
 })
 export class AttachmentTypeListComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;

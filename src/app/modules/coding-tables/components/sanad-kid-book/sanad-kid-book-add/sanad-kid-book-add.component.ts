@@ -5,13 +5,13 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
 import { branch } from 'src/app/modules/shared/models/branch';
-import { SanadKidBook } from 'src/app/modules/shared/models/sanad-kid-book';
 import { FormValidationHelpersService } from 'src/app/modules/shared/services/form-validation-helpers.service';
 import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-book.service';
 import { BranchService } from 'src/app/modules/shared/services/branch.service';
-import { accounts_tree } from 'src/app/modules/shared/models/account-tree';
 import { AccountTreeService } from 'src/app/modules/shared/services/account-tree.service';
 import { result } from 'src/app/modules/shared/models/result';
+import { sanad_kid_book } from 'src/app/modules/shared/models/sanad_kid_book';
+import { accounts_tree } from 'src/app/modules/shared/models/accounts_tree';
 
 @Component({
   selector: 'app-sanad-kid-book-add',
@@ -27,13 +27,13 @@ export class SanadKidBookAddComponent {
     }
     
   }
-  _selected_SanadKidBook:SanadKidBook= {};
-  set selected_SanadKidBook(obj:SanadKidBook)
+  _selected_SanadKidBook:sanad_kid_book= {};
+  set selected_SanadKidBook(obj:sanad_kid_book)
   {
     this._selected_SanadKidBook =  obj;
     this.setValue();
   }
-  get  selected_SanadKidBook():SanadKidBook
+  get  selected_SanadKidBook():sanad_kid_book
   {
     return this._selected_SanadKidBook ;
   }
@@ -96,6 +96,8 @@ export class SanadKidBookAddComponent {
           this.accountTreeService.List_AccountsTree = this.cash_account_list;
           this.accountTreeService.List_AccountsTree_BehaviorSubject.next(this.accountTreeService.List_AccountsTree);
 
+          this.Init_AutoComplete();
+
           this.LoadingFinish = true;
 
         }
@@ -147,15 +149,21 @@ export class SanadKidBookAddComponent {
       }
 
       public display_Branch_Property(value: branch): string {
-        if (value && value.branch_seq) {            
-            return value.branch_name!;
+        if (value && this.branch_list) {      
+          let branch: any = this.branch_list.find(branch => branch.branch_seq!.toString() == value);      
+          if (branch)
+            return branch.branch_name!;
+            
         }
         return '';
       }
       
       public display_Accounts_tree_Property(value: accounts_tree): string {
-        if (value && value.seq) {            
-            return value.account_name!;
+        if (value && this.cash_account_list) {      
+          let account: any = this.cash_account_list.find(account => account.seq!.toString() == value);      
+          if (account)
+            return account.account_name!;
+            
         }
         return '';
       }

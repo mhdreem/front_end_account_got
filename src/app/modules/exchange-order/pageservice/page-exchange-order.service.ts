@@ -9,7 +9,7 @@ export class PageExchangeOrderService {
 
   public exchange_order : exchange_order;
   public $exchange_order : BehaviorSubject<exchange_order> ;
-
+ 
 
   
   constructor() { 

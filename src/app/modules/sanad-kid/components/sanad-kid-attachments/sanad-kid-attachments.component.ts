@@ -6,17 +6,17 @@ import * as moment from 'moment';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
 import { attachement_type } from 'src/app/modules/shared/models/attachement_type';
 import { exchange_order_attachement } from 'src/app/modules/shared/models/exchange_order_attachement';
-import { account_typeService } from 'src/app/modules/shared/services/account-type.service';
+import { sanad_kid_attachement } from 'src/app/modules/shared/models/sanad_kid_attachement';
 import { AttachmentTypeService } from 'src/app/modules/shared/services/attachment-type.service';
 import { FormValidationHelpersService } from 'src/app/modules/shared/services/form-validation-helpers.service';
-import { PageExchangeOrderService } from '../../pageservice/page-exchange-order.service';
+import { PageSanadKidService } from '../../pageservice/page-sanad-kid.service';
 
 @Component({
-  selector: 'app-exchange-order-attachments',
-  templateUrl: './exchange-order-attachments.component.html',
-  styleUrls: ['./exchange-order-attachments.component.scss']
+  selector: 'app-sanad-kid-attachments',
+  templateUrl: './sanad-kid-attachments.component.html',
+  styleUrls: ['./sanad-kid-attachments.component.scss']
 })
-export class ExchangeOrderAttachmentsComponent {
+export class SanadKidAttachmentsComponent {
   _index :number ;
   @Output() onDelete: EventEmitter<number> = new EventEmitter();
 
@@ -25,30 +25,30 @@ export class ExchangeOrderAttachmentsComponent {
     this._index = i;      
   }
 
-  get exchange_order_attachments():exchange_order_attachement 
+  get sanad_kid_attachements():sanad_kid_attachement
   {
     if (
-      this.PageExchangeOrderService.exchange_order!= null &&
-      this.PageExchangeOrderService.exchange_order.exchange_order_attachements != null &&    
+      this.pageSanadKidService.sanad_kid!= null &&
+      this.pageSanadKidService.sanad_kid.sanad_kid_attachements != null &&    
       this._index>=0 && 
-      this._index<this.PageExchangeOrderService.exchange_order.exchange_order_attachements?.length)
+      this._index<this.pageSanadKidService.sanad_kid.sanad_kid_attachements?.length)
       { 
         // console.log('this.PageSanadKidService.sanad_kid', this.PageExchangeOrderService.sanad_kid);
         // console.log('this.index', this.index);
-        return this.PageExchangeOrderService.exchange_order.exchange_order_attachements[this._index];
+        return this.pageSanadKidService.sanad_kid.sanad_kid_attachements[this._index];
       }
       return {};
   }
-
-  set  exchange_order_attachments(obj:exchange_order_attachement) 
+  
+  set  sanad_kid_attachements(obj:sanad_kid_attachement) 
   {
     if (
-      this.PageExchangeOrderService.exchange_order!= null &&
-      this.PageExchangeOrderService.exchange_order.exchange_order_attachements != null &&    
+      this.pageSanadKidService.sanad_kid!= null &&
+      this.pageSanadKidService.sanad_kid.sanad_kid_attachements != null &&    
       this._index>=0 && 
-      this._index<=this.PageExchangeOrderService.exchange_order.exchange_order_attachements?.length)
+      this._index<=this.pageSanadKidService.sanad_kid.sanad_kid_attachements?.length)
       { 
-         this.PageExchangeOrderService.exchange_order.exchange_order_attachements[this.index] = obj;
+         this.pageSanadKidService.sanad_kid.sanad_kid_attachements[this.index] = obj;
       }
     
   }
@@ -56,12 +56,12 @@ export class ExchangeOrderAttachmentsComponent {
   _Subscription!: Subscription;
  
   Form!: FormGroup;
-  exchange_order_attachement_seq!: FormControl<number | null>;
-  exchange_order_fk!: FormControl<number | null>;
-  exchange_order_attachement_id!: FormControl<number | null>;
-  exchange_order_attachement_date!: FormControl<Date | null>;
+  sanad_kid_attachement_seq!: FormControl<number | null>;
+  sanad_kid_fk!: FormControl<number | null>;
+  sanad_kid_attachement_id!: FormControl<number | null>;
+  sanad_kid_attachement_date!: FormControl<Date | null>;
   type_fk!: FormControl<number | null>;
-  exchange_order_attachement_note!: FormControl<string | null>;
+  sanad_kid_attachement_note!: FormControl<string | null>;
 
   attachment_type_list:attachement_type[];
   attachment_type_filter:Observable< attachement_type[]>;
@@ -78,7 +78,7 @@ export class ExchangeOrderAttachmentsComponent {
 
   constructor(
     private fb: FormBuilder,
-    private PageExchangeOrderService:PageExchangeOrderService,
+    private pageSanadKidService:PageSanadKidService,
     private snackBar: MatSnackBar,
     @Inject(DOCUMENT) private _document: Document,  
     private formValidatorsService: FormValidationHelpersService,
@@ -96,7 +96,7 @@ export class ExchangeOrderAttachmentsComponent {
       if ( changes!= null && changes['index']!=null)    
       {
         this.SetValue();
-        this.bindModelToForm(this.exchange_order_attachments,this.Form);          
+        this.bindModelToForm(this.sanad_kid_attachements,this.Form);          
 
       }
       
@@ -107,12 +107,12 @@ export class ExchangeOrderAttachmentsComponent {
   
         this.Form = this.fb.group(
           {
-            'exchange_order_attachement_seq': this.exchange_order_attachement_seq = new FormControl<number | null>(null, []),
-            'exchange_order_fk': this.exchange_order_fk = new FormControl<number | null>(null, []),          
-            'exchange_order_attachement_id': this.exchange_order_attachement_id = new FormControl<number | null>(null, []),          
-            'exchange_order_attachement_date': this.exchange_order_attachement_date = new FormControl<Date | null>(null, []),          
+            'sanad_kid_attachement_seq': this.sanad_kid_attachement_seq = new FormControl<number | null>(null, []),
+            'sanad_kid_fk': this.sanad_kid_fk = new FormControl<number | null>(null, []),          
+            'sanad_kid_attachement_id': this.sanad_kid_attachement_id = new FormControl<number | null>(null, []),          
+            'sanad_kid_attachement_date': this.sanad_kid_attachement_date = new FormControl<Date | null>(null, []),          
             'type_fk': this.type_fk = new FormControl<number | null>(null, []),          
-            'exchange_order_attachement_note': this.exchange_order_attachement_note = new FormControl<string | null>(null, []),          
+            'sanad_kid_attachement_note': this.sanad_kid_attachement_note = new FormControl<string | null>(null, []),          
           },
         );
   
@@ -161,7 +161,8 @@ export class ExchangeOrderAttachmentsComponent {
 
 
         private _filter_attachement_type(value: string): attachement_type[] {
-          const filterValue = value.toLowerCase();      
+          const filterValue = value.toLowerCase(); 
+          console.log('value', value);     
           return this.attachment_type_list.filter(option => option.attachement_type_name!= null  &&  option.attachement_type_name.includes(filterValue));
         }
 
@@ -172,61 +173,59 @@ export class ExchangeOrderAttachmentsComponent {
               return type.attachement_type_name!;
               
           }
-        return '';
-      }
+          return '';
+        }
 
-
-          public SetValue() {
-            try {
-        
-        
-              if (this.exchange_order_attachments != null && this.exchange_order_attachments?.exchange_order_attachement_seq != null)
-                this.exchange_order_attachement_seq.setValue(this.exchange_order_attachments.exchange_order_attachement_seq);
-             
-              if (this.exchange_order_attachments != null && this.exchange_order_attachments.exchange_order_fk != null)
-                this.exchange_order_fk.setValue(this.exchange_order_attachments.exchange_order_fk);
-                
-              if (this.exchange_order_attachments != null && this.exchange_order_attachments.exchange_order_attachement_id != null)
-                this.exchange_order_attachement_id.setValue(this.exchange_order_attachments.exchange_order_attachement_id);
-                
-              if (this.exchange_order_attachments != null && this.exchange_order_attachments.exchange_order_attachement_date != null)
-                this.exchange_order_attachement_date.setValue(this.exchange_order_attachments.exchange_order_attachement_date);
-                
-              if (this.exchange_order_attachments != null && this.exchange_order_attachments.attachement_type != null)
-                this.type_fk.setValue(this.exchange_order_attachments.attachement_type.attachement_type_seq!);
-                
-              if (this.exchange_order_attachments != null && this.exchange_order_attachments.exchange_order_attachement_note != null)
-                this.exchange_order_attachement_note.setValue(this.exchange_order_attachments.exchange_order_attachement_note);
-                
-              
-              
-            } catch (ex: any) {
-        
-        
-            }
-        
-          }
+    public SetValue() {
+      try {
   
+  
+        if (this.sanad_kid_attachements != null && this.sanad_kid_attachements?.sanad_kid_attachement_seq != null)
+          this.sanad_kid_attachement_seq.setValue(this.sanad_kid_attachements.sanad_kid_attachement_seq);
+       
+        if (this.sanad_kid_attachements != null && this.sanad_kid_attachements.sanad_kid_fk != null)
+          this.sanad_kid_fk.setValue(this.sanad_kid_attachements.sanad_kid_fk);
+          
+        if (this.sanad_kid_attachements != null && this.sanad_kid_attachements.sanad_kid_attachement_id != null)
+          this.sanad_kid_attachement_id.setValue(this.sanad_kid_attachements.sanad_kid_attachement_id);
+          
+        if (this.sanad_kid_attachements != null && this.sanad_kid_attachements.sanad_kid_attachement_date != null)
+          this.sanad_kid_attachement_date.setValue(this.sanad_kid_attachements.sanad_kid_attachement_date);
+          
+        if (this.sanad_kid_attachements != null && this.sanad_kid_attachements.attachement_type != null)
+          this.type_fk.setValue(this.sanad_kid_attachements.attachement_type.attachement_type_seq!);
+          
+        if (this.sanad_kid_attachements != null && this.sanad_kid_attachements.sanad_kid_attachement_note != null)
+          this.sanad_kid_attachement_note.setValue(this.sanad_kid_attachements.sanad_kid_attachement_note);
+          
+        
+        
+      } catch (ex: any) {
+  
+  
+      }
+  
+    }
   
     getValue(){
-      if ( this.exchange_order_attachments!= null && this.exchange_order_attachement_seq.value!= null )
-        this.exchange_order_attachments.exchange_order_attachement_seq= this.exchange_order_attachement_seq.value;
+      if ( this.sanad_kid_attachements!= null && this.sanad_kid_attachement_seq.value!= null )
+        this.sanad_kid_attachements.sanad_kid_attachement_seq= this.sanad_kid_attachement_seq.value;
   
       
-        if ( this.exchange_order_attachments!= null && this.exchange_order_fk.value!= null )
-        this.exchange_order_attachments.exchange_order_fk= this.exchange_order_fk.value;
+        if ( this.sanad_kid_attachements!= null && this.sanad_kid_fk.value!= null )
+        this.sanad_kid_attachements.sanad_kid_fk= this.sanad_kid_fk.value;
   
-        if ( this.exchange_order_attachments!= null && this.exchange_order_attachement_id.value!= null )
-        this.exchange_order_attachments.exchange_order_attachement_id= this.exchange_order_attachement_id.value;
+        if ( this.sanad_kid_attachements!= null && this.sanad_kid_attachement_id.value!= null )
+        this.sanad_kid_attachements.sanad_kid_attachement_id= this.sanad_kid_attachement_id.value;
   
-        if ( this.exchange_order_attachments!= null && this.exchange_order_attachement_date.value!= null )
-        this.exchange_order_attachments.exchange_order_attachement_date= this.exchange_order_attachement_date.value;
+        if ( this.sanad_kid_attachements!= null && this.sanad_kid_attachement_date.value!= null )
+        this.sanad_kid_attachements.sanad_kid_attachement_date= this.sanad_kid_attachement_date.value;
   
-        if ( this.exchange_order_attachments!= null && this.type_fk.value!= null )
-        this.exchange_order_attachments.attachement_type= this.attachment_type_list.find(type => type.attachement_type_seq== this.type_fk.value);
+        if ( this.sanad_kid_attachements!= null && this.type_fk.value!= null )
+        this.sanad_kid_attachements.attachement_type= this.attachment_type_list.find(type => type.attachement_type_seq== this.type_fk.value);
   
-        if ( this.exchange_order_attachments!= null && this.exchange_order_attachement_note.value!= null )
-        this.exchange_order_attachments.exchange_order_attachement_note= this.exchange_order_attachement_note.value;
+        if ( this.sanad_kid_attachements!= null && this.sanad_kid_attachement_note.value!= null )
+        this.sanad_kid_attachements.sanad_kid_attachement_note= this.sanad_kid_attachement_note.value;
   
     }
   
@@ -274,7 +273,7 @@ export class ExchangeOrderAttachmentsComponent {
       this.attachmentDateYearIsFilled= true;
 
     if (this.attachmentDateDayIsFilled && this.attachmentDateMonthIsFilled && this.attachmentDateYearIsFilled){
-      this.exchange_order_attachement_date.setValue(moment(this.attachmentDateMonth+'/'+this.attachmentDateDay+'/'+this.attachmentDateYear).set({hour: 4}).toDate());
+      this.sanad_kid_attachement_date.setValue(moment(this.attachmentDateMonth+'/'+this.attachmentDateDay+'/'+this.attachmentDateYear).set({hour: 4}).toDate());
     }
    }
 }

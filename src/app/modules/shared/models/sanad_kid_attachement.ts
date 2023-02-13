@@ -5,7 +5,7 @@ export interface sanad_kid_attachement
     {
 
         sanad_kid_attachement_seq?:number;
-
+ 
 
         sanad_kid_fk?:number;
 
