@@ -26,7 +26,7 @@ export class SanadKidBookAddComponent {
       this.save();
     }
     
-  }
+  } 
   _selected_SanadKidBook:sanad_kid_book= {};
   set selected_SanadKidBook(obj:sanad_kid_book)
   {
