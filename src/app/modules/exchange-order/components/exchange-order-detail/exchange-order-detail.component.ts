@@ -31,9 +31,7 @@ export class ExchangeOrderDetailComponent implements OnDestroy {
       this.PageExchangeOrderService.exchange_order.exchange_order_details != null &&
       this._index >= 0 &&
       this._index < this.PageExchangeOrderService.exchange_order.exchange_order_details?.length) {
-      // console.log('this.PageSanadKidService.sanad_kid', this.PageExchangeOrderService.sanad_kid);
-      // console.log('this.index', this.index);
-      return this.PageExchangeOrderService.exchange_order.exchange_order_details[this._index];
+       return this.PageExchangeOrderService.exchange_order.exchange_order_details[this._index];
     }
     return {};
   }

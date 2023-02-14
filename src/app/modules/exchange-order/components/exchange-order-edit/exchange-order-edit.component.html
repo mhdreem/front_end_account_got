@@ -1,9 +1,14 @@
 <mat-toolbar>
-  <button mat-raised-button id="save" class="add" (click)="save()">
-    <mat-icon class="mat-icon-rtl-mirror">save
-    </mat-icon>
-    حفظ F9
-  </button>
+
+  <div>
+    <button mat-button [matMenuTriggerFor]="menu"><mat-icon>expand_more</mat-icon> نوع سند القيد
+    </button>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="save()">حفظ نظامي</button>
+        <button mat-menu-item (click)="save_as_draft()">مسوده</button>
+    </mat-menu>
+</div>
+
 
   <!-- <button class="add" mat-raised-button class="add" (click)="attachments()">مرفقات F3</button> -->
   <!-- <button class="add" mat-raised-button class="add" (click)="accountCard()">بطاقة حساب</button> -->
@@ -66,12 +71,12 @@
       <div class="inputGroup3" style="display: flex; justify-content: space-between; width: 435px;">
         <mat-form-field class="fitContent" appearance="fill" style="height: fit-content;">
           <mat-label>رقم المذكرة</mat-label>
-          <input matInput [formControl]="incumbent_id" id="incumbent_id" (keyup.enter)="focusNext('account_type')">
+          <input matInput [OnlyNumber]="true" [formControl]="incumbent_id" id="incumbent_id" (keyup.enter)="focusNext('account_type')">
         </mat-form-field>
 
         <mat-form-field class="fitContent" appearance="fill" style="height: fit-content;">
           <mat-label>رقم السند</mat-label>
-          <input matInput [formControl]="document_id" id="document_id" (keyup.enter)="focusNext('account_type')">
+          <input matInput [OnlyNumber]="true" [formControl]="document_id" id="document_id" (keyup.enter)="focusNext('account_type')">
         </mat-form-field>
       </div>
 
@@ -100,17 +105,7 @@
           <input matInput [formControl]="name_of_owner" id="name_of_owner" (keyup.enter)="focusNext('account_type')">
         </mat-form-field>
 
-        <!-- <mat-form-field class="fitContent" appearance="fill">
-                              <mat-label>رقم حساب الصندوق</mat-label>
-                              <input matInput [formControl]="boxNum"
-                                      id="boxNum" (keyup.enter)="focusNext('account_type')">
-                          </mat-form-field>
-  
-                          <mat-form-field class="fitContent" appearance="fill">
-                              <mat-label>اسم حساب الصندوق</mat-label>
-                              <input matInput [formControl]="boxName"
-                                      id="boxName" (keyup.enter)="focusNext('account_type')">
-                          </mat-form-field> -->
+ 
       </div>
 
     </div>

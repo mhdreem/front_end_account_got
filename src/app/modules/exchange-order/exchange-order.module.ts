@@ -21,6 +21,7 @@ import {ExchangeOrderAttachmentsComponent} from './components/exchange-order-att
 import {MatExpansionModule} from '@angular/material/expansion';
 import { GridModule } from '@coreui/angular';
 import {MatMenuModule} from '@angular/material/menu';
+import { OnlyNumber } from '../shared/directives/onlynumber.directive';
 
 const Import_Corui = [
   GridModule
@@ -32,8 +33,9 @@ const Import_Corui = [
     ExchangeOrderListComponent,
     ExchangeOrderEditComponent,
     ExchangeOrderDetailComponent,
-    ExchangeOrderAttachmentsComponent
-  ],
+    ExchangeOrderAttachmentsComponent,
+    OnlyNumber
+    ],
   imports: [
     CommonModule,
     ExchangeOrderRoutingModule,
@@ -50,7 +52,9 @@ const Import_Corui = [
     MatFormFieldModule,
     MatExpansionModule,
     MatMenuModule,
-    Import_Corui
-  ]
+    Import_Corui,
+    
+  ],
+  exports: [OnlyNumber]
 })
 export class ExchangeOrderModule { }

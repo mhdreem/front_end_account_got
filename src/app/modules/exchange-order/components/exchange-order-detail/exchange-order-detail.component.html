@@ -4,16 +4,17 @@
             <c-col>
                 <mat-form-field class="fitContent" appearance="fill">
                     <mat-label>مبلغ مدين</mat-label>
-                    <input matInput [formControl]="creditor" (input)="onCreditorFilling()" id="creditor_{{this.index}}"
-                        (keyup.enter)="focusNext('account_type_{{this.index}}')">
+                    <input matInput [OnlyNumber]="true" id="{{'debtor_'+_index}}" [formControl]="debtor"(input)="onDebtorFilling()"    
+                        (keyup.enter)="focusNext('creditor_'+ _index )"
+                        >
                 </mat-form-field>
             </c-col>
 
             <c-col>
                 <mat-form-field class="fitContent" appearance="fill">
                     <mat-label>مبلغ دائن</mat-label>
-                    <input matInput [formControl]="debtor" (input)="onDebtorFilling()" id="debtor_{{this.index}}"
-                        (keyup.enter)="focusNext('account_type_{{this.index}}')">
+                    <input matInput [OnlyNumber]="true"  [formControl]="creditor" (input)="onCreditorFilling()" id="{{'creditor_'+_index}}"
+                        (keyup.enter)="focusNext( 'accounts_tree_fk_'+_index )">
                 </mat-form-field>
             </c-col>
 
@@ -23,8 +24,8 @@
                 <mat-form-field class="fitContent" appearance="fill">
                     <mat-label #label_accounts_tree_fk>رقم الحساب</mat-label>
                     <input matInput [formControl]="accounts_tree_fk" [matAutocomplete]="autoaccounts_tree_fk"
-                        id="accounts_tree_fk_{{this.index}}"
-                        (keyup.enter)="focusNext('account_center_fk_{{this.index}}')">
+                    id="{{'accounts_tree_fk_'+_index}}"  
+                        (keyup.enter)="focusNext('account_center_fk_'+this._index)">
                     <mat-autocomplete #autoaccounts_tree_fk="matAutocomplete"
                         (optionSelected)="Select_Accounts_Tree_Option($event)"
                         [displayWith]="display_Account_Tree_Property.bind(this)">
@@ -48,7 +49,8 @@
                 <mat-form-field class="fitContent" appearance="fill">
                     <mat-label>مركز الكلفة</mat-label>
                     <input matInput [formControl]="account_center_fk" [matAutocomplete]="autoaccount_center_fk"
-                        id="account_center_fk_{{this.index}}" (keyup.enter)="focusNext('account_notice_{{this.index}}')">
+                    id="{{'account_center_fk_'+_index}}"    
+                     (keyup.enter)="focusNext('account_notice_'+this._index)">
                     <mat-autocomplete #autoaccount_center_fk="matAutocomplete"
                         (optionSelected)="Select_Account_Center_Option($event)"
                         [displayWith]="display_Account_Center_Property.bind(this)">
@@ -67,7 +69,7 @@
             <c-col>
                 <mat-form-field class="fitContent" appearance="fill" style="width: 80%;">
                     <mat-label>بيان الحساب</mat-label>
-                    <input matInput [formControl]="account_notice" id="account_notice_{{this.index}}">
+                    <input matInput [formControl]="account_notice"  id="{{'account_notice_'+_index}}"   >
                 </mat-form-field>
 
             </c-col>

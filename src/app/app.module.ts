@@ -28,6 +28,7 @@ import { DropdownModule } from '@coreui/angular';
 import { AvatarModule } from '@coreui/angular';
 import { SidebarModule } from '@coreui/angular';
 import { IconModule, IconSetService } from '@coreui/icons-angular';
+import { OnlyNumber } from './modules/shared/directives/onlynumber.directive';
 const Import_Materail = [
   MatDialogModule,
   MatButtonModule,
@@ -68,6 +69,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     DefaultFooterComponent,
      DefaultHeaderComponent,
       DefaultLayoutComponent ,
+      
   ],
   imports:
     [
@@ -87,6 +89,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     },
     IconSetService
   ],
+ 
   bootstrap: [AppComponent]
 })
 export class AppModule {
