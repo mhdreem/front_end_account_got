@@ -4,16 +4,18 @@
             <c-col>
                 <mat-form-field class="fitContent" appearance="fill">
                     <mat-label>مبلغ مدين</mat-label>
-                    <input matInput [formControl]="creditor" (input)="onCreditorFilling()"
-                    id="creditor" (keyup.enter)="focusNext('account_type')">
+                    <input matInput [OnlyNumber]="true" id="{{'debtor_'+_index}}"
+                    [formControl]="debtor" (input)="onDebtorFilling()"
+                     (keyup.enter)="focusNext('creditor_'+ _index)">
                 </mat-form-field>
             </c-col>
 
             <c-col>
                 <mat-form-field class="fitContent" appearance="fill">
                     <mat-label>مبلغ دائن</mat-label>
-                    <input matInput [formControl]="debtor" (input)="onDebtorFilling()"
-                    id="debtor" (keyup.enter)="focusNext('account_type')">
+                    <input matInput [OnlyNumber]="true"  [formControl]="creditor"
+                    id="{{'creditor_'+_index}}" (input)="onCreditorFilling()"
+                    id="debtor" (keyup.enter)="focusNext('accounts_tree_fk_'+_index)">
                 </mat-form-field>
             </c-col>
         
@@ -22,9 +24,10 @@
             <c-col>
                 <mat-form-field class="fitContent" appearance="fill" >
                     <mat-label #label_accounts_tree_fk>رقم الحساب</mat-label>
-                    <input matInput [formControl]="accounts_tree_fk" [matAutocomplete]="autoaccounts_tree_fk" (input)="onAccountNameFilling()" 
-                            id="accounts_tree_fk" (keyup.enter)="focusNext('account_center_fk')" >
-                    <mat-autocomplete #autoaccounts_tree_fk="matAutocomplete"  (optionSelected)="onAccountNameSelecting($event)"
+                    <input matInput [formControl]="accounts_tree_fk" [matAutocomplete]="autoaccounts_tree_fk"
+                     id="{{'accounts_tree_fk_'+_index}}" (keyup.enter)="focusNext('account_center_fk_'+this._index)" >
+                    <mat-autocomplete #autoaccounts_tree_fk="matAutocomplete"
+                    (optionSelected)="Select_Accounts_Tree_Option($event)"
                     [displayWith]="display_Account_Tree_Property.bind(this)"
                     >
                         <mat-option *ngFor="let option of accounts_tree_filter | async" [value]="option.seq">
@@ -47,8 +50,9 @@
                 <mat-form-field class="fitContent" appearance="fill">
                     <mat-label>مركز الكلفة</mat-label>
                     <input matInput [formControl]="account_center_fk" [matAutocomplete]="autoaccount_center_fk"
-                            id="account_center_fk" (keyup.enter)="focusNext('account_id')">
-                    <mat-autocomplete #autoaccount_center_fk="matAutocomplete"  (optionSelected)="onAccountCenterSelecting($event)"
+                    id="{{'account_center_fk_'+_index}}" (keyup.enter)="focusNext('account_notice_'+this._index)">
+                    <mat-autocomplete #autoaccount_center_fk="matAutocomplete"
+                    (optionSelected)="Select_Account_Center_Option($event)"
                     [displayWith]="display_Account_Center_Property.bind(this)"
                     >
                         <mat-option *ngFor="let option of account_center_filter | async" [value]="option.account_center_seq">
@@ -58,19 +62,22 @@
                 </mat-form-field>
             </c-col>
 
-            <c-col>
-                <button mat-raised-button (click)="delete()" color="warn">حذف</button>
-            </c-col>
+            
         </c-row>
     
         <c-row>
-            <c-col>
-                <mat-form-field class="fitContent" appearance="fill" style="width: 80%;">
+            <c-col [cCol]="6">
+                <mat-form-field class="fitContent" appearance="fill" style="width: 100%;">
                     <mat-label>بيان الحساب</mat-label>
-                    <input matInput [formControl]="account_notice"
-                    id="account_notice" (keyup.enter)="focusNext('account_type')">
+                    <textarea cols="10" rows="5" matInput id="{{'account_notice_'+_index}}"
+                            [formControl]="account_notice"></textarea>
                 </mat-form-field>
 
+            </c-col>
+
+            <c-col style="margin-top: 40px;">
+                <button mat-raised-button (click)="delete()" color="warn"><mat-icon class="mat-icon-rtl-mirror">delete
+                </mat-icon> حذف</button>
             </c-col>
         </c-row>
     </form>

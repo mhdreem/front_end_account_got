@@ -142,9 +142,6 @@ output{
   margin-left: 10px;
 }
 
-mat-toolbar{
-  margin-bottom: 20px;
-}
 
 .con{
   display: flex;
@@ -225,10 +222,14 @@ mat-tree-node{
   }
 
   ::ng-deep .mat-expansion-indicator{
-    left: 1200px;
+    left: 1170px;
     position: relative;
   }
 
   button, span, mat-form-field,:ng-deep .mat-mdc-form-field , ::ng-deep mat-label, th, td, label, output{
     font-family: 'Noto Sans Arabic', sans-serif !important;
+}
+
+::ng-deep mat-expansion-panel-header{
+  padding: 0px 40px !important;
 }

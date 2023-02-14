@@ -19,16 +19,17 @@
 
     .right{
         display:flex;
+        flex-wrap: wrap;
         // align-items: baseline;
         
     }
   }
 
-  .inputGroup3, .inputGroup4, .inputGroup5, .left{
+  .inputGroup2 ,.inputGroup3, .inputGroup4, .inputGroup5, .left{
     margin-top: 30px;
   }
 
-  .inputGroup5{
+  .inputGroup2 ,.inputGroup3, .inputGroup4, .inputGroup5{
     margin-inline: 10px;
   }
 
@@ -70,7 +71,7 @@ mat-form-field ::ng-deep .mat-mdc-form-field-flex, mat-form-field ::ng-deep .mat
 
   form, .down{
     background-color: $lightBackground;
-    padding: 10px;
+    padding: 20px;
     margin-top: 10px;
   }
 
@@ -118,3 +119,10 @@ mat-form-field ::ng-deep .mat-mdc-form-field-flex, mat-form-field ::ng-deep .mat
   .date{
     width: fit-content;
   }
+
+  .title{
+    font-size: 18px;
+    text-decoration: underline;
+  }
+
+  

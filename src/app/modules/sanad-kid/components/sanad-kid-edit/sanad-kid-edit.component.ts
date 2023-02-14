@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
+import { branch } from 'src/app/modules/shared/models/branch';
 import { result } from 'src/app/modules/shared/models/result';
 import { sanad_kid } from 'src/app/modules/shared/models/sanad-kid';
 import { sanad_kid_book } from 'src/app/modules/shared/models/sanad_kid_book';
@@ -26,11 +27,6 @@ export class SanadKidEditComponent implements OnInit {
       event.preventDefault();
       this.save();
     }
-    if(event.keyCode == 114){
-      event.preventDefault();
-      this.attachments();
-    }
-    
   }
 
   get sanad_kid():sanad_kid 
@@ -46,6 +42,7 @@ export class SanadKidEditComponent implements OnInit {
   set sanad_kid(obj:sanad_kid) 
   {
     this.PageSanadKidService.sanad_kid= obj;
+    this.SetValue();
   }
 
   _Subscription: Subscription = new Subscription();
@@ -54,8 +51,8 @@ export class SanadKidEditComponent implements OnInit {
   sanad_kid_seq!: FormControl<number | null>;
   document_id!: FormControl<number | null>;
   document_date!: FormControl<Date | null>;
-  operation_type_fk!: FormControl<number | null>;
-  operation_code_fk!: FormControl<number | null>;
+  // operation_type_fk!: FormControl<number | null>;
+  // operation_code_fk!: FormControl<number | null>;
   incumbent_id!: FormControl<number | null>;
   incumbent_date!: FormControl<Date | null>;
   sanad_kid_type_fk!: FormControl<number | null>;
@@ -65,6 +62,8 @@ export class SanadKidEditComponent implements OnInit {
   sanad_close: FormControl<boolean | null>;
   name_of_owner: FormControl<string | null>;
   branch_fk: FormControl<number | null>;
+  branch: FormControl<branch | null>;
+
 
 
   selected_sanad_kid_book:sanad_kid_book ;
@@ -85,8 +84,6 @@ export class SanadKidEditComponent implements OnInit {
   incumbentDateDayIsFilled: boolean= false;
   incumbentDateMonthIsFilled: boolean= false;
   incumbentDateYearIsFilled: boolean= false;
-
-  selected_Sanad: sanad_kid= {};
 
   LoadingFinish : boolean;
 
@@ -196,8 +193,6 @@ export class SanadKidEditComponent implements OnInit {
             'sanad_kid_seq': this.sanad_kid_seq = new FormControl<number | null>(null, [Validators.required]),
             'document_id': this.document_id = new FormControl<number | null>(null, [Validators.required]),
             'document_date': this.document_date = new FormControl<Date | null>(null, [Validators.required]),
-            'operation_type_fk': this.operation_type_fk = new FormControl<number | null>(null, []),
-            'operation_code_fk': this.operation_code_fk = new FormControl<number | null>(null, []),
             'incumbent_date': this.incumbent_date = new FormControl<Date | null>(null, []),
             'incumbent_id': this.incumbent_id = new FormControl<number | null>(null, []),
             'sanad_close': this.sanad_close = new FormControl<boolean | null>(null, []),
@@ -207,7 +202,7 @@ export class SanadKidEditComponent implements OnInit {
             'name_of_owner': this.name_of_owner = new FormControl<string | null>(null, []),
             'sanad_kid_book':this.sanad_kid_book = new FormControl<sanad_kid_book | null>(null, []),
             'branch_fk':this.branch_fk = new FormControl<number | null>(null, []),
-
+            'branch': this.branch = new FormControl<branch | null>(null, []),
           },
           );
     
@@ -227,16 +222,13 @@ export class SanadKidEditComponent implements OnInit {
       let seq : number = this.route.snapshot.params['seq'];
       if (seq!= null && seq>0){
         this.sanadKidService.getBySeq(seq).subscribe((res: any) =>{
-          this.selected_Sanad = res.value;
-          this.sanad_kid= this.selected_Sanad;
-          if(this.sanad_kid.sanad_kid_details == null)
-            this.sanad_kid.sanad_kid_details= [];
-          this.SetValue();
+          this.sanad_kid= res.value;
         })
       }
       else{
         this.sanad_kid= {};
         this.sanad_kid.sanad_kid_details= [];
+        this.sanad_kid.sanad_kid_attachements= [];
       }
   
     }
@@ -245,8 +237,11 @@ export class SanadKidEditComponent implements OnInit {
 
 
   public SetValue() {
-    if (this.selected_Sanad != null && this.selected_Sanad.document_date != null){
-      this.document_date.setValue(this.selected_Sanad.document_date);
+    if (this.sanad_kid != null && this.sanad_kid.sanad_kid_seq != null)
+    this.sanad_kid_seq.setValue(this.sanad_kid?.sanad_kid_seq!);
+
+    if (this.sanad_kid != null && this.sanad_kid.document_date != null){
+      this.document_date.setValue(this.sanad_kid.document_date);
       this.sanadDateDay= moment(this.document_date.value).date()+'';
       this.sanadDateMonth= moment(this.document_date.value).month()+'';
       this.sanadDateYear= moment(this.document_date.value).year()+'';
@@ -255,38 +250,63 @@ export class SanadKidEditComponent implements OnInit {
       this.sanadDateYearIsFilled= true;
     }
 
-    if (this.selected_Sanad != null && this.selected_Sanad.incumbent_date != null)
-      this.incumbent_date.setValue(this.selected_Sanad?.incumbent_date!);
+    if (this.sanad_kid != null && this.sanad_kid.incumbent_date != null){
+      this.incumbent_date.setValue(this.sanad_kid?.incumbent_date!);
       this.incumbentDateDay= moment(this.incumbent_date.value).date()+'';
       this.incumbentDateMonth= moment(this.incumbent_date.value).month()+'';
       this.incumbentDateYear= moment(this.incumbent_date.value).year()+'';
       this.incumbentDateDayIsFilled= true;
       this.incumbentDateMonthIsFilled= true;
       this.incumbentDateYearIsFilled= true;
+    }
 
-    if (this.selected_Sanad != null && this.selected_Sanad.document_id != null)
-      this.document_id.setValue(this.selected_Sanad?.document_id!);
+    if (this.sanad_kid != null && this.sanad_kid.document_id != null)
+      this.document_id.setValue(this.sanad_kid?.document_id!);
 
       
-    if (this.selected_Sanad != null && this.selected_Sanad.incumbent_id != null)
-      this.incumbent_id.setValue(this.selected_Sanad?.incumbent_id!);
+    if (this.sanad_kid != null && this.sanad_kid.incumbent_id != null)
+      this.incumbent_id.setValue(this.sanad_kid?.incumbent_id!);
 
-    if (this.selected_Sanad != null && this.selected_Sanad.sanad_close != null)
-      this.sanad_close.setValue((this.selected_Sanad?.sanad_close==1? true:false)!);
+    if (this.sanad_kid != null && this.sanad_kid.sanad_close != null)
+      this.sanad_close.setValue((this.sanad_kid?.sanad_close==1? true:false)!);
 
-    if (this.selected_Sanad != null && this.selected_Sanad.name_of_owner != null)
-      this.name_of_owner.setValue(this.selected_Sanad?.name_of_owner!);
+      if (this.sanad_kid != null && this.sanad_kid.book_fk != null)
+      this.book_fk.setValue(this.sanad_kid?.book_fk!);
+
+
+      if (this.sanad_kid != null && this.sanad_kid.sanad_kid_book != null)
+      this.sanad_kid_book.setValue(this.sanad_kid?.sanad_kid_book!);
+
+
+    if (this.sanad_kid != null && this.sanad_kid.name_of_owner != null)
+      this.name_of_owner.setValue(this.sanad_kid?.name_of_owner!);
+      
+    if (this.sanad_kid != null && this.sanad_kid.sanad_kid_type_fk != null)
+      this.sanad_kid_type_fk.setValue(this.sanad_kid?.sanad_kid_type_fk!);
+    
+      if (this.sanad_total_value != null && this.sanad_kid.sanad_total_value != null)
+      this.sanad_total_value.setValue(this.sanad_kid?.sanad_total_value!);
 
     }
   
 
   getValue(){
-  this.selected_Sanad.document_date= moment(this.sanadDateMonth+'/'+this.sanadDateDay+'/'+this.sanadDateYear).set({hour: 4}).toDate();
-  this.selected_Sanad.incumbent_date= moment(this.incumbentDateMonth+'/'+this.incumbentDateDay+'/'+this.incumbentDateYear).set({hour: 4}).toDate();
-  this.selected_Sanad.document_id= this.document_id.value!;
-  this.selected_Sanad.incumbent_id= this.incumbent_id.value!;
-  this.selected_Sanad.sanad_close= (this.sanad_close.value==true? 1:0)!;
-  this.selected_Sanad.name_of_owner= this.name_of_owner.value!;
+    this.sanad_total_value.setValue(this.sum_details_debtor());
+    this.sanad_kid.sanad_total_value= this.sanad_total_value.value!;
+
+    this.sanad_kid.document_date= moment(this.sanadDateMonth+'/'+this.sanadDateDay+'/'+this.sanadDateYear).set({hour: 4}).toDate();
+    this.sanad_kid.incumbent_date= moment(this.incumbentDateMonth+'/'+this.incumbentDateDay+'/'+this.incumbentDateYear).set({hour: 4}).toDate();
+    this.sanad_kid.document_id= this.document_id.value!;
+    this.sanad_kid.incumbent_id= this.incumbent_id.value!;
+    this.sanad_kid.sanad_close= (this.sanad_close.value==true? 1:0)!;
+    this.sanad_kid.name_of_owner= this.name_of_owner.value!;
+    this.sanad_kid.sanad_kid_type_fk= this.sanad_kid_type_fk.value!;
+
+    this.sanad_kid.book_fk = this.book_fk.value!;
+    this.sanad_kid.sanad_kid_book = this.sanad_kid_book.value!;
+
+    this.sanad_kid.branch = this.branch.value!;
+    this.sanad_kid.branch_fk = this.branch_fk.value!;
   }
   
 
@@ -302,10 +322,6 @@ export class SanadKidEditComponent implements OnInit {
     if (element) {
       element.focus();
     }
-  }
-
-  attachments(){
-
   }
 
   accountCard(){
@@ -343,24 +359,116 @@ export class SanadKidEditComponent implements OnInit {
     }
     }
 
-  onDelete(index: number){
-    this.selected_Sanad= this.sanad_kid;
-    this.getValue();
-    this.selected_Sanad.sanad_kid_details?.splice(index, 1);
+    addAttachment() {
+      this.sanad_kid.sanad_kid_attachements?.push({ sanad_kid_fk: this.sanad_kid.sanad_kid_seq });
+      }
+   
+  
+    onAttachmentDelete(index: number) {
+      this.getValue();
+      this.sanad_kid.sanad_kid_attachements?.splice(index, 1);
+    }
+  
+  
+    onDetailsDelete(index: number) {
+      this.sum_details_creditor();
+      this.sum_details_debtor();    
+      this.sanad_kid.sanad_kid_details?.splice(index, 1);
+    }
+  
+  
+    addDetails() {
+      this.sanad_kid.sanad_kid_details?.push({ sanad_Kid_fk: this.sanad_kid.sanad_kid_seq });  
+      this.sum_details_creditor();
+      this.sum_details_debtor();
+    }
+
+    select_Book_Option(event: any) {
+
+      const selectedValue = event.option.value;
+  
+      if (selectedValue != null) {
+  
+        var books = this.List_sanad_kid_book.filter(x => x.sanad_kid_book_seq == selectedValue);
+        if (books != null && books.length > 0 && books[0].branch_fk != null) {
+          this.selected_sanad_kid_book = books[0];
+          this.branch_fk.setValue(books[0].branch_fk);
+          if (books[0].branch!= null)
+            this.branch.setValue(books[0].branch);
+  
+  
+        }
+  
+      }
+  
+    }
+
+    sum_details_debtor():number
+  {
+    if (this.sanad_kid!= null &&
+      this.sanad_kid.sanad_kid_details!= null &&
+      this.sanad_kid.sanad_kid_details.length>0)
+      {
+
+        let sum:number =0;
+         this.sanad_kid.sanad_kid_details.forEach(element => {
+           if (element.debtor!= null )  sum = sum  + (+element.debtor);  
+         }); 
+
+        return sum;
+
+      }
+
+      return 0;
+
+
   }
 
-  addDetails(){
-    this.sanad_kid.sanad_kid_details?.push({sanad_Kid_fk: this.sanad_kid.sanad_kid_seq});
-    console.log('this.sanad_kid', this.sanad_kid);
-    console.log('this.sanad_kid.sanad_kid_details', this.sanad_kid.sanad_kid_details);
+  sum_details_creditor():number
+  {
+    if (this.sanad_kid!= null &&
+      this.sanad_kid.sanad_kid_details!= null &&
+      this.sanad_kid.sanad_kid_details.length>0)
+      {
+
+        let sum:number =0;
+         this.sanad_kid.sanad_kid_details.forEach(element => {
+           if (element.creditor!= null )  sum = sum  + (+element.creditor);  
+         }); 
+         
+        return sum;
+
+      }
+      return 0;
   }
 
-  save(){
-    this.selected_Sanad= this.sanad_kid;
+  vaidate_details()
+  {
+
+
+  }
+
+  save_as_draft() {
+
+    this.sanad_kid_type_fk.setValue(2);
+
+    let Sum_Debt = this.sum_details_debtor();
+    let Sum_Creditor = this.sum_details_creditor();
+    if ( Sum_Debt!= Sum_Creditor)
+    {
+      this.snackBar.open('يجب أن يتساوى مجموع الدائن مع مجموع المدين', '', {
+        duration: 3000,
+        panelClass: ['red-snackbar'],
+      });
+      return ;
+
+    }
+
+    this.sanad_kid = this.sanad_kid;
     this.getValue();
-    if( this.selected_Sanad.sanad_kid_seq!= null && this.selected_Sanad.sanad_kid_seq > 0){
-      this.sanadKidService.update(this.selected_Sanad).subscribe(res=>{
-        if (res != null && (res as result)!= null &&  (res as result).success){
+    if (this.sanad_kid.sanad_kid_seq != null && this.sanad_kid.sanad_kid_seq > 0) {
+      this.sanadKidService.update(this.sanad_kid).subscribe(res => {
+        if (res != null && (res as result) != null && (res as result).success) {
           this.snackBar.open('تم الحفظ بنجاح', '', {
             duration: 3000,
             panelClass: ['green-snackbar'],
@@ -373,11 +481,11 @@ export class SanadKidEditComponent implements OnInit {
           });
       });
     }
-    else{
-      console.log('this.selected_Sanad', this.selected_Sanad);
-      this.sanadKidService.add(this.selected_Sanad).subscribe(res=>{
+    else {
+      console.log('this.sanad_kid', this.sanad_kid);
+      this.sanadKidService.add(this.sanad_kid).subscribe(res => {
         console.log('res', res);
-        if (res != null && (res as result)!= null &&  (res as result).success){
+        if (res != null && (res as result) != null && (res as result).success) {
           this.snackBar.open('تم الحفظ بنجاح', '', {
             duration: 3000,
             panelClass: ['green-snackbar'],
@@ -392,15 +500,60 @@ export class SanadKidEditComponent implements OnInit {
     }
   }
 
-  addAttachment(){
-    this.sanad_kid.sanad_kid_attachements?.push({sanad_kid_fk: this.sanad_kid.sanad_kid_seq});
-    // console.log('this.sanad_kid', this.sanad_kid);
-    // console.log('this.sanad_kid.sanad_kid_details', this.sanad_kid.sanad_kid_details);
+
+  save() {
+
+    this.sanad_kid_type_fk.setValue(1);
+    
+    let Sum_Debt = this.sum_details_debtor();
+    let Sum_Creditor = this.sum_details_creditor();
+    if ( Sum_Debt!= Sum_Creditor)
+    {
+
+      this.snackBar.open('يجب أن يتساوى مجموع الدائن مع مجموع المدين', '', {
+        duration: 3000,
+        panelClass: ['red-snackbar'],
+      });
+      return ;
+
+    }
+
+  
+    this.sanad_kid = this.sanad_kid;
+    this.getValue();
+    console.log('this.sanad_kid',this.sanad_kid);
+    if (this.sanad_kid.sanad_kid_seq != null && this.sanad_kid.sanad_kid_seq > 0) {
+      this.sanadKidService.update(this.sanad_kid).subscribe(res => {
+        if (res != null && (res as result) != null && (res as result).success) {
+          this.snackBar.open('تم الحفظ بنجاح', '', {
+            duration: 3000,
+            panelClass: ['green-snackbar'],
+          });
+        }
+        else
+          this.snackBar.open('حدث خطأ', '', {
+            duration: 3000,
+            panelClass: ['red-snackbar'],
+          });
+      });
+    }
+    else {
+      console.log('this.sanad_kid', this.sanad_kid);
+      this.sanadKidService.add(this.sanad_kid).subscribe(res => {
+        console.log('res', res);
+        if (res != null && (res as result) != null && (res as result).success) {
+          this.snackBar.open('تم الحفظ بنجاح', '', {
+            duration: 3000,
+            panelClass: ['green-snackbar'],
+          });
+        }
+        else
+          this.snackBar.open('حدث خطأ', '', {
+            duration: 3000,
+            panelClass: ['red-snackbar'],
+          });
+      });
+    }
   }
 
-  onAttachmentDelete(index: number){
-    this.selected_Sanad= this.sanad_kid;
-    this.getValue();
-    this.selected_Sanad.sanad_kid_attachements?.splice(index, 1);
-  }
 }

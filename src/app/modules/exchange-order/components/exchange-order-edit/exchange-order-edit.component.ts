@@ -144,6 +144,11 @@ export class ExchangeOrderEditComponent implements OnDestroy {
 
 
     }
+    else{
+      this.exchange_order= {};
+      this.exchange_order.exchange_order_details= [];
+      this.exchange_order.exchange_order_attachements= [];
+    }
 
 
   }
@@ -274,7 +279,7 @@ export class ExchangeOrderEditComponent implements OnDestroy {
       this.sanadDateYearIsFilled = true;
     }
 
-    if (this.exchange_order != null && this.exchange_order.incumbent_date != null)
+    if (this.exchange_order != null && this.exchange_order.incumbent_date != null){
       this.incumbent_date.setValue(this.exchange_order?.incumbent_date!);
     this.incumbentDateDay = moment(this.incumbent_date.value).date() + '';
     this.incumbentDateMonth = (moment(this.incumbent_date.value).month() + 1) + '';
@@ -282,6 +287,7 @@ export class ExchangeOrderEditComponent implements OnDestroy {
     this.incumbentDateDayIsFilled = true;
     this.incumbentDateMonthIsFilled = true;
     this.incumbentDateYearIsFilled = true;
+    }
 
 
     if (this.exchange_order != null && this.exchange_order.document_id != null)
@@ -305,15 +311,18 @@ export class ExchangeOrderEditComponent implements OnDestroy {
 
     if (this.exchange_order != null && this.exchange_order.total_value != null)
       this.total_value.setValue(this.exchange_order?.total_value!);
+    
+    if (this.exchange_order != null && this.exchange_order.exchange_order_type_fk != null)
+      this.exchange_order_type_fk.setValue(this.exchange_order?.exchange_order_type_fk!);
 
-      if (this.exchange_order != null && this.exchange_order.branch_fk != null)
+    if (this.exchange_order != null && this.exchange_order.branch_fk != null)
       this.branch_fk.setValue(this.exchange_order?.branch_fk!);
 
 
-      if (this.exchange_order != null && this.exchange_order.branch != null)
+    if (this.exchange_order != null && this.exchange_order.branch != null)
       this.branch.setValue(this.exchange_order?.branch!);
 
-      if (this.exchange_order != null && this.exchange_order.sanad_kid_fk != null)
+    if (this.exchange_order != null && this.exchange_order.sanad_kid_fk != null)
       this.sanad_kid_fk.setValue(this.exchange_order?.sanad_kid_fk!);
 
 
@@ -323,6 +332,7 @@ export class ExchangeOrderEditComponent implements OnDestroy {
   getValue() {
 
     this.total_value.setValue(this.sum_details_debtor());
+    this.exchange_order.total_value= this.total_value.value!;
 
     this.exchange_order.document_date = moment(this.sanadDateMonth + '/' + this.sanadDateDay + '/' + this.sanadDateYear).set({ hour: 4 }).toDate();
    
@@ -332,14 +342,14 @@ export class ExchangeOrderEditComponent implements OnDestroy {
     this.exchange_order.incumbent_id = this.incumbent_id.value!;
 
     this.exchange_order.book_fk = this.book_fk.value!;
-    this.exchange_order.sanad_kid = this.sanad_kid_book.value!;
+    this.exchange_order.sanad_kid_book = this.sanad_kid_book.value!;
+    this.exchange_order.exchange_order_type_fk= this.exchange_order_type_fk.value!;
 
     this.exchange_order.branch = this.branch.value!;
     this.exchange_order.branch_fk = this.branch_fk.value!;
 
 
 
-    this.exchange_order.incumbent_id = this.incumbent_id.value!;
     
 
     this.exchange_order.name_of_owner = this.name_of_owner.value!;
@@ -378,7 +388,6 @@ export class ExchangeOrderEditComponent implements OnDestroy {
  
 
   onAttachmentDelete(index: number) {
-    this.exchange_order = this.exchange_order;
     this.getValue();
     this.exchange_order.exchange_order_attachements?.splice(index, 1);
   }
@@ -473,6 +482,11 @@ export class ExchangeOrderEditComponent implements OnDestroy {
     let Sum_Creditor = this.sum_details_creditor();
     if ( Sum_Debt!= Sum_Creditor)
     {
+      this.snackBar.open('يجب أن يتساوى مجموع الدائن مع مجموع المدين', '', {
+        duration: 3000,
+        panelClass: ['red-snackbar'],
+      });
+      return ;
 
     }
 
@@ -522,7 +536,10 @@ export class ExchangeOrderEditComponent implements OnDestroy {
     if ( Sum_Debt!= Sum_Creditor)
     {
 
-      this.snackBar.open('dsdsd','dsdsdsdsd');
+      this.snackBar.open('يجب أن يتساوى مجموع الدائن مع مجموع المدين', '', {
+        duration: 3000,
+        panelClass: ['red-snackbar'],
+      });
       return ;
 
     }

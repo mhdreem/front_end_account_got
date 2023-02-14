@@ -35,39 +35,153 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
      // this.userservice.();
   }
 
-  anchorClicked(){
+  treeAnchorClicked(){
     this.navItems = [
       {
         name: 'شجرة الحسابات',
-        url: 'tree/module',
-        iconComponent: { name: 'cil-pencil' }
-      }
-      ,
-      {
-        name: 'سند القيد',
-        iconComponent: { name: 'cil-pencil' },
-        url: 'sanadKid/module',
-    
-      },  
-
-      {
-        name: 'أمر الصرف',
-        iconComponent: { name: 'cil-pencil' },
-        url: 'exchangeOrder/module',
-    
-      }, 
-      
-      {
-        name: 'جداول الترميز',
-        url: 'codingTable/module',
-        iconComponent: { name: 'cil-pencil' },
+        url: '/',
+        // iconComponent: { name: 'cil-speedometer' },
+        badge: {
+          color: 'info',
+          text: 'NEW'
+        }
       },
+  
+      {
+        name: 'عرض شجرة الحسابات' ,
+        url: 'tree/module/accountTree',
+        iconComponent: { name: 'cil-pencil' },
+    
+      },
+      
          
     ];
     this.navService.navItems_Subject.next(this.navItems);
   }
 
-  
+  sanadAnchorClicked(){
+    this.navItems = [
+      {
+        name: 'سند القيد',
+        url: '/',
+        // iconComponent: { name: 'cil-speedometer' },
+        badge: {
+          color: 'info',
+          text: 'NEW'
+        }
+      },
+      {
+        name: 'عرض سندات القيد' ,
+        url: 'sanadKid/module/sanadKid',
+        iconComponent: { name: 'cil-pencil' },
+    
+      },
+    ];
+    this.navService.navItems_Subject.next(this.navItems);
 
+  }
+
+  exchangeAnchorClicked(){
+    this.navItems = [
+      {
+        name: 'أمر الصرف',
+        url: '/',
+        // iconComponent: { name: 'cil-speedometer' },
+        badge: {
+          color: 'info',
+          text: 'NEW'
+        }
+      },
+      {
+        name: 'عرض أوامر الصرف' ,
+        url: 'exchangeOrder/module/exchangeOrder',
+        iconComponent: { name: 'cil-pencil' },
+    
+      },
+    ];
+    this.navService.navItems_Subject.next(this.navItems);
+
+  }
+
+  tableAnchorClicked(){
+    this.navItems = [
+      {
+        name: 'جداول التراميز',
+        url: '/',
+        // iconComponent: { name: 'cil-speedometer' },
+        badge: {
+          color: 'info',
+          text: 'NEW'
+        }
+      },
+      {
+        name: 'مركز الكلفة' ,
+        url: 'codingTable/module/accountCenter',
+        iconComponent: { name: 'cil-pencil' },
+      },
+      {
+        name: 'الفرع' ,
+        url: 'codingTable/module/branch',
+        iconComponent: { name: 'cil-pencil' },
+      },
+      {
+        name: 'القسم' ,
+        url: 'codingTable/module/department',
+        iconComponent: { name: 'cil-pencil' },
+      },
+      {
+        name: 'المستخدم' ,
+        url: 'codingTable/module/user',
+        iconComponent: { name: 'cil-pencil' },
+      },
+      {
+        name: 'القائمة المالية' ,
+        url: 'codingTable/module/finanaceList',
+        iconComponent: { name: 'cil-pencil' },
+      },
+      {
+        name: 'تصنيف الحساب' ,
+        url: 'codingTable/module/class',
+        iconComponent: { name: 'cil-pencil' },
+      },
+      {
+        name: 'الحساب الختامي' ,
+        url: 'codingTable/module/accountFinal',
+        iconComponent: { name: 'cil-pencil' },
+      },
+      {
+        name: 'مجموعة الحسابات' ,
+        url: 'codingTable/module/group',
+        iconComponent: { name: 'cil-pencil' },
+      },
+      {
+        name: 'مستوى الحساب' ,
+        url: 'codingTable/module/level',
+        iconComponent: { name: 'cil-pencil' },
+      },
+      {
+        name: 'نوع الحساب' ,
+        url: 'codingTable/module/type',
+        iconComponent: { name: 'cil-pencil' },
+      },
+      {
+        name: 'مرحلة أمر الصرف' ,
+        url: 'codingTable/module/exchangeOrderStage',
+        iconComponent: { name: 'cil-pencil' },
+      },
+      {
+        name: 'نوع المرفق' ,
+        url: 'codingTable/module/attachmentType',
+        iconComponent: { name: 'cil-pencil' },
+      },
+      {
+        name: 'دفتر سند القيد' ,
+        url: 'codingTable/module/sanadKidBook',
+        iconComponent: { name: 'cil-pencil' },
+      },
+    ];
+    this.navService.navItems_Subject.next(this.navItems);
+
+  }
   
 }

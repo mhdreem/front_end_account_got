@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, EventEmitter, Inject, Input, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { Component, HostListener, EventEmitter, Inject, Input, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as moment from 'moment';
@@ -17,6 +17,13 @@ import { PageExchangeOrderService } from '../../pageservice/page-exchange-order.
 })
 
 export class ExchangeOrderAttachmentsComponent implements OnDestroy {
+  @HostListener('window:keydown', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    // enter
+    if(event.keyCode == 13){
+      event.preventDefault();
+    }
+  }
   _index: number;
   @Output() onDelete: EventEmitter<number> = new EventEmitter();
 

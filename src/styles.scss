@@ -16,10 +16,9 @@ body {
     padding: 0;
     margin: 0!important;
     direction: rtl;
+    zoom: 90% !important;
   }
-  *{
-    font-family: 'Roboto' , Tahoma , sans-serif;
-}
+  
 html, body { height: 100%;margin: 0 }
 body { margin: 0; font-family: 'Roboto' , Tahoma , sans-serif; }
 
@@ -60,14 +59,14 @@ html,body
     padding-inline: 0px !important;
     // overflow-x: hidden !important; 
 }
-/* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+// /* Importing Bootstrap SCSS file. */
+// @import '~bootstrap/scss/bootstrap';
 
-/* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+// /* Importing Bootstrap SCSS file. */
+// @import '~bootstrap/scss/bootstrap';
 
-/* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+// /* Importing Bootstrap SCSS file. */
+// @import '~bootstrap/scss/bootstrap';
 
 // @media (max-width: 350px){
 //   body{
@@ -75,6 +74,6 @@ html,body
 //   }
 // }
 /* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+// @import '~bootstrap/scss/bootstrap';
 
 @import './theme.scss';

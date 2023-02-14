@@ -1,6 +1,6 @@
 import { ObserversModule } from '@angular/cdk/observers';
 import { DOCUMENT } from '@angular/common';
-import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, HostListener, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -21,6 +21,13 @@ import { validate_account_tree } from './validators/validate_account_tree';
   styleUrls: ['./sanad-kid-detail.component.scss']
 })
 export class SanadKidDetailComponent implements OnChanges, OnDestroy, OnInit {
+  @HostListener('window:keydown', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    // enter
+    if(event.keyCode == 13){
+      event.preventDefault();
+    }
+  }
   _index: number;
   @Output() onDelete: EventEmitter<number> = new EventEmitter();
 
@@ -98,8 +105,6 @@ export class SanadKidDetailComponent implements OnChanges, OnDestroy, OnInit {
     }
 
   }
-
-
 
   public BuildForm() {
     try {
@@ -258,6 +263,9 @@ export class SanadKidDetailComponent implements OnChanges, OnDestroy, OnInit {
       if (this.sanad_kid_detail != null && this.sanad_kid_detail.accounts_tree_fk != null)
         this.accounts_tree_fk.setValue(this.sanad_kid_detail.accounts_tree_fk);
 
+        if (this.sanad_kid_detail != null && this.sanad_kid_detail.accounts_tree != null)
+        this.accounts_tree.setValue(this.sanad_kid_detail.accounts_tree);
+
       if (this.sanad_kid_detail != null && this.sanad_kid_detail.account_notice != null)
         this.account_notice.setValue(this.sanad_kid_detail.account_notice);
 
@@ -329,15 +337,24 @@ export class SanadKidDetailComponent implements OnChanges, OnDestroy, OnInit {
     });
   }
 
-  onAccountNameFilling() {
-    if (this.accounts_tree_fk == null)
-      return;
-    this.account_center.addValidators([]);
-    if (
-      this.accounts_tree_fk.value != null &&
-      this.accounts_tree_fk.value.toString().charAt(0) == '3')
-      this.account_center.addValidators([Validators.required]);
+  Select_Accounts_Tree_Option(event: any) {
 
+    const selectedValue = event.option.value;
+
+    if (selectedValue != null) {
+
+      var accounts_trees = this.accounts_tree_list.filter(x => x.seq == selectedValue);
+      if (accounts_trees != null && accounts_trees.length > 0) {
+        this.accounts_tree.setValue(accounts_trees[0]);
+        if (accounts_trees[0].account_id?.toString().charAt(0)  == '3')
+          this.account_center_fk.addValidators([Validators.required]);
+        else 
+          this.account_center_fk.setValidators([]);
+  
+  
+      }
+
+    }
 
   }
 
@@ -349,12 +366,19 @@ export class SanadKidDetailComponent implements OnChanges, OnDestroy, OnInit {
     this.creditor.setValue(0);
   }
 
-  onAccountNameSelecting(account: any) {
-    this.accounts_tree = account;
-  }
+  Select_Account_Center_Option(event: any) {
 
-  onAccountCenterSelecting(center: any) {
-    this.account_center = center;
+    const selectedValue = event.option.value;
+
+    if (selectedValue != null) {
+
+      var account_centers = this.account_center_list.filter(x => x.account_center_seq == selectedValue);
+      if (account_centers != null && account_centers.length > 0) {
+        this.account_center.setValue(account_centers[0]);
+      }
+
+    }
+
   }
 
   public fieldHasErrors(form: any, field: string) {

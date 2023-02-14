@@ -4,7 +4,8 @@
             <c-col>
                 <mat-form-field class="fitContent" appearance="fill">
                     <mat-label>مبلغ مدين</mat-label>
-                    <input matInput [OnlyNumber]="true" id="{{'debtor_'+_index}}" [formControl]="debtor"(input)="onDebtorFilling()"    
+                    <input matInput [OnlyNumber]="true" id="{{'debtor_'+_index}}"
+                     [formControl]="debtor"(input)="onDebtorFilling()"    
                         (keyup.enter)="focusNext('creditor_'+ _index )"
                         >
                 </mat-form-field>
@@ -13,7 +14,8 @@
             <c-col>
                 <mat-form-field class="fitContent" appearance="fill">
                     <mat-label>مبلغ دائن</mat-label>
-                    <input matInput [OnlyNumber]="true"  [formControl]="creditor" (input)="onCreditorFilling()" id="{{'creditor_'+_index}}"
+                    <input matInput [OnlyNumber]="true"  [formControl]="creditor"
+                    (input)="onCreditorFilling()" id="{{'creditor_'+_index}}"
                         (keyup.enter)="focusNext( 'accounts_tree_fk_'+_index )">
                 </mat-form-field>
             </c-col>
@@ -66,16 +68,18 @@
         </c-row>
 
         <c-row>
-            <c-col>
-                <mat-form-field class="fitContent" appearance="fill" style="width: 80%;">
+            <c-col [cCol]="6">
+                <mat-form-field class="fitContent" appearance="fill" style="width: 100%;">
                     <mat-label>بيان الحساب</mat-label>
-                    <input matInput [formControl]="account_notice"  id="{{'account_notice_'+_index}}"   >
+                    <textarea cols="10" rows="5" matInput id="{{'account_notice_'+_index}}"
+                            [formControl]="account_notice"></textarea>
                 </mat-form-field>
 
             </c-col>
 
-            <c-col>
-                <button mat-raised-button (click)="delete()" color="warn">حذف</button>
+            <c-col style="margin-top: 40px;">
+                <button mat-raised-button (click)="delete()" color="warn"><mat-icon class="mat-icon-rtl-mirror">delete
+                </mat-icon> حذف</button>
             </c-col>
         </c-row>
     </form>

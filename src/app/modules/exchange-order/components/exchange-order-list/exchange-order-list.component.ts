@@ -24,7 +24,7 @@ import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-b
 })
 
 
-export class ExchangeOrderListComponent implements OnDestroy {
+export class ExchangeOrderListComponent implements OnInit, OnDestroy {
 
 
   @HostListener('window:keydown', ['$event'])

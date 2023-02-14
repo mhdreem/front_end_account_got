@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, EventEmitter, Inject, Input, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { Component, HostListener, EventEmitter, Inject, Input, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
@@ -10,7 +10,7 @@ import { account_centerService } from 'src/app/modules/shared/services/account-c
 import { AccountTreeService } from 'src/app/modules/shared/services/account-tree.service';
 import { FormValidationHelpersService } from 'src/app/modules/shared/services/form-validation-helpers.service';
 import { PageExchangeOrderService } from '../../pageservice/page-exchange-order.service';
-import { validate_account_tree } from '../../../sanad-kid/components/sanad-kid-detail/validators/validate_account_tree';
+import { validate_account_tree } from './validators/validate_account_tree';
 import { exchange_order_detail } from 'src/app/modules/shared/models/exchange_order_detail';
 
 @Component({
@@ -19,6 +19,13 @@ import { exchange_order_detail } from 'src/app/modules/shared/models/exchange_or
   styleUrls: ['./exchange-order-detail.component.scss']
 })
 export class ExchangeOrderDetailComponent implements OnDestroy {
+  @HostListener('window:keydown', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    // enter
+    if(event.keyCode == 13){
+      event.preventDefault();
+    }
+  }
   _index: number;
   @Output() onDelete: EventEmitter<number> = new EventEmitter();
 
@@ -72,7 +79,6 @@ export class ExchangeOrderDetailComponent implements OnDestroy {
   constructor(
     private fb: FormBuilder,
     private PageExchangeOrderService: PageExchangeOrderService,
-    private PageSanadKidService: PageSanadKidService,    
     @Inject(DOCUMENT) private _document: Document,
     private accountTreeService: AccountTreeService,
     private account_centerService: account_centerService,
@@ -119,7 +125,7 @@ export class ExchangeOrderDetailComponent implements OnDestroy {
   }
 
   ngOnInit() {
-    this.accounts_tree_fk.addAsyncValidators([validate_account_tree(this.PageSanadKidService, this.accounts_tree_fk.value)])
+    this.accounts_tree_fk.addAsyncValidators([validate_account_tree(this.PageExchangeOrderService, this.accounts_tree_fk.value)])
   }
 
 

@@ -22,12 +22,16 @@
     routerLink="./"
   >
   </c-sidebar-brand> -->
-  <div class="ps" style="position: relative; max-width: 600px; max-height: 470px;" [perfectScrollbar]="perfectScrollbarConfig">
+  
+  <div class="ps" style="position: relative; max-width: 600px; max-height: 470px;" >
     <!-- <button class="returnBtn" mat-raised-button (click)="onReturnClick()"><mat-icon class="return">expand_less</mat-icon></button> -->
+    <perfect-scrollbar>
       <c-sidebar-nav
-        [navItems]="navItems"
-      >
-      </c-sidebar-nav>
+      [navItems]="navItems"
+    >
+    </c-sidebar-nav>
+    </perfect-scrollbar>
+      
   </div>
     <!-- <perfect-scrollbar [config]="perfectScrollbarConfig">
       <button class="returnBtn" mat-raised-button (click)="onReturnClick()"><mat-icon class="return">expand_less</mat-icon></button>

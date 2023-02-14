@@ -20,6 +20,10 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatExpansionModule} from '@angular/material/expansion'; 
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { SanadKidAttachmentsComponent } from './components/sanad-kid-attachments/sanad-kid-attachments.component';
+import { OnlyNumber } from '../common-module/directives/onlynumber.directive';
+import {MatMenuModule} from '@angular/material/menu';
+import {AppModule} from '../../app.module'
+import {CommonModuleModule} from '../common-module/common-module.module'
 
 const Import_Corui = [
   GridModule
@@ -31,7 +35,8 @@ const Import_Corui = [
     SanadKidListComponent,
     SanadKidEditComponent,
     SanadKidDetailComponent,
-    SanadKidAttachmentsComponent
+    SanadKidAttachmentsComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -49,7 +54,9 @@ const Import_Corui = [
     MatButtonModule,
     MatExpansionModule,
     MatFormFieldModule,
-    Import_Corui
-  ]
+    MatMenuModule,
+    Import_Corui,
+    CommonModuleModule
+  ],
 })
 export class SanadKidModule { }
