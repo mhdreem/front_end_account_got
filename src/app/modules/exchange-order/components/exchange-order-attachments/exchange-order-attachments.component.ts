@@ -179,6 +179,7 @@ export class ExchangeOrderAttachmentsComponent implements OnDestroy {
     return this.attachment_type_list.filter(option => option.attachement_type_name != null && option.attachement_type_name.includes(filterValue));
   }
 
+  
   public display_Attachement_Type_Property(value: attachement_type): string {
     if (value && this.attachment_type_list) {
       let type: any = this.attachment_type_list.find(type => type.attachement_type_seq!.toString() == value);
@@ -188,6 +189,7 @@ export class ExchangeOrderAttachmentsComponent implements OnDestroy {
     }
     return '';
   }
+
 
 
   public SetValue() {
@@ -251,7 +253,6 @@ export class ExchangeOrderAttachmentsComponent implements OnDestroy {
 
     if (this.exchange_order_attachment != null && this.exchange_order_attachement_note.value != null)
       this.exchange_order_attachment.exchange_order_attachement_note = this.exchange_order_attachement_note.value;
-
   }
 
   
