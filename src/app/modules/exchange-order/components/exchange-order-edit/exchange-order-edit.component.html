@@ -47,7 +47,7 @@
                       <mat-label>العام</mat-label>
                       <input matInput placeholder="ex: 2023" (change)="sanadDateChange('year')"
                         [(ngModel)]='sanadDateYear' [ngModelOptions]="{standalone: true}" id="sanadDateYear"
-                        (keyup.enter)="focusNext('incumbentDateDay')">
+                        (keyup.enter)="focusNext('document_id')">
                     </mat-form-field>
                   </c-col>
                 </c-row>
@@ -58,7 +58,7 @@
               <mat-form-field appearance="fill" style="margin-top: 30px;">
                 <mat-label>رقم السند</mat-label>
                 <input matInput [OnlyNumber]="true" [formControl]="document_id" id="document_id"
-                  (keyup.enter)="focusNext('Book_fk')">
+                  (keyup.enter)="focusNext('incumbentDateDay')">
               </mat-form-field>
             </c-col>
 
@@ -99,7 +99,7 @@
               <mat-form-field appearance="fill" style="margin-top: 30px;">
                 <mat-label>رقم المذكرة</mat-label>
                 <input matInput [OnlyNumber]="true" [formControl]="incumbent_id" id="incumbent_id"
-                  (keyup.enter)="focusNext('document_id')">
+                  (keyup.enter)="focusNext('Book_fk')">
               </mat-form-field>
 
             </c-col>
