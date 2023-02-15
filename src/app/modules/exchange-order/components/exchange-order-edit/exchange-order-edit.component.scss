@@ -1,46 +1,10 @@
 @import '../../../../../theme.scss';
 
 
-.small-width{
-    width: 90px;
-    margin-left: 10px;
-  }
 
-  .date{
-    width: fit-content;
-  }
-
-  mat-form-field{
-    width: fit-content;
-  }
-
-  .up{
-    display: flex;
-
-    .right{
-        display:flex;
-        flex-wrap: wrap;
-        // align-items: baseline;
-        
-    }
-  }
-
-  .inputGroup2 ,.inputGroup3, .inputGroup4, .inputGroup5, .left{
-    margin-top: 30px;
-  }
-
-  .inputGroup2 ,.inputGroup3, .inputGroup4, .inputGroup5{
-    margin-inline: 10px;
-  }
-
-  .left {
-
-    span, button{
-        margin-left: 10px
-
-    }
-  }
-
+mat-form-field{
+  width: 100%;
+}
   
 mat-toolbar{
     margin-bottom: 20px;
