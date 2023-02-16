@@ -67,10 +67,13 @@ mat-form-field ::ng-deep .mat-mdc-form-field-flex, mat-form-field ::ng-deep .mat
     margin-block: 10px;
   }
 
-  form, .down{
+  c-card{
     background-color: $lightBackground;
     padding: 20px;
-    margin-top: 10px;
+  }
+
+  form{
+    width: 960px;
   }
 
   button{
@@ -104,4 +107,9 @@ mat-form-field ::ng-deep .mat-mdc-form-field-flex, mat-form-field ::ng-deep .mat
 .title{
   font-size: 18px;
   text-decoration: underline;
+}
+
+c-col{
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }

@@ -25,7 +25,7 @@ export class ExchangeOrderService {
   list()  {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     const options = {  headers: headers };  
-    return this.httpClient.get(this.RestUrl +"Sanad_Kid/list",options) as Observable<exchange_order[]>;  
+    return this.httpClient.get(this.RestUrl +"Exchange_Order/list",options) as Observable<exchange_order[]>;  
     
   }
 

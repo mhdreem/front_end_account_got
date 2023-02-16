@@ -490,7 +490,6 @@ export class ExchangeOrderEditComponent implements OnDestroy {
 
     }
 
-    this.exchange_order = this.exchange_order;
     this.getValue();
     if (this.exchange_order.exchange_order_seq != null && this.exchange_order.exchange_order_seq > 0) {
       this.exchangeOrderService.update(this.exchange_order).subscribe(res => {
@@ -545,7 +544,6 @@ export class ExchangeOrderEditComponent implements OnDestroy {
     }
 
   
-    this.exchange_order = this.exchange_order;
     this.getValue();
     if (this.exchange_order.exchange_order_seq != null && this.exchange_order.exchange_order_seq > 0) {
       this.exchangeOrderService.update(this.exchange_order).subscribe(res => {

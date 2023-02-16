@@ -4,14 +4,14 @@
                     <button mat-raised-button (click)="delete()" color="warn"><mat-icon class="mat-icon-rtl-mirror">delete
                         </mat-icon> حذف</button>
     
-                    <mat-form-field appearance="fill" style="margin-top: 30px; width: 180px;">
+                    <mat-form-field appearance="fill" style="margin-top: 30px; width: 165px;">
                         <mat-label>رقم المرفق</mat-label>
                         <input matInput [formControl]="exchange_order_attachement_id"
                             id="{{'exchange_order_attachement_id_'+_index}}" (keyup.enter)="focusNext('type_fk_'+_index)">
                     </mat-form-field>
     
     
-                    <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px; width: 180px;">
+                    <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px; width: 165px;">
                         <mat-label #label_accounts_tree_fk>نوع المرفق</mat-label>
                         <input matInput [formControl]="type_fk" [matAutocomplete]="autoattachement_type"
                             id="{{'type_fk_'+_index}}" (keyup.enter)="focusNext('attachmentDateDay_'+_index)">
@@ -27,7 +27,7 @@
                     </mat-form-field>
     
                         <div class="date">
-                            <span class="white" style="margin-bottom: 10px; display: block;  font-size: 16px;">تاريخ
+                            <span class="white" style="margin-bottom: 10px; display: block;  font-size: 14px;">تاريخ
                                 المرفق</span>
                                     <mat-form-field class="example-full-width small-width" appearance="fill">
                                         <mat-label>اليوم</mat-label>
@@ -56,7 +56,7 @@
     
           
     
-                <mat-form-field style="width: 750px;">
+                <mat-form-field style="width: 718px;">
                     <mat-label>بيان المرفق</mat-label>
                     <input matInput id="{{'exchange_order_attachement_note_'+_index}}"
                         [formControl]="exchange_order_attachement_note">

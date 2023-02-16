@@ -21,7 +21,6 @@ import {ExchangeOrderAttachmentsComponent} from './components/exchange-order-att
 import {MatExpansionModule} from '@angular/material/expansion';
 import { GridModule } from '@coreui/angular';
 import {MatMenuModule} from '@angular/material/menu';
-import { OnlyNumber } from '../common-module/directives/onlynumber.directive';
 import {CommonModuleModule} from '../common-module/common-module.module'
 import { CardModule } from '@coreui/angular';
 const Import_Corui = [
