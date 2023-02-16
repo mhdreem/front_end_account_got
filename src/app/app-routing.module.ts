@@ -17,7 +17,8 @@ const routes: Routes = [
   { path: 'tree', loadChildren: () => import('./modules/account-tree/account-tree.module').then(m => m.AccountTreeModule) },
   { path: 'codingTable', loadChildren: () => import('./modules/coding-tables/coding-tables.module').then(m => m.CodingTablesModule) },
   { path: 'exchangeOrder', loadChildren: () => import('./modules/exchange-order/exchange-order.module').then(m => m.ExchangeOrderModule) },
-  { path: 'payment-order', loadChildren: () => import('./modules/payment-order/payment-order.module').then(m => m.PaymentOrderModule) },
+  { path: 'paymentOrder', loadChildren: () => import('./modules/payment-order/payment-order.module').then(m => m.PaymentOrderModule) },
+  { path: 'receiptOrder', loadChildren: () => import('./modules/receipt-order/receipt-order.module').then(m => m.ReceiptOrderModule) },
 
     ]
 
@@ -49,6 +50,7 @@ const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
  
   { path: 'common-module', loadChildren: () => import('./modules/common-module/common-module.module').then(m => m.CommonModuleModule) },
+ 
  
   { path: '**', redirectTo: '' }
 ];

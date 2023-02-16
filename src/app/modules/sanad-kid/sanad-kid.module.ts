@@ -24,9 +24,11 @@ import { OnlyNumber } from '../common-module/directives/onlynumber.directive';
 import {MatMenuModule} from '@angular/material/menu';
 import {AppModule} from '../../app.module'
 import {CommonModuleModule} from '../common-module/common-module.module'
+import { CardModule } from '@coreui/angular';
 
 const Import_Corui = [
-  GridModule
+  GridModule,
+  CardModule
 ];
 
 @NgModule({

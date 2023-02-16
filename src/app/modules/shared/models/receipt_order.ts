@@ -25,7 +25,7 @@ export interface receipt_order
     month_document?: number;
     year_document?: number;
 
-    exchange_order_type_fk?: number;
+    receipt_order_type_fk?: number;
 
     book_fk?: number;
     sanad_kid_book?:sanad_kid_book;

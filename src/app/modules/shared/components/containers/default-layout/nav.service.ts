@@ -38,6 +38,18 @@ export class NavService {
   
     },  
     {
+      name: 'أمر الدفع',
+      iconComponent: { name: 'cil-pencil' },
+      url: 'paymentOrder/module',
+  
+    },  
+    {
+      name: 'أمر القبض',
+      iconComponent: { name: 'cil-pencil' },
+      url: 'receiptOrder/module',
+  
+    },  
+    {
       name: 'جداول الترميز',
       url: 'codingTable/module',
       iconComponent: { name: 'cil-pencil' },

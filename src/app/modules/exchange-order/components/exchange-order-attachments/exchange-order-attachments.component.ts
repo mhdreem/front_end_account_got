@@ -1,13 +1,11 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, HostListener, EventEmitter, Inject, Input, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import * as moment from 'moment';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
 import { attachement_type } from 'src/app/modules/shared/models/attachement_type';
 import { exchange_order_attachement } from 'src/app/modules/shared/models/exchange_order_attachement';
 import { AttachmentTypeService } from 'src/app/modules/shared/services/attachment-type.service';
-import { FormValidationHelpersService } from 'src/app/modules/shared/services/form-validation-helpers.service';
 import { PageExchangeOrderService } from '../../pageservice/page-exchange-order.service';
 
 @Component({

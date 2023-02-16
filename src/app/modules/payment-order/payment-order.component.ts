@@ -19,12 +19,12 @@ export class PaymentOrderComponent implements OnInit {
         text: 'NEW'
       }
     },
-    // {
-    //   name: 'عرض أوامر الصرف' ,
-    //   url: 'exchangeOrder/module/exchangeOrder',
-    //   iconComponent: { name: 'cil-pencil' },
+    {
+      name: 'عرض أوامر الدفع' ,
+      url: 'paymentOrder/module/paymentOrder',
+      iconComponent: { name: 'cil-pencil' },
   
-    // },
+    },
     
   ];
 

@@ -1,9 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, HostListener, EventEmitter, Inject, Input, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
-import { PageSanadKidService } from 'src/app/modules/sanad-kid/pageservice/page-sanad-kid.service';
 import { account_center } from 'src/app/modules/shared/models/account_center';
 import { accounts_tree } from 'src/app/modules/shared/models/accounts_tree';
 import { account_centerService } from 'src/app/modules/shared/services/account-center.service';

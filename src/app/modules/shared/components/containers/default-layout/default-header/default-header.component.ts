@@ -102,6 +102,50 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     this.navService.navItems_Subject.next(this.navItems);
 
   }
+  
+  paymentAnchorClicked(){
+    this.navItems = [
+      {
+        name: 'أمر الدفع',
+        url: '/',
+        // iconComponent: { name: 'cil-speedometer' },
+        badge: {
+          color: 'info',
+          text: 'NEW'
+        }
+      },
+      {
+        name: 'عرض أوامر الدفع' ,
+        url: 'paymentOrder/module/paymentOrder',
+        iconComponent: { name: 'cil-pencil' },
+    
+      },
+    ];
+    this.navService.navItems_Subject.next(this.navItems);
+
+  }
+  
+  receiptAnchorClicked(){
+    this.navItems = [
+      {
+        name: 'أمر القبض',
+        url: '/',
+        // iconComponent: { name: 'cil-speedometer' },
+        badge: {
+          color: 'info',
+          text: 'NEW'
+        }
+      },
+      {
+        name: 'عرض أوامر القبض' ,
+        url: 'receiptOrder/module/receiptOrder',
+        iconComponent: { name: 'cil-pencil' },
+    
+      },
+    ];
+    this.navService.navItems_Subject.next(this.navItems);
+
+  }
 
   tableAnchorClicked(){
     this.navItems = [
