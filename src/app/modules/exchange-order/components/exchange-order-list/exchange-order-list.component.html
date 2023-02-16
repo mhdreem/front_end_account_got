@@ -97,7 +97,20 @@
                         </div>
 
 
-                     
+                        <c-col xs="3">
+                            <mat-form-field appearance="fill">
+                              <mat-label>دفتر السندات</mat-label>
+                              <input matInput [formControl]="book_fk" [matAutocomplete]="auto_book_fk" id="Book_fk"
+                                (keyup.enter)="focusNext('name_of_owner')">
+                              <mat-autocomplete #auto_book_fk="matAutocomplete" (optionSelected)="select_Book_Option($event)"
+                                [displayWith]="display_Book_Property.bind(this)">
+                                <mat-option *ngFor="let option of book_filter | async"
+                                  [value]="option.sanad_kid_book_seq">
+                                  {{option.sanad_kid_book_name}}
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                          </c-col>
 
 
                         <mat-form-field class="fitContent" appearance="fill">

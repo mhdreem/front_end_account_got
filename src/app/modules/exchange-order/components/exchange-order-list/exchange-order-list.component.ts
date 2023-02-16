@@ -402,4 +402,24 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
   }
 
 
+
+  select_Book_Option(event: any) {
+
+    const selectedValue = event.option.value;
+
+    if (selectedValue != null) {
+
+      var books = this.book_list.filter(x => x.sanad_kid_book_seq == selectedValue);
+      if (books != null && books.length > 0 && books[0].branch_fk != null) {
+        
+        this.branch_fk.setValue(books[0].branch_fk);
+
+
+      }
+
+    }
+
+  }
+
+
 }
