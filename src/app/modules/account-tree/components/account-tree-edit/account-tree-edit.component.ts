@@ -4,12 +4,14 @@ import { FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
+import { account_center } from 'src/app/modules/shared/models/account_center';
 import { account_class } from 'src/app/modules/shared/models/account_class';
 import { account_final } from 'src/app/modules/shared/models/account_final';
 import { account_group } from 'src/app/modules/shared/models/account_group';
 import { account_level } from 'src/app/modules/shared/models/account_level';
 import { finance_list } from 'src/app/modules/shared/models/finance_list';
 import { result } from 'src/app/modules/shared/models/result';
+import { account_centerService } from 'src/app/modules/shared/services/account-center.service';
 import { AccountClassService } from 'src/app/modules/shared/services/account-class.service';
 import { AccountFinalService } from 'src/app/modules/shared/services/account-final.service';
 import { AccountGroupService } from 'src/app/modules/shared/services/account-group.service';
@@ -49,6 +51,8 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
   fax!: FormControl<number | undefined  | null>;
   address!: FormControl<string | undefined  | null>;
   notice!: FormControl<string | undefined  | null>;
+  account_center_fk!: FormControl<number | null>;
+  account_center!: FormControl<account_center | null>;
 
 
   accountLevel_List: account_level[] = [];
@@ -63,7 +67,9 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
   filteredAccountFinalOptions!: Observable<account_final[]>;
   parentAccountName_List: accounts_tree[] = [];
   filteredparentAccountNameOptions!: Observable<accounts_tree[]>;
-  
+  account_center_list: account_center[];
+  account_center_filter: Observable<account_center[]>;
+
   selected_Account: accounts_tree= {};
 
   LoadingFinish : boolean;
@@ -78,7 +84,8 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
     private accountClassService: AccountClassService,
     private financeListService: FinanceListService,
     private accountFinalService: AccountFinalService,
-    private accountTreeService: AccountTreeService) { 
+    private accountTreeService: AccountTreeService,
+    private account_centerService: account_centerService) { 
       this.LoadingFinish = true;
       this.BuildForm();
       this.Load_Data();
@@ -109,6 +116,8 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
             'fax:': this.fax = new FormControl<number | undefined>(undefined),
             'address:': this.address = new FormControl<string | undefined>(undefined),
             'notice:': this.notice = new FormControl<string | undefined>(undefined),
+            'account_center_fk': this.account_center_fk = new FormControl<number | null>(null, []),
+          'account_center': this.account_center = new FormControl<account_center | null>(null, []),
           },
         );
   
@@ -126,6 +135,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
         this.Load_FinanceList(),
         this.Load_AccountFinal(),
         this.Load_ParentAccountName(),
+        this.Load_Account_Center()
         ).subscribe(
           res => {
             this.accountLevel_List = res[0];
@@ -158,6 +168,12 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
           this.accountTreeService.List_AccountsTree = this.parentAccountName_List;
           this.accountTreeService.List_AccountsTree_BehaviorSubject.next(this.parentAccountName_List);
   
+          this.account_center_list = res[6];
+          this.account_center_filter = of(this.account_center_list);
+          this.account_centerService.List_account_center = this.account_center_list;
+          this.account_centerService.List_account_center_BehaviorSubject.next(this.account_center_list);
+
+
           if (this.data!.account!.seq != null)
             this.parentAccountName.setValue(this.parentAccountName_List.find(account=> account.seq == this.data!.account!.seq)?.account_name);
 
@@ -214,6 +230,14 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
               return this.accountTreeService.list();
             return of(this.accountTreeService.List_AccountsTree);
           }
+
+          Load_Account_Center(): Observable<account_center[]> {
+            if (this.account_centerService.List_account_center == null ||
+              this.account_centerService.List_account_center == undefined ||
+              this.account_centerService.List_account_center.length == 0)
+              return this.account_centerService.list();
+            return of(this.account_centerService.List_account_center);
+          }
         
         public async Init_AutoComplete() {
           try {
@@ -253,6 +277,11 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
                     map(value => value && typeof value === 'string' ? this._filterParentAccountName(value) : this.parentAccountName_List.slice())
                   );
           
+                  this.account_center_filter = this.account_center.valueChanges
+                    .pipe(
+                      startWith(''),
+                      map(value => value && typeof value === 'string' ? this._filter_Account_Center(value) : this.account_center_list.slice())
+                    );
             
       
           } catch (Exception: any) { }
@@ -292,6 +321,11 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
           const filterValue = value.toLowerCase();
       
           return this.parentAccountName_List.filter(option => option.seq == +filterValue);
+        }
+
+        private _filter_Account_Center(value: string): account_center[] {
+          const filterValue = value.toLowerCase();
+          return this.account_center_list.filter(option => (option.account_center_id != null && option.account_center_name != null) && (option.account_center_id.toString().includes(filterValue) || option.account_center_name.includes(filterValue)));
         }
         
         public displayAccountLevelProperty(value: string): string {
@@ -347,6 +381,16 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
           }
           return '';
         }
+
+        public display_Account_Center_Property(value: account_center): string {
+          if (value && this.account_center_list) {      
+            let center: any = this.account_center_list.find(center => center.account_center_seq!.toString() == value);      
+            if (center)
+              return center.account_center_name!;
+              
+          }
+          return '';
+        }
     
         ngOnDestroy(): void {
           this._Subscription.unsubscribe();
@@ -395,6 +439,9 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
       if (this.selected_Account != null && this.selected_Account.notice != null)
         this.notice.setValue(this.selected_Account.notice);
       
+      if (this.selected_Account != null && this.selected_Account.account_center_fk != null)
+        this.account_center_fk.setValue(this.selected_Account.account_center_fk);
+      
     } catch (ex: any) {
 
 
@@ -415,6 +462,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
     this.selected_Account.fax = this.fax.value+'' || undefined;
     this.selected_Account.address = this.address.value || undefined;
     this.selected_Account.notice = this.notice.value || undefined;
+    this.selected_Account.account_center_fk = this.account_center_fk.value || undefined;
     
     if (this.data.action == 'add'){
       this.selected_Account.account_parent_seq = this.parentAccountName_List.find(account=> account.account_name == this.parentAccountName.value)?.seq || undefined;;

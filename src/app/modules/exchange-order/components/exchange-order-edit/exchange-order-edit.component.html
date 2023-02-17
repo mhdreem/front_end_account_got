@@ -148,6 +148,7 @@
 
         <c-card-body class="card-body">
           <div class="detail" *ngFor="let attachment of exchange_order.exchange_order_attachements; let i=index;">
+            <div class="circle">{{i+1}}</div>
             <app-exchange-order-attachments [index]="i"
               (onDelete)="onAttachmentDelete($event)"></app-exchange-order-attachments>
           </div>
@@ -219,7 +220,8 @@
 
         <c-card-body class="card-body">
           <div class="detail" *ngFor="let details of exchange_order.exchange_order_details; let i=index;">
-            <app-exchange-order-detail [index]="i" (onDelete)="onDetailsDelete($event)"></app-exchange-order-detail>
+            <div class="circle">{{i+1}}</div>
+            <app-exchange-order-detail [index]="i" (onDelete)="onDetailsDelete($event)" (updateSum)="updateSum()"></app-exchange-order-detail>
           </div>
         </c-card-body>
         <c-card-footer>
@@ -229,4 +231,38 @@
     </c-col>
   </c-row>
 
+  <c-row>
+    <c-col [cCol]="2" class="mx-1">
+      <c-card class="mb-4 card">
+        <c-card-header class="card-header">مجموع مدين</c-card-header>
+        <c-card-body class="card-body">
+          <output>{{sumDebtor}}</output>
+        </c-card-body>
+      </c-card>
+    </c-col>
+    <c-col [cCol]="2" class="mx-1">
+      <c-card class="mb-4 card">
+        <c-card-header class="card-header">مجموع دائن</c-card-header>
+        <c-card-body class="card-body">
+          <output>{{sumCreditor}}</output>
+        </c-card-body>
+      </c-card>
+    </c-col>
+    <c-col [cCol]="2" class="mx-1">
+      <c-card class="mb-4 card">
+        <c-card-header class="card-header">الرصيد</c-card-header>
+        <c-card-body class="card-body">
+          <output>{{balance}}</output>
+        </c-card-body>
+      </c-card>
+    </c-col>
+    <c-col [cCol]="2" class="mx-1">
+      <c-card class="mb-4 card">
+        <c-card-header class="card-header">عدد الحركات</c-card-header>
+        <c-card-body class="card-body">
+          <output>{{actionNum}}</output>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
 </c-container>

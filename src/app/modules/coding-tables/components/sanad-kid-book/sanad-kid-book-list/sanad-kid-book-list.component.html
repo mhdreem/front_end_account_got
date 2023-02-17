@@ -56,12 +56,12 @@
 
             <ng-container matColumnDef="account_name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> اسم الحساب</th>
-                <td mat-cell *matCellDef="let element"> {{element.cash_accounts_tree.account_name}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.cash_accounts_tree?.account_name}} </td>
             </ng-container>
 
             <ng-container matColumnDef="branch_name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> اسم الفرع</th>
-                <td mat-cell *matCellDef="let element"> {{element.branch.branch_name}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.branch?.branch_name}} </td>
             </ng-container>
 
             <ng-container matColumnDef="incumbent_id_generate_type_fk">

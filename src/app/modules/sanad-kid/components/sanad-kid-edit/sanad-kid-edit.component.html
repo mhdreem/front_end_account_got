@@ -161,6 +161,7 @@
         <c-card-body class="card-body">
 
           <div class="detail" *ngFor="let attachment of sanad_kid.sanad_kid_attachements; let i=index;">
+            <div class="circle">{{i+1}}</div>
             <app-sanad-kid-attachments [index]="i" (onDelete)="onAttachmentDelete($event)"></app-sanad-kid-attachments>
           </div>
         </c-card-body>
@@ -179,12 +180,48 @@
           </c-card-header>
           <c-card-body class="card-body">
             <div class="detail" *ngFor="let detail of sanad_kid.sanad_kid_details; let i=index;">
-              <app-sanad-kid-detail [index]="i" (onDelete)="onDetailsDelete($event)"></app-sanad-kid-detail>
+              <div class="circle">{{i+1}}</div>
+              <app-sanad-kid-detail [index]="i" (onDelete)="onDetailsDelete($event)" (updateSum)="updateSum()"></app-sanad-kid-detail>
             </div>
           </c-card-body>
           <c-card-footer>
             <button class="add" mat-raised-button class="add" (click)="addDetails()">+إضافة معلومات للسند</button>
           </c-card-footer>
+        </c-card>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col [cCol]="2" class="mx-2">
+        <c-card class="mb-4 card">
+          <c-card-header class="card-header">مجموع مدين</c-card-header>
+          <c-card-body class="card-body">
+            <output>{{sumDebtor}}</output>
+          </c-card-body>
+        </c-card>
+      </c-col>
+      <c-col [cCol]="2">
+        <c-card class="mb-4 card">
+          <c-card-header class="card-header">مجموع دائن</c-card-header>
+          <c-card-body class="card-body">
+            <output>{{sumCreditor}}</output>
+          </c-card-body>
+        </c-card>
+      </c-col>
+      <c-col [cCol]="2" class="mx-1">
+        <c-card class="mb-4 card">
+          <c-card-header class="card-header">الرصيد</c-card-header>
+          <c-card-body class="card-body">
+            <output>{{balance}}</output>
+          </c-card-body>
+        </c-card>
+      </c-col>
+      <c-col [cCol]="2" class="mx-1">
+        <c-card class="mb-4 card">
+          <c-card-header class="card-header">عدد الحركات</c-card-header>
+          <c-card-body class="card-body">
+            <output>{{actionNum}}</output>
+          </c-card-body>
         </c-card>
       </c-col>
     </c-row>

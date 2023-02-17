@@ -61,9 +61,12 @@ export class SanadKidBookListComponent implements OnInit, OnDestroy {
     this.Subscription.add(
       this.sanadKidBookService.list().subscribe(
         res => {
-          if (res != null)
+          if (res != null){
+            console.log('res',res);
             this.sanadKidBook_List = res;
-          this.dataSource.data = this.sanadKidBook_List;
+            this.dataSource.data = this.sanadKidBook_List;
+
+          }
         }
       )
     );

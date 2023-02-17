@@ -87,6 +87,11 @@ export class SanadKidEditComponent implements OnInit {
 
   LoadingFinish : boolean;
 
+  sumCreditor: number= 0;
+  sumDebtor: number= 0;
+  balance: number= 0;
+  actionNum: number= 0;
+
   constructor(
     private router:Router,private route: ActivatedRoute,
     private fb: FormBuilder,
@@ -379,8 +384,14 @@ export class SanadKidEditComponent implements OnInit {
   
     addDetails() {
       this.sanad_kid.sanad_kid_details?.push({ sanad_Kid_fk: this.sanad_kid.sanad_kid_seq });  
+      this.actionNum= this.sanad_kid.sanad_kid_details?.length!;
       this.sum_details_creditor();
       this.sum_details_debtor();
+    }
+
+    updateSum(){
+      this.balance= this.sum_details_creditor()-  this.sum_details_debtor();
+
     }
 
     select_Book_Option(event: any) {
@@ -415,6 +426,7 @@ export class SanadKidEditComponent implements OnInit {
            if (element.debtor!= null )  sum = sum  + (+element.debtor);  
          }); 
 
+         this.sumDebtor= sum;
         return sum;
 
       }
@@ -436,6 +448,7 @@ export class SanadKidEditComponent implements OnInit {
            if (element.creditor!= null )  sum = sum  + (+element.creditor);  
          }); 
          
+        this.sumCreditor= sum;
         return sum;
 
       }

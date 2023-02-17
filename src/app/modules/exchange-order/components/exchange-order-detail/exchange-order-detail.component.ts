@@ -26,6 +26,7 @@ export class ExchangeOrderDetailComponent implements OnDestroy {
   }
   _index: number;
   @Output() onDelete: EventEmitter<number> = new EventEmitter();
+  @Output() updateSum: EventEmitter<number> = new EventEmitter();
 
   @Input() set index(i: number) {
     this._index = i;
@@ -342,11 +343,15 @@ export class ExchangeOrderDetailComponent implements OnDestroy {
 
   onCreditorFilling() {
     this.debtor.setValue(0);
+    this.updateSum.emit();
+
   }
 
 
   onDebtorFilling() {
     this.creditor.setValue(0);
+    this.updateSum.emit();
+
   }
 
 

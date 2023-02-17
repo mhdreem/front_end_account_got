@@ -1,3 +1,4 @@
+import { account_center } from "./account_center";
 import { account_class } from "./account_class";
 import { account_final } from "./account_final";
 import { account_group } from "./account_group";
@@ -38,6 +39,9 @@ export interface accounts_tree {
 
     balance_type_fk?: number;
     balance_type?: account_type;
+
+    account_center_fk?: number;
+    account_center?: account_center;
 
     address?: string;
     phone?: string;

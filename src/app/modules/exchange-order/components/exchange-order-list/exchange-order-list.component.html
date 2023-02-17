@@ -46,7 +46,7 @@
                 </mat-expansion-panel-header>
 
                 <form class="example-form" [formGroup]="Form" #form="ngForm">
-                    <div class="inputGroup1" style="display: flex; flex-direction: column;">
+                    <div class="inputGroup1" style="display: flex; flex-direction: column; margin-left: 10px; border-left: 1px solid #bbbbbb; padding-left: 10px;">
                         <div class="date">
                             <span class="white" style="margin-bottom: 10px; display: block;">من تاريخ سند</span>
                            
@@ -55,19 +55,19 @@
                                     <mat-label>اليوم</mat-label>
                                     <input matInput placeholder="ex: 21" (change)="fromSanadDateChange('day')"
                                         [(ngModel)]='fromSanadDateDay' [ngModelOptions]="{standalone: true}"
-                                        id="fromSanadDateDay" (keyup.enter)="focusNext('QararDateMonth')">
+                                        id="fromSanadDateDay" (keyup.enter)="focusNext('fromSanadDateMonth')">
                                 </mat-form-field>
                                 <mat-form-field class="example-full-width small-width" appearance="fill">
                                     <mat-label>الشهر</mat-label>
                                     <input matInput placeholder="ex: 1" (change)="fromSanadDateChange('month')"
                                         [(ngModel)]='fromSanadDateMonth' [ngModelOptions]="{standalone: true}"
-                                        id="fromSanadDateMonth" (keyup.enter)="focusNext('QararDateYear')">
+                                        id="fromSanadDateMonth" (keyup.enter)="focusNext('fromSanadDateYear')">
                                 </mat-form-field>
                                 <mat-form-field class="example-full-width small-width" appearance="fill">
                                     <mat-label>العام</mat-label>
                                     <input matInput placeholder="ex: 2023" (change)="fromSanadDateChange('year')"
                                         [(ngModel)]='fromSanadDateYear' [ngModelOptions]="{standalone: true}"
-                                        id="fromSanadDateYear" (keyup.enter)="focusNext('QararDateDay')">
+                                        id="fromSanadDateYear" (keyup.enter)="focusNext('toSanadDateDay')">
                                 </mat-form-field>
                             </div>
                         </div>
@@ -79,56 +79,45 @@
                                     <mat-label>اليوم</mat-label>
                                     <input matInput placeholder="ex: 21" (change)="toSanadDateChange('day')"
                                         [(ngModel)]='toSanadDateDay' [ngModelOptions]="{standalone: true}"
-                                        id="toSanadDateDay" (keyup.enter)="focusNext('QararDateMonth')">
+                                        id="toSanadDateDay" (keyup.enter)="focusNext('toSanadDateMonth')">
                                 </mat-form-field>
                                 <mat-form-field class="example-full-width small-width" appearance="fill">
                                     <mat-label>الشهر</mat-label>
                                     <input matInput placeholder="ex: 1" (change)="toSanadDateChange('month')"
                                         [(ngModel)]='toSanadDateMonth' [ngModelOptions]="{standalone: true}"
-                                        id="toSanadDateMonth" (keyup.enter)="focusNext('QararDateYear')">
+                                        id="toSanadDateMonth" (keyup.enter)="focusNext('toSanadDateYear')">
                                 </mat-form-field>
                                 <mat-form-field class="example-full-width small-width" appearance="fill">
                                     <mat-label>العام</mat-label>
                                     <input matInput placeholder="ex: 2023" (change)="toSanadDateChange('year')"
                                         [(ngModel)]='toSanadDateYear' [ngModelOptions]="{standalone: true}"
-                                        id="toSanadDateYear" (keyup.enter)="focusNext('QararDateDay')">
+                                        id="toSanadDateYear" (keyup.enter)="focusNext('fromIncumbentDateDay')">
                                 </mat-form-field>
                             </div>
                         </div>
 
 
-                        <c-col xs="3">
-                            <mat-form-field appearance="fill">
-                              <mat-label>دفتر السندات</mat-label>
-                              <input matInput [formControl]="book_fk" [matAutocomplete]="auto_book_fk" id="Book_fk"
+                        <mat-form-field class="fitContent" appearance="fill" style="width: 270px;">
+                            <mat-label>دفتر السندات</mat-label>
+                            <input matInput [formControl]="book_fk" 
+                            [matAutocomplete]="autoBook_fk" 
+                            id="book_fk"
                                 (keyup.enter)="focusNext('name_of_owner')">
-                              <mat-autocomplete #auto_book_fk="matAutocomplete" (optionSelected)="select_Book_Option($event)"
+                            <mat-autocomplete #autoBook_fk="matAutocomplete"
                                 [displayWith]="display_Book_Property.bind(this)">
                                 <mat-option *ngFor="let option of book_filter | async"
-                                  [value]="option.sanad_kid_book_seq">
-                                  {{option.sanad_kid_book_name}}
+                                    [value]="option.sanad_kid_book_seq">
+                                    {{option.sanad_kid_book_name}}
                                 </mat-option>
-                              </mat-autocomplete>
-                            </mat-form-field>
-                          </c-col>
-
-
-                        <mat-form-field class="fitContent" appearance="fill">
-                            <mat-label>من رقم سند</mat-label>
-                            <input matInput [formControl]="document_id_from" id="document_id_from"
-                                (keyup.enter)="focusNext('account_type')">
+                            </mat-autocomplete>
                         </mat-form-field>
 
 
-                        <mat-form-field class="fitContent" appearance="fill">
-                            <mat-label>الى رقم سند</mat-label>
-                            <input matInput [formControl]="document_id_to" id="document_id_to"
-                                (keyup.enter)="focusNext('account_type')">
-                        </mat-form-field>
+                        
 
                     </div>
 
-                    <div class="inputGroup2" style="display: flex; flex-direction: column;">
+                    <div class="inputGroup2" style="display: flex; flex-direction: column; margin-left: 10px; margin-left: 10px; border-left: 1px solid #bbbbbb; padding-left: 10px;">
                         <div class="date">
                             <span class="white" style="margin-bottom: 10px; display: block;">من تاريخ مذكرة</span>
                             <div class="content">
@@ -136,19 +125,19 @@
                                     <mat-label>اليوم</mat-label>
                                     <input matInput placeholder="ex: 21" (change)="fromIncumbentDateChange('day')"
                                         [(ngModel)]='fromIncumbentDateDay' [ngModelOptions]="{standalone: true}"
-                                        id="fromIncumbentDateDay" (keyup.enter)="focusNext('QararDateMonth')">
+                                        id="fromIncumbentDateDay" (keyup.enter)="focusNext('fromIncumbentDateMonth')">
                                 </mat-form-field>
                                 <mat-form-field class="example-full-width small-width" appearance="fill">
                                     <mat-label>الشهر</mat-label>
                                     <input matInput placeholder="ex: 1" (change)="fromIncumbentDateChange('month')"
                                         [(ngModel)]='fromIncumbentDateMonth' [ngModelOptions]="{standalone: true}"
-                                        id="fromIncumbentDateMonth" (keyup.enter)="focusNext('QararDateYear')">
+                                        id="fromIncumbentDateMonth" (keyup.enter)="focusNext('fromIncumbentDateYear')">
                                 </mat-form-field>
                                 <mat-form-field class="example-full-width small-width" appearance="fill">
                                     <mat-label>العام</mat-label>
                                     <input matInput placeholder="ex: 2023" (change)="fromIncumbentDateChange('year')"
                                         [(ngModel)]='fromIncumbentDateYear' [ngModelOptions]="{standalone: true}"
-                                        id="fromIncumbentDateYear" (keyup.enter)="focusNext('QararDateDay')">
+                                        id="fromIncumbentDateYear" (keyup.enter)="focusNext('toIncumbentDateDay')">
                                 </mat-form-field>
                             </div>
                         </div>
@@ -160,64 +149,73 @@
                                     <mat-label>اليوم</mat-label>
                                     <input matInput placeholder="ex: 21" (change)="toIncumbentDateChange('day')"
                                         [(ngModel)]='toIncumbentDateDay' [ngModelOptions]="{standalone: true}"
-                                        id="toIncumbentDateDay" (keyup.enter)="focusNext('QararDateMonth')">
+                                        id="toIncumbentDateDay" (keyup.enter)="focusNext('toIncumbentDateMonth')">
                                 </mat-form-field>
                                 <mat-form-field class="example-full-width small-width" appearance="fill">
                                     <mat-label>الشهر</mat-label>
                                     <input matInput placeholder="ex: 1" (change)="toIncumbentDateChange('month')"
                                         [(ngModel)]='toIncumbentDateMonth' [ngModelOptions]="{standalone: true}"
-                                        id="toIncumbentDateMonth" (keyup.enter)="focusNext('QararDateYear')">
+                                        id="toIncumbentDateMonth" (keyup.enter)="focusNext('toIncumbentDateYear')">
                                 </mat-form-field>
                                 <mat-form-field class="example-full-width small-width" appearance="fill">
                                     <mat-label>العام</mat-label>
                                     <input matInput placeholder="ex: 2023" (change)="toIncumbentDateChange('year')"
                                         [(ngModel)]='toIncumbentDateYear' [ngModelOptions]="{standalone: true}"
-                                        id="toIncumbentDateYear" (keyup.enter)="focusNext('QararDateDay')">
+                                        id="toIncumbentDateYear" (keyup.enter)="focusNext('document_id_from')">
                                 </mat-form-field>
                             </div>
                         </div>
 
-                        <mat-form-field class="fitContent" appearance="fill">
-                            <mat-label>من رقم مذكرة</mat-label>
-                            <input matInput [formControl]="incumbent_id_from" id="incumbent_id_from"
-                                (keyup.enter)="focusNext('account_type')">
+                        
+                        <mat-form-field class="fitContent" appearance="fill" style="width: 270px;">
+                            <mat-label>اسم صاحب الاستحقاق</mat-label>
+                            <input matInput [formControl]="name_of_owner" id="name_of_owner"
+                                (keyup.enter)="focusNext('attach')">
                         </mat-form-field>
-
-                        <mat-form-field class="fitContent" appearance="fill">
-                            <mat-label>الى رقم مذكرة</mat-label>
-                            <input matInput [formControl]="incumbent_id_to" id="incumbent_id_to"
-                                (keyup.enter)="focusNext('account_type')">
-                        </mat-form-field>
-
                         
 
                     </div>
 
-                    <div class="inputGroup3" style="display: flex; flex-direction: column; margin-top: 30px;">
-
+                    <div class="inputGroup3" style="display: flex; flex-direction: column; margin-top: 30px; margin-left: 10px;  border-left: 1px solid #bbbbbb;">
+                    
                         <mat-form-field class="fitContent" appearance="fill">
-                            <mat-label>رقم الدفتر</mat-label>
-                            <input matInput [formControl]="book_fk" 
-                            [matAutocomplete]="autoBook_fk" 
-                            id="book_fk"
-                                (keyup.enter)="focusNext('account_center_fk')">
-                            <mat-autocomplete #autoBook_fk="matAutocomplete"
-                                [displayWith]="display_Book_Property.bind(this)">
-                                <mat-option *ngFor="let option of book_filter | async"
-                                    [value]="option.sanad_kid_book_seq">
-                                    {{option.sanad_kid_book_name}}
-                                </mat-option>
-                            </mat-autocomplete>
+                            <mat-label>من رقم سند</mat-label>
+                            <input matInput [formControl]="document_id_from" id="document_id_from"
+                                (keyup.enter)="focusNext('document_id_to')">
                         </mat-form-field>
 
-                        <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px">
-                            <mat-label>اسم صاحب الاستحقاق</mat-label>
-                            <input matInput [formControl]="name_of_owner" id="name_of_owner"
+
+                        <mat-form-field class="fitContent" appearance="fill" style=" margin-top: 30px;">
+                            <mat-label>الى رقم سند</mat-label>
+                            <input matInput [formControl]="document_id_to" id="document_id_to"
+                                (keyup.enter)="focusNext('incumbent_id_from')">
+                        </mat-form-field>
+
+                        
+
+                        
+
+                        <mat-form-field class="fitContent" appearance="fill" >
+                            <mat-label>المرفق</mat-label>
+                            <input matInput [formControl]="attach" id="attach"
                                 (keyup.enter)="focusNext('account_type')">
                         </mat-form-field>
+
                     </div>
 
+                    <div class="inputGroup4" style="display: flex; flex-direction: column; margin-top: 30px; margin-left: 10px;">
+                        <mat-form-field class="fitContent" appearance="fill" >
+                            <mat-label>من رقم مذكرة</mat-label>
+                            <input matInput [formControl]="incumbent_id_from" id="incumbent_id_from"
+                                (keyup.enter)="focusNext('incumbent_id_to')">
+                        </mat-form-field>
 
+                        <mat-form-field class="fitContent" appearance="fill" style=" margin-top: 30px;">
+                            <mat-label>الى رقم مذكرة</mat-label>
+                            <input matInput [formControl]="incumbent_id_to" id="incumbent_id_to"
+                                (keyup.enter)="focusNext('book_fk')">
+                        </mat-form-field>
+                    </div>
 
                 </form>
 

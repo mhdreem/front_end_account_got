@@ -103,6 +103,11 @@ export class PaymentOrderEditComponent {
   currentPage = 1;
   pageSizeOptions: number[] = [5, 10, 25, 100];
 
+  sumCreditor: number= 0;
+  sumDebtor: number= 0;
+  balance: number= 0;
+  actionNum: number= 0;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -401,11 +406,15 @@ export class PaymentOrderEditComponent {
 
   addDetails() {
     this.payment_order.payment_order_details?.push({ payment_order_fk: this.payment_order.payment_order_seq });  
+    this.actionNum= this.payment_order.payment_order_details?.length!;
     this.sum_details_creditor();
     this.sum_details_debtor();
   }
 
+  updateSum(){
+    this.balance= this.sum_details_creditor()-  this.sum_details_debtor();
 
+  }
 
   select_Book_Option(event: any) {
 
@@ -440,6 +449,7 @@ export class PaymentOrderEditComponent {
            if (element.debtor!= null )  sum = sum  + (+element.debtor);  
          }); 
 
+        this.sumDebtor= sum;
         return sum;
 
       }
@@ -461,6 +471,7 @@ export class PaymentOrderEditComponent {
            if (element.creditor!= null )  sum = sum  + (+element.creditor);  
          }); 
          
+        this.sumCreditor= sum;
         return sum;
 
       }

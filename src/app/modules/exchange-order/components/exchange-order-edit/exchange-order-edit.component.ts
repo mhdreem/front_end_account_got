@@ -104,6 +104,11 @@ export class ExchangeOrderEditComponent implements OnDestroy {
   currentPage = 1;
   pageSizeOptions: number[] = [5, 10, 25, 100];
 
+  sumCreditor: number= 0;
+  sumDebtor: number= 0;
+  balance: number= 0;
+  actionNum: number= 0;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -402,11 +407,14 @@ export class ExchangeOrderEditComponent implements OnDestroy {
 
   addDetails() {
     this.exchange_order.exchange_order_details?.push({ exchange_order_fk: this.exchange_order.exchange_order_seq });  
+    this.actionNum= this.exchange_order.exchange_order_details?.length!;
     this.sum_details_creditor();
     this.sum_details_debtor();
   }
 
-
+updateSum(){
+      this.balance= this.sum_details_creditor()-  this.sum_details_debtor();
+    }
 
   select_Book_Option(event: any) {
 
@@ -440,7 +448,8 @@ export class ExchangeOrderEditComponent implements OnDestroy {
          this.exchange_order.exchange_order_details.forEach(element => {
            if (element.debtor!= null )  sum = sum  + (+element.debtor);  
          }); 
-
+         
+        this.sumDebtor= sum;
         return sum;
 
       }
@@ -462,6 +471,7 @@ export class ExchangeOrderEditComponent implements OnDestroy {
            if (element.creditor!= null )  sum = sum  + (+element.creditor);  
          }); 
          
+        this.sumCreditor= sum;
         return sum;
 
       }
