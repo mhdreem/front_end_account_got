@@ -15,7 +15,7 @@ export class SanadKidSearchBarComponent {
 
 Selected_Sanad: sanad_kid;
 
-PageIndex: number = 1;
+page_index: number = 1;
 
 from_number: FormControl<number|null> ;
 to_number:  FormControl<number|null> ;
@@ -37,21 +37,17 @@ constructor(
   public dialog: MatDialog,
   private sanadKidService: SanadKidService,
   @Inject(DOCUMENT) private _document: Document) {
-    this.PageIndex =1;
+    this.page_index =1;
     this.Form =this.fb.group({
-    'from_number':this.from_number = new  FormControl<number|null>(null) ,
-    'to_number':this.to_number=new  FormControl<number|null> (null),
-    'sanad_month':this.sanad_month=new  FormControl<number|null> (null),
-    'incumbent_month':this.incumbent_month=new  FormControl<number|null> (null),
+      
+    'incumbent_id_from':this.from_number = new  FormControl<number|null>(null) ,
+    'incumbent_id_to':this.to_number=new  FormControl<number|null> (null),
+    'month_incumbent':this.sanad_month= new  FormControl<number|null> (null),
+    'month_document':this.incumbent_month=new  FormControl<number|null> (null),
+    'page_index':this.incumbent_month=new  FormControl<number|null> (null),
     });
 
-    // this.pageService.Subject_Selected_ViewTBLSamelEmployeeSearch.subscribe(
-    //   data=>
-    //   {
-    //     this.RefreshList();
-    //   }
-    // )
-
+   
    }
 
 
@@ -59,28 +55,21 @@ ngOnInit(): void {
   
 }
 
-OnFromNumberChange(){
-  this.from_num_is_inserted= true;
-  this.numberChange();
-}
-
-OnToNumberChange(){
-  this.to_num_is_inserted= true;
-  this.numberChange();
-}
-
-numberChange(){
-  if (this.from_num_is_inserted && this.to_num_is_inserted)
-    this.RefreshList();
-}
-
-onKidMonthChange(){
+PerformSearch()
+{
+  this.sanad_list=[];
+  this.page_index=1;  
   this.RefreshList();
 }
 
-onIncumbentMonthChange(){
-  this.RefreshList();
+RefreshList()
+{    
+  this.sanadKidService.search(this.Form.value).subscribe((res: any) =>{  
+    this.sanad_list=[this.sanad_list ,... res] ;
+  });
+
 }
+
 
 SelectItemChange (Selected_Sanad: sanad_kid)
 {
@@ -92,19 +81,11 @@ SelectItemChange (Selected_Sanad: sanad_kid)
 
 
 
-RefreshList()
-{    
-  this.sanadKidService.search(this.Form.value).subscribe((res: any) =>{
-    this.sanad_list= res;
-  });
-
-}
 
 onScroll() {
-  // console.log(this.PageIndex);
-  // this.PageIndex = this.PageIndex + 1;
-  // console.log(this.PageIndex);
-  // this.RefreshList();
+   this.page_index = this.page_index + 1;
+   this.Form.controls['page_index'] .setValue( this.page_index);
+   this.RefreshList();
 }
 
 public ngOnDestroy (): void {

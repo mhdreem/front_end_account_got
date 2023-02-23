@@ -19,6 +19,11 @@ export interface accounts_tree {
 
     account_name?: string;
 
+
+   
+
+
+
     account_class_fk?: number;
     account_class?: account_class;
 
