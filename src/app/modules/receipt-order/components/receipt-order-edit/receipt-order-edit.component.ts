@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, HostListener, Inject, OnDestroy, ViewChild } from '@angular/core';
+import { Component, HostListener, Inject, OnDestroy, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -23,7 +23,7 @@ import { PageReceiptOrderService } from '../../pageservice/page-receipt-order.se
   templateUrl: './receipt-order-edit.component.html',
   styleUrls: ['./receipt-order-edit.component.scss']
 })
-export class ReceiptOrderEditComponent implements OnDestroy {
+export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewInit{
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.keyCode == 120) {
@@ -161,6 +161,10 @@ export class ReceiptOrderEditComponent implements OnDestroy {
   ngAfterViewInit() {
     this.dataSource_receipt_order_entry.paginator = this.paginator;
     this.dataSource_receipt_order_entry.sort = this.sort;
+
+    setTimeout(()=>{
+      document.querySelector('c-sidebar')?.classList.add('hide');
+    }, 1000);
   }
 
   public BuildForm() {

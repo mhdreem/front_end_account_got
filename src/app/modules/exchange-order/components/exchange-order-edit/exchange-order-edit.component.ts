@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, HostListener, Inject, OnDestroy, ViewChild } from '@angular/core';
+import { Component, HostListener, Inject, OnDestroy, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -22,7 +22,7 @@ import { PageExchangeOrderService } from '../../pageservice/page-exchange-order.
   templateUrl: './exchange-order-edit.component.html',
   styleUrls: ['./exchange-order-edit.component.scss']
 })
-export class ExchangeOrderEditComponent implements OnDestroy {
+export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewInit {
 
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -161,6 +161,10 @@ export class ExchangeOrderEditComponent implements OnDestroy {
   ngAfterViewInit() {
     this.dataSource_exchange_order_entry.paginator = this.paginator;
     this.dataSource_exchange_order_entry.sort = this.sort;
+
+    setTimeout(()=>{
+      document.querySelector('c-sidebar')?.classList.add('hide');
+    }, 1000);
   }
 
   public BuildForm() {

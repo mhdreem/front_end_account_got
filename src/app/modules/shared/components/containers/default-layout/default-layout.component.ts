@@ -8,7 +8,7 @@ import { IconSetService } from '@coreui/icons-angular';
 import { ReturnBtnService } from '../../../services/return-btn.service';
 // import { ThemeService } from '../../../services/theme.service';
 import { NavService } from './nav.service';
-import { cilPencil } from '@coreui/icons';
+import { cilPencil, cilMenu } from '@coreui/icons';
 
 @Component({
   selector: 'app-dashboard',
@@ -110,7 +110,7 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
     private router: Router,
     public iconSet: IconSetService
     ) {
-      iconSet.icons = {cilPencil};
+      iconSet.icons = {cilPencil, cilMenu};
       // this.load_User();
     this.navService.navItems_Subject.subscribe(
       data=>

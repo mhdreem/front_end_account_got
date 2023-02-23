@@ -23,7 +23,8 @@ import { ReceiptOrderComponent } from './receipt-order.component';
 import {ReceiptOrderAttachmentsComponent} from './components/receipt-order-attachments/receipt-order-attachments.component'
 import {ReceiptOrderDetailsComponent} from './components/receipt-order-details/receipt-order-details.component'
 import {ReceiptOrderEditComponent} from './components/receipt-order-edit/receipt-order-edit.component'
-import {ReceiptOrderListComponent} from './components/receipt-order-list/receipt-order-list.component'
+import {ReceiptOrderListComponent} from './components/receipt-order-list/receipt-order-list.component';
+import { ReceiptOrderSearchBarComponent } from './components/receipt-order-search-bar/receipt-order-search-bar.component'
 const Import_Corui = [
   GridModule,
   CardModule
@@ -36,6 +37,7 @@ const Import_Corui = [
     ReceiptOrderEditComponent,
     ReceiptOrderDetailsComponent,
     ReceiptOrderAttachmentsComponent,
+    ReceiptOrderSearchBarComponent,
   ],
   imports: [
     CommonModule,

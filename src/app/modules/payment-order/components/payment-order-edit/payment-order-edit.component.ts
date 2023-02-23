@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, HostListener, Inject, OnDestroy, ViewChild } from '@angular/core';
+import { Component, HostListener, Inject, OnDestroy, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -22,7 +22,7 @@ import { PagePaymentOrderService } from '../../pageservice/page-payment-order.se
   templateUrl: './payment-order-edit.component.html',
   styleUrls: ['./payment-order-edit.component.scss']
 })
-export class PaymentOrderEditComponent {
+export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.keyCode == 120) {
@@ -160,6 +160,10 @@ export class PaymentOrderEditComponent {
   ngAfterViewInit() {
     this.dataSource_payment_order_entry.paginator = this.paginator;
     this.dataSource_payment_order_entry.sort = this.sort;
+
+    setTimeout(()=>{
+      document.querySelector('c-sidebar')?.classList.add('hide');
+    }, 1000);
   }
 
   public BuildForm() {

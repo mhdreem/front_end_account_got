@@ -119,13 +119,18 @@ c-col{
 }
 
 output{
-  width: 120px;
-  height: 40px;
+  width: 80px;
+  height: 20px;
   background-color: $LightTableEven;
   color: black;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.smallCard{
+  width: 150px;
+  height: 110px;
 }
 
 .circle{
@@ -137,4 +142,8 @@ output{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+c-container.container{
+  max-width: 1600px !important;
 }

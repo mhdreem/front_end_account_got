@@ -146,6 +146,28 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     this.navService.navItems_Subject.next(this.navItems);
 
   }
+  
+  mrBookAnchorClicked(){
+    this.navItems = [
+      {
+        name: 'دفتر الأستاذ',
+        url: '/',
+        // iconComponent: { name: 'cil-speedometer' },
+        badge: {
+          color: 'info',
+          text: 'NEW'
+        }
+      },
+      {
+        name: 'عرض دفتر الأستاذ' ,
+        url: 'mrBook/module/mrBook',
+        iconComponent: { name: 'cil-pencil' },
+    
+      },
+    ];
+    this.navService.navItems_Subject.next(this.navItems);
+
+  }
 
   tableAnchorClicked(){
     this.navItems = [

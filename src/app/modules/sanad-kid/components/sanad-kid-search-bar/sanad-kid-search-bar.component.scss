@@ -1,0 +1,147 @@
+@import '../../../../../theme.scss';
+
+
+:host
+{
+    font-size: small;
+}
+
+.mat-form-field
+{
+    width: 100% !important;
+}
+
+
+.mat-form-field-infix
+{
+    width: 100% !important;
+}
+
+.mat-grid-tile
+{
+    font-size: medium!important;
+}
+
+.mat-icon
+{
+    font-size: smaller;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+
+
+.mat-button-toggle-group
+{
+    width: 100%;
+}
+
+.mat-button-toggle
+{
+    width:100%;
+}
+
+mat-list-item
+{
+    cursor: pointer; 
+}
+
+
+
+mat-list-item:hover {
+    background: #76b900 !important;
+  }
+
+  
+
+.darkTheme mat-form-field, .darkTheme ::ng-deep .mat-form-field-label{
+    color: white !important;
+}
+
+.darkTheme ::ngg-deep .mat-form-field-underline::before{
+    background-color: white !important;
+}
+
+.darkTheme mat-form-field ::ng-deep .mat-form-field-flex{
+    background-color: $darkSecondary !important;
+}
+
+.darkTheme button{
+    color: white !important;
+    background-color: $darkPrimary !important;
+  }
+
+  .darkTheme ::ng-deep .mat-grid-tile{
+    color: white;
+}
+
+.darkTheme ::ng-deep .mat-list-item{
+    background-color: $darkSecondary;
+    border: 1px solid $darkBackground;
+}
+
+.darkTheme mat-card{
+    background-color: $darkBackground;
+}
+
+.darkTheme h4{
+    color: white;
+}
+
+.darkTheme ::ng-deep .mat-form-field-label{
+    height: 19px !important;
+}
+
+.darkTheme mat-card-title h3{
+    color: white;
+}
+
+
+
+button{
+    color: white !important;
+    background-color: $lightPrimary !important;
+}
+
+mat-card{
+    background-color: $lightBackground;
+}
+
+::ng-deep .mat-list-item{
+    background-color: white;
+    border: 1px solid $lightBackground;
+}
+
+mat-form-field ::ng-deep .mat-form-field-flex{
+    background-color: white !important;
+}
+
+mat-form-field, ::ng-deep .mat-form-field-label{
+    color: black !important;
+}
+
+::ngg-deep .mat-form-field-underline::before{
+    background-color: black !important;
+}
+
+
+mat-form-field{
+    width: 150px;
+    margin-bottom: 10px;
+}
+
+mat-form-field ::ng-deep label, mat-form-field ::ng-deep input{
+    font-size: 11px !important;
+}
+
+h2{
+    text-align: center;
+}
+
+mat-card{
+    padding-block: 20px;
+}
+
+.theme{
+    padding: 20px
+}

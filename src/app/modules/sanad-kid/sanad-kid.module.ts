@@ -25,6 +25,13 @@ import {MatMenuModule} from '@angular/material/menu';
 import {AppModule} from '../../app.module'
 import {CommonModuleModule} from '../common-module/common-module.module'
 import { CardModule } from '@coreui/angular';
+import { SanadKidSearchBarComponent } from './components/sanad-kid-search-bar/sanad-kid-search-bar.component';
+import {MatSelectModule} from '@angular/material/select';
+import {MatCardModule} from '@angular/material/card';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatListModule} from '@angular/material/list';
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
 const Import_Corui = [
   GridModule,
@@ -38,6 +45,7 @@ const Import_Corui = [
     SanadKidEditComponent,
     SanadKidDetailComponent,
     SanadKidAttachmentsComponent,
+    SanadKidSearchBarComponent,
     
   ],
   imports: [
@@ -58,7 +66,13 @@ const Import_Corui = [
     MatFormFieldModule,
     MatMenuModule,
     Import_Corui,
-    CommonModuleModule
+    CommonModuleModule,
+    MatSelectModule,
+    MatCardModule,
+    MatGridListModule,
+    MatDividerModule,
+    MatListModule,
+    InfiniteScrollModule
   ],
 })
 export class SanadKidModule { }

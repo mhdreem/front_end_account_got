@@ -50,6 +50,12 @@ export class NavService {
   
     },  
     {
+      name: 'دفتر الأستاذ',
+      iconComponent: { name: 'cil-pencil' },
+      url: 'mrBook/module',
+  
+    },  
+    {
       name: 'جداول الترميز',
       url: 'codingTable/module',
       iconComponent: { name: 'cil-pencil' },

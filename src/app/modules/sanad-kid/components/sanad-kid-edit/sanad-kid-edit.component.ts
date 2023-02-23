@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit ,AfterViewInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -19,7 +19,7 @@ import { PageSanadKidService } from '../../pageservice/page-sanad-kid.service';
   templateUrl: './sanad-kid-edit.component.html',
   styleUrls: ['./sanad-kid-edit.component.scss']
 })
-export class SanadKidEditComponent implements OnInit {
+export class SanadKidEditComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -105,6 +105,11 @@ export class SanadKidEditComponent implements OnInit {
       this.loadData();
       
     }
+  ngAfterViewInit(): void {
+    setTimeout(()=>{
+      document.querySelector('c-sidebar')?.classList.add('hide');
+    }, 1000);
+  }
 
     load_sanad_kid_book():Observable<sanad_kid_book[]>
     {
@@ -235,9 +240,8 @@ export class SanadKidEditComponent implements OnInit {
         this.sanad_kid.sanad_kid_details= [];
         this.sanad_kid.sanad_kid_attachements= [];
       }
-  
+      
     }
-
 
 
 
