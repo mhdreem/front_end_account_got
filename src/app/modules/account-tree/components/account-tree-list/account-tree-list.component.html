@@ -70,13 +70,13 @@
                     <mat-form-field class="fitContent" appearance="fill">
                         <mat-label>من رقم حساب</mat-label>
                         <input type="number" matInput [formControl]="account_id_from"
-                                id="account_id_from" (keyup.enter)="focusNext('account_id_to')">
+                                id="account_id_from_list" (keyup.enter)="focusNext('account_id_to_list')">
                     </mat-form-field>
         
                     <mat-form-field class="fitContent" appearance="fill">
                         <mat-label>الى رقم حساب</mat-label>
                         <input type="number" matInput [formControl]="account_id_to"
-                                id="account_id_to" (keyup.enter)="focusNext('account_name')">
+                                id="account_id_to_list" (keyup.enter)="focusNext('account_name_list')">
                     </mat-form-field>
             
                     
@@ -88,13 +88,13 @@
                     <mat-form-field class="fitContent" appearance="fill">
                         <mat-label>اسم الحساب</mat-label>
                         <input matInput [formControl]="account_name"
-                                id="account_name" (keyup.enter)="focusNext('account_type')">
+                                id="account_name_list" (keyup.enter)="focusNext('account_type_list')">
                     </mat-form-field>
         
                     <mat-form-field class="fitContent" appearance="fill">
                         <mat-label>رصيد الحساب</mat-label>
                         <input matInput [formControl]="account_type_fk" [matAutocomplete]="autoaccountType"
-                                id="account_type" (keyup.enter)="focusNext('account_level')">
+                                id="account_type_list" (keyup.enter)="focusNext('account_level_list')">
                         <mat-autocomplete #autoaccountType="matAutocomplete" 
                         [displayWith]="displayAccountTypeProperty.bind(this)"
                         (optionSelected)="clearDataSource()">
@@ -113,7 +113,7 @@
                     <mat-form-field class="fitContent" appearance="fill">
                         <mat-label>مستوى الحساب</mat-label>
                         <input matInput [formControl]="account_level_fk" [matAutocomplete]="autoaccountLevel"
-                                id="account_level" (keyup.enter)="focusNext('account_group')">
+                                id="account_level_list" (keyup.enter)="focusNext('account_group_list')">
                         <mat-autocomplete #autoaccountLevel="matAutocomplete" 
                         [displayWith]="displayAccountLevelProperty.bind(this)"
                         (optionSelected)="clearDataSource()">
@@ -126,7 +126,7 @@
                     <mat-form-field class="fitContent" appearance="fill">
                         <mat-label>مجموعة الحساب</mat-label>
                         <input matInput [formControl]="account_group_fk" [matAutocomplete]="autoaccountGroup"
-                                id="account_group" (keyup.enter)="focusNext('account_class')">
+                                id="account_group_list" (keyup.enter)="focusNext('account_class_list')">
                         <mat-autocomplete #autoaccountGroup="matAutocomplete" 
                         [displayWith]="displayAccountGroupProperty.bind(this)"
                         (optionSelected)="clearDataSource()">
@@ -142,7 +142,7 @@
                     <mat-form-field class="fitContent" appearance="fill">
                         <mat-label>تصنيف الحساب</mat-label>
                         <input matInput [formControl]="account_class_fk" [matAutocomplete]="autoaccountClass"
-                                id="account_class" (keyup.enter)="focusNext('finance_list')">
+                                id="account_class_list" (keyup.enter)="focusNext('finance_list_list')">
                         <mat-autocomplete #autoaccountClass="matAutocomplete" 
                         [displayWith]="displayAccountClassProperty.bind(this)"
                         (optionSelected)="clearDataSource()">
@@ -155,7 +155,7 @@
                     <mat-form-field class="fitContent" appearance="fill">
                         <mat-label>القائمة المالية</mat-label>
                         <input matInput [formControl]="finance_list_fk" [matAutocomplete]="autofinanceList"
-                                id="finance_list" (keyup.enter)="focusNext('account_id_from')">
+                                id="finance_list_list" (keyup.enter)="focusNext('account_id_from_list')">
                         <mat-autocomplete #autofinanceList="matAutocomplete" 
                         [displayWith]="displayFinanceListProperty.bind(this)"
                         (optionSelected)="clearDataSource()">

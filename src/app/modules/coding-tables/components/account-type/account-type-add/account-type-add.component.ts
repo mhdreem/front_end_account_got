@@ -145,11 +145,11 @@ export class AccountTypeAddComponent {
           console.log('res',res);
           if (res != null && (res as result)!= null &&  (res as result).success)
           {
-            this.SnackBar.open('تمت الإضافة بنجاح','',{duration: 3000});
+            this.SnackBar.open('تمت الإضافة بنجاح','',{duration: 3000, panelClass: ['green-snackbar']});
             this.ResetForm();
           }else 
           {
-            this.SnackBar.open('لم تتم الإضافة بنجاح','',{});
+            this.SnackBar.open('لم تتم الإضافة بنجاح','',{panelClass: ['red-snackbar']});
           }
         },
         err => console.log('HTTP Error', err),

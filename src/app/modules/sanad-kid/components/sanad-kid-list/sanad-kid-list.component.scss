@@ -128,12 +128,15 @@ form{
     color: white;
   }
 
-output{
-  width: 80px;
-  height: 80px;
-  background-color: $LightTableEven;
-  color: black;
-}
+  output{
+    width: 80px;
+    height: 20px;
+    background-color: $LightTableEven;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
 .outputCon{
   display: flex;
@@ -223,7 +226,7 @@ mat-tree-node{
   }
 
   ::ng-deep .mat-expansion-indicator{
-    left: 1170px;
+    left: 1024px;
     position: relative;
   }
 
@@ -234,3 +237,21 @@ mat-tree-node{
 ::ng-deep mat-expansion-panel-header{
   padding: 0px 40px !important;
 }
+
+.smallCard{
+  width: 150px;
+  height: 110px;
+}
+
+::ng-deep c-card-header{
+  text-align: center;
+}
+
+c-card{
+  background-color: $lightBackground;
+  padding: 20px;
+}
+
+.inputGroup1, .inputGroup2, .inputGroup3, .inputGroup4, .inputGroup5, .inputGroup6, .inputGroup7{
+  border-left: 1px solid #bbbbbb;
+} 

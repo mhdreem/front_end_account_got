@@ -15,12 +15,12 @@ export class SanadKidSearchBarComponent {
 
 Selected_Sanad: sanad_kid;
 
-page_index: number = 1;
 
 from_number: FormControl<number|null> ;
 to_number:  FormControl<number|null> ;
 sanad_month:  FormControl<number|null> ;
 incumbent_month:  FormControl<number|null> ;
+page_index:  FormControl<number|null> ;
 
 sanad_list: sanad_kid[]= [];
 
@@ -37,14 +37,13 @@ constructor(
   public dialog: MatDialog,
   private sanadKidService: SanadKidService,
   @Inject(DOCUMENT) private _document: Document) {
-    this.page_index =1;
     this.Form =this.fb.group({
       
     'incumbent_id_from':this.from_number = new  FormControl<number|null>(null) ,
     'incumbent_id_to':this.to_number=new  FormControl<number|null> (null),
     'month_incumbent':this.sanad_month= new  FormControl<number|null> (null),
     'month_document':this.incumbent_month=new  FormControl<number|null> (null),
-    'page_index':this.incumbent_month=new  FormControl<number|null> (null),
+    'page_index':this.page_index=new  FormControl<number|null> (1),
     });
 
    
@@ -58,14 +57,15 @@ ngOnInit(): void {
 PerformSearch()
 {
   this.sanad_list=[];
-  this.page_index=1;  
+  this.page_index.setValue(1);  
   this.RefreshList();
 }
 
 RefreshList()
 {    
   this.sanadKidService.search(this.Form.value).subscribe((res: any) =>{  
-    this.sanad_list=[this.sanad_list ,... res] ;
+    console.log('res', res);
+    this.sanad_list=[this.sanad_list ,... res.value] ;
   });
 
 }
@@ -83,7 +83,7 @@ SelectItemChange (Selected_Sanad: sanad_kid)
 
 
 onScroll() {
-   this.page_index = this.page_index + 1;
+   this.page_index.setValue(this.page_index.value! + 1);
    this.Form.controls['page_index'] .setValue( this.page_index);
    this.RefreshList();
 }

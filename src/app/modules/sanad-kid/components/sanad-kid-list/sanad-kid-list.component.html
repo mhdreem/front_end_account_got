@@ -53,19 +53,19 @@
                                     <mat-label>اليوم</mat-label>
                                     <input  matInput placeholder="ex: 21" (change)="fromDateChange('day')"
                                     [(ngModel)]='fromDateDay' [ngModelOptions]="{standalone: true}"
-                                    id="fromDateDay" (keyup.enter)="focusNext('QararDateMonth')">
+                                    id="fromDateDay" (keyup.enter)="focusNext('fromDateMonth')">
                                   </mat-form-field>
                                   <mat-form-field class="example-full-width small-width" appearance="fill">
                                     <mat-label>الشهر</mat-label>
                                     <input  matInput placeholder="ex: 1" (change)="fromDateChange('month')"
                                     [(ngModel)]='fromDateMonth' [ngModelOptions]="{standalone: true}"
-                                    id="fromDateMonth" (keyup.enter)="focusNext('QararDateYear')">
+                                    id="fromDateMonth" (keyup.enter)="focusNext('fromDateYear')">
                                   </mat-form-field>
                                   <mat-form-field class="example-full-width small-width" appearance="fill">
                                     <mat-label>العام</mat-label>
                                     <input  matInput placeholder="ex: 2023" (change)="fromDateChange('year')"
                                     [(ngModel)]='fromDateYear' [ngModelOptions]="{standalone: true}"
-                                    id="fromDateYear" (keyup.enter)="focusNext('QararDateDay')">
+                                    id="fromDateYear" (keyup.enter)="focusNext('toDateDay')">
                                   </mat-form-field>
                                 </div>
                               </div>
@@ -77,19 +77,19 @@
                                     <mat-label>اليوم</mat-label>
                                     <input  matInput placeholder="ex: 21" (change)="toDateChange('day')"
                                     [(ngModel)]='toDateDay' [ngModelOptions]="{standalone: true}"
-                                    id="toDateDay" (keyup.enter)="focusNext('QararDateMonth')">
+                                    id="toDateDay" (keyup.enter)="focusNext('toDateMonth')">
                                   </mat-form-field>
                                   <mat-form-field class="example-full-width small-width" appearance="fill">
                                     <mat-label>الشهر</mat-label>
                                     <input  matInput placeholder="ex: 1" (change)="toDateChange('month')"
                                     [(ngModel)]='toDateMonth' [ngModelOptions]="{standalone: true}"
-                                    id="toDateMonth" (keyup.enter)="focusNext('QararDateYear')">
+                                    id="toDateMonth" (keyup.enter)="focusNext('toDateYear')">
                                   </mat-form-field>
                                   <mat-form-field class="example-full-width small-width" appearance="fill">
                                     <mat-label>العام</mat-label>
                                     <input  matInput placeholder="ex: 2023" (change)="toDateChange('year')"
                                     [(ngModel)]='toDateYear' [ngModelOptions]="{standalone: true}"
-                                    id="toDateYear" (keyup.enter)="focusNext('QararDateDay')">
+                                    id="toDateYear" (keyup.enter)="focusNext('sanad_kid_seq')">
                                   </mat-form-field>
                                 </div>
                               </div>
@@ -103,7 +103,7 @@
                             <mat-form-field class="fitContent" appearance="fill">
                                 <mat-label>رقم السند</mat-label>
                                 <input matInput [formControl]="sanad_kid_seq"
-                                        id="sanad_kid_seq" (keyup.enter)="focusNext('account_type')">
+                                        id="sanad_kid_seq" (keyup.enter)="focusNext('incumbent_id_from')">
                             </mat-form-field>
                             
                         </div>
@@ -121,13 +121,13 @@
                             <mat-form-field class="fitContent" appearance="fill">
                                 <mat-label>من رقم المذكرة</mat-label>
                                 <input matInput [formControl]="incumbent_id_from"
-                                        id="incumbent_id_from" (keyup.enter)="focusNext('account_type')">
+                                        id="incumbent_id_from" (keyup.enter)="focusNext('incumbent_id_to')">
                             </mat-form-field>
                 
                             <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px;">
                                 <mat-label>الى رقم المذكرة</mat-label>
                                 <input matInput [formControl]="incumbent_id_to"
-                                        id="incumbent_id_to" (keyup.enter)="focusNext('account_type')">
+                                        id="incumbent_id_to" (keyup.enter)="focusNext('sanad_kid_id_from')">
                             </mat-form-field>
                         </div>
                 
@@ -135,25 +135,25 @@
                             <mat-form-field class="fitContent" appearance="fill">
                                 <mat-label>من رقم سند</mat-label>
                                 <input matInput [formControl]="sanad_kid_id_from"
-                                        id="sanad_kid_id_from" (keyup.enter)="focusNext('account_type')">
+                                        id="sanad_kid_id_from" (keyup.enter)="focusNext('sanad_kid_id_to')">
                             </mat-form-field>
                 
                             <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px;">
                                 <mat-label>الى رقم سند</mat-label>
                                 <input matInput [formControl]="sanad_kid_id_to"
-                                        id="sanad_kid_id_to" (keyup.enter)="focusNext('account_type')">
+                                        id="sanad_kid_id_to" (keyup.enter)="focusNext('sanad_kid_id_to')">
                             </mat-form-field>
                         </div>
                 
                         <div class="inputGroup6" style="display: flex; flex-direction: column; margin-top: 30px; margin-left: 10px">
-                            <mat-checkbox [formControl]="sanad_close">سند إقفال</mat-checkbox>
+                            <mat-checkbox [formControl]="sanad_close" id="sanad_kid_id_to" (keyup.enter)="focusNext('name_of_owner')">سند إقفال</mat-checkbox>
                         </div>
                 
                         <div class="inputGroup7" style="display: flex; flex-direction: column; margin-top: 30px;">
                             <mat-form-field class="fitContent" appearance="fill">
                                 <mat-label>اسم صاحب الاستحقاق</mat-label>
                                 <input matInput [formControl]="name_of_owner"
-                                        id="name_of_owner" (keyup.enter)="focusNext('account_type')">
+                                        id="name_of_owner" (keyup.enter)="focusNext('fromDateDay')">
                             </mat-form-field>
                         </div>
                         
@@ -245,18 +245,24 @@
     <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
     [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>
     
-    <div class="statistics" style="display: flex; align-items: center;">
-        <div class="outputCon">
-            <label for="number">عدد السندات</label>
-            <output  id="number"></output>
-        </div>
-
-        <div class="outputCon">
-            <label for="total">اجمالي المبلغ</label>
-            <output  id="total"></output>
-        </div>
-    <!-- </div> -->
-    </div>
+    <c-row>
+        <c-col [cCol]="2">
+          <c-card class="my-4 card smallCard">
+            <c-card-header class="card-header">عدد السندات</c-card-header>
+            <c-card-body class="card-body">
+              <output id="number"></output>
+            </c-card-body>
+          </c-card>
+        </c-col>
+        <c-col [cCol]="2">
+          <c-card class="my-4 card smallCard">
+            <c-card-header class="card-header">اجمالي المبلغ</c-card-header>
+            <c-card-body class="card-body">
+              <output id="total"></output>
+            </c-card-body>
+          </c-card>
+        </c-col>
+    </c-row>
 
     
     

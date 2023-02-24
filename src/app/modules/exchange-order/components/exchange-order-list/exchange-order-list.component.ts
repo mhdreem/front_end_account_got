@@ -293,7 +293,7 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
       (res: any) => {
         console.log('res', res);
         let result: any[] = [];
-        result.push(res.value);
+        result.push(...res.value);
         this.dataSource.data = result;
         this.dataSource.paginator = this.paginator;
       }

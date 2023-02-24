@@ -1,6 +1,6 @@
 import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
@@ -79,7 +79,8 @@ export class SanadKidListComponent implements OnInit {
   sanad_kid_id_to!: FormControl<number | null>;
   sanad_close!: FormControl<number | null>;
   name_of_owner!: FormControl<string | null>;
-
+  page_index!: FormControl<number | null>;
+  row_count!: FormControl<number | null>;
   
 
   
@@ -132,6 +133,8 @@ export class SanadKidListComponent implements OnInit {
             'sanad_kid_id_to': this.sanad_kid_id_to = new FormControl<number | null>(null, []),
             'sanad_close': this.sanad_close = new FormControl<number | null>(null, []),
             'name_of_owner': this.name_of_owner = new FormControl<string | null>(null, []),
+            'page_index': this.page_index = new FormControl<number | null>(null, []),
+          'row_count': this.row_count = new FormControl<number | null>(null, []),
           }
         );
         
@@ -165,11 +168,23 @@ export class SanadKidListComponent implements OnInit {
     else this.rowClicked = idx;
   }
 
+  pageChanged(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex;
+    this.page_index.setValue(this.currentPage);
+    this.row_count.setValue(this.pageSize);
+    this.View();
+  }
+
   View(){
+    this.page_index.setValue(this.currentPage);
+    this.row_count.setValue(this.pageSize);
+
     this.sanadKidService.search(this.Form.value).subscribe(
       (res: any) =>{
+        console.log('res', res);
         let result: any[]=[];
-        result.push(res.value);
+        result.push(...res.value);
         this.dataSource.data = result;
         this.dataSource.paginator= this.paginator;
       }

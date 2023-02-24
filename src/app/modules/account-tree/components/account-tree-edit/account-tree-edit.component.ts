@@ -177,6 +177,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
           if (this.data!.account!.seq != null)
             this.parentAccountName.setValue(this.parentAccountName_List.find(account=> account.seq == this.data!.account!.seq)?.account_name);
 
+            this.Init_AutoComplete();
             this.LoadingFinish = true;
 
           }
@@ -277,7 +278,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
                     map(value => value && typeof value === 'string' ? this._filterParentAccountName(value) : this.parentAccountName_List.slice())
                   );
           
-                  this.account_center_filter = this.account_center.valueChanges
+                  this.account_center_filter = this.account_center_fk.valueChanges
                     .pipe(
                       startWith(''),
                       map(value => value && typeof value === 'string' ? this._filter_Account_Center(value) : this.account_center_list.slice())
@@ -290,37 +291,36 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
         private _filterAccountLevel(value: string): account_level[] {
           const filterValue = value.toLowerCase();
       
-          return this.accountLevel_List.filter(option => option.account_level_seq == +filterValue);
+          return this.accountLevel_List.filter(option => option.account_level_name!.toString().includes(filterValue));
         }
         
         private _filterAccountGroup(value: string): account_group[] {
           const filterValue = value.toLowerCase();
       
-          return this.accountGroup_List.filter(option => option.account_group_seq == +filterValue);
+          return this.accountGroup_List.filter(option => option.account_group_name!.toString().includes(filterValue));
         }
         
         private _filterAccountClass(value: string): account_class[] {
           const filterValue = value.toLowerCase();
       
-          return this.accountClass_List.filter(option => option.account_class_seq == +filterValue);
+          return this.accountClass_List.filter(option => option.account_class_name!.toString().includes(filterValue));
         }
         
         private _filterFinanceList(value: string): finance_list[] {
           const filterValue = value.toLowerCase();
           
-          return this.financeList_List.filter(option => option.finance_list_seq == +filterValue);
+          return this.financeList_List.filter(option => option.finance_list_name!.toString().includes(filterValue));
         }
         
         private _filterAccountFinal(value: string): account_final[] {
           const filterValue = value.toLowerCase();
-      
-          return this.accountFinal_List.filter(option => option.account_final_seq == +filterValue);
+          return this.accountFinal_List.filter(option => option.account_final_name!.toString().includes(filterValue));
         }
         
         private _filterParentAccountName(value: string): accounts_tree[] {
           const filterValue = value.toLowerCase();
       
-          return this.parentAccountName_List.filter(option => option.seq == +filterValue);
+          return this.parentAccountName_List.filter(option =>(option.account_id != null && option.account_name != null) && (option.account_id.toString().includes(filterValue) || option.account_name.includes(filterValue)));
         }
 
         private _filter_Account_Center(value: string): account_center[] {
