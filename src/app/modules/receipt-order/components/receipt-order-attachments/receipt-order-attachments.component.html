@@ -4,14 +4,14 @@
         <button mat-raised-button (click)="delete()" color="warn"><mat-icon class="mat-icon-rtl-mirror">delete
             </mat-icon> حذف</button>
 
-        <mat-form-field appearance="fill" style="margin-top: 30px; width: 165px;">
+        <mat-form-field appearance="fill" style="margin-top: 30px; width: 150px;">
             <mat-label>رقم المرفق</mat-label>
             <input matInput [formControl]="receipt_order_attachement_id"
-                id="{{'receipt_order_attachement_id'+_index}}" (keyup.enter)="focusNext('type_fk_'+_index)">
+                id="{{'receipt_order_attachement_id'+_index}}" (keyup.enter)="focusNext('type_fk_'+_index)" [OnlyNumber]="true">
         </mat-form-field>
 
 
-        <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px; width: 165px;">
+        <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px; width: 150px;">
             <mat-label #label_accounts_tree_fk>نوع المرفق</mat-label>
             <input matInput [formControl]="type_fk" [matAutocomplete]="autoattachement_type"
                 id="{{'type_fk_'+_index}}" (keyup.enter)="focusNext('attachmentDateDay_'+_index)">
@@ -34,7 +34,7 @@
                             <input matInput placeholder="ex: 21" (change)="attachmentDateChange('day')"
                                 [(ngModel)]='attachmentDateDay' [ngModelOptions]="{standalone: true}"
                                 id="{{'attachmentDateDay_'+_index}}"
-                                (keyup.enter)="focusNext('attachmentDateMonth_'+_index)">
+                                (keyup.enter)="focusNext('attachmentDateMonth_'+_index)" [OnlyNumber]="true">
                         </mat-form-field>
 
                         <mat-form-field class="example-full-width small-width" appearance="fill">
@@ -42,21 +42,21 @@
                             <input matInput placeholder="ex: 1" (change)="attachmentDateChange('month')"
                                 [(ngModel)]='attachmentDateMonth' [ngModelOptions]="{standalone: true}"
                                 id="{{'attachmentDateMonth_'+_index}}"
-                                (keyup.enter)="focusNext('attachmentDateYear_'+_index)">
+                                (keyup.enter)="focusNext('attachmentDateYear_'+_index)" [OnlyNumber]="true">
                         </mat-form-field>
                         <mat-form-field class="example-full-width small-width" appearance="fill">
                             <mat-label>العام</mat-label>
                             <input matInput placeholder="ex: 2023" (change)="attachmentDateChange('year')"
                                 [(ngModel)]='attachmentDateYear' [ngModelOptions]="{standalone: true}"
                                 id="{{'attachmentDateYear_'+_index}}"
-                                (keyup.enter)="focusNext('receipt_order_attachement_note'+_index)">
+                                (keyup.enter)="focusNext('receipt_order_attachement_note'+_index)" [OnlyNumber]="true">
                         </mat-form-field>
             </div>
 
 
 
 
-    <mat-form-field style="width: 718px;">
+    <mat-form-field style="width: 655px;">
         <mat-label>بيان المرفق</mat-label>
         <input matInput id="{{'receipt_order_attachement_note'+_index}}"
             [formControl]="receipt_order_attachement_note">

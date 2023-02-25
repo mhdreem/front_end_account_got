@@ -67,7 +67,7 @@
                             <mat-form-field>
                                 <mat-label>ترتيب الفرع</mat-label>
                                 <input matInput [formControl]="branch_order" id="branch_order"
-                                    (keyup.enter)="focusNext('account_center_name')">
+                                    (keyup.enter)="focusNext('account_center_name')" [OnlyNumber]="true">
                             </mat-form-field>
                         </c-col>
                     </c-row>

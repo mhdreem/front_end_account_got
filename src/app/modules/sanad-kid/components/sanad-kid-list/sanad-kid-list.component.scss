@@ -226,7 +226,7 @@ mat-tree-node{
   }
 
   ::ng-deep .mat-expansion-indicator{
-    left: 1024px;
+    left: 1175px;
     position: relative;
   }
 
@@ -252,6 +252,7 @@ c-card{
   padding: 20px;
 }
 
-.inputGroup1, .inputGroup2, .inputGroup3, .inputGroup4, .inputGroup5, .inputGroup6, .inputGroup7{
+.inputGroup1, .inputGroup2, .inputGroup3, .inputGroup4, .inputGroup5, .inputGroup7{
   border-left: 1px solid #bbbbbb;
+  margin-left: 20px;
 } 

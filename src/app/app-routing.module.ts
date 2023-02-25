@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './modules/shared/components/containers';
+import { LoginComponent } from './modules/shared/components/login/login.component';
+import { AuthGuardServiceService } from './modules/shared/services/auth-guard-service.service';
 
 
 const routes: Routes = [
@@ -13,7 +15,9 @@ const routes: Routes = [
     },
     children: [
   
-  { path: 'sanadKid', loadChildren: () => import('./modules/sanad-kid/sanad-kid.module').then(m => m.SanadKidModule) },
+  { path: 'sanadKid',
+  //  canActivate: [AuthGuardServiceService],
+   loadChildren: () => import('./modules/sanad-kid/sanad-kid.module').then(m => m.SanadKidModule) },
   { path: 'tree', loadChildren: () => import('./modules/account-tree/account-tree.module').then(m => m.AccountTreeModule) },
   { path: 'codingTable', loadChildren: () => import('./modules/coding-tables/coding-tables.module').then(m => m.CodingTablesModule) },
   { path: 'exchangeOrder', loadChildren: () => import('./modules/exchange-order/exchange-order.module').then(m => m.ExchangeOrderModule) },
@@ -47,6 +51,13 @@ const routes: Routes = [
   //     title: 'Page 500'
   //   }
   // },
+  {
+    path: 'login',
+    component: LoginComponent,
+    data: {
+      title: 'تسجيل الدخول'
+    }
+  },
 
   { path: '', redirectTo: '', pathMatch: 'full' },
  

@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParamsOptions } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { exchange_order } from '../models/exchange_order';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class ExchangeOrderService {
     headers: new HttpHeaders( { 'Content-Type': 'application/json;charset=UTF-8' }) 
  };
  
-  constructor(private httpClient : HttpClient) { }
+  constructor(private httpClient : HttpClient,
+    private userService :UserService ) { }
 
   list()  {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -41,7 +43,8 @@ export class ExchangeOrderService {
     const httpParams: HttpParamsOptions= { 'obj': obj } as HttpParamsOptions;
   
     const options = {  headers: headers };
-    return this.httpClient.post(this.RestUrl +"Exchange_Order/add",obj,options);  
+    let user_fk= this.userService.Login_User;
+    return this.httpClient.post(this.RestUrl +"Exchange_Order/add/"+user_fk,obj,options);  
   }
 
   update(obj : exchange_order )  {
@@ -49,7 +52,8 @@ export class ExchangeOrderService {
     const httpParams: HttpParamsOptions = { 'obj': obj } as HttpParamsOptions;
   
     const options = {  headers: headers };
-    return this.httpClient.put(this.RestUrl +"Exchange_Order/update",obj,options);  
+    let user_fk= this.userService.Login_User;
+    return this.httpClient.put(this.RestUrl +"Exchange_Order/update/"+user_fk,obj,options);  
   }
 
   search(req : any )  {

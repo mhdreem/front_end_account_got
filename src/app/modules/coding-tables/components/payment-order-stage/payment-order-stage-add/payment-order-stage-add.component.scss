@@ -1,0 +1,55 @@
+@import '../../../../../../theme.scss';
+
+::ng-deep .mat-mdc-form-field-label{
+    height: 19px !important;
+}
+
+
+
+mat-form-field, ::ng-deep .mat-mdc-form-field-label{
+    color: black !important;
+}
+
+.save{
+    color: white !important;
+    background-color: $lightPrimary !important;
+}
+
+::ng-deep .mat-mdc-form-field-underline::before{
+    background-color: black !important;
+}
+
+mat-form-field ::ng-deep .mat-mdc-form-field-flex{
+    background-color: $lightBackground !important;
+    padding-inline: 10px;
+}
+
+mat-checkbox{
+    margin-right: 40px;
+}
+
+.add, .edit{
+    color: white !important;
+    background-color: $lightPrimary !important;
+  }
+
+  .add:disabled, .edit:disabled{
+    background-color: rgba(0,0,0,.12) !important;
+    color: rgba(0,0,0,.26);
+}
+
+form{
+    direction: rtl;
+}
+
+button{
+    margin-left: 10px;
+}
+
+button, span, mat-form-field,:ng-deep .mat-mdc-form-field , ::ng-deep mat-label, th, td, label, output{
+    font-family: 'Noto Sans Arabic', sans-serif !important;
+}
+
+button{
+    font-weight: 700;
+}

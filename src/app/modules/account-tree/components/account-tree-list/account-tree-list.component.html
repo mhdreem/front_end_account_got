@@ -70,13 +70,13 @@
                     <mat-form-field class="fitContent" appearance="fill">
                         <mat-label>من رقم حساب</mat-label>
                         <input type="number" matInput [formControl]="account_id_from"
-                                id="account_id_from_list" (keyup.enter)="focusNext('account_id_to_list')">
+                                id="account_id_from_list" (keyup.enter)="focusNext('account_id_to_list')" [OnlyNumber]="true">
                     </mat-form-field>
         
                     <mat-form-field class="fitContent" appearance="fill">
                         <mat-label>الى رقم حساب</mat-label>
                         <input type="number" matInput [formControl]="account_id_to"
-                                id="account_id_to_list" (keyup.enter)="focusNext('account_name_list')">
+                                id="account_id_to_list" (keyup.enter)="focusNext('account_name_list')" [OnlyNumber]="true">
                     </mat-form-field>
             
                     
@@ -94,7 +94,7 @@
                     <mat-form-field class="fitContent" appearance="fill">
                         <mat-label>رصيد الحساب</mat-label>
                         <input matInput [formControl]="account_type_fk" [matAutocomplete]="autoaccountType"
-                                id="account_type_list" (keyup.enter)="focusNext('account_level_list')">
+                                id="account_type_list" (keyup.enter)="focusNext('account_level_list')" [OnlyNumber]="true">
                         <mat-autocomplete #autoaccountType="matAutocomplete" 
                         [displayWith]="displayAccountTypeProperty.bind(this)"
                         (optionSelected)="clearDataSource()">
@@ -155,7 +155,7 @@
                     <mat-form-field class="fitContent" appearance="fill">
                         <mat-label>القائمة المالية</mat-label>
                         <input matInput [formControl]="finance_list_fk" [matAutocomplete]="autofinanceList"
-                                id="finance_list_list" (keyup.enter)="focusNext('account_id_from_list')">
+                                id="finance_list_list" (keyup.enter)="focusNext('branch_fk_list')">
                         <mat-autocomplete #autofinanceList="matAutocomplete" 
                         [displayWith]="displayFinanceListProperty.bind(this)"
                         (optionSelected)="clearDataSource()">
@@ -165,6 +165,20 @@
                         </mat-autocomplete>
                     </mat-form-field>
             
+                </div>
+                <div class="inputGroup5" style="display: flex; flex-direction: column;">
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label>الفرع</mat-label>
+                        <input matInput [formControl]="branch_fk" [matAutocomplete]="autobranch"
+                                id="branch_fk_list" >
+                        <mat-autocomplete #autobranch="matAutocomplete" 
+                        [displayWith]="displayBranchProperty.bind(this)"
+                        >
+                            <mat-option *ngFor="let option of filteredBranchOptions | async" [value]="option.branch_seq">
+                            {{option.branch_name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
                 </div>
                 
             </form>

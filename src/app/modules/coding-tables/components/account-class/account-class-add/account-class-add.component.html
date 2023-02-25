@@ -35,7 +35,7 @@
                             <mat-form-field>
                                 <mat-label>ترتيب تصنيف الحساب</mat-label>
                                 <input matInput [formControl]="account_class_order" id="account_class_order"
-                                    (keyup.enter)="focusNext('account_class_order')">
+                                    (keyup.enter)="focusNext('account_class_order')" [OnlyNumber]="true">
                             </mat-form-field>
                         </c-col>
                     </c-row>

@@ -17,7 +17,7 @@
                         <c-col>
                             <mat-form-field >
                                 <mat-label #label_ex_ord_stg_name>اسم مرحلة أمر الصرف</mat-label>
-                                <input matInput [formControl]="ex_ord_stg_name" id="ex_ord_stg_name">
+                                <input matInput [formControl]="ex_ord_stg_name" id="ex_ord_stg_name" (keyup.enter)="focusNext('ex_ord_stg_order')">
                                 <mat-error *ngIf="fieldHasErrors(Form, 'ex_ord_stg_name')">
                                     {{
                                     autoPrintFirstErrorMessage(
@@ -37,7 +37,7 @@
                             <mat-form-field>
                                 <mat-label>ترتيب مرحلة أمر الصرف</mat-label>
                                 <input matInput [formControl]="ex_ord_stg_order" id="ex_ord_stg_order"
-                                    (keyup.enter)="focusNext('account_center_name')">
+                                     [OnlyNumber]="true">
                             </mat-form-field>
                         </c-col>
                     </c-row>

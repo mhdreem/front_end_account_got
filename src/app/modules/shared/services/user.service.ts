@@ -8,8 +8,10 @@ import { user } from '../models/user';
 })
 export class UserService {
 
-  public List_User:user[] = [];
+  Login_User :user ;
+  Login_User_BehavourSubject: BehaviorSubject<user> = new BehaviorSubject<user>({});
 
+  public List_User:user[] = [];
   public List_User_BehaviorSubject:BehaviorSubject<user[]> = new BehaviorSubject<user[]>([]);
 
 
@@ -71,5 +73,13 @@ export class UserService {
   
     const options = {  headers: headers };
     return this.httpClient.post(this.RestUrl +"User/Validate_Name",obj,options);
+  }
+
+  login(obj :  user )
+  {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin','*');
+    const options = {  headers: headers};  
+
+    return this.httpClient.post(this.RestUrl +"User/Login/",obj ,options);       
   }
 }

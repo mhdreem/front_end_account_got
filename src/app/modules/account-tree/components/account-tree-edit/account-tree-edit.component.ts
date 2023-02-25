@@ -9,6 +9,7 @@ import { account_class } from 'src/app/modules/shared/models/account_class';
 import { account_final } from 'src/app/modules/shared/models/account_final';
 import { account_group } from 'src/app/modules/shared/models/account_group';
 import { account_level } from 'src/app/modules/shared/models/account_level';
+import { branch } from 'src/app/modules/shared/models/branch';
 import { finance_list } from 'src/app/modules/shared/models/finance_list';
 import { result } from 'src/app/modules/shared/models/result';
 import { account_centerService } from 'src/app/modules/shared/services/account-center.service';
@@ -17,6 +18,7 @@ import { AccountFinalService } from 'src/app/modules/shared/services/account-fin
 import { AccountGroupService } from 'src/app/modules/shared/services/account-group.service';
 import { AccountLevelService } from 'src/app/modules/shared/services/account-level.service';
 import { AccountTreeService } from 'src/app/modules/shared/services/account-tree.service';
+import { BranchService } from 'src/app/modules/shared/services/branch.service';
 import { FinanceListService } from 'src/app/modules/shared/services/finance-list.service';
 import {accounts_tree} from '../../../shared/models/accounts_tree'
 @Component({
@@ -53,6 +55,8 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
   notice!: FormControl<string | undefined  | null>;
   account_center_fk!: FormControl<number | null>;
   account_center!: FormControl<account_center | null>;
+  branch_fk : FormControl;
+
 
 
   accountLevel_List: account_level[] = [];
@@ -69,6 +73,8 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
   filteredparentAccountNameOptions!: Observable<accounts_tree[]>;
   account_center_list: account_center[];
   account_center_filter: Observable<account_center[]>;
+  branch_List: branch[] = [];
+  filteredBranchOptions!: Observable<branch[]>;
 
   selected_Account: accounts_tree= {};
 
@@ -85,7 +91,8 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
     private financeListService: FinanceListService,
     private accountFinalService: AccountFinalService,
     private accountTreeService: AccountTreeService,
-    private account_centerService: account_centerService) { 
+    private account_centerService: account_centerService,
+    private branchService: BranchService) { 
       this.LoadingFinish = true;
       this.BuildForm();
       this.Load_Data();
@@ -118,6 +125,8 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
             'notice:': this.notice = new FormControl<string | undefined>(undefined),
             'account_center_fk': this.account_center_fk = new FormControl<number | null>(null, []),
           'account_center': this.account_center = new FormControl<account_center | null>(null, []),
+        'branch_fk': this.branch_fk = new FormControl<number | null>(null, [Validators.required]),
+
           },
         );
   
@@ -135,7 +144,9 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
         this.Load_FinanceList(),
         this.Load_AccountFinal(),
         this.Load_ParentAccountName(),
-        this.Load_Account_Center()
+        this.Load_Account_Center(),
+      this.Load_Branch(),
+
         ).subscribe(
           res => {
             this.accountLevel_List = res[0];
@@ -173,6 +184,10 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
           this.account_centerService.List_account_center = this.account_center_list;
           this.account_centerService.List_account_center_BehaviorSubject.next(this.account_center_list);
 
+          this.branch_List = res[7];
+          this.filteredBranchOptions = of(this.branch_List);
+          this.branchService.List_Branch = this.branch_List;
+          this.branchService.List_Branch_BehaviorSubject.next(this.branch_List);
 
           if (this.data!.account!.seq != null)
             this.parentAccountName.setValue(this.parentAccountName_List.find(account=> account.seq == this.data!.account!.seq)?.account_name);
@@ -239,6 +254,14 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
               return this.account_centerService.list();
             return of(this.account_centerService.List_account_center);
           }
+
+          Load_Branch(){
+            if (this.branchService.List_Branch == null ||
+              this.branchService.List_Branch == undefined ||
+              this.branchService.List_Branch.length == 0)
+              return this.branchService.list();
+            return of(this.branchService.List_Branch);
+          }
         
         public async Init_AutoComplete() {
           try {
@@ -283,6 +306,12 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
                       startWith(''),
                       map(value => value && typeof value === 'string' ? this._filter_Account_Center(value) : this.account_center_list.slice())
                     );
+
+                    this.filteredBranchOptions = this.branch_fk.valueChanges
+                      .pipe(
+                        startWith(''),
+                        map(value => value && typeof value === 'string' ? this._filterBranch(value) : this.branch_List.slice())
+                      );
             
       
           } catch (Exception: any) { }
@@ -326,6 +355,12 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
         private _filter_Account_Center(value: string): account_center[] {
           const filterValue = value.toLowerCase();
           return this.account_center_list.filter(option => (option.account_center_id != null && option.account_center_name != null) && (option.account_center_id.toString().includes(filterValue) || option.account_center_name.includes(filterValue)));
+        }
+
+        private _filterBranch(value: string): branch[] {
+          const filterValue = value.toLowerCase();
+      
+          return this.branch_List.filter(option => option.branch_seq == +filterValue);
         }
         
         public displayAccountLevelProperty(value: string): string {
@@ -388,6 +423,15 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
             if (center)
               return center.account_center_name!;
               
+          }
+          return '';
+        }
+
+        public displayBranchProperty(value: string): string {
+          if (value && this.branch_List) {
+            let cer: any = this.branch_List.find(cer => cer.branch_seq!.toString() == value);
+            if (cer)
+              return cer.branch_name;
           }
           return '';
         }

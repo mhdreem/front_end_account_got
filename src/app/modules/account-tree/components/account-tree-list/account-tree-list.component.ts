@@ -1,7 +1,7 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { DOCUMENT } from '@angular/common';
 import { Component, HostListener, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -23,6 +23,8 @@ import { AccountTreeService } from 'src/app/modules/shared/services/account-tree
 import { account_typeService } from 'src/app/modules/shared/services/account-type.service';
 import { FinanceListService } from 'src/app/modules/shared/services/finance-list.service';
 import { AccountTreeEditComponent } from '../account-tree-edit/account-tree-edit.component';
+import { branch } from 'src/app/modules/shared/models/branch';
+import { BranchService } from 'src/app/modules/shared/services/branch.service';
 
 @Component({
   selector: 'app-account-tree-list',
@@ -68,6 +70,8 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
   account_group_fk!: FormControl<number | null>;
   account_class_fk!: FormControl<number | null>;
   finance_list_fk!: FormControl<number | null>;
+  branch_fk : FormControl;
+
 
   // Filtering
   accountType_List: account_type[] = [];
@@ -80,7 +84,8 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
   filteredAccountClassOptions!: Observable<account_class[]>;
   financeList_List: finance_list[] = [];
   filteredfinanceListOptions!: Observable<finance_list[]>;
- 
+  branch_List: branch[] = [];
+  filteredBranchOptions!: Observable<branch[]>;
 
   isLoading = false;
 
@@ -106,6 +111,7 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
     private accountClassService: AccountClassService,
     private financeListService: FinanceListService,
     private accountTreeService: AccountTreeService,
+    private branchService: BranchService
     // private themeService: ThemeService
     ) {
     this.LoadingFinish = true;
@@ -128,7 +134,7 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
             'account_group_fk': this.account_group_fk = new FormControl<number | null>(null, []),
             'account_class_fk': this.account_class_fk = new FormControl<number | null>(null, []),
             'finance_list_fk': this.finance_list_fk = new FormControl<number | null>(null, []),
-            
+            'branch_fk': this.branch_fk = new FormControl<number | null>(null, [Validators.required]),
           }
         );
   
@@ -146,6 +152,7 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
         this.Load_AccountGroup(),
         this.Load_AccountClass(),
         this.Load_FinanceList(),
+        this.Load_Branch(),
         this.BuildTree()
         
       ).subscribe(
@@ -175,7 +182,12 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
           this.financeListService.List_FinanceList = this.financeList_List;
           this.financeListService.List_FinanceList_BehaviorSubject.next(this.financeList_List);
   
-          this.treeDataSource.data = [res[5]];
+          this.branch_List = res[5];
+          this.filteredBranchOptions = of(this.branch_List);
+          this.branchService.List_Branch = this.branch_List;
+          this.branchService.List_Branch_BehaviorSubject.next(this.branch_List);
+
+          this.treeDataSource.data = [res[6]];
   
           this.Init_AutoComplete();
   
@@ -226,6 +238,14 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
         return this.financeListService.list();
       return of(this.financeListService.List_FinanceList);
     }
+
+    Load_Branch(){
+      if (this.branchService.List_Branch == null ||
+        this.branchService.List_Branch == undefined ||
+        this.branchService.List_Branch.length == 0)
+        return this.branchService.list();
+      return of(this.branchService.List_Branch);
+    }
   
     BuildTree(): Observable<accounts_tree> {
       return this.accountTreeService.BuildTree();
@@ -263,7 +283,11 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
             map(value => value && typeof value === 'string' ? this._filterFinanceList(value) : this.financeList_List.slice())
           );
   
-        
+          this.filteredBranchOptions = this.branch_fk.valueChanges
+          .pipe(
+            startWith(''),
+            map(value => value && typeof value === 'string' ? this._filterBranch(value) : this.branch_List.slice())
+          );
   
       } catch (Exception: any) { }
     }
@@ -298,6 +322,11 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
       return this.financeList_List.filter(option => option.finance_list_seq == +filterValue);
     }
     
+    private _filterBranch(value: string): branch[] {
+      const filterValue = value.toLowerCase();
+  
+      return this.branch_List.filter(option => option.branch_seq == +filterValue);
+    }
   
     public displayAccountTypeProperty(value: string): string {
       if (value && this.accountType_List) {
@@ -344,7 +373,14 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
       return '';
     }
   
-   
+    public displayBranchProperty(value: string): string {
+      if (value && this.branch_List) {
+        let cer: any = this.branch_List.find(cer => cer.branch_seq!.toString() == value);
+        if (cer)
+          return cer.branch_name;
+      }
+      return '';
+    }
 
    
 

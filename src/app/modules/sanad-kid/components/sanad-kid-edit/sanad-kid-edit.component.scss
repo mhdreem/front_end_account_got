@@ -1,44 +1,10 @@
 @import '../../../../../theme.scss';
 
 
-.small-width{
-    width: 90px;
-    margin-left: 10px;
-  }
 
-  .date{
-    width: fit-content;
-  }
-
-  mat-form-field{
-    width: fit-content;
-  }
-
-  .up{
-    display: flex;
-
-    .right{
-        display:flex;
-        flex-wrap: wrap;
-    }
-  }
-
-  .inputGroup2, .inputGroup3, .inputGroup4, .inputGroup5, .left{
-    margin-top: 30px;
-  }
-
-  .inputGroup5, .inputGroup2, .inputGroup3, .inputGroup4{
-    margin-inline: 10px;
-  }
-
-  .left {
-
-    span, button{
-        margin-left: 10px
-
-    }
-  }
-
+mat-form-field{
+  width: 100%;
+}
   
 mat-toolbar{
     margin-bottom: 20px;
@@ -61,6 +27,44 @@ mat-form-field ::ng-deep .mat-mdc-form-field-flex, mat-form-field ::ng-deep .mat
     background-color: white !important;
 }
 
+.demo-row-is-clicked {
+  background-color: orange !important;
+}
+
+.mat-mdc-row:nth-child(even){
+  background-color: $LightTableEven;
+}
+.mat-mdc-row:nth-child(odd){
+  background-color: white;
+}
+
+.mat-mdc-form-field-disabled, ::ng-deep .mat-mdc-form-field-disabled .mat-mdc-form-field-label{
+  color: rgba(0,0,0,.26) !important;
+}
+
+mat-form-field.mat-mdc-form-field-disabled ::ng-deep  .mat-mdc-form-field-flex{
+  background-color: rgba(0,0,0,.12) !important;
+}
+
+th,
+mat-paginator,
+::ng-deep .mat-paginator-navigation-first,
+::ng-deep .mat-paginator-navigation-previous,
+::ng-deep .mat-paginator-navigation-next,
+::ng-deep .mat-paginator-navigation-last,
+::ng-deep .mat-select-arrow,
+::ng-deep .mat-select-value,
+mat-paginator ::ng-deep .mat-mdc-form-field-underline,
+mat-paginator ::ng-deep .mat-mdc-form-field-flex{
+ background-color: $lightBackground !important;
+ color: black !important;
+}
+
+th, td{
+  padding: 4px !important;
+  text-align: center !important;
+}
+
 .add, .edit{
     color: white !important;
     background-color: $lightPrimary !important;
@@ -70,10 +74,6 @@ mat-form-field ::ng-deep .mat-mdc-form-field-flex, mat-form-field ::ng-deep .mat
   c-card{
     background-color: $lightBackground;
     padding: 20px;
-  }
-
-  form{
-    width: 960px;
   }
 
   button{
@@ -95,7 +95,7 @@ mat-form-field ::ng-deep .mat-mdc-form-field-flex, mat-form-field ::ng-deep .mat
 }
 
 .detail{
-    background: transparent;
+    background: $lightBackground;
     border-radius: 16px;
     box-shadow: 0 4px 30px rgb(0 0 0 / 10%);
     backdrop-filter: blur(5px);
@@ -108,42 +108,54 @@ mat-form-field ::ng-deep .mat-mdc-form-field-flex, mat-form-field ::ng-deep .mat
     align-items: center;
 }
 
-.title{
-  font-size: 18px;
-  text-decoration: underline;
+.donwLeft{
+    width: 50%;
 }
 
-c-col{
-  padding-left: 0 !important;
-  padding-right: 0 !important;
+.donwRight{
+    width: 45%;
 }
 
-output{
-  width: 80px;
-  height: 20px;
-  background-color: $LightTableEven;
-  color: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+.small-width{
+    width: 90px;
+    margin-left: 10px;
+  }
 
-.smallCard{
-  width: 150px;
-  height: 110px;
-}
+  .date{
+    width: fit-content;
+  }
 
-.circle{
-  border: 1px solid rgb(199, 198, 198);
-  width: fit-content;
-  height: 5px;
-  padding: 10px;
-  border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  .title{
+    font-size: 18px;
+    text-decoration: underline;
+  }
 
-c-container.container{
-  max-width: 1600px !important;
-}
+  output{
+    width: 80px;
+    height: 20px;
+    background-color: $LightTableEven;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .smallCard{
+    width: 150px;
+    height: 110px;
+  }
+
+  .circle{
+    border: 1px solid rgb(199, 198, 198);
+    width: fit-content;
+    height: 5px;
+    padding: 10px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  c-container.container{
+    max-width: 1600px !important;
+  }

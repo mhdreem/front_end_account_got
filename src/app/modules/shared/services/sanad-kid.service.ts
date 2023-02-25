@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParamsOptions } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { sanad_kid } from '../models/sanad-kid';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class SanadKidService {
     headers: new HttpHeaders( { 'Content-Type': 'application/json;charset=UTF-8' }) 
  };
  
-  constructor(private httpClient : HttpClient) { }
+  constructor(private httpClient : HttpClient,
+    private userService :UserService) { }
 
   list()  {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -54,7 +56,8 @@ export class SanadKidService {
     const httpParams: HttpParamsOptions= { 'obj': obj } as HttpParamsOptions;
   
     const options = {  headers: headers };
-    return this.httpClient.post(this.RestUrl +"Sanad_Kid/add",obj,options);  
+    let user_fk= this.userService.Login_User;
+    return this.httpClient.post(this.RestUrl +"Sanad_Kid/add/"+user_fk,obj,options);  
   }
 
   update(obj : sanad_kid )  {
@@ -62,7 +65,8 @@ export class SanadKidService {
     const httpParams: HttpParamsOptions = { 'obj': obj } as HttpParamsOptions;
   
     const options = {  headers: headers };
-    return this.httpClient.put(this.RestUrl +"Sanad_Kid/update",obj,options);  
+    let user_fk= this.userService.Login_User;
+    return this.httpClient.put(this.RestUrl +"Sanad_Kid/update/"+user_fk,obj,options);  
   }
 
   search(req : any )  {

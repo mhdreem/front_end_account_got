@@ -28,6 +28,14 @@ import { DropdownModule } from '@coreui/angular';
 import { AvatarModule } from '@coreui/angular';
 import { SidebarModule } from '@coreui/angular';
 import { IconModule, IconSetService } from '@coreui/icons-angular';
+import {LoginComponent} from './modules/shared/components/login/login.component'
+
+
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+
+import { TokenInterceptor } from './interceptors/token.interceptor';
+import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+
 const Import_Materail = [
   MatDialogModule,
   MatButtonModule,
@@ -68,6 +76,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     DefaultFooterComponent,
      DefaultHeaderComponent,
       DefaultLayoutComponent ,
+      LoginComponent
       
   ],
   imports:
@@ -86,7 +95,16 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
     },
-    IconSetService
+    IconSetService,
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService,
+    
+  {
+    provide: HTTP_INTERCEPTORS,     
+    useClass: TokenInterceptor,
+
+    multi: true
+  }
   ],
 
   

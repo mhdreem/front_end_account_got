@@ -31,7 +31,7 @@
                       <mat-label>اليوم</mat-label>
                       <input matInput placeholder="ex: 21" (change)="sanadDateChange('day')" [(ngModel)]='sanadDateDay'
                         [ngModelOptions]="{standalone: true}" id="sanadDateDay"
-                        (keyup.enter)="focusNext('sanadDateMonth')">
+                        (keyup.enter)="focusNext('sanadDateMonth')" [OnlyNumber]="true">
                     </mat-form-field>
                   </c-col>
                   <c-col xs="3">
@@ -39,7 +39,7 @@
                       <mat-label>الشهر</mat-label>
                       <input matInput placeholder="ex: 1" (change)="sanadDateChange('month')"
                         [(ngModel)]='sanadDateMonth' [ngModelOptions]="{standalone: true}" id="sanadDateMonth"
-                        (keyup.enter)="focusNext('sanadDateYear')">
+                        (keyup.enter)="focusNext('sanadDateYear')" [OnlyNumber]="true">
                     </mat-form-field>
                   </c-col>
                   <c-col xs="6">
@@ -47,7 +47,7 @@
                       <mat-label>العام</mat-label>
                       <input matInput placeholder="ex: 2023" (change)="sanadDateChange('year')"
                         [(ngModel)]='sanadDateYear' [ngModelOptions]="{standalone: true}" id="sanadDateYear"
-                        (keyup.enter)="focusNext('document_id')">
+                        (keyup.enter)="focusNext('document_id')" [OnlyNumber]="true">
                     </mat-form-field>
                   </c-col>
                 </c-row>
@@ -58,7 +58,7 @@
               <mat-form-field appearance="fill" style="margin-top: 30px;">
                 <mat-label>رقم السند</mat-label>
                 <input matInput [OnlyNumber]="true" [formControl]="document_id" id="document_id"
-                  (keyup.enter)="focusNext('incumbentDateDay')">
+                  (keyup.enter)="focusNext('incumbentDateDay')" [OnlyNumber]="true">
               </mat-form-field>
             </c-col>
 
@@ -71,7 +71,7 @@
                       <mat-label>اليوم</mat-label>
                       <input matInput placeholder="ex: 21" (change)="incumbentDateChange('day')"
                         [(ngModel)]='incumbentDateDay' [ngModelOptions]="{standalone: true}" id="incumbentDateDay"
-                        (keyup.enter)="focusNext('incumbentDateMonth')">
+                        (keyup.enter)="focusNext('incumbentDateMonth')" [OnlyNumber]="true">
                     </mat-form-field>
                   </c-col>
                   <c-col xs="3">
@@ -79,7 +79,7 @@
                       <mat-label>الشهر</mat-label>
                       <input matInput placeholder="ex: 1" (change)="incumbentDateChange('month')"
                         [(ngModel)]='incumbentDateMonth' [ngModelOptions]="{standalone: true}" id="incumbentDateMonth"
-                        (keyup.enter)="focusNext('incumbentDateYear')">
+                        (keyup.enter)="focusNext('incumbentDateYear')" [OnlyNumber]="true">
                     </mat-form-field>
                   </c-col>
                   <c-col xs="6">
@@ -87,7 +87,7 @@
                       <mat-label>العام</mat-label>
                       <input matInput placeholder="ex: 2023" (change)="incumbentDateChange('year')"
                         [(ngModel)]='incumbentDateYear' [ngModelOptions]="{standalone: true}" id="incumbentDateYear"
-                        (keyup.enter)="focusNext('incumbent_id')">
+                        (keyup.enter)="focusNext('incumbent_id')" [OnlyNumber]="true">
                     </mat-form-field>
                   </c-col>
 
@@ -99,7 +99,7 @@
               <mat-form-field appearance="fill" style="margin-top: 30px;">
                 <mat-label>رقم المذكرة</mat-label>
                 <input matInput [OnlyNumber]="true" [formControl]="incumbent_id" id="incumbent_id"
-                  (keyup.enter)="focusNext('Book_fk')">
+                  (keyup.enter)="focusNext('Book_fk')" [OnlyNumber]="true">
               </mat-form-field>
 
             </c-col>
@@ -161,7 +161,7 @@
     
     <c-col xs="4">
 
-      <c-card>
+      <c-card class="mb-4">
 
         <c-card-header class="card-header">
           قائمة الادخالات المستخدم

@@ -35,7 +35,7 @@
                             <mat-form-field>
                                 <mat-label>ترتيب مستوى الحساب</mat-label>
                                 <input matInput [formControl]="account_level_order" id="account_level_order"
-                                    (keyup.enter)="focusNext('account_class_order')">
+                                    (keyup.enter)="focusNext('account_class_order')" [OnlyNumber]="true">
                             </mat-form-field>
                         </c-col>
                     </c-row>

@@ -20,6 +20,7 @@ import { RouterModule } from '@angular/router';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTreeModule} from '@angular/material/tree';
 import {MatMenuModule} from '@angular/material/menu';
+import { CommonModuleModule } from '../common-module/common-module.module';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import {MatMenuModule} from '@angular/material/menu';
     MatSnackBarModule,
     MatButtonModule,
     MatTreeModule,
-    MatMenuModule
+    MatMenuModule,
+    CommonModuleModule
   ]
 })
 export class AccountTreeModule { }

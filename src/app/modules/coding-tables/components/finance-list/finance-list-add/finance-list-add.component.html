@@ -35,7 +35,7 @@
                             <mat-form-field>
                                 <mat-label>ترتيب القائمة المالية</mat-label>
                                 <input matInput [formControl]="finance_list_order" id="finance_list_order"
-                                    (keyup.enter)="focusNext('account_class_order')">
+                                    (keyup.enter)="focusNext('account_class_order')" [OnlyNumber]="true">
                             </mat-form-field>
                         </c-col>
                     </c-row>

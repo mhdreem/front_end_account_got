@@ -105,18 +105,24 @@
                                 <input matInput [formControl]="sanad_kid_seq"
                                         id="sanad_kid_seq" (keyup.enter)="focusNext('incumbent_id_from')">
                             </mat-form-field>
+
+                            <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px;">
+                                <mat-label>اسم صاحب الاستحقاق</mat-label>
+                                <input matInput [formControl]="name_of_owner"
+                                        id="name_of_owner" (keyup.enter)="focusNext('fromDateDay')">
+                            </mat-form-field>
                             
                         </div>
                 
-                        <div class="inputGroup3" style="display: flex; flex-direction: column; margin-top: 30px;">
+                        <!-- <div class="inputGroup3" style="display: flex; flex-direction: column; margin-top: 30px;">
                 
-                            <!-- <mat-form-field class="fitContent" appearance="fill">
+                            <mat-form-field class="fitContent" appearance="fill">
                                 <mat-label>رقم المذكرة</mat-label>
                                 <input matInput [formControl]="sanad_kid_seq"
                                         id="sanad_kid_seq" (keyup.enter)="focusNext('account_type')">
-                            </mat-form-field> -->
+                            </mat-form-field>
                             
-                        </div>
+                        </div> -->
                         <div class="inputGroup4" style="display: flex; flex-direction: column; margin-top: 30px;">
                             <mat-form-field class="fitContent" appearance="fill">
                                 <mat-label>من رقم المذكرة</mat-label>
@@ -149,13 +155,9 @@
                             <mat-checkbox [formControl]="sanad_close" id="sanad_kid_id_to" (keyup.enter)="focusNext('name_of_owner')">سند إقفال</mat-checkbox>
                         </div>
                 
-                        <div class="inputGroup7" style="display: flex; flex-direction: column; margin-top: 30px;">
-                            <mat-form-field class="fitContent" appearance="fill">
-                                <mat-label>اسم صاحب الاستحقاق</mat-label>
-                                <input matInput [formControl]="name_of_owner"
-                                        id="name_of_owner" (keyup.enter)="focusNext('fromDateDay')">
-                            </mat-form-field>
-                        </div>
+                        <!-- <div class="inputGroup7" style="display: flex; flex-direction: column; margin-top: 30px;">
+                            
+                        </div> -->
                         
                     </form>
                     

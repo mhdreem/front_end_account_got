@@ -32,7 +32,7 @@
                     <mat-label #label_accounts_tree_fk>رقم الحساب</mat-label>
                     <input matInput [formControl]="accounts_tree_fk" [matAutocomplete]="autoaccounts_tree_fk"
                     id="{{'accounts_tree_fk_'+_index}}"  
-                        (keyup.enter)="focusNext('account_center_fk_'+this._index)">
+                        (keyup.enter)="focusNext('account_center_fk_'+this._index)" [OnlyNumber]="true">
                     <mat-autocomplete #autoaccounts_tree_fk="matAutocomplete"
                         (optionSelected)="Select_Accounts_Tree_Option($event)"
                         [displayWith]="display_Account_Tree_Property.bind(this)">

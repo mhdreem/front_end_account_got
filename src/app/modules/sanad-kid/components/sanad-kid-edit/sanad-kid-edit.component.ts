@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, HostListener, Inject, OnInit ,AfterViewInit } from '@angular/core';
+import { Component, HostListener, ViewChild, Inject, OnInit ,AfterViewInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -13,6 +13,10 @@ import { sanad_kid_book } from 'src/app/modules/shared/models/sanad_kid_book';
 import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-book.service';
 import { SanadKidService } from 'src/app/modules/shared/services/sanad-kid.service';
 import { PageSanadKidService } from '../../pageservice/page-sanad-kid.service';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { SanadKidEntry } from 'src/app/modules/shared/models/sanad-kid-entry';
 
 @Component({
   selector: 'app-sanad-kid-edit',
@@ -87,10 +91,25 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
 
   LoadingFinish : boolean;
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  dataSource_sanad_kid_entry = new MatTableDataSource<SanadKidEntry>();
+  sanad_kid_entry_displayedColumns: string[] =
+    ["snd_kid_stg_name", 'user_entry', 'date_entry'];
+
+  totalRows = 0;
+  pageSize = 5;
+  currentPage = 1;
+  pageSizeOptions: number[] = [5, 10, 25, 100];
+
   sumCreditor: number= 0;
   sumDebtor: number= 0;
   balance: number= 0;
   actionNum: number= 0;
+
+
+
 
   constructor(
     private router:Router,private route: ActivatedRoute,
@@ -104,8 +123,15 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
       this.BuildForm();
       this.loadData();
       
+      if (this.sanad_kid != null && 
+        this.sanad_kid.sanad_kid_entries!= null)
+        this.dataSource_sanad_kid_entry.data = this.sanad_kid.sanad_kid_entries!;
+  
     }
   ngAfterViewInit(): void {
+    this.dataSource_sanad_kid_entry.paginator = this.paginator;
+    this.dataSource_sanad_kid_entry.sort = this.sort;
+
     setTimeout(()=>{
       document.querySelector('c-sidebar')?.classList.add('hide');
     }, 1000);
@@ -229,6 +255,8 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
       
     
     ngOnInit() { 
+      this.PageSanadKidService.new();
+
       let seq : number = this.route.snapshot.params['seq'];
       if (seq!= null && seq>0){
         this.sanadKidService.getBySeq(seq).subscribe((res: any) =>{
@@ -243,6 +271,11 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
       
     }
 
+    rowClicked!: number;
+  changeTableRowColor(idx: any) {
+    if (this.rowClicked === idx) this.rowClicked = -1;
+    else this.rowClicked = idx;
+  }
 
 
   public SetValue() {
@@ -481,7 +514,6 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
 
     }
 
-    this.sanad_kid = this.sanad_kid;
     this.getValue();
     if (this.sanad_kid.sanad_kid_seq != null && this.sanad_kid.sanad_kid_seq > 0) {
       this.sanadKidService.update(this.sanad_kid).subscribe(res => {

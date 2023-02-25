@@ -45,7 +45,13 @@ import { AttachmentTypeListComponent } from './components/attachment-type/attach
 import { AttachmentTypeAddComponent } from './components/attachment-type/attachment-type-add/attachment-type-add.component';
 import { SanadKidBookListComponent } from './components/sanad-kid-book/sanad-kid-book-list/sanad-kid-book-list.component';
 import { SanadKidBookAddComponent } from './components/sanad-kid-book/sanad-kid-book-add/sanad-kid-book-add.component';
-
+import { CommonModuleModule } from '../common-module/common-module.module';
+import { SanadKidStageListComponent } from './components/sanad-kid-stage/sanad-kid-stage-list/sanad-kid-stage-list.component';
+import { SanadKidStageAddComponent } from './components/sanad-kid-stage/sanad-kid-stage-add/sanad-kid-stage-add.component';
+import {PaymentOrderStageListComponent} from './components/payment-order-stage/payment-order-stage-list/payment-order-stage-list.component'
+import {PaymentOrderStageAddComponent} from './components/payment-order-stage/payment-order-stage-add/payment-order-stage-add.component'
+import {ReceiptOrderStageListComponent} from './components/receipt-order-stage/receipt-order-stage-list/receipt-order-stage-list.component'
+import {ReceiptOrderStageAddComponent} from './components/receipt-order-stage/receipt-order-stage-add/receipt-order-stage-add.component'
 const Import_Materail = [
   MatDialogModule,
   MatButtonModule,
@@ -100,6 +106,12 @@ const Import_Corui = [
     AttachmentTypeAddComponent,
     SanadKidBookListComponent,
     SanadKidBookAddComponent,
+    SanadKidStageListComponent,
+    SanadKidStageAddComponent,
+    PaymentOrderStageListComponent,
+    PaymentOrderStageAddComponent,
+    ReceiptOrderStageListComponent,
+    ReceiptOrderStageAddComponent
   ],
   imports: [
     CommonModule,
@@ -109,6 +121,7 @@ const Import_Corui = [
     FormsModule,
     Import_Corui,
     Import_Materail,
+    CommonModuleModule
     
   ]
 })

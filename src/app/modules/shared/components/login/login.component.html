@@ -1,0 +1,33 @@
+ <div class="con" style="margin-inline: auto;">
+   
+   <div class="right">
+    <span class="span1" style="display: block; margin-inline: auto; margin-bottom: 20px; font-size: 20px; font-weight: 700;" >تسجيل الدخول</span>
+
+    <mat-form-field class="example-full-width" appearance="outline">
+     <mat-label>اسم المستخدم</mat-label>
+     <input matInput placeholder="اسم المستخدم" value=""   [formControl]="username" /> 
+     <mat-icon matSuffix>person</mat-icon>
+   </mat-form-field>
+ 
+   <mat-form-field class="example-full-width" appearance="outline">
+     <mat-label>كلمة السر</mat-label>
+     <input matInput type="password" placeholder="كلمة السر" value="" [formControl]="password" [type]="hide ? 'password' : 'text'"/>
+     <button mat-icon-button matSuffix color="primary" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+       
+       <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+     </button>
+     <mat-icon matSuffix>lock</mat-icon>
+   </mat-form-field>
+ 
+   <button class="btn1"  mat-raised-button (click)="Login()">
+     <span></span>
+       <span></span>
+       <span></span>
+       <span></span>
+     تسجيل الدخول
+   </button>
+   </div>
+   <div class="left" style="display: flex; align-items: center; justify-content: center; border-right: 1px solid black;">
+    <span style="font-weight: 700; font-size: 24px; padding: 20px;">المؤسسة العامة للتبغ</span>
+  </div>
+ </div>

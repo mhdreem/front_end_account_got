@@ -34,7 +34,7 @@
                             <mat-form-field>
                                 <mat-label #label_account_center_id>رقم مركز الكلفة</mat-label>
                                 <input matInput [formControl]="account_center_id" id="account_center_id"
-                                    (keyup.enter)="focusNext('account_center_order')">
+                                    (keyup.enter)="focusNext('account_center_order')" [OnlyNumber]="true" >
                                 <mat-error *ngIf="fieldHasErrors(Form, 'account_center_id')">
                                     {{
                                     autoPrintFirstErrorMessage(
@@ -52,7 +52,7 @@
                             <mat-form-field>
                                 <mat-label>ترتيب مركز الكلفة</mat-label>
                                 <input matInput [formControl]="account_center_order" id="account_center_order"
-                                    (keyup.enter)="focusNext('account_center_name')">
+                                    (keyup.enter)="focusNext('account_center_name')" [OnlyNumber]="true">
                             </mat-form-field>
                         </c-col>
                     </c-row>

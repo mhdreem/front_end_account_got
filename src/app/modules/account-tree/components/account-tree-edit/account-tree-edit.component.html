@@ -22,7 +22,7 @@
             <mat-form-field class="fitContent" appearance="fill">
                 <mat-label>رقم حساب</mat-label>
                 <input matInput [formControl]="account_id"
-                        id="account_id" (keyup.enter)="focusNext('account_name')">
+                        id="account_id" (keyup.enter)="focusNext('account_name')" [OnlyNumber]="true">
             </mat-form-field>
             
             <mat-form-field class="fitContent" appearance="fill">
@@ -105,6 +105,19 @@
                 >
                     <mat-option *ngFor="let option of account_center_filter | async" [value]="option.account_center_seq">
                     {{option.account_center_name}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+
+            <mat-form-field class="fitContent" appearance="fill">
+                <mat-label>الفرع</mat-label>
+                <input matInput [formControl]="branch_fk" [matAutocomplete]="autobranch"
+                        id="frm_branch_fk" (keyup.enter)="focusNext('Class')">
+                <mat-autocomplete #autobranch="matAutocomplete" 
+                [displayWith]="displayBranchProperty.bind(this)"
+                >
+                    <mat-option *ngFor="let option of filteredBranchOptions | async" [value]="option.branch_seq">
+                    {{option.branch_name}}
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>

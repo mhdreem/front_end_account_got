@@ -1,5 +1,6 @@
 import { branch } from "./branch";
 import { department } from "./department";
+import { Privilages } from "./privilages";
 
 
 export interface user {
@@ -11,5 +12,7 @@ export interface user {
     branch_fk?: number,
     branch?: branch,
     user_name?: string,
-    user_password?: string
+    user_password?: string,
+
+     privilages?:Privilages[];
 }
