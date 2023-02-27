@@ -159,3 +159,22 @@ th, td{
   c-container.container{
     max-width: 1600px !important;
   }
+
+  .small-width{
+    width: 90px !important;
+    margin-left: 0px !important;
+  }
+
+  mat-form-field{
+    width: 170px;
+    height: 70px;
+    font-size: 14px;
+  }
+
+  ::ng-deep .mat-mdc-floating-label, ::ng-deep .mat-mdc-input-element, ::ng-deep .mat-mdc-select-min-line{
+    font-size: 14px;
+  }
+
+  table, c-card{
+    zoom: 90%;
+  }

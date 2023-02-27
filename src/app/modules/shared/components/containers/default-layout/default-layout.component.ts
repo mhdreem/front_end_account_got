@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit , HostListener} from '@angular/core';
 import { Router } from '@angular/router';
 import { INavData } from '@coreui/angular';
 import { BreadcrumbRouterService } from '@coreui/angular/lib/breadcrumb/breadcrumb-router/breadcrumb-router.service';
@@ -17,6 +17,15 @@ import { cilPencil, cilMenu } from '@coreui/icons';
 
 })
 export class DefaultLayoutComponent implements OnInit, AfterViewInit {
+  @HostListener('document:mouseover', ['$event'])
+    mouseover(event: any) {
+        if(event.target.matches('c-sidebar')) {
+          document.querySelector('c-sidebar')?.classList.remove('hide');
+        }
+    }
+
+    
+
   _navItems: INavData[];
   
 

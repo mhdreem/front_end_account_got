@@ -12,6 +12,8 @@ import { BranchListComponent } from './components/branch/branch-list/branch-list
 import { DepartmentListComponent } from './components/department/department-list/department-list.component';
 import { ExchangeOrderStageListComponent } from './components/exchange-order-stage/exchange-order-stage-list/exchange-order-stage-list.component';
 import { FinanceListListComponent } from './components/finance-list/finance-list-list/finance-list-list.component';
+import { PaymentOrderStageListComponent } from './components/payment-order-stage/payment-order-stage-list/payment-order-stage-list.component';
+import { ReceiptOrderStageListComponent } from './components/receipt-order-stage/receipt-order-stage-list/receipt-order-stage-list.component';
 import { SanadKidBookAddComponent } from './components/sanad-kid-book/sanad-kid-book-add/sanad-kid-book-add.component';
 import { SanadKidBookListComponent } from './components/sanad-kid-book/sanad-kid-book-list/sanad-kid-book-list.component';
 import { UserListComponent } from './components/user/user-list/user-list.component';
@@ -100,6 +102,20 @@ const routes: Routes = [
           data:
           {
             title: 'مرحلة أمر الصرف'
+          }
+        },
+        { 
+          path: 'paymentOrderStage', component: PaymentOrderStageListComponent,
+          data:
+          {
+            title: 'مرحلة أمر الدفع'
+          }
+        },
+        { 
+          path: 'receiptOrderStage', component: ReceiptOrderStageListComponent,
+          data:
+          {
+            title: 'مرحلة أمر القبض'
           }
         },
         { 

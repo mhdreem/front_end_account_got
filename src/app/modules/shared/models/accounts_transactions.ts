@@ -5,7 +5,7 @@ import { sanad_kid_book } from "./sanad_kid_book";
 
 export interface accounts_transactions {
    
-        public seq ?:number;
+        seq ?:number;
 
 
 

@@ -1,13 +1,13 @@
 <form [formGroup]="Form" #form="ngForm">
     <button mat-raised-button (click)="delete()" color="warn"> <mat-icon class="mat-icon-rtl-mirror">delete
     </mat-icon> حذف</button>
-    <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px; width: 150px;">
+    <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px; width: 120px;">
         <mat-label>رقم المرفق</mat-label>
         <input matInput [formControl]="sanad_kid_attachement_id"
         id="{{'sanad_kid_attachement_id_'+_index}}" (keyup.enter)="focusNext('type_fk_'+_index)" [OnlyNumber]="true">
     </mat-form-field>
 
-    <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px; width: 150px;">
+    <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px; width: 120px;">
         <mat-label #label_accounts_tree_fk>نوع المرفق</mat-label>
         <input matInput [formControl]="type_fk" [matAutocomplete]="autoattachement_type" 
                 id="{{'type_fk_'+_index}}" (keyup.enter)="focusNext('attachmentDateDay_'+_index)" >
@@ -45,11 +45,11 @@
         </div>
     </div>
 
-    <mat-form-field class="example-full-width" style="width: 655px;">
+    <mat-form-field class="example-full-width" style="width: 587px;">
         <mat-label>بيان المرفق</mat-label>
         <input matInput id="{{'sanad_kid_attachement_note'+_index}}"
             [formControl]="sanad_kid_attachement_note">
-    </mat-form-field>
+    </mat-form-field>   
 
         
 </form>

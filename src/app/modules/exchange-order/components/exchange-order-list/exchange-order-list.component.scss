@@ -222,7 +222,7 @@ mat-tree-node{
   }
 
   ::ng-deep .mat-expansion-indicator{
-    left: 1170px;
+    left: 1027px;
     position: relative;
   }
 
@@ -232,4 +232,23 @@ mat-tree-node{
 
 ::ng-deep mat-expansion-panel-header{
   padding: 0px 40px !important;
+}
+
+.small-width{
+  width: 90px !important;
+  margin-left: 0px !important;
+}
+
+mat-form-field{
+  width: 170px;
+  height: 70px;
+  font-size: 14px;
+}
+
+::ng-deep .mat-mdc-floating-label, ::ng-deep .mat-mdc-input-element, ::ng-deep .mat-mdc-select-min-line{
+  font-size: 14px;
+}
+
+table, c-card{
+  zoom: 90%;
 }
