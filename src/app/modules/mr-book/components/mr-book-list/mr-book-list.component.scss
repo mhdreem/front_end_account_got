@@ -1,6 +1,5 @@
 @import '../../../../../theme.scss';
 
-
 form{
     display: flex;
     flex-wrap: wrap;
@@ -251,4 +250,14 @@ mat-form-field{
 
 table, c-card{
   zoom: 90%;
+}
+
+
+
+::ng-deep .ng-select-container{
+  background-color: white;
+}
+
+ng-select{
+  margin-inline-end: 20px;
 }

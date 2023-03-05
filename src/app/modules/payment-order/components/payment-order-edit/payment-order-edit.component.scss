@@ -117,7 +117,7 @@ th, td{
 }
 
 .small-width{
-    width: 90px;
+    width: 80px;
     margin-left: 10px;
   }
 
@@ -171,10 +171,21 @@ th, td{
     font-size: 14px;
   }
 
+
   ::ng-deep .mat-mdc-floating-label, ::ng-deep .mat-mdc-input-element, ::ng-deep .mat-mdc-select-min-line{
     font-size: 14px;
   }
 
-  table, c-card{
+  table, .zoom{
     zoom: 90%;
   }
+
+  form{
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+h2{
+  text-align: center;
+}

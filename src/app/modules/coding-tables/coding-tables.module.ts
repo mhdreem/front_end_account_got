@@ -52,6 +52,9 @@ import {PaymentOrderStageListComponent} from './components/payment-order-stage/p
 import {PaymentOrderStageAddComponent} from './components/payment-order-stage/payment-order-stage-add/payment-order-stage-add.component'
 import {ReceiptOrderStageListComponent} from './components/receipt-order-stage/receipt-order-stage-list/receipt-order-stage-list.component'
 import {ReceiptOrderStageAddComponent} from './components/receipt-order-stage/receipt-order-stage-add/receipt-order-stage-add.component'
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
+
 const Import_Materail = [
   MatDialogModule,
   MatButtonModule,
@@ -69,7 +72,8 @@ const Import_Materail = [
   MatCardModule,
   MatExpansionModule,
   MatIconModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatProgressBarModule
 ];
 
 

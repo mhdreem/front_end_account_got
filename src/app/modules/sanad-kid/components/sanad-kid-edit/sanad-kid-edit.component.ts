@@ -112,7 +112,8 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
 
 
   constructor(
-    private router:Router,private route: ActivatedRoute,
+    private router:Router,
+    public route: ActivatedRoute,
     private fb: FormBuilder,
     private SanadKidBookService:SanadKidBookService,
     private PageSanadKidService:PageSanadKidService,
@@ -123,6 +124,12 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
       this.BuildForm();
       this.loadData();
       
+      this.PageSanadKidService.$sanad_kid.subscribe(res=>{
+        this.sanad_kid= res;
+        this.updateSum();
+        this.actionNum= this.sanad_kid.sanad_kid_details?.length!;
+      });
+
       if (this.sanad_kid != null && 
         this.sanad_kid.sanad_kid_entries!= null)
         this.dataSource_sanad_kid_entry.data = this.sanad_kid.sanad_kid_entries!;
@@ -257,10 +264,13 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
     ngOnInit() { 
       this.PageSanadKidService.new();
 
-      let seq : number = this.route.snapshot.params['seq'];
+      let seq : number = this.route.snapshot.params['id'];
       if (seq!= null && seq>0){
         this.sanadKidService.getBySeq(seq).subscribe((res: any) =>{
+          console.log('res.value', res.value);
           this.sanad_kid= res.value;
+          this.updateSum();
+          this.actionNum= this.sanad_kid.sanad_kid_details?.length!;
         })
       }
       else{
@@ -279,13 +289,16 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
 
 
   public SetValue() {
+
+    console.log('this.sanad_kid', this.sanad_kid);
     if (this.sanad_kid != null && this.sanad_kid.sanad_kid_seq != null)
     this.sanad_kid_seq.setValue(this.sanad_kid?.sanad_kid_seq!);
 
     if (this.sanad_kid != null && this.sanad_kid.document_date != null){
       this.document_date.setValue(this.sanad_kid.document_date);
       this.sanadDateDay= moment(this.document_date.value).date()+'';
-      this.sanadDateMonth= moment(this.document_date.value).month()+'';
+      console.log('this.sanadDateDay',this.sanadDateDay);
+      this.sanadDateMonth= (moment(this.document_date.value).month()+1)+'';
       this.sanadDateYear= moment(this.document_date.value).year()+'';
       this.sanadDateDayIsFilled= true;
       this.sanadDateMonthIsFilled= true;
@@ -295,7 +308,7 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
     if (this.sanad_kid != null && this.sanad_kid.incumbent_date != null){
       this.incumbent_date.setValue(this.sanad_kid?.incumbent_date!);
       this.incumbentDateDay= moment(this.incumbent_date.value).date()+'';
-      this.incumbentDateMonth= moment(this.incumbent_date.value).month()+'';
+      this.incumbentDateMonth= (moment(this.incumbent_date.value).month()+1)+'';
       this.incumbentDateYear= moment(this.incumbent_date.value).year()+'';
       this.incumbentDateDayIsFilled= true;
       this.incumbentDateMonthIsFilled= true;
@@ -413,9 +426,10 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
   
   
     onDetailsDelete(index: number) {
+      this.sanad_kid.sanad_kid_details?.splice(index, 1);
       this.sum_details_creditor();
       this.sum_details_debtor();    
-      this.sanad_kid.sanad_kid_details?.splice(index, 1);
+      this.actionNum= this.sanad_kid.sanad_kid_details?.length!;
     }
   
   

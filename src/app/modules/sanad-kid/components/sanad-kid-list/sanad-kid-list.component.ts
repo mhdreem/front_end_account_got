@@ -3,7 +3,7 @@ import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
+import { forkJoin, map, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
 import { sanad_kid } from 'src/app/modules/shared/models/sanad-kid';
 import * as _moment from 'moment';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -96,9 +96,9 @@ export class SanadKidListComponent implements OnInit {
 
   totalRows = 0;
   pageSize = 5;
-  currentPage = 1;
+  currentPage = 0;
   pageSizeOptions: number[] = [5, 10, 25, 100];
-
+  isLoading: boolean= false;
   selected_sanad: sanad_kid= {};
 
 
@@ -160,6 +160,21 @@ export class SanadKidListComponent implements OnInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.paginator.page
+      .pipe(
+        startWith({}),
+        switchMap(()=>{
+          this.pageSize = this.paginator.pageSize;
+          this.currentPage = this.paginator.pageIndex + 1;
+          return this.View();
+        })
+      )
+      .subscribe((data: any) => {
+        this.totalRows = data.Item2;
+        this.dataSource = new MatTableDataSource(data.value);
+        this.isLoading= false;
+
+      });
   }
 
   rowClicked!: number;
@@ -168,27 +183,24 @@ export class SanadKidListComponent implements OnInit {
     else this.rowClicked = idx;
   }
 
-  pageChanged(event: PageEvent) {
-    this.pageSize = event.pageSize;
-    this.currentPage = event.pageIndex;
-    this.page_index.setValue(this.currentPage);
-    this.row_count.setValue(this.pageSize);
-    this.View();
+  onViewClick(){
+    this.currentPage=0;
+    this.pageSize=5;
+    this.View().subscribe((data: any)=>{
+      this.totalRows = data.Item2;
+      this.dataSource = new MatTableDataSource(data.value);
+      this.isLoading= false;
+    });
   }
+  
 
   View(){
+    this.isLoading= true;
+
     this.page_index.setValue(this.currentPage);
     this.row_count.setValue(this.pageSize);
 
-    this.sanadKidService.search(this.Form.value).subscribe(
-      (res: any) =>{
-        console.log('res', res);
-        let result: any[]=[];
-        result.push(...res.value);
-        this.dataSource.data = result;
-        this.dataSource.paginator= this.paginator;
-      }
-    );
+    return this.sanadKidService.search(this.Form.value);
 
     // let printRequest= {
     //   "year_id": this.UpgradeYear.value,

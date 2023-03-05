@@ -27,7 +27,7 @@ export class AttachmentTypeListComponent {
   dataSource = new MatTableDataSource<attachement_type>();
   displayedColumns: string[] = ['attachement_type_name', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
-
+  isLoading: boolean= false;
   Subscription: Subscription = new Subscription();
 
   excelData: any[] = [];
@@ -78,12 +78,15 @@ export class AttachmentTypeListComponent {
 
 
   LoadData() {
+    this.isLoading= true;
+
     this.Subscription.add(
       this.attachmentTypeService.list().subscribe(
         res => {
           if (res != null)
             this.attachment_type_List = res;
           this.dataSource.data = this.attachment_type_List;
+          this.isLoading= false;
         }
       )
     );

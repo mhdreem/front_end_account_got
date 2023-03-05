@@ -55,16 +55,17 @@ export class LoginComponent implements OnInit {
     this._Subscription.add(
       this.UserService.login(user)
       .subscribe((res: any) => {
+        console.log('res123',res);
         this.isLoadingResults = false;
-        if (res === 'Error') {
+        if (res.error != null) {
           this.LoginResultState = 'اسم المستحدم أو كلمة السر خاطئة ';
-        } else if (res. token != null && res.User!= null) {
+        } else if (res.value!= null) {
 
-          this.UserService.Login_User = res.User;
-          this.UserService.Login_User_BehavourSubject.next(res.User);
+          this.UserService.Login_User = res.value;
+          this.UserService.Login_User_BehavourSubject.next(res.value);
 
-          localStorage.setItem('token', res.token);
-          localStorage.setItem('User', res.User);
+          // localStorage.setItem('token', res.token);
+          localStorage.setItem('User', res.value);
 
         //  this.shamelPrivilige.List_User_Windows('00100');
           this.router.navigate(['']);

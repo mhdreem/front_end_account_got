@@ -25,7 +25,7 @@ export class ExchangeOrderStageListComponent {
   dataSource = new MatTableDataSource<exchange_order_stage>();
   displayedColumns: string[] = ['ex_ord_stg_name', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
-
+  isLoading: boolean= false;
   Subscription: Subscription = new Subscription();
 
 
@@ -58,12 +58,15 @@ export class ExchangeOrderStageListComponent {
 
 
   LoadData() {
+    this.isLoading= true;
+
     this.Subscription.add(
       this.exchangeOrderStageService.list().subscribe(
         (res: any) => {
           if (res != null)
             this.Exchange_order_stage_List = res.value;
           this.dataSource.data = this.Exchange_order_stage_List;
+          this.isLoading= false;
         }
       )
     );

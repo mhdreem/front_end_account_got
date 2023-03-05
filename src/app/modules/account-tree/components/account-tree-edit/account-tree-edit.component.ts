@@ -486,6 +486,9 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
       if (this.selected_Account != null && this.selected_Account.account_center_fk != null)
         this.account_center_fk.setValue(this.selected_Account.account_center_fk);
       
+      if (this.selected_Account != null && this.selected_Account.branch_fk != null)
+        this.branch_fk.setValue(this.selected_Account.branch_fk);
+      
     } catch (ex: any) {
 
 
@@ -507,6 +510,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
     this.selected_Account.address = this.address.value || undefined;
     this.selected_Account.notice = this.notice.value || undefined;
     this.selected_Account.account_center_fk = this.account_center_fk.value || undefined;
+    this.selected_Account.branch_fk = this.branch_fk.value || undefined;
     
     if (this.data.action == 'add'){
       this.selected_Account.account_parent_seq = this.parentAccountName_List.find(account=> account.account_name == this.parentAccountName.value)?.seq || undefined;;

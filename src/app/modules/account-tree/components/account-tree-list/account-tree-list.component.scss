@@ -47,7 +47,7 @@ td, th{
     background-color: black !important;
 }
 
-mat-form-field ::ng-deep .mat-form-field-flex{
+mat-form-field ::ng-deep .mat-form-field-flex, mat-form-field ::ng-deep .mat-mdc-text-field-wrapper{
     background-color: $lightBackground !important;
 }
 

@@ -8,7 +8,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
+import { forkJoin, map, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
 import { accounts_tree } from 'src/app/modules/shared/models/accounts_tree';
 import { account_center } from 'src/app/modules/shared/models/account_center';
 import { account_centerService } from 'src/app/modules/shared/services/account-center.service';
@@ -39,7 +39,7 @@ export class MrBookAccountCenterListComponent {
 
   dataSource = new MatTableDataSource<any>();
   displayedColumns: string[] =
-    ['incumbent_id', 'incumbent_date', 'document_id', 'document_date', 'total_value', 'name_of_owner', 'branch_fk'];
+    ['document_id', 'incumbent_date', 'document_id','account_center_name',  'document_date', 'account_center_name', 'operation_type', 'sanad_kid_book_name'];
 
   fromSanadDateDay: string = '';
   fromSanadDateMonth: string = '';
@@ -74,20 +74,23 @@ export class MrBookAccountCenterListComponent {
   document_id_to!: FormControl<number | null>;
   document_date_from!: FormControl<Date | null>;
   document_date_to!: FormControl<Date | null>;
-  sanad_kid_fk!: FormControl<number | null>;
   incumbent_id_from!: FormControl<number | null>;
   incumbent_id_to!: FormControl<number | null>;
   incumbent_date_from!: FormControl<Date | null>;
   incumbent_date_to!: FormControl<Date | null>;
-  accounts_from!: FormControl<number | null>;
-  accounts_to!: FormControl<number | null>;
+  account_id_from!: FormControl<number | null>;
+  account_id_to!: FormControl<number | null>;
   page_index!: FormControl<number | null>;
   row_count!: FormControl<number | null>;
-  accounts_tree_fk!: FormControl<accounts_tree | null>;
   account_center!: FormControl<account_center | null>;
+  account_center_id_from!: FormControl<number | null>;
+  account_center_id_to!: FormControl<number | null>;
   incumbent_type!: FormControl<string[] | null>;
   incumbent_month!: FormControl<number[] | null>;
   sanad_month!: FormControl<number[] | null>;
+  account_ids!: FormControl<number[] | null>;
+
+  selected_account_ids: number[]= [];
 
   LoadingFinish: boolean;
 
@@ -102,6 +105,7 @@ export class MrBookAccountCenterListComponent {
   pageSize = 5;
   currentPage = 1;
   pageSizeOptions: number[] = [5, 10, 25, 100];
+  isLoading: boolean= false;
 
   constructor(
     private fb: FormBuilder,
@@ -135,6 +139,22 @@ export class MrBookAccountCenterListComponent {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+    this.paginator.page
+      .pipe(
+        startWith({}),
+        switchMap(()=>{
+          this.pageSize = this.paginator.pageSize;
+          this.currentPage = this.paginator.pageIndex + 1;
+          return this.View();
+        })
+      )
+      .subscribe((data: any) => {
+        // this.totalRows = data.Item2;
+        this.dataSource = new MatTableDataSource(data.value);
+        this.isLoading= false;
+
+      });
   }
 
 
@@ -147,16 +167,17 @@ export class MrBookAccountCenterListComponent {
           'document_id_to': this.document_id_to = new FormControl<number | null>(null, []),
           'document_date_from': this.document_date_from = new FormControl<Date | null>(null, []),
           'document_date_to': this.document_date_to = new FormControl<Date | null>(null, []),
-          'sanad_kid_fk': this.sanad_kid_fk = new FormControl<number | null>(null, []),
           'incumbent_id_from': this.incumbent_id_from = new FormControl<number | null>(null, []),
           'incumbent_id_to': this.incumbent_id_to = new FormControl<number | null>(null, []),
           'incumbent_date_from': this.incumbent_date_from = new FormControl<Date | null>(null, []),
           'incumbent_date_to': this.incumbent_date_to = new FormControl<Date | null>(null, []),
-          'accounts_from': this.accounts_from = new FormControl<number | null>(null, []),
-          'accounts_to': this.accounts_to = new FormControl<number | null>(null, []),
+          'account_id_from': this.account_id_from = new FormControl<number | null>(null, []),
+          'account_id_to': this.account_id_to = new FormControl<number | null>(null, []),
+          'account_ids': this.account_ids = new FormControl<number[] | null>(null, []),
           'page_index': this.page_index = new FormControl<number | null>(null, []),
           'row_count': this.row_count = new FormControl<number | null>(null, []),
-          'accounts_tree_fk': this.accounts_tree_fk = new FormControl<accounts_tree | null>(null, []),
+          'account_center_id_from': this.account_center_id_from = new FormControl<number | null>(null, []),
+          'account_center_id_to': this.account_center_id_to = new FormControl<number | null>(null, []),
           'account_center': this.account_center = new FormControl<account_center | null>(null, []),
           'incumbent_type': this.incumbent_type = new FormControl<string[] | null>(null, []),
           'incumbent_month': this.incumbent_month = new FormControl<number[] | null>(null, []),
@@ -214,28 +235,24 @@ export class MrBookAccountCenterListComponent {
     return of(this.account_centerService.List_account_center);
   }
 
-  pageChanged(event: PageEvent) {
-    this.pageSize = event.pageSize;
-    this.currentPage = event.pageIndex;
-    this.page_index.setValue(this.currentPage);
-    this.row_count.setValue(this.pageSize);
-    this.View();
+  onViewClick(){
+    this.currentPage=0;
+    this.pageSize=5;
+    this.View().subscribe((data: any)=>{
+      // this.totalRows = data.Item2;
+      console.log('data.value', data.value);
+      this.dataSource = new MatTableDataSource(data.value);
+      this.isLoading= false;
+    });
   }
 
   View() {
-
+    this.isLoading= true;
     this.page_index.setValue(this.currentPage);
     this.row_count.setValue(this.pageSize);
+    this.account_ids.setValue(this.selected_account_ids);
 
-    this.mrBookAccountCenterService.search(this.Form.value).subscribe(
-      (res: any) => {
-        console.log('res', res);
-        let result: any[] = [];
-        result.push(res.value);
-        this.dataSource.data = result;
-        this.dataSource.paginator = this.paginator;
-      }
-    );
+    return this.mrBookAccountCenterService.search(this.Form.value);
 
 
   }

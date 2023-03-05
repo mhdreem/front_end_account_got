@@ -273,3 +273,12 @@ mat-tree-node{
   table, c-card{
     zoom: 90%;
   }
+
+
+  ::ng-deep .ng-select-container{
+    background-color: white;
+  }
+  
+  ng-select{
+    margin-inline-end: 20px;
+  }

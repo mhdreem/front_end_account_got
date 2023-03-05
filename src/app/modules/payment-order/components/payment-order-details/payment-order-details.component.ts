@@ -95,7 +95,9 @@ export class PaymentOrderDetailsComponent {
       this.index = changes['index'].currentValue;
     }
     if (changes != null && changes['index'] != null) {
-      this.SetValue();
+      // load data must executed before set value
+      this.Load_Data();
+      //this.SetValue();
       this.bindModelToForm(this.payment_order_detail, this.Form);
 
     }
@@ -170,7 +172,7 @@ export class PaymentOrderDetailsComponent {
         this.account_centerService.List_account_center = this.account_center_list;
         this.account_centerService.List_account_center_BehaviorSubject.next(this.account_center_list);
 
-
+        this.SetValue();
         this.LoadingFinish = true;
 
       }

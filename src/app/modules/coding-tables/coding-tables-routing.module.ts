@@ -16,6 +16,7 @@ import { PaymentOrderStageListComponent } from './components/payment-order-stage
 import { ReceiptOrderStageListComponent } from './components/receipt-order-stage/receipt-order-stage-list/receipt-order-stage-list.component';
 import { SanadKidBookAddComponent } from './components/sanad-kid-book/sanad-kid-book-add/sanad-kid-book-add.component';
 import { SanadKidBookListComponent } from './components/sanad-kid-book/sanad-kid-book-list/sanad-kid-book-list.component';
+import { SanadKidStageListComponent } from './components/sanad-kid-stage/sanad-kid-stage-list/sanad-kid-stage-list.component';
 import { UserListComponent } from './components/user/user-list/user-list.component';
 
 const routes: Routes = [
@@ -95,6 +96,13 @@ const routes: Routes = [
           data:
           {
             title: 'نوع الحساب'
+          }
+        },
+        { 
+          path: 'sanadKidStage', component: SanadKidStageListComponent,
+          data:
+          {
+            title: 'مرحلة سند القيد'
           }
         },
         { 

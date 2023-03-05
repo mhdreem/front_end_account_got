@@ -46,7 +46,7 @@ export class FinanceListListComponent {
 
   selectedFile:any;
 
-
+  isLoading: boolean= false;
 
   constructor(public dialog: MatDialog,
     private financeListService: FinanceListService,
@@ -77,12 +77,15 @@ export class FinanceListListComponent {
 
 
   LoadData() {
+    this.isLoading= true;
+
     this.Subscription.add(
       this.financeListService.list().subscribe(
         res => {
           if (res != null)
             this.finance_list_List = res;
           this.dataSource.data = this.finance_list_List;
+          this.isLoading= false;
         }
       )
     );

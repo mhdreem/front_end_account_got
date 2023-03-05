@@ -111,7 +111,7 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
+    public route: ActivatedRoute,
     private fb: FormBuilder,
     private PageExchangeOrderService: PageExchangeOrderService,
     private snackBar: MatSnackBar,
@@ -125,6 +125,12 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
     this.BuildForm();
 
     this.loadData();
+
+    this.PageExchangeOrderService.$exchange_order.subscribe(res=>{
+      this.exchange_order= res;
+      this.updateSum();
+      this.actionNum= this.exchange_order.exchange_order_details?.length!;
+    });
 
     if (this.exchange_order != null && 
       this.exchange_order.exchange_order_entries!= null)
@@ -144,6 +150,13 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
       this._Subscription.add(this.exchangeOrderService.getBySeq(seq).subscribe((res: any) => {
         if (res.value != null && (res.value as exchange_order) != null) {
           this.exchange_order = res.value;
+          this.updateSum();
+          this.actionNum= this.exchange_order.exchange_order_details?.length!;
+
+          if (this.exchange_order != null && 
+            this.exchange_order.exchange_order_entries!= null)
+            this.dataSource_exchange_order_entry.data = this.exchange_order.exchange_order_entries!;
+      
         }
       }));
 
@@ -403,9 +416,11 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
 
 
   onDetailsDelete(index: number) {
+    this.exchange_order.exchange_order_details?.splice(index, 1);
     this.sum_details_creditor();
     this.sum_details_debtor();    
-    this.exchange_order.exchange_order_details?.splice(index, 1);
+    this.actionNum= this.exchange_order.exchange_order_details?.length!;
+
   }
 
 

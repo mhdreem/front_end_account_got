@@ -6,7 +6,7 @@
                 </mat-icon> حذف</button>
             </c-col>
 
-            <c-col >
+            <c-col style="margin-right: 20px;">
                 <mat-form-field class="fitContent" appearance="fill">
                     <mat-label>مبلغ مدين</mat-label>
                     <input matInput [OnlyNumber]="true" id="{{'debtor_'+_index}}"
@@ -74,7 +74,7 @@
 
         <c-row>
             <c-col [cCol]="10">
-                <mat-form-field class="fitContent" appearance="fill" style="width: 1095px;">
+                <mat-form-field class="fitContent" appearance="fill" style="width: 882px;">
                     <mat-label>بيان الحساب</mat-label>
                     <input matInput id="{{'account_notice_'+_index}}"
                         [formControl]="account_notice">

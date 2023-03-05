@@ -65,7 +65,7 @@ RefreshList()
 {    
   this.sanadKidService.search(this.Form.value).subscribe((res: any) =>{  
     console.log('res', res);
-    this.sanad_list=[this.sanad_list ,... res.value] ;
+    this.sanad_list=[...this.sanad_list ,... res.value] ;
   });
 
 }

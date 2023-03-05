@@ -28,7 +28,7 @@ export class AccountClassListComponent {
   dataSource = new MatTableDataSource<account_class>();
   displayedColumns: string[] = ['account_class_name', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
-
+  isLoading: boolean= false;
   Subscription: Subscription = new Subscription();
 
   excelData: any[] = [];
@@ -79,12 +79,16 @@ export class AccountClassListComponent {
 
 
   LoadData() {
+    this.isLoading= true;
+
     this.Subscription.add(
       this.accountClassService.list().subscribe(
         res => {
           if (res != null)
             this.account_class_List = res;
           this.dataSource.data = this.account_class_List;
+          this.isLoading= false;
+
         }
       )
     );

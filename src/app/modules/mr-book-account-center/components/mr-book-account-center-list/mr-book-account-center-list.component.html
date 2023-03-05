@@ -194,19 +194,33 @@
                         
                             <mat-form-field class="fitContent" appearance="fill" >
                                 <mat-label>الحسابات من</mat-label>
-                                <input matInput [formControl]="accounts_from" id="accounts_from"
+                                <input matInput [formControl]="account_id_from" id="account_id_from"
                                     (keyup.enter)="focusNext('account_type')">
                             </mat-form-field>
                             
                             <mat-form-field class="fitContent" appearance="fill">
                                 <mat-label>الحسابات الى</mat-label>
-                                <input matInput [formControl]="accounts_to" id="accounts_to"
+                                <input matInput [formControl]="account_id_to" id="account_id_to"
                                     (keyup.enter)="focusNext('account_type')">
                             </mat-form-field>
                             
                         </div>
+
+                        <div class="inputGroup8" style="display: flex; flex-direction: column; margin-top: 30px; margin-left: 10px;  border-left: 1px solid #bbbbbb;">
+                            <mat-form-field class="fitContent" appearance="fill">
+                                <mat-label>من مركز كلفة</mat-label>
+                                <input matInput [formControl]="account_center_id_from" id="account_center_id_from"
+                                    (keyup.enter)="focusNext('attach')">
+                            </mat-form-field>
+                            
+                            <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px;">
+                                <mat-label>الى مركز كلفة</mat-label>
+                                <input matInput [formControl]="account_center_id_to" id="account_center_id_to"
+                                    (keyup.enter)="focusNext('attach')">
+                            </mat-form-field>
+                        </div>
     
-                        <div class="inputGroup7" style="display: flex; flex-direction: column; margin-top: 30px; margin-left: 10px;">
+                        <div class="inputGroup7" style="display: flex; flex-direction: column; margin-top: 30px; margin-left: 10px; border-left: 1px solid #bbbbbb;">
                             <mat-form-field class="fitContent" appearance="fill">
                                 <mat-label>مركز الكلفة</mat-label>
                                  <mat-select [formControl]="account_center" multiple
@@ -217,15 +231,22 @@
                                 </mat-option>
                             </mat-form-field>
 
-                            <mat-form-field class="fitContent" appearance="fill">
-                                <mat-label>رقم الحساب</mat-label>
-                                 <mat-select [formControl]="accounts_tree_fk" multiple
-                                id="accounts_tree_fk" (keyup.enter)="focusNext('incumbent_month')">
-                                </mat-select>
-                                <mat-option *ngFor="let option of accounts_tree_list" [value]="option.seq">
-                                {{option.account_id + " - " + option.account_name}}
-                                </mat-option>
-                            </mat-form-field>
+                            <span>أرقام الحسابات</span>
+                            <ng-select
+                                [items]="accounts_tree_list"
+                                id="accounts_tree_list"
+                                (keyup.enter)="focusNext('operation_types')"
+                                [multiple]="true"
+                                bindLabel="name"
+                                groupBy="gender"
+                                [selectableGroup]="true"
+                                [closeOnSelect]="false"
+                                bindValue="id"
+                                [(ngModel)]="selected_account_ids">
+                                <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                                    <input [ngModelOptions]="{standalone: true}" style="background-color: white !important;color: black!important;" id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"/> {{item.account_id + " - " + item.account_name}}
+                                </ng-template>
+                            </ng-select>
                         </div>
 
                         <div class="inputGroup8" style="display: flex; flex-direction: column; margin-top: 30px; margin-left: 10px;">
@@ -255,69 +276,46 @@
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
     
         <ng-container matColumnDef="incumbent_id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>رقم المذكرة </th>
-            <td mat-cell *matCellDef="let element">{{element?.incumbent_id}}</td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>رقم الوثيقة </th>
+            <td mat-cell *matCellDef="let element">{{element?.document_id}}</td>
         </ng-container>
         <ng-container matColumnDef="document_id">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>رقم المذكرة </th>
-            <td mat-cell *matCellDef="let element">{{element?.document_id}}</td>
+            <td mat-cell *matCellDef="let element">{{element?.incumbent_id}}</td>
         </ng-container>
         
+        <ng-container matColumnDef="document_date">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>تاريخ الوثيقة </th>
+            <td mat-cell *matCellDef="let element">{{element?.document_date | date:'yyyy/MM/dd'}}</td>
+        </ng-container>
+    
         <ng-container matColumnDef="incumbent_date">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>تاريخ المذكرة </th>
             <td mat-cell *matCellDef="let element">{{element?.incumbent_date | date:'yyyy/MM/dd'}}</td>
         </ng-container>
-    
-        <ng-container matColumnDef="document_date">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>تاريخ المذكرة </th>
-            <td mat-cell *matCellDef="let element">{{element?.document_date | date:'yyyy/MM/dd'}}</td>
-        </ng-container>
       
     
-        <ng-container matColumnDef="exchange_order_type_fk">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>نوع السند </th>
-            <td mat-cell *matCellDef="let element">{{element?.exchange_order_type_fk}}</td>
+        <ng-container matColumnDef="account_center_name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>مركز الكلفة </th>
+            <td mat-cell *matCellDef="let element">{{element?.account_center?.account_center_name}}</td>
         </ng-container>
-    
-        <ng-container matColumnDef="total_value">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>مبلغ السند </th>
-            <td mat-cell *matCellDef="let element">{{element?.total_value}}</td>
+        
+        <ng-container matColumnDef="operation_type">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>نوع المذكرة </th>
+            <td mat-cell *matCellDef="let element">{{element?.operation_type}}</td>
         </ng-container>
-    
-       
-    
-    
-        <ng-container matColumnDef="name_of_owner">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>اسم صاحب الاستحقاق </th>
-            <td mat-cell *matCellDef="let element">{{element?.name_of_owner}}</td>
-        </ng-container> -->
-    
-        <ng-container matColumnDef="branch_fk">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>الفرع </th>
-            <td mat-cell *matCellDef="let element">{{element?.branch?.branch_name}}</td>
-        </ng-container> -->
-    
-    
-        <!-- <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef> حذف\تعديل </th>
-    
-            <td mat-cell *matCellDef="let element" style="width:20%">
-                <button class="delete" mat-icon-button color="warn" (click)="Delete(element)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-                <button class="edit" mat-icon-button (click)="Update(element)">
-                    <mat-icon>edit</mat-icon>
-                </button>
-    
-            </td>
-        </ng-container> -->
+        
+        <ng-container matColumnDef="sanad_kid_book_name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>دفتر سند القيد </th>
+            <td mat-cell *matCellDef="let element">{{element?.sanad_kid_book?.sanad_kid_book_name}}</td>
+        </ng-container>
     
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;let idx=index;"
              ></tr>
     </table>
-    
-    <mat-paginator #paginator (page)="pageChanged($event)" [length]="totalRows"  [pageIndex]="currentPage" [pageSize]="pageSize" 
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+    <mat-paginator #paginator [length]="totalRows"  
         [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>
     
         <c-row>

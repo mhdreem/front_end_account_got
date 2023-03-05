@@ -1,268 +1,262 @@
+<h2>{{route.snapshot.params['id']>0?'تعديل':'إدخال'}} أمر صرف</h2>
 <c-container>
-
   <c-row>
-    <mat-toolbar>
-      <div>
-        <button mat-button [matMenuTriggerFor]="menu" class="add">
-          <mat-icon>expand_more</mat-icon>
-          <mat-icon class="mat-icon-rtl-mirror">save</mat-icon> حفظ
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="save()"> حفظ نظامي F9</button>
-          <button mat-menu-item (click)="save_as_draft()">مسوده</button>
-        </mat-menu>
-      </div>
-    </mat-toolbar>
-  </c-row>
 
-  <c-row>
-    <c-card class="mb-4 card">
-      <c-card-header class="card-header">معلومات أمر الصرف</c-card-header>
-      <c-card-body class="card-body">
-        <form [formGroup]="Form">
-          <c-row>
+    <c-col [sm]="3">
+      <app-exchange-order-search-bar ></app-exchange-order-search-bar>  
+    </c-col>
 
-            <c-col xs="3">
-              <c-container>
-                <span class="white" style=" display: block; font-size: 14px;">تاريخ السند</span>
-                <c-row>
-                  <c-col xs="3">
-                    <mat-form-field class="example-full-width small-width" appearance="fill">
-                      <mat-label>اليوم</mat-label>
-                      <input matInput placeholder="ex: 21" (change)="sanadDateChange('day')" [(ngModel)]='sanadDateDay'
-                        [ngModelOptions]="{standalone: true}" id="sanadDateDay"
-                        (keyup.enter)="focusNext('sanadDateMonth')" [OnlyNumber]="true">
-                    </mat-form-field>
-                  </c-col>
-                  <c-col xs="3">
-                    <mat-form-field class="example-full-width small-width" appearance="fill">
-                      <mat-label>الشهر</mat-label>
-                      <input matInput placeholder="ex: 1" (change)="sanadDateChange('month')"
-                        [(ngModel)]='sanadDateMonth' [ngModelOptions]="{standalone: true}" id="sanadDateMonth"
-                        (keyup.enter)="focusNext('sanadDateYear')" [OnlyNumber]="true">
-                    </mat-form-field>
-                  </c-col>
-                  <c-col xs="6">
-                    <mat-form-field class="example-full-width small-width" appearance="fill">
-                      <mat-label>العام</mat-label>
-                      <input matInput placeholder="ex: 2023" (change)="sanadDateChange('year')"
-                        [(ngModel)]='sanadDateYear' [ngModelOptions]="{standalone: true}" id="sanadDateYear"
-                        (keyup.enter)="focusNext('document_id')" [OnlyNumber]="true">
-                    </mat-form-field>
-                  </c-col>
-                </c-row>
-              </c-container>
-            </c-col>
+    <c-col [sm]="9">
+      <c-row>
+        <mat-toolbar>
+          <div>
+            <button mat-button [matMenuTriggerFor]="menu" class="add">
+              <mat-icon>expand_more</mat-icon>
+              <mat-icon class="mat-icon-rtl-mirror">save</mat-icon> حفظ
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="save()"> حفظ نظامي F9</button>
+              <button mat-menu-item (click)="save_as_draft()">مسوده</button>
+            </mat-menu>
+          </div>
+        </mat-toolbar>
+      </c-row>
+    
+      <c-row>
+        <c-card class="mb-4 card">
+          <c-card-header class="card-header">معلومات السند</c-card-header>
+          <c-card-body class="card-body">
+    
+            <form [formGroup]="Form">
+              <div class="inputGroup1" style="display: flex; flex-direction: column; margin-left: 10px; border-left: 1px solid #bbbbbb; padding-left: 10px;">
+                <div class="date">
+                  <span class="white" style="margin-bottom: 10px; display: block;  font-size: 14px;">تاريخ السند</span>
+                <mat-form-field class="example-full-width small-width" appearance="fill">
+                  <mat-label>اليوم</mat-label>
+                  <input  matInput placeholder="ex: 21" (change)="sanadDateChange('day')"
+                  [(ngModel)]='sanadDateDay' [ngModelOptions]="{standalone: true}"
+                  id="sanadDateDay" (keyup.enter)="focusNext('sanadDateMonth')" [OnlyNumber]="true">
+                </mat-form-field>
+                <mat-form-field class="example-full-width small-width" appearance="fill">
+                  <mat-label>الشهر</mat-label>
+                  <input  matInput placeholder="ex: 1" (change)="sanadDateChange('month')"
+                  [(ngModel)]='sanadDateMonth' [ngModelOptions]="{standalone: true}"
+                  id="sanadDateMonth" (keyup.enter)="focusNext('sanadDateYear')" [OnlyNumber]="true">
+                </mat-form-field>
+                <mat-form-field class="example-full-width small-width" appearance="fill">
+                  <mat-label>العام</mat-label>
+                  <input  matInput placeholder="ex: 2023" (change)="sanadDateChange('year')"
+                  [(ngModel)]='sanadDateYear' [ngModelOptions]="{standalone: true}"
+                  id="sanadDateYear" (keyup.enter)="focusNext('incumbentDateDay')" [OnlyNumber]="true">
+                </mat-form-field>
+                </div>
 
-            <c-col xs="3">
-              <mat-form-field appearance="fill" style="margin-top: 30px;">
-                <mat-label>رقم السند</mat-label>
-                <input matInput [OnlyNumber]="true" [formControl]="document_id" id="document_id"
-                  (keyup.enter)="focusNext('incumbentDateDay')" [OnlyNumber]="true">
+            <div class="date">
+              <span class="white" style="margin-bottom: 10px; display: block; font-size: 14px;">تاريخ المذكرة</span>
+              <mat-form-field class="example-full-width small-width" appearance="fill">
+                <mat-label>اليوم</mat-label>
+                <input  matInput placeholder="ex: 21" (change)="incumbentDateChange('day')"
+                [(ngModel)]='incumbentDateDay' [ngModelOptions]="{standalone: true}"
+                id="incumbentDateDay" (keyup.enter)="focusNext('incumbentDateMonth')" [OnlyNumber]="true">
               </mat-form-field>
-            </c-col>
-
-            <c-col xs="3">
-              <c-container>
-                <span class="white" style="margin-bottom: 10px; display: block; font-size: 14px;">تاريخ المذكرة</span>
-                <c-row>
-                  <c-col xs="3">
-                    <mat-form-field class="example-full-width small-width" appearance="fill">
-                      <mat-label>اليوم</mat-label>
-                      <input matInput placeholder="ex: 21" (change)="incumbentDateChange('day')"
-                        [(ngModel)]='incumbentDateDay' [ngModelOptions]="{standalone: true}" id="incumbentDateDay"
-                        (keyup.enter)="focusNext('incumbentDateMonth')" [OnlyNumber]="true">
-                    </mat-form-field>
-                  </c-col>
-                  <c-col xs="3">
-                    <mat-form-field class="example-full-width small-width" appearance="fill">
-                      <mat-label>الشهر</mat-label>
-                      <input matInput placeholder="ex: 1" (change)="incumbentDateChange('month')"
-                        [(ngModel)]='incumbentDateMonth' [ngModelOptions]="{standalone: true}" id="incumbentDateMonth"
-                        (keyup.enter)="focusNext('incumbentDateYear')" [OnlyNumber]="true">
-                    </mat-form-field>
-                  </c-col>
-                  <c-col xs="6">
-                    <mat-form-field class="example-full-width small-width" appearance="fill">
-                      <mat-label>العام</mat-label>
-                      <input matInput placeholder="ex: 2023" (change)="incumbentDateChange('year')"
-                        [(ngModel)]='incumbentDateYear' [ngModelOptions]="{standalone: true}" id="incumbentDateYear"
-                        (keyup.enter)="focusNext('incumbent_id')" [OnlyNumber]="true">
-                    </mat-form-field>
-                  </c-col>
-
-                </c-row>
-              </c-container>
-            </c-col>
-
-            <c-col xs="3">
-              <mat-form-field appearance="fill" style="margin-top: 30px;">
+              <mat-form-field class="example-full-width small-width" appearance="fill">
+                <mat-label>الشهر</mat-label>
+                <input  matInput placeholder="ex: 1" (change)="incumbentDateChange('month')"
+                [(ngModel)]='incumbentDateMonth' [ngModelOptions]="{standalone: true}"
+                id="incumbentDateMonth" (keyup.enter)="focusNext('incumbentDateYear')" [OnlyNumber]="true">
+              </mat-form-field>
+              <mat-form-field class="example-full-width small-width" appearance="fill">
+                <mat-label>العام</mat-label>
+                <input  matInput placeholder="ex: 2023" (change)="incumbentDateChange('year')"
+                [(ngModel)]='incumbentDateYear' [ngModelOptions]="{standalone: true}"
+                id="incumbentDateYear" (keyup.enter)="focusNext('incumbent_id')" [OnlyNumber]="true">
+              </mat-form-field>
+              </div>
+            </div>
+                    
+            <div class="inputGroup2" style="display: flex; flex-direction: column; margin-left: 10px; border-left: 1px solid #bbbbbb; padding-left: 10px;">
+              <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px; width: 150px;" >
                 <mat-label>رقم المذكرة</mat-label>
-                <input matInput [OnlyNumber]="true" [formControl]="incumbent_id" id="incumbent_id"
-                  (keyup.enter)="focusNext('Book_fk')" [OnlyNumber]="true">
+                <input matInput [formControl]="incumbent_id"
+                        id="incumbent_id" (keyup.enter)="focusNext('document_id')" [OnlyNumber]="true">
               </mat-form-field>
 
-            </c-col>
-
-          </c-row>
-          <c-row>
-            <c-col xs="3">
-              <mat-form-field appearance="fill">
+              <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px; width: 150px;">
+                <mat-label>رقم السند</mat-label>
+                <input matInput [formControl]="document_id"
+                        id="document_id" (keyup.enter)="focusNext('Book_fk')" [OnlyNumber]="true">
+            </mat-form-field>
+            </div>
+    
+            <div class="inputGroup3" style="display: flex; flex-direction: column; margin-left: 10px; padding-left: 10px;">
+              <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px;">
                 <mat-label>دفتر السندات</mat-label>
-                <input matInput [formControl]="book_fk" [matAutocomplete]="auto_book_fk" id="Book_fk"
-                  (keyup.enter)="focusNext('name_of_owner')">
-                <mat-autocomplete #auto_book_fk="matAutocomplete" (optionSelected)="select_Book_Option($event)"
-                  [displayWith]="displayBookProperty.bind(this)">
-                  <mat-option *ngFor="let option of filter_List_sanad_kid_book | async"
-                    [value]="option.sanad_kid_book_seq">
+                <input matInput [formControl]="book_fk" [matAutocomplete]="auto_book_fk"
+                        id="Book_fk" (keyup.enter)="focusNext('name_of_owner')">
+                <mat-autocomplete #auto_book_fk="matAutocomplete" 
+                (optionSelected)="select_Book_Option($event)" 
+                [displayWith]="displayBookProperty.bind(this)"
+                >
+                    <mat-option *ngFor="let option of filter_List_sanad_kid_book | async" [value]="option.sanad_kid_book_seq">
                     {{option.sanad_kid_book_name}}
-                  </mat-option>
+                    </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
-            </c-col>
-            <c-col xs="9">
-              <mat-form-field appearance="fill">
+
+              <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px;">
                 <mat-label>اسم صاحب الاستحقاق</mat-label>
-                <input matInput [formControl]="name_of_owner" id="name_of_owner"
-                  (keyup.enter)="focusNext('account_type')">
+                <input matInput [formControl]="name_of_owner"
+                        id="name_of_owner" (keyup.enter)="focusNext('sanad_close')">
               </mat-form-field>
-            </c-col>
 
-          </c-row>
+            </div>
 
-        </form>
-      </c-card-body>
-    </c-card>
-
-
-  </c-row>
-
-  <c-row>
-    <c-col xs="8">
-
-      <c-card>
-
-        <c-card-header class="card-header">
-          المرفقات
-        </c-card-header>
-
-        <c-card-body class="card-body">
-          <div class="detail" *ngFor="let attachment of exchange_order.exchange_order_attachements; let i=index;">
-            <div class="circle">{{i+1}}</div>
-            <app-exchange-order-attachments [index]="i"
-              (onDelete)="onAttachmentDelete($event)"></app-exchange-order-attachments>
-          </div>
-        </c-card-body>
-        <c-card-footer>
-          <button class="add" mat-raised-button class="add" (click)="addAttachment()">+إضافة مرفق</button>
-        </c-card-footer>
-      </c-card>
-    </c-col>
+                <!-- <mat-form-field class="fitContent" appearance="fill">
+                    <mat-label>رقم حساب الصندوق</mat-label>
+                    <input matInput [formControl]="boxNum"
+                            id="boxNum" (keyup.enter)="focusNext('account_type')">
+                </mat-form-field>
     
-    <c-col xs="4">
-
-      <c-card class="mb-4">
-
-        <c-card-header class="card-header">
-          قائمة الادخالات المستخدم
-        </c-card-header>
-        <c-card-body class="card-body">
-          <c-row>
-            <table mat-table [dataSource]="dataSource_exchange_order_entry" class="mat-elevation-z8" matSort>
-
-              <ng-container matColumnDef="ex_ord_stg_name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>المرحلة </th>
-                <td mat-cell *matCellDef="let element">{{element?.exchange_order_stage.ex_ord_stg_name}}</td>
-              </ng-container>
-
-              <ng-container matColumnDef="user_entry">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>المستخدم </th>
-                <td mat-cell *matCellDef="let element">{{element?.user_entry.user_first_name}}
-                  {{element?.user_entry.user_last_name}}</td>
-              </ng-container>
-
-              <ng-container matColumnDef="date_entry">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>تاريخ الحفظ </th>
-                <td mat-cell *matCellDef="let element">{{element?.date_entry | date:'yyyy/MM/dd'}}</td>
-              </ng-container>
-
-
-              <tr mat-header-row *matHeaderRowDef="exchange_order_entry_displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: exchange_order_entry_displayedColumns;let idx=index;"
-                [style.background-color]="rowClicked == idx ? 'yellow': 'none'" (click)="changeTableRowColor(idx)"></tr>
-            </table>
-
-
-
-          </c-row>
-          <c-row>
-            <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
-              [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>
-
-          </c-row>
-        </c-card-body>
-
-
-      </c-card>
-
-    </c-col>
-  </c-row>
-
-
-  <c-row>
-    <c-col>
-
-      <c-card>
-
-        <c-card-header class="card-header">
-          تفاصيل أمر الصرف
-        </c-card-header>
-
-        <c-card-body class="card-body">
-          <div class="detail" *ngFor="let details of exchange_order.exchange_order_details; let i=index;">
-            <div class="circle">{{i+1}}</div>
-            <app-exchange-order-detail [index]="i" (onDelete)="onDetailsDelete($event)" (updateSum)="updateSum()"></app-exchange-order-detail>
-          </div>
-        </c-card-body>
-        <c-card-footer>
-          <button class="add" mat-raised-button class="add" (click)="addDetails()">+إضافة تفصيل</button>
-        </c-card-footer>
-      </c-card>
-    </c-col>
-  </c-row>
-
-  <c-row>
-    <c-col [cCol]="2">
-      <c-card class="my-4 card smallCard">
-        <c-card-header class="card-header">مجموع مدين</c-card-header>
-        <c-card-body class="card-body">
-          <output>{{sumDebtor}}</output>
-        </c-card-body>
-      </c-card>
-    </c-col>
-    <c-col [cCol]="2">
-      <c-card class="my-4 card smallCard">
-        <c-card-header class="card-header">مجموع دائن</c-card-header>
-        <c-card-body class="card-body">
-          <output>{{sumCreditor}}</output>
-        </c-card-body>
-      </c-card>
-    </c-col>
-    <c-col [cCol]="2">
-      <c-card class="my-4 card smallCard">
-        <c-card-header class="card-header">الرصيد</c-card-header>
-        <c-card-body class="card-body">
-          <output>{{balance}}</output>
-        </c-card-body>
-      </c-card>
-    </c-col>
-    <c-col [cCol]="2">
-      <c-card class="my-4 card smallCard">
-        <c-card-header class="card-header">عدد الحركات</c-card-header>
-        <c-card-body class="card-body">
-          <output>{{actionNum}}</output>
-        </c-card-body>
-      </c-card>
+                <mat-form-field class="fitContent" appearance="fill">
+                    <mat-label>اسم حساب الصندوق</mat-label>
+                    <input matInput [formControl]="boxName"
+                            id="boxName" (keyup.enter)="focusNext('account_type')">
+                </mat-form-field> -->
+          </form>
+          </c-card-body>
+        </c-card>
+    
+    
+      </c-row>
+    
+      <c-row>
+        <c-col xs="8">
+    
+          <c-card class="mb-4">
+    
+            <c-card-header class="card-header">
+              المرفقات
+            </c-card-header>
+    
+            <c-card-body class="card-body">
+              <div class="detail" *ngFor="let attachment of exchange_order.exchange_order_attachements; let i=index;">
+                <div class="circle">{{i+1}}</div>
+                <app-exchange-order-attachments [index]="i"
+                  (onDelete)="onAttachmentDelete($event)"></app-exchange-order-attachments>
+              </div>
+            </c-card-body>
+            <c-card-footer>
+              <button class="add" mat-raised-button class="add" (click)="addAttachment()">+إضافة مرفق</button>
+            </c-card-footer>
+          </c-card>
+        </c-col>
+        
+        <c-col xs="4">
+    
+          <c-card class="mb-4">
+    
+            <c-card-header class="card-header">
+              قائمة الادخالات المستخدم
+            </c-card-header>
+            <c-card-body class="card-body">
+              <c-row>
+                <table mat-table [dataSource]="dataSource_exchange_order_entry" class="mat-elevation-z8" matSort>
+    
+                  <ng-container matColumnDef="ex_ord_stg_name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>المرحلة </th>
+                    <td mat-cell *matCellDef="let element">{{element?.exchange_order_stage?.ex_ord_stg_name}}</td>
+                  </ng-container>
+    
+                  <ng-container matColumnDef="user_entry">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>المستخدم </th>
+                    <td mat-cell *matCellDef="let element">{{element?.user_entry?.user_first_name}}
+                      {{element?.user_entry?.user_last_name}}</td>
+                  </ng-container>
+    
+                  <ng-container matColumnDef="date_entry">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>تاريخ الحفظ </th>
+                    <td mat-cell *matCellDef="let element">{{element?.date_entry | date:'yyyy/MM/dd'}}</td>
+                  </ng-container>
+    
+    
+                  <tr mat-header-row *matHeaderRowDef="exchange_order_entry_displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: exchange_order_entry_displayedColumns;let idx=index;"
+                    [style.background-color]="rowClicked == idx ? 'yellow': 'none'" (click)="changeTableRowColor(idx)"></tr>
+                </table>
+    
+    
+    
+              </c-row>
+              <c-row>
+                <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+                  [pageSizeOptions]="pageSizeOptions" ></mat-paginator>
+    
+              </c-row>
+            </c-card-body>
+    
+    
+          </c-card>
+    
+        </c-col>
+      </c-row>
+    
+    
+      <c-row>
+        <c-col>
+    
+          <c-card>
+    
+            <c-card-header class="card-header">
+              تفاصيل أمر الصرف
+            </c-card-header>
+    
+            <c-card-body class="card-body">
+              <div class="detail" *ngFor="let details of exchange_order.exchange_order_details; let i=index;">
+                <div class="circle">{{i+1}}</div>
+                <app-exchange-order-detail [index]="i" (onDelete)="onDetailsDelete($event)" (updateSum)="updateSum()"></app-exchange-order-detail>
+              </div>
+            </c-card-body>
+            <c-card-footer>
+              <button class="add" mat-raised-button class="add" (click)="addDetails()">+إضافة تفصيل</button>
+            </c-card-footer>
+          </c-card>
+        </c-col>
+      </c-row>
+    
+      <c-row>
+        <c-col [cCol]="2">
+          <c-card class="my-4 card smallCard zoom">
+            <c-card-header class="card-header">مجموع مدين</c-card-header>
+            <c-card-body class="card-body">
+              <output>{{sumDebtor}}</output>
+            </c-card-body>
+          </c-card>
+        </c-col>
+        <c-col [cCol]="2">
+          <c-card class="my-4 card smallCard zoom">
+            <c-card-header class="card-header">مجموع دائن</c-card-header>
+            <c-card-body class="card-body">
+              <output>{{sumCreditor}}</output>
+            </c-card-body>
+          </c-card>
+        </c-col>
+        <c-col [cCol]="2">
+          <c-card class="my-4 card smallCard zoom">
+            <c-card-header class="card-header">الرصيد</c-card-header>
+            <c-card-body class="card-body">
+              <output>{{balance}}</output>
+            </c-card-body>
+          </c-card>
+        </c-col>
+        <c-col [cCol]="2">
+          <c-card class="my-4 card smallCard zoom">
+            <c-card-header class="card-header">عدد الحركات</c-card-header>
+            <c-card-body class="card-body">
+              <output>{{actionNum}}</output>
+            </c-card-body>
+          </c-card>
+        </c-col>
+      </c-row>
     </c-col>
   </c-row>
 </c-container>

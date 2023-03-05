@@ -17,7 +17,7 @@
 
                             <mat-form-field >
                                 <mat-label >الاسم الأول للمستخدم</mat-label>
-                                <input matInput [formControl]="user_first_name" id="user_first_name" (keyup.enter)="focusNext('frm_user_last_name')">
+                                <input matInput [formControl]="user_first_name" id="user_first_name" (keyup.enter)="focusNext('user_last_name')">
                             </mat-form-field>
 
                             
@@ -26,7 +26,7 @@
                         <c-col>
                             <mat-form-field >
                                 <mat-label >كنية المستخدم</mat-label>
-                                <input matInput [formControl]="user_last_name" id="user_last_name" (keyup.enter)="focusNext('frm_user_name')">
+                                <input matInput [formControl]="user_last_name" id="user_last_name" (keyup.enter)="focusNext('user_name')">
                             </mat-form-field>
                         </c-col>
                     </c-row>
@@ -34,7 +34,7 @@
                         <c-col>
                             <mat-form-field >
                                 <mat-label #user_name_element>اسم تسجيل الدخول</mat-label>
-                                <input matInput [formControl]="user_name" id="user_name" (keyup.enter)="focusNext('frm_user_password')">
+                                <input matInput [formControl]="user_name" id="user_name" (keyup.enter)="focusNext('user_password')">
                                 <mat-error *ngIf="fieldHasErrors(Form, 'user_name')">
                                     {{
                                     autoPrintFirstErrorMessage(
@@ -52,7 +52,7 @@
                         <c-col>
                             <mat-form-field >
                                 <mat-label>كلمة المرور</mat-label>
-                                <input matInput [formControl]="user_password" id="user_password" (keyup.enter)="focusNext('frm_user_first_name')">
+                                <input matInput [formControl]="user_password" id="user_password" (keyup.enter)="focusNext('account_level')">
                             </mat-form-field>
                         </c-col>
                     </c-row>
@@ -62,7 +62,7 @@
                             <mat-form-field class="fitContent" appearance="fill">
                                 <mat-label>القسم</mat-label>
                                 <input matInput [formControl]="department_fk" [matAutocomplete]="autodepartment"
-                                        id="account_level" (keyup.enter)="focusNext('Class')">
+                                        id="account_level" (keyup.enter)="focusNext('branch_fk')">
                                 <mat-autocomplete #autodepartment="matAutocomplete" 
                                 [displayWith]="displayDepartmentProperty.bind(this)"
                                 >
@@ -79,7 +79,7 @@
                             <mat-form-field class="fitContent" appearance="fill">
                                 <mat-label>الفرع</mat-label>
                                 <input matInput [formControl]="branch_fk" [matAutocomplete]="autobranch"
-                                        id="frm_branch_fk" (keyup.enter)="focusNext('Class')">
+                                        id="branch_fk" (keyup.enter)="focusNext('Class')">
                                 <mat-autocomplete #autobranch="matAutocomplete" 
                                 [displayWith]="displayBranchProperty.bind(this)"
                                 >

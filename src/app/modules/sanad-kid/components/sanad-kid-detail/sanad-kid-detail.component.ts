@@ -100,7 +100,9 @@ export class SanadKidDetailComponent implements OnChanges, OnDestroy, OnInit {
       this.index = changes['index'].currentValue;
     }
     if (changes != null && changes['index'] != null) {
-      this.SetValue();
+      // load data must executed before set value
+      this.Load_Data();
+      //this.SetValue();
       this.bindModelToForm(this.sanad_kid_detail, this.Form);
 
     }
@@ -147,7 +149,7 @@ export class SanadKidDetailComponent implements OnChanges, OnDestroy, OnInit {
         this.account_centerService.List_account_center = this.account_center_list;
         this.account_centerService.List_account_center_BehaviorSubject.next(this.account_center_list);
 
-
+        this.SetValue();
         this.LoadingFinish = true;
 
       }

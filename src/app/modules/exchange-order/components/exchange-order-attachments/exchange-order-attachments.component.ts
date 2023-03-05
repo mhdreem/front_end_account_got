@@ -59,7 +59,7 @@ export class ExchangeOrderAttachmentsComponent implements OnDestroy {
   exchange_order_attachement_id!: FormControl<number | null>;
   exchange_order_attachement_date!: FormControl<Date | null>;
   type_fk!: FormControl<number | null>;
-  attachement_type!: FormControl<attachement_type | null>;
+  // attachement_type!: FormControl<attachement_type | null>;
   exchange_order_attachement_note!: FormControl<string | null>;
 
 
@@ -98,7 +98,9 @@ export class ExchangeOrderAttachmentsComponent implements OnDestroy {
       this.index = changes['index'].currentValue;
     }
     if (changes != null && changes['index'] != null) {
-      this.SetValue();
+      // load data must executed before set value
+      this.Load_Data();
+      //this.SetValue();
       this.bindModelToForm(this.exchange_order_attachment, this.Form);
 
     }
@@ -128,7 +130,7 @@ export class ExchangeOrderAttachmentsComponent implements OnDestroy {
           'exchange_order_attachement_id': this.exchange_order_attachement_id = new FormControl<number | null>(null, []),
           'exchange_order_attachement_date': this.exchange_order_attachement_date = new FormControl<Date | null>(null, []),
           'type_fk': this.type_fk = new FormControl<number | null>(null, []),
-          'attachement_type': this.attachement_type = new FormControl<attachement_type | null>(null, []),
+          // 'attachement_type': this.attachement_type = new FormControl<attachement_type | null>(null, []),
           'exchange_order_attachement_note': this.exchange_order_attachement_note = new FormControl<string | null>(null, []),
         },
       );
@@ -151,6 +153,8 @@ export class ExchangeOrderAttachmentsComponent implements OnDestroy {
         this.attachmentTypeService.List_attachment_type_BehaviorSubject.next(this.attachmentTypeService.List_attachment_type);
 
         this.Init_AutoComplete();
+
+        this.SetValue();
 
         this.LoadingFinish = true;
 
@@ -213,17 +217,23 @@ export class ExchangeOrderAttachmentsComponent implements OnDestroy {
         this.exchange_order_attachement_id.setValue(this.exchange_order_attachment.exchange_order_attachement_id);
 
 
-      if (this.exchange_order_attachment != null && this.exchange_order_attachment.exchange_order_attachement_date != null)
+      if (this.exchange_order_attachment != null && this.exchange_order_attachment.exchange_order_attachement_date != null){
         this.exchange_order_attachement_date.setValue(this.exchange_order_attachment.exchange_order_attachement_date);
+        this.attachmentDateDay = moment(this.exchange_order_attachement_date.value).date() + '';
+        this.attachmentDateMonth = (moment(this.exchange_order_attachement_date.value).month() + 1) + '';
+        this.attachmentDateYear = moment(this.exchange_order_attachement_date.value).year() + '';
+        this.attachmentDateDayIsFilled = true;
+        this.attachmentDateMonthIsFilled= true;
+        this.attachmentDateYearIsFilled = true;
+      }
 
 
       if (this.exchange_order_attachment != null && this.exchange_order_attachment.type_fk != null)
         this.type_fk.setValue(this.exchange_order_attachment.type_fk);
 
 
-      if (this.exchange_order_attachment != null && this.exchange_order_attachment.attachement_type != null)
-        this.attachement_type.setValue(this.exchange_order_attachment.attachement_type);
-
+      // if (this.exchange_order_attachment != null && this.exchange_order_attachment.attachement_type != null)
+      //   this.attachement_type.setValue(this.exchange_order_attachment.attachement_type);
 
 
       if (this.exchange_order_attachment != null && this.exchange_order_attachment.exchange_order_attachement_note != null)
@@ -252,9 +262,12 @@ export class ExchangeOrderAttachmentsComponent implements OnDestroy {
 
     if (this.exchange_order_attachment != null && this.exchange_order_attachement_date.value != null)
       this.exchange_order_attachment.exchange_order_attachement_date = this.exchange_order_attachement_date.value;
+    
+      if (this.exchange_order_attachment != null && this.type_fk.value != null)
+      this.exchange_order_attachment.type_fk = this.type_fk.value;
 
-    if (this.exchange_order_attachment != null && this.type_fk.value != null)
-      this.exchange_order_attachment.attachement_type = this.attachment_type_list.find(type => type.attachement_type_seq == this.type_fk.value);
+    // if (this.exchange_order_attachment != null && this.type_fk.value != null)
+    //   this.exchange_order_attachment.attachement_type = this.attachment_type_list.find(type => type.attachement_type_seq == this.type_fk.value);
 
     if (this.exchange_order_attachment != null && this.exchange_order_attachement_note.value != null)
       this.exchange_order_attachment.exchange_order_attachement_note = this.exchange_order_attachement_note.value;
@@ -292,20 +305,20 @@ export class ExchangeOrderAttachmentsComponent implements OnDestroy {
   }
 
 
-  Select_Attatchement_Type_Option(event: any) {
+  // Select_Attatchement_Type_Option(event: any) {
 
-    const selectedValue = event.option.value;
+  //   const selectedValue = event.option.value;
 
-    if (selectedValue != null) {
-      this.type_fk.setValue(selectedValue);
+  //   if (selectedValue != null) {
+  //     this.type_fk.setValue(selectedValue);
 
-      var attachement_types = this.attachment_type_list.filter(x => x.attachement_type_seq == selectedValue);
-      if (attachement_types != null && attachement_types.length > 0) {
-        this.attachement_type.setValue(attachement_types[0]);
-      }
+  //     var attachement_types = this.attachment_type_list.filter(x => x.attachement_type_seq == selectedValue);
+  //     if (attachement_types != null && attachement_types.length > 0) {
+  //       this.attachement_type.setValue(attachement_types[0]);
+  //     }
 
-    }
+  //   }
 
-  }
+  // }
 
 }

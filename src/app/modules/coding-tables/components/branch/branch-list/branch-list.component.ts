@@ -26,7 +26,7 @@ export class BranchListComponent implements OnInit {
   displayedColumns: string[] = ['branch_name', 'branch_address', 'branch_phone', 'branch_email', 'branch_website' ,'action'];
 
   pageSizeOptions: number[] = [20, 40, 60];
-
+  isLoading: boolean= false;
   Subscription: Subscription = new Subscription();
 
 
@@ -59,12 +59,15 @@ export class BranchListComponent implements OnInit {
 
 
   LoadData() {
+    this.isLoading= true;
+
     this.Subscription.add(
       this.branchService.list().subscribe(
         res => {
           if (res != null)
             this.branch_List = res;
             this.dataSource.data = this.branch_List;
+            this.isLoading= false;
         }
       )
     );

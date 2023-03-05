@@ -26,7 +26,7 @@ export class AccountLevelListComponent {
   dataSource = new MatTableDataSource<account_level>();
   displayedColumns: string[] = ['account_level_name', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
-
+  isLoading: boolean= false;
   Subscription: Subscription = new Subscription();
 
   excelData: any[] = [];
@@ -77,12 +77,15 @@ export class AccountLevelListComponent {
 
 
   LoadData() {
+    this.isLoading= true;
+
     this.Subscription.add(
       this.accountLevelService.list().subscribe(
         res => {
           if (res != null)
             this.account_level_List = res;
           this.dataSource.data = this.account_level_List;
+          this.isLoading= false;
         }
       )
     );

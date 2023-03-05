@@ -99,7 +99,7 @@
             <mat-form-field class="fitContent" appearance="fill">
                 <mat-label>مركز الكلفة</mat-label>
                 <input matInput [formControl]="account_center_fk" [matAutocomplete]="autoaccount_center_fk"
-                id="account_center_fk" (keyup.enter)="focusNext('phone')">
+                id="account_center_fk" (keyup.enter)="focusNext('branch_fk')">
                 <mat-autocomplete #autoaccount_center_fk="matAutocomplete"
                 [displayWith]="display_Account_Center_Property.bind(this)"
                 >
@@ -112,7 +112,7 @@
             <mat-form-field class="fitContent" appearance="fill">
                 <mat-label>الفرع</mat-label>
                 <input matInput [formControl]="branch_fk" [matAutocomplete]="autobranch"
-                        id="frm_branch_fk" (keyup.enter)="focusNext('Class')">
+                        id="branch_fk" (keyup.enter)="focusNext('phone')">
                 <mat-autocomplete #autobranch="matAutocomplete" 
                 [displayWith]="displayBranchProperty.bind(this)"
                 >

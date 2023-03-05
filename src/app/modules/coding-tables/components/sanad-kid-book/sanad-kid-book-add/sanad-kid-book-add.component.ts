@@ -74,8 +74,7 @@ export class SanadKidBookAddComponent {
 
      this.BuildForm();
      this.Load_Data(); 
-     if (this.data != null && this.data.obj != null )     
-      this.selected_SanadKidBook = this.data.obj;
+     
     
   }
 
@@ -97,6 +96,9 @@ export class SanadKidBookAddComponent {
           this.accountTreeService.List_AccountsTree_BehaviorSubject.next(this.accountTreeService.List_AccountsTree);
 
           this.Init_AutoComplete();
+
+          if (this.data != null && this.data.obj != null )     
+            this.selected_SanadKidBook = this.data.obj;
 
           this.LoadingFinish = true;
 
@@ -188,8 +190,6 @@ export class SanadKidBookAddComponent {
 
   setValue()
   {
-    if (this.Form!= null )
-    {
       if (this.selected_SanadKidBook!.sanad_kid_book_seq!!= null)
         this.sanad_kid_book_seq.setValue(this.selected_SanadKidBook!.sanad_kid_book_seq);
 
@@ -207,7 +207,6 @@ export class SanadKidBookAddComponent {
         
         if (this.selected_SanadKidBook!.sanad_kid_book_order!!= null)
         this.sanad_kid_book_order.setValue(this.selected_SanadKidBook!.sanad_kid_book_order);
-    }
   }
 
   getValue()

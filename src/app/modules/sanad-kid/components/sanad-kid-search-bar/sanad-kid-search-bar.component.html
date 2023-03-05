@@ -54,33 +54,43 @@
               <mat-list-item (click)="SelectItemChange(sanad)" *ngFor="let sanad of sanad_list">        
                 <!-- <h4 matLine style="font-size: small; font-weight: bold;"> {{emp?.fullname}} </h4> -->
                 <p matLine>
-                  <mat-grid-list cols="4" rowHeight="20px">
-                    <mat-grid-tile colspan="1" rowspan="1">
+                  <mat-grid-list cols="8" rowHeight="25px">
+                    <mat-grid-tile colspan="4" rowspan="1">
                         رقم الوثيقة   
                     </mat-grid-tile>
-                    <mat-grid-tile colspan="1" rowspan="1">
-                      {{sanad?.document_id}} 
-                    </mat-grid-tile>
-                    <mat-grid-tile colspan="1" rowspan="1">
+                    
+                    <mat-grid-tile colspan="4" rowspan="1">
                        تاريخ الوثيقة
                     </mat-grid-tile>
-                    <mat-grid-tile colspan="1" rowspan="1">
+                    
+                  </mat-grid-list>
+                  <mat-grid-list cols="8" rowHeight="25px">
+                    <mat-grid-tile colspan="4" rowspan="1">
+                      {{sanad?.document_id}} 
+                    </mat-grid-tile>
+
+                    <mat-grid-tile colspan="4" rowspan="1">
                       {{sanad?.document_date | date: "dd-mm-yyyy"}}
                     </mat-grid-tile>
                   </mat-grid-list>
                 </p>
                 <p matLine>
-                  <mat-grid-list cols="4" rowHeight="20px">
+                  <mat-grid-list cols="8" rowHeight="25px">
                     <mat-grid-tile colspan="1" rowspan="1">
                         مبلغ الوثيقة
                     </mat-grid-tile>
-                    <mat-grid-tile colspan="1" rowspan="1">
-                      {{sanad?.sanad_total_value}} 
-                    </mat-grid-tile>
+                    
                     <mat-grid-tile colspan="1" rowspan="1">
                         اسم صاحب الاستحقاق
                     </mat-grid-tile>
-                    <mat-grid-tile colspan="1" rowspan="1">
+                    
+                  </mat-grid-list>
+                  <mat-grid-list cols="8" rowHeight="25px">
+                    <mat-grid-tile colspan="4" rowspan="1">
+                      {{sanad?.sanad_total_value}} 
+                    </mat-grid-tile>
+
+                    <mat-grid-tile colspan="4" rowspan="1">
                       {{sanad?.name_of_owner}}
                     </mat-grid-tile>
                   </mat-grid-list>

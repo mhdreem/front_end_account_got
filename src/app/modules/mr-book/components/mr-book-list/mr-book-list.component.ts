@@ -8,9 +8,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
+import { forkJoin, map, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
 import { accounts_tree } from 'src/app/modules/shared/models/accounts_tree';
 import { AccountTreeService } from 'src/app/modules/shared/services/account-tree.service';
+import { MrBookService } from 'src/app/modules/shared/services/mr-book.service';
 
 @Component({
   selector: 'app-mr-book-list',
@@ -36,7 +37,7 @@ export class MrBookListComponent {
 
   dataSource = new MatTableDataSource<any>();
   displayedColumns: string[] =
-    ['incumbent_id', 'incumbent_date', 'document_id', 'document_date', 'total_value', 'name_of_owner', 'branch_fk'];
+    ['document_id', 'incumbent_date', 'document_id','account_center_name',  'document_date', 'account_center_name', 'operation_type', 'sanad_kid_book_name'];
 
   fromSanadDateDay: string = '';
   fromSanadDateMonth: string = '';
@@ -71,18 +72,19 @@ export class MrBookListComponent {
   document_id_to!: FormControl<number | null>;
   document_date_from!: FormControl<Date | null>;
   document_date_to!: FormControl<Date | null>;
-  sanad_kid_fk!: FormControl<number | null>;
   incumbent_id_from!: FormControl<number | null>;
   incumbent_id_to!: FormControl<number | null>;
   incumbent_date_from!: FormControl<Date | null>;
   incumbent_date_to!: FormControl<Date | null>;
-  accounts_from!: FormControl<number | null>;
-  accounts_to!: FormControl<number | null>;
+  account_id_from!: FormControl<number | null>;
+  account_id_to!: FormControl<number | null>;
+  operation_types!: FormControl<string | null>;
+  with_sanad_lock!: FormControl<number | null>;
   page_index!: FormControl<number | null>;
   row_count!: FormControl<number | null>;
-  accounts_tree_fk!: FormControl<accounts_tree | null>;
-  incumbent_type!: FormControl<string[] | null>;
-  with_sanad_lock!: FormControl<boolean | null>;
+  account_ids!: FormControl<number[] | null>;
+
+  selected_account_ids: number[]= [];
 
   LoadingFinish: boolean;
 
@@ -93,8 +95,9 @@ export class MrBookListComponent {
 
   totalRows = 0;
   pageSize = 5;
-  currentPage = 1;
+  currentPage = 0;
   pageSizeOptions: number[] = [5, 10, 25, 100];
+  isLoading: boolean= false;
 
   constructor(
     private fb: FormBuilder,
@@ -102,7 +105,8 @@ export class MrBookListComponent {
     public dialog: MatDialog,
     @Inject(DOCUMENT) private _document: Document,
     private router: Router,
-    private accountTreeService: AccountTreeService
+    private accountTreeService: AccountTreeService,
+    private mrBookService: MrBookService
   ) {
     this.LoadingFinish = true;
 
@@ -126,6 +130,21 @@ export class MrBookListComponent {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.paginator.page
+      .pipe(
+        startWith({}),
+        switchMap(()=>{
+          this.pageSize = this.paginator.pageSize;
+          this.currentPage = this.paginator.pageIndex + 1;
+          return this.View();
+        })
+      )
+      .subscribe((data: any) => {
+        // this.totalRows = data.Item2;
+        this.dataSource = new MatTableDataSource(data.value);
+        this.isLoading= false;
+
+      });
   }
 
 
@@ -138,18 +157,17 @@ export class MrBookListComponent {
           'document_id_to': this.document_id_to = new FormControl<number | null>(null, []),
           'document_date_from': this.document_date_from = new FormControl<Date | null>(null, []),
           'document_date_to': this.document_date_to = new FormControl<Date | null>(null, []),
-          'sanad_kid_fk': this.sanad_kid_fk = new FormControl<number | null>(null, []),
           'incumbent_id_from': this.incumbent_id_from = new FormControl<number | null>(null, []),
           'incumbent_id_to': this.incumbent_id_to = new FormControl<number | null>(null, []),
           'incumbent_date_from': this.incumbent_date_from = new FormControl<Date | null>(null, []),
           'incumbent_date_to': this.incumbent_date_to = new FormControl<Date | null>(null, []),
-          'accounts_from': this.accounts_from = new FormControl<number | null>(null, []),
-          'accounts_to': this.accounts_to = new FormControl<number | null>(null, []),
+          'account_id_from': this.account_id_from = new FormControl<number | null>(null, []),
+          'account_id_to': this.account_id_to = new FormControl<number | null>(null, []),
+          'operation_types': this.operation_types = new FormControl<string | null>(null, []),
+          'with_sanad_lock': this.with_sanad_lock = new FormControl<number | null>(null, []),
           'page_index': this.page_index = new FormControl<number | null>(null, []),
           'row_count': this.row_count = new FormControl<number | null>(null, []),
-          'accounts_tree_fk': this.accounts_tree_fk = new FormControl<accounts_tree | null>(null, []),
-          'incumbent_type': this.incumbent_type = new FormControl<string[] | null>(null, []),
-          'with_sanad_lock': this.with_sanad_lock = new FormControl<boolean | null>(null, []),
+          'account_ids': this.account_ids = new FormControl<number[] | null>(null, []),
 
         }
       );
@@ -168,6 +186,7 @@ export class MrBookListComponent {
       res => {
         
         this.accounts_tree_list = res[0];
+        console.log('this.accounts_tree_list', this.accounts_tree_list);
         this.accounts_tree_filter = of(this.accounts_tree_list);
         this.accountTreeService.List_AccountsTree = this.accounts_tree_list;
         this.accountTreeService.List_AccountsTree_BehaviorSubject.next(this.accountTreeService.List_AccountsTree);
@@ -189,60 +208,25 @@ export class MrBookListComponent {
     return of(this.accountTreeService.List_AccountsTree);
   }
 
-
-  public async Init_AutoComplete() {
-    try {
-
-      this.accounts_tree_filter = this.accounts_tree_fk.valueChanges
-        .pipe(
-          startWith(''),
-          map((value) => value && typeof value === 'string' ? this._filter_Account_Tree(value) : this.accounts_tree_list.slice())
-        );
-
-
-    } catch (Exception: any) { }
+  onViewClick(){
+    this.currentPage=0;
+    this.pageSize=5;
+    this.View().subscribe((data: any)=>{
+      // this.totalRows = data.Item2;
+      this.dataSource = new MatTableDataSource(data.value);
+      this.isLoading= false;
+    });
   }
 
-
-
-  private _filter_Account_Tree(value: string): accounts_tree[] {
-    const filterValue = value.toLowerCase();
-    return this.accounts_tree_list.filter(option => (option.account_id != null && option.account_name != null) && (option.account_id.includes(filterValue) || option.account_name.includes(filterValue)));
-  }
-
-  public display_Account_Tree_Property(value: accounts_tree): string {
-    if (value && this.accounts_tree_list) {      
-      let account: any = this.accounts_tree_list.find(account => account.seq!.toString() == value);      
-      if (account)
-        return account.account_id + " - " + account.account_name!;
-        
-    }
-    return '';
-  }
-
-
-  pageChanged(event: PageEvent) {
-    this.pageSize = event.pageSize;
-    this.currentPage = event.pageIndex;
-    this.page_index.setValue(this.currentPage);
-    this.row_count.setValue(this.pageSize);
-    this.View();
-  }
 
   View() {
+    this.isLoading= true;
+    this.account_ids.setValue(this.selected_account_ids);
+    this.page_index.setValue(this.currentPage);
+    this.row_count.setValue(this.pageSize);
 
-    // this.page_index.setValue(this.currentPage);
-    // this.row_count.setValue(this.pageSize);
-
-    // this.exchangeOrderService.search(this.Form.value).subscribe(
-    //   (res: any) => {
-    //     console.log('res', res);
-    //     let result: any[] = [];
-    //     result.push(res.value);
-    //     this.dataSource.data = result;
-    //     this.dataSource.paginator = this.paginator;
-    //   }
-    // );
+    console.log('this.Form.value', this.Form.value);
+    return this.mrBookService.search(this.Form.value);
 
 
   }

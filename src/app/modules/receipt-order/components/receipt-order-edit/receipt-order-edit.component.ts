@@ -111,7 +111,7 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
+    public route: ActivatedRoute,
     private fb: FormBuilder,
     private PageReceiptOrderService: PageReceiptOrderService,
     private snackBar: MatSnackBar,
@@ -125,6 +125,12 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
     this.BuildForm();
 
     this.loadData();
+
+    this.PageReceiptOrderService.$receipt_order.subscribe(res=>{
+      this.receipt_order= res;
+      this.updateSum();
+      this.actionNum= this.receipt_order.receipt_order_details?.length!;
+    });
 
     if (this.receipt_order != null && 
       this.receipt_order.receipt_order_entries!= null)
@@ -144,6 +150,9 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
       this._Subscription.add(this.receiptOrderService.getBySeq(seq).subscribe((res: any) => {
         if (res.value != null && (res.value as receipt_order) != null) {
           this.receipt_order = res.value;
+          this.updateSum();
+          this.actionNum= this.receipt_order.receipt_order_details?.length!;
+
         }
       }));
 
@@ -403,9 +412,11 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
 
 
   onDetailsDelete(index: number) {
-    this.sum_details_creditor();
-    this.sum_details_debtor();    
     this.receipt_order.receipt_order_details?.splice(index, 1);
+    this.sum_details_creditor();
+    this.sum_details_debtor();
+    this.actionNum= this.receipt_order.receipt_order_details?.length!;
+
   }
 
 

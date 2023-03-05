@@ -69,7 +69,7 @@ export class SanadKidAttachmentsComponent {
   sanad_kid_attachement_id!: FormControl<number | null>;
   sanad_kid_attachement_date!: FormControl<Date | null>;
   type_fk!: FormControl<number | null>;
-  attachement_type!: FormControl<attachement_type | null>;
+  // attachement_type!: FormControl<attachement_type | null>;
   sanad_kid_attachement_note!: FormControl<string | null>;
 
   attachment_type_list:attachement_type[];
@@ -104,7 +104,9 @@ export class SanadKidAttachmentsComponent {
       }
       if ( changes!= null && changes['index']!=null)    
       {
-        this.SetValue();
+        // load data must executed before set value
+        this.Load_Data();
+        //this.SetValue();
         this.bindModelToForm(this.sanad_kid_attachements,this.Form);          
 
       }
@@ -121,7 +123,7 @@ export class SanadKidAttachmentsComponent {
             'sanad_kid_attachement_id': this.sanad_kid_attachement_id = new FormControl<number | null>(null, []),          
             'sanad_kid_attachement_date': this.sanad_kid_attachement_date = new FormControl<Date | null>(null, []),          
             'type_fk': this.type_fk = new FormControl<number | null>(null, []),          
-            'attachement_type': this.attachement_type = new FormControl<attachement_type | null>(null, []),
+            // 'attachement_type': this.attachement_type = new FormControl<attachement_type | null>(null, []),
             'sanad_kid_attachement_note': this.sanad_kid_attachement_note = new FormControl<string | null>(null, []),          
           },
         );
@@ -143,7 +145,7 @@ export class SanadKidAttachmentsComponent {
           this.attachmentTypeService.List_attachment_type_BehaviorSubject.next(this.attachmentTypeService.List_attachment_type);
   
           this.Init_AutoComplete();
-
+          this.SetValue();
            this.LoadingFinish = true;
 
           }
@@ -199,14 +201,21 @@ export class SanadKidAttachmentsComponent {
         if (this.sanad_kid_attachements != null && this.sanad_kid_attachements.sanad_kid_attachement_id != null)
           this.sanad_kid_attachement_id.setValue(this.sanad_kid_attachements.sanad_kid_attachement_id);
           
-        if (this.sanad_kid_attachements != null && this.sanad_kid_attachements.sanad_kid_attachement_date != null)
+        if (this.sanad_kid_attachements != null && this.sanad_kid_attachements.sanad_kid_attachement_date != null){
           this.sanad_kid_attachement_date.setValue(this.sanad_kid_attachements.sanad_kid_attachement_date);
+          this.attachmentDateDay = moment(this.sanad_kid_attachement_date.value).date() + '';
+          this.attachmentDateMonth = (moment(this.sanad_kid_attachement_date.value).month() + 1) + '';
+          this.attachmentDateYear = moment(this.sanad_kid_attachement_date.value).year() + '';
+          this.attachmentDateDayIsFilled = true;
+          this.attachmentDateMonthIsFilled= true;
+          this.attachmentDateYearIsFilled = true;
+        }
           
         if (this.sanad_kid_attachements != null && this.sanad_kid_attachements.attachement_type != null)
           this.type_fk.setValue(this.sanad_kid_attachements.attachement_type.attachement_type_seq!);
           
-          if (this.sanad_kid_attachements != null && this.sanad_kid_attachements.attachement_type != null)
-        this.attachement_type.setValue(this.sanad_kid_attachements.attachement_type);
+        //   if (this.sanad_kid_attachements != null && this.sanad_kid_attachements.attachement_type != null)
+        // this.attachement_type.setValue(this.sanad_kid_attachements.attachement_type);
 
         if (this.sanad_kid_attachements != null && this.sanad_kid_attachements.sanad_kid_attachement_note != null)
           this.sanad_kid_attachement_note.setValue(this.sanad_kid_attachements.sanad_kid_attachement_note);
@@ -234,12 +243,13 @@ export class SanadKidAttachmentsComponent {
         if ( this.sanad_kid_attachements!= null && this.sanad_kid_attachement_date.value!= null )
         this.sanad_kid_attachements.sanad_kid_attachement_date= this.sanad_kid_attachement_date.value;
   
-        if ( this.sanad_kid_attachements!= null && this.type_fk.value!= null )
-        this.sanad_kid_attachements.attachement_type= this.attachment_type_list.find(type => type.attachement_type_seq== this.type_fk.value);
-  
         if (this.sanad_kid_attachements != null && this.type_fk.value != null)
-      this.sanad_kid_attachements.attachement_type = this.attachment_type_list.find(type => type.attachement_type_seq == this.type_fk.value);
+      this.sanad_kid_attachements.type_fk = this.type_fk.value;
 
+        // if ( this.sanad_kid_attachements!= null && this.type_fk.value!= null )
+        // this.sanad_kid_attachements.attachement_type= this.attachment_type_list.find(type => type.attachement_type_seq== this.type_fk.value);
+  
+      
         if ( this.sanad_kid_attachements!= null && this.sanad_kid_attachement_note.value!= null )
         this.sanad_kid_attachements.sanad_kid_attachement_note= this.sanad_kid_attachement_note.value;
   
@@ -293,19 +303,19 @@ export class SanadKidAttachmentsComponent {
     }
    }
 
-   Select_Attatchement_Type_Option(event: any) {
+  //  Select_Attatchement_Type_Option(event: any) {
 
-    const selectedValue = event.option.value;
+  //   const selectedValue = event.option.value;
 
-    if (selectedValue != null) {
-      this.type_fk.setValue(selectedValue);
+  //   if (selectedValue != null) {
+  //     this.type_fk.setValue(selectedValue);
 
-      var attachement_types = this.attachment_type_list.filter(x => x.attachement_type_seq == selectedValue);
-      if (attachement_types != null && attachement_types.length > 0) {
-        this.attachement_type.setValue(attachement_types[0]);
-      }
+  //     var attachement_types = this.attachment_type_list.filter(x => x.attachement_type_seq == selectedValue);
+  //     if (attachement_types != null && attachement_types.length > 0) {
+  //       this.attachement_type.setValue(attachement_types[0]);
+  //     }
 
-    }
+  //   }
 
-  }
+  // }
 }

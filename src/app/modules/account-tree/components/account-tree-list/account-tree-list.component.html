@@ -216,8 +216,8 @@
                 [style.background-color]="rowClicked == idx ? 'yellow': 'none'"
                 (click)="changeTableRowColor(idx)"></tr>
             </table>
-            
-            <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+            <mat-progress-bar mode="indeterminate" *ngIf="isDataSourceLoading"></mat-progress-bar>
+            <mat-paginator #paginator [length]="totalRows" 
             [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>
             
             

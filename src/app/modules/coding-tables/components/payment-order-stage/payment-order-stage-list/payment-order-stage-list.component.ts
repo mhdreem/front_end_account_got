@@ -25,7 +25,7 @@ export class PaymentOrderStageListComponent {
   dataSource = new MatTableDataSource<payment_order_stage>();
   displayedColumns: string[] = ['pay_ord_stg_name', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
-
+  isLoading: boolean= false;
   Subscription: Subscription = new Subscription();
 
 
@@ -58,12 +58,15 @@ export class PaymentOrderStageListComponent {
 
 
   LoadData() {
+    this.isLoading= true;
+
     this.Subscription.add(
       this.paymentOrderStageService.list().subscribe(
         (res: any) => {
           if (res != null)
             this.payment_order_stage_List = res.value;
           this.dataSource.data = this.payment_order_stage_List;
+          this.isLoading= false;
         }
       )
     );

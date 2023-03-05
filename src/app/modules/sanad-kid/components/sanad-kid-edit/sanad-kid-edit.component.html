@@ -1,3 +1,4 @@
+<h2>{{route.snapshot.params['id']>0?'تعديل':'إدخال'}} سند قيد</h2>
 <c-container>
   <c-row>
     <c-col [sm]="3">
@@ -10,10 +11,10 @@
           <div>
             <button mat-button [matMenuTriggerFor]="menu" class="add"><mat-icon>expand_more</mat-icon>
               <mat-icon class="mat-icon-rtl-mirror">save
-            </mat-icon> حفظ
+              </mat-icon> حفظ
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="save()" [disabled]="sanad_kid.sanad_kid_details!.length == 0"> حفظ نظامي F9</button>
+                <button mat-menu-item (click)="save()" [disabled]="sanad_kid.sanad_kid_details?.length == 0"> حفظ نظامي F9</button>
                 <button mat-menu-item (click)="save_as_draft()">مسوده</button>
             </mat-menu>
         </div>
@@ -193,7 +194,7 @@
           </c-row>
           <c-row>
             <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
-              [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>
+              [pageSizeOptions]="pageSizeOptions" ></mat-paginator>
 
           </c-row>
         </c-card-body>
@@ -225,7 +226,7 @@
     
         <c-row>
           <c-col [cCol]="2">
-            <c-card class="my-4 card smallCard">
+            <c-card class="my-4 card smallCard zoom">
               <c-card-header class="card-header">مجموع مدين</c-card-header>
               <c-card-body class="card-body">
                 <output>{{sumDebtor}}</output>
@@ -233,7 +234,7 @@
             </c-card>
           </c-col>
           <c-col [cCol]="2">
-            <c-card class="my-4 card smallCard">
+            <c-card class="my-4 card smallCard zoom">
               <c-card-header class="card-header">مجموع دائن</c-card-header>
               <c-card-body class="card-body">
                 <output>{{sumCreditor}}</output>
@@ -241,7 +242,7 @@
             </c-card>
           </c-col>
           <c-col [cCol]="2">
-            <c-card class="my-4 card smallCard">
+            <c-card class="my-4 card smallCard zoom">
               <c-card-header class="card-header">الرصيد</c-card-header>
               <c-card-body class="card-body">
                 <output>{{balance}}</output>
@@ -249,7 +250,7 @@
             </c-card>
           </c-col>
           <c-col [cCol]="2">
-            <c-card class="my-4 card smallCard">
+            <c-card class="my-4 card smallCard zoom">
               <c-card-header class="card-header">عدد الحركات</c-card-header>
               <c-card-body class="card-body">
                 <output>{{actionNum}}</output>

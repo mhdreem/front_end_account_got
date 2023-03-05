@@ -20,6 +20,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { CommonModuleModule } from '../common-module/common-module.module';
 import { CardModule, GridModule } from '@coreui/angular';
 import {MatSelectModule} from '@angular/material/select';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { NgSelectModule } from '@ng-select/ng-select';
+
 
 const Import_Corui = [
   GridModule,
@@ -49,7 +52,9 @@ const Import_Corui = [
     MatAutocompleteModule,
     MatButtonModule,
     MatSelectModule,
-    Import_Corui
+    Import_Corui,
+    MatProgressBarModule,
+    NgSelectModule
   ]
 })
 export class MrBookAccountCenterModule { }

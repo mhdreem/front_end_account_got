@@ -58,7 +58,7 @@ export class PaymentOrderAttachmentsComponent {
   payment_order_attachement_id!: FormControl<number | null>;
   payment_order_attachement_date!: FormControl<Date | null>;
   type_fk!: FormControl<number | null>;
-  attachement_type!: FormControl<attachement_type | null>;
+  // attachement_type!: FormControl<attachement_type | null>;
   payment_order_attachement_note!: FormControl<string | null>;
 
 
@@ -97,7 +97,9 @@ export class PaymentOrderAttachmentsComponent {
       this.index = changes['index'].currentValue;
     }
     if (changes != null && changes['index'] != null) {
-      this.SetValue();
+      // load data must executed before set value
+      this.Load_Data();
+      //this.SetValue();
       this.bindModelToForm(this.payment_order_attachement, this.Form);
 
     }
@@ -127,7 +129,7 @@ export class PaymentOrderAttachmentsComponent {
           'payment_order_attachement_id': this.payment_order_attachement_id = new FormControl<number | null>(null, []),
           'payment_order_attachement_date': this.payment_order_attachement_date = new FormControl<Date | null>(null, []),
           'type_fk': this.type_fk = new FormControl<number | null>(null, []),
-          'attachement_type': this.attachement_type = new FormControl<attachement_type | null>(null, []),
+          // 'attachement_type': this.attachement_type = new FormControl<attachement_type | null>(null, []),
           'payment_order_attachement_note': this.payment_order_attachement_note = new FormControl<string | null>(null, []),
         },
       );
@@ -150,7 +152,7 @@ export class PaymentOrderAttachmentsComponent {
         this.attachmentTypeService.List_attachment_type_BehaviorSubject.next(this.attachmentTypeService.List_attachment_type);
 
         this.Init_AutoComplete();
-
+        this.SetValue();
         this.LoadingFinish = true;
 
       }
@@ -212,16 +214,23 @@ export class PaymentOrderAttachmentsComponent {
         this.payment_order_attachement_id.setValue(this.payment_order_attachement.payment_order_attachement_id);
 
 
-      if (this.payment_order_attachement != null && this.payment_order_attachement.payment_order_attachement_date != null)
+      if (this.payment_order_attachement != null && this.payment_order_attachement.payment_order_attachement_date != null){
         this.payment_order_attachement_date.setValue(this.payment_order_attachement.payment_order_attachement_date);
+        this.attachmentDateDay = moment(this.payment_order_attachement_date.value).date() + '';
+        this.attachmentDateMonth = (moment(this.payment_order_attachement_date.value).month() + 1) + '';
+        this.attachmentDateYear = moment(this.payment_order_attachement_date.value).year() + '';
+        this.attachmentDateDayIsFilled = true;
+        this.attachmentDateMonthIsFilled= true;
+        this.attachmentDateYearIsFilled = true;
+      }
 
 
       if (this.payment_order_attachement != null && this.payment_order_attachement.type_fk != null)
         this.type_fk.setValue(this.payment_order_attachement.type_fk);
 
 
-      if (this.payment_order_attachement != null && this.payment_order_attachement.attachement_type != null)
-        this.attachement_type.setValue(this.payment_order_attachement.attachement_type);
+      // if (this.payment_order_attachement != null && this.payment_order_attachement.attachement_type != null)
+      //   this.attachement_type.setValue(this.payment_order_attachement.attachement_type);
 
 
 
@@ -252,8 +261,11 @@ export class PaymentOrderAttachmentsComponent {
     if (this.payment_order_attachement != null && this.payment_order_attachement_date.value != null)
       this.payment_order_attachement.payment_order_attachement_date = this.payment_order_attachement_date.value;
 
-    if (this.payment_order_attachement != null && this.type_fk.value != null)
-      this.payment_order_attachement.attachement_type = this.attachment_type_list.find(type => type.attachement_type_seq == this.type_fk.value);
+      if (this.payment_order_attachement != null && this.type_fk.value != null)
+      this.payment_order_attachement.type_fk = this.type_fk.value;
+
+    // if (this.payment_order_attachement != null && this.type_fk.value != null)
+    //   this.payment_order_attachement.attachement_type = this.attachment_type_list.find(type => type.attachement_type_seq == this.type_fk.value);
 
     if (this.payment_order_attachement != null && this.payment_order_attachement_note.value != null)
       this.payment_order_attachement.payment_order_attachement_note = this.payment_order_attachement_note.value;
@@ -291,19 +303,19 @@ export class PaymentOrderAttachmentsComponent {
   }
 
 
-  Select_Attatchement_Type_Option(event: any) {
+  // Select_Attatchement_Type_Option(event: any) {
 
-    const selectedValue = event.option.value;
+  //   const selectedValue = event.option.value;
 
-    if (selectedValue != null) {
-      this.type_fk.setValue(selectedValue);
+  //   if (selectedValue != null) {
+  //     this.type_fk.setValue(selectedValue);
 
-      var attachement_types = this.attachment_type_list.filter(x => x.attachement_type_seq == selectedValue);
-      if (attachement_types != null && attachement_types.length > 0) {
-        this.attachement_type.setValue(attachement_types[0]);
-      }
+  //     var attachement_types = this.attachment_type_list.filter(x => x.attachement_type_seq == selectedValue);
+  //     if (attachement_types != null && attachement_types.length > 0) {
+  //       this.attachement_type.setValue(attachement_types[0]);
+  //     }
 
-    }
+  //   }
 
-  }
+  // }
 }

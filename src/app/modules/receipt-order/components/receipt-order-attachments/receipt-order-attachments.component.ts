@@ -59,7 +59,7 @@ export class ReceiptOrderAttachmentsComponent {
   receipt_order_attachement_id!: FormControl<number | null>;
   receipt_order_attachement_date!: FormControl<Date | null>;
   type_fk!: FormControl<number | null>;
-  attachement_type!: FormControl<attachement_type | null>;
+  // attachement_type!: FormControl<attachement_type | null>;
   receipt_order_attachement_note!: FormControl<string | null>;
 
 
@@ -98,7 +98,9 @@ export class ReceiptOrderAttachmentsComponent {
       this.index = changes['index'].currentValue;
     }
     if (changes != null && changes['index'] != null) {
-      this.SetValue();
+      // load data must executed before set value
+      this.Load_Data();
+      //this.SetValue();
       this.bindModelToForm(this.receipt_order_attachment, this.Form);
 
     }
@@ -128,7 +130,7 @@ export class ReceiptOrderAttachmentsComponent {
           'receipt_order_attachement_id': this.receipt_order_attachement_id = new FormControl<number | null>(null, []),
           'receipt_order_attachement_date': this.receipt_order_attachement_date = new FormControl<Date | null>(null, []),
           'type_fk': this.type_fk = new FormControl<number | null>(null, []),
-          'attachement_type': this.attachement_type = new FormControl<attachement_type | null>(null, []),
+          // 'attachement_type': this.attachement_type = new FormControl<attachement_type | null>(null, []),
           'receipt_order_attachement_note': this.receipt_order_attachement_note = new FormControl<string | null>(null, []),
         },
       );
@@ -151,7 +153,7 @@ export class ReceiptOrderAttachmentsComponent {
         this.attachmentTypeService.List_attachment_type_BehaviorSubject.next(this.attachmentTypeService.List_attachment_type);
 
         this.Init_AutoComplete();
-
+        this.SetValue();
         this.LoadingFinish = true;
 
       }
@@ -213,16 +215,23 @@ export class ReceiptOrderAttachmentsComponent {
         this.receipt_order_attachement_id.setValue(this.receipt_order_attachment.receipt_order_attachement_id);
 
 
-      if (this.receipt_order_attachment != null && this.receipt_order_attachment.receipt_order_attachement_date != null)
+      if (this.receipt_order_attachment != null && this.receipt_order_attachment.receipt_order_attachement_date != null){
         this.receipt_order_attachement_date.setValue(this.receipt_order_attachment.receipt_order_attachement_date);
+        this.attachmentDateDay = moment(this.receipt_order_attachement_date.value).date() + '';
+        this.attachmentDateMonth = (moment(this.receipt_order_attachement_date.value).month() + 1) + '';
+        this.attachmentDateYear = moment(this.receipt_order_attachement_date.value).year() + '';
+        this.attachmentDateDayIsFilled = true;
+        this.attachmentDateMonthIsFilled= true;
+        this.attachmentDateYearIsFilled = true;
+      }
 
 
       if (this.receipt_order_attachment != null && this.receipt_order_attachment.type_fk != null)
         this.type_fk.setValue(this.receipt_order_attachment.type_fk);
 
 
-      if (this.receipt_order_attachment != null && this.receipt_order_attachment.attachement_type != null)
-        this.attachement_type.setValue(this.receipt_order_attachment.attachement_type);
+      // if (this.receipt_order_attachment != null && this.receipt_order_attachment.attachement_type != null)
+      //   this.attachement_type.setValue(this.receipt_order_attachment.attachement_type);
 
 
 
@@ -253,8 +262,11 @@ export class ReceiptOrderAttachmentsComponent {
     if (this.receipt_order_attachment != null && this.receipt_order_attachement_date.value != null)
       this.receipt_order_attachment.receipt_order_attachement_date = this.receipt_order_attachement_date.value;
 
-    if (this.receipt_order_attachment != null && this.type_fk.value != null)
-      this.receipt_order_attachment.attachement_type = this.attachment_type_list.find(type => type.attachement_type_seq == this.type_fk.value);
+      if (this.receipt_order_attachment != null && this.type_fk.value != null)
+      this.receipt_order_attachment.type_fk = this.type_fk.value;
+
+    // if (this.receipt_order_attachment != null && this.type_fk.value != null)
+    //   this.receipt_order_attachment.attachement_type = this.attachment_type_list.find(type => type.attachement_type_seq == this.type_fk.value);
 
     if (this.receipt_order_attachment != null && this.receipt_order_attachement_note.value != null)
       this.receipt_order_attachment.receipt_order_attachement_note = this.receipt_order_attachement_note.value;
@@ -292,20 +304,20 @@ export class ReceiptOrderAttachmentsComponent {
   }
 
 
-  Select_Attatchement_Type_Option(event: any) {
+  // Select_Attatchement_Type_Option(event: any) {
 
-    const selectedValue = event.option.value;
+  //   const selectedValue = event.option.value;
 
-    if (selectedValue != null) {
-      this.type_fk.setValue(selectedValue);
+  //   if (selectedValue != null) {
+  //     this.type_fk.setValue(selectedValue);
 
-      var attachement_types = this.attachment_type_list.filter(x => x.attachement_type_seq == selectedValue);
-      if (attachement_types != null && attachement_types.length > 0) {
-        this.attachement_type.setValue(attachement_types[0]);
-      }
+  //     var attachement_types = this.attachment_type_list.filter(x => x.attachement_type_seq == selectedValue);
+  //     if (attachement_types != null && attachement_types.length > 0) {
+  //       this.attachement_type.setValue(attachement_types[0]);
+  //     }
 
-    }
+  //   }
 
-  }
+  // }
 
 }

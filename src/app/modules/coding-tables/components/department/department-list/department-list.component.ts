@@ -25,7 +25,7 @@ export class DepartmentListComponent implements OnInit {
   dataSource = new MatTableDataSource<department>();
   displayedColumns: string[] = ['department_name', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
-
+  isLoading: boolean= false;
   Subscription: Subscription = new Subscription();
 
 
@@ -58,12 +58,15 @@ export class DepartmentListComponent implements OnInit {
 
 
   LoadData() {
+    this.isLoading= true;
+
     this.Subscription.add(
       this.departmentService.list().subscribe(
         res => {
           if (res != null)
             this.department_List = res;
           this.dataSource.data = this.department_List;
+          this.isLoading= false;
         }
       )
     );

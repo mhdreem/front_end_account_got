@@ -27,7 +27,7 @@ export class AccountGroupListComponent {
   dataSource = new MatTableDataSource<account_group>();
   displayedColumns: string[] = ['account_group_name', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
-
+  isLoading: boolean= false;
   Subscription: Subscription = new Subscription();
 
   excelData: any[] = [];
@@ -78,12 +78,15 @@ export class AccountGroupListComponent {
 
 
   LoadData() {
+    this.isLoading= true;
+
     this.Subscription.add(
       this.accountGroupService.list().subscribe(
         res => {
           if (res != null)
             this.account_group_List = res;
           this.dataSource.data = this.account_group_List;
+          this.isLoading= false;
         }
       )
     );

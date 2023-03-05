@@ -176,7 +176,7 @@ th, td{
     font-size: 14px;
   }
 
-  table, c-card{
+  table, .zoom{
     zoom: 90%;
   }
 
@@ -184,4 +184,8 @@ th, td{
     display: flex;
     flex-wrap: wrap;
 
+}
+
+h2{
+  text-align: center;
 }

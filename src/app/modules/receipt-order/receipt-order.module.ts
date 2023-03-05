@@ -25,6 +25,14 @@ import {ReceiptOrderDetailsComponent} from './components/receipt-order-details/r
 import {ReceiptOrderEditComponent} from './components/receipt-order-edit/receipt-order-edit.component'
 import {ReceiptOrderListComponent} from './components/receipt-order-list/receipt-order-list.component';
 import { ReceiptOrderSearchBarComponent } from './components/receipt-order-search-bar/receipt-order-search-bar.component'
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatListModule} from '@angular/material/list';
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import {MatSelectModule} from '@angular/material/select';
+import {MatCardModule} from '@angular/material/card';
+import {MatGridListModule} from '@angular/material/grid-list';
+
 const Import_Corui = [
   GridModule,
   CardModule
@@ -57,6 +65,13 @@ const Import_Corui = [
     MatMenuModule,
     Import_Corui,
     CommonModuleModule,
+    MatGridListModule,
+    MatCardModule,
+    MatSelectModule,
+    InfiniteScrollModule,
+    MatListModule,
+    MatDividerModule,
+    MatProgressBarModule
   ]
 })
 export class ReceiptOrderModule { }

@@ -25,7 +25,7 @@ export class ReceiptOrderStageListComponent {
   dataSource = new MatTableDataSource<receipt_order_stage>();
   displayedColumns: string[] = ['rec_ord_stg_name', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
-
+  isLoading: boolean= false;
   Subscription: Subscription = new Subscription();
 
 
@@ -58,12 +58,15 @@ export class ReceiptOrderStageListComponent {
 
 
   LoadData() {
+    this.isLoading= true;
+
     this.Subscription.add(
       this.receiptOrderStageService.list().subscribe(
         (res: any) => {
           if (res != null)
             this.receipt_order_stage_List = res.value;
           this.dataSource.data = this.receipt_order_stage_List;
+          this.isLoading= false;
         }
       )
     );

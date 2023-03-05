@@ -27,7 +27,7 @@ export class UserListComponent implements OnInit {
   displayedColumns: string[] = ['user_first_name','user_last_name', 'department_name', 'branch_name', 'user_name', 'user_password','action'];
 
   pageSizeOptions: number[] = [20, 40, 60];
-
+  isLoading: boolean= false;
   Subscription: Subscription = new Subscription();
 
 
@@ -60,12 +60,15 @@ export class UserListComponent implements OnInit {
 
 
   LoadData() {
+    this.isLoading= true;
+
     this.Subscription.add(
       this.userService.list().subscribe(
         res => {
           if (res != null)
             this.user_List = res;
           this.dataSource.data = this.user_List;
+          this.isLoading= false;
         }
       )
     );

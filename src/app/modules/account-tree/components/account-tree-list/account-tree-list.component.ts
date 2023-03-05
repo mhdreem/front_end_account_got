@@ -93,7 +93,7 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
   pageSize = 5;
   currentPage = 1;
   pageSizeOptions: number[] = [5, 10, 25, 100];
-
+  isDataSourceLoading: boolean= false;
   treeDataSource = new MatTreeNestedDataSource<accounts_tree>();
   treeControl = new NestedTreeControl<accounts_tree>(node => node.children);
   hasChild = (_: number, node: accounts_tree) => !!node.children && node.children.length > 0;
@@ -406,10 +406,12 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
   }
 
   View(){
+    this.isDataSourceLoading= true;
     this.accountTreeService.search(this.Form.value).subscribe(
       (res: any) =>{
         this.dataSource.paginator= this.paginator;
         this.dataSource.data = res;
+        this.isDataSourceLoading= false;
       }
     );
 

@@ -27,7 +27,7 @@ export class AccountFinalListComponent {
   dataSource = new MatTableDataSource<account_final>();
   displayedColumns: string[] = ['account_final_name', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
-
+  isLoading: boolean= false;
   Subscription: Subscription = new Subscription();
 
   excelData: any[] = [];
@@ -78,12 +78,15 @@ export class AccountFinalListComponent {
 
 
   LoadData() {
+    this.isLoading= true;
+
     this.Subscription.add(
       this.accountFinalService.list().subscribe(
         res => {
           if (res != null)
             this.account_final_List = res;
           this.dataSource.data = this.account_final_List;
+          this.isLoading= false;
         }
       )
     );

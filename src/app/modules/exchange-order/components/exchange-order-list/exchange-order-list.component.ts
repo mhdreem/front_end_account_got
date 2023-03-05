@@ -8,7 +8,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
+import { forkJoin, map, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
 import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/confirmationdialog/confirmationdialog.component';
 import { branch } from 'src/app/modules/shared/models/branch';
 import { exchange_order } from 'src/app/modules/shared/models/exchange_order';
@@ -113,9 +113,9 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
 
   totalRows = 0;
   pageSize = 5;
-  currentPage = 1;
+  currentPage = 0;
   pageSizeOptions: number[] = [5, 10, 25, 100];
-
+  isLoading: boolean= false;
   
 
   selected_order: exchange_order = {};
@@ -154,6 +154,22 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+    this.paginator.page
+      .pipe(
+        startWith({}),
+        switchMap(()=>{
+          this.pageSize = this.paginator.pageSize;
+          this.currentPage = this.paginator.pageIndex + 1;
+          return this.View();
+        })
+      )
+      .subscribe((data: any) => {
+        this.totalRows = data.Item2;
+        this.dataSource = new MatTableDataSource(data.value);
+        this.isLoading= false;
+
+      });
   }
 
 
@@ -273,31 +289,24 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
     return '';
   }
 
-
-
-  pageChanged(event: PageEvent) {
-    this.pageSize = event.pageSize;
-    this.currentPage = event.pageIndex;
-    this.page_index.setValue(this.currentPage);
-    this.row_count.setValue(this.pageSize);
-    this.View();
+  onViewClick(){
+    this.currentPage=0;
+    this.pageSize=5;
+    this.View().subscribe((data: any)=>{
+      this.totalRows = data.Item2;
+      this.dataSource = new MatTableDataSource(data.value);
+      this.isLoading= false;
+    });
   }
 
   View() {
 
+    this.isLoading= true;
 
     this.page_index.setValue(this.currentPage);
     this.row_count.setValue(this.pageSize);
 
-    this.exchangeOrderService.search(this.Form.value).subscribe(
-      (res: any) => {
-        console.log('res', res);
-        let result: any[] = [];
-        result.push(...res.value);
-        this.dataSource.data = result;
-        this.dataSource.paginator = this.paginator;
-      }
-    );
+    return this.exchangeOrderService.search(this.Form.value);
 
 
   }

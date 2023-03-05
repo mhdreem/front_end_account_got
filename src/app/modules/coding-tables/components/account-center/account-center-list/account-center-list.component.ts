@@ -47,7 +47,7 @@ export class AccountCenterListComponent implements OnInit, AfterViewInit, OnDest
 
   selectedFile:any;
 
-
+  isLoading: boolean= false;
 
   constructor(public dialog: MatDialog,
     private accountCenterService: account_centerService,
@@ -78,12 +78,15 @@ export class AccountCenterListComponent implements OnInit, AfterViewInit, OnDest
 
 
   LoadData() {
+    this.isLoading= true;
+
     this.Subscription.add(
       this.accountCenterService.list().subscribe(
         res => {
           if (res != null)
             this.account_center_List = res;
           this.dataSource.data = this.account_center_List;
+          this.isLoading= false;
         }
       )
     );

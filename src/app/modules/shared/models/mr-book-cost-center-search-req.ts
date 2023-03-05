@@ -1,0 +1,22 @@
+export interface MrBookCostCenterSearchReq {
+    operation_types?: string[],
+      document_id_from?: number,
+      document_id_to?: number,
+      incumbent_id_from?: number,
+      incumbent_id_to?: number,
+      month_incumbents?: number[],
+      month_documents?: number[],
+      document_date_from?: Date,
+      document_date_to?: Date,
+      incumbent_date_from?: Date,
+      incumbent_date_to?: Date,
+      account_ids?: string[],
+      account_id_from?: string,
+      account_id_to?: string,
+      account_center_id_from?: number,
+      account_center_id_to?: number,
+      account_center_ids?: number[],
+      branch_fk?: number,
+      page_index?: number,
+      row_count?: number
+}

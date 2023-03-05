@@ -2,40 +2,31 @@ import { HttpClient, HttpHeaders, HttpParamsOptions } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { sanad_kid } from '../models/sanad-kid';
+import { BaseAPIService } from './base/base-api.service';
 import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SanadKidService {
+export class SanadKidService extends BaseAPIService{
 
   public List_SanadKid:sanad_kid[] = [];
 
   public List_SanadKid_BehaviorSubject:BehaviorSubject<sanad_kid[]> = new BehaviorSubject<sanad_kid[]>([]);
-
-
-
-  private RestUrl = 'https://localhost:7137/api/';
-  // private RestUrl = 'http://localhost:8083/api/';
-  private httpOptions = { 
-    headers: new HttpHeaders( { 'Content-Type': 'application/json;charset=UTF-8' }) 
- };
  
-  constructor(private httpClient : HttpClient,
-    private userService :UserService) { }
+  constructor(protected override httpClient : HttpClient,
+    private userService :UserService) {
+      super(httpClient)
+     }
 
   list()  {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const options = {  headers: headers };  
-    return this.httpClient.get(this.RestUrl +"Sanad_Kid/list",options) as Observable<sanad_kid[]>;  
+    return this.httpClient.get(this.RestUrl +"Sanad_Kid/list",this.httpOptions) as Observable<sanad_kid[]>;  
     
   }
 
 
   fill()  {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const options = {  headers: headers };  
-     this.httpClient.get<sanad_kid[]>(this.RestUrl +"Sanad_Kid/list",options) .subscribe    (
+     this.httpClient.get<sanad_kid[]>(this.RestUrl +"Sanad_Kid/list",this.httpOptions) .subscribe    (
       data=>
       {
         this.List_SanadKid = data;
@@ -46,48 +37,30 @@ export class SanadKidService {
   }
 
   delete(id:number )  {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const options = {  headers: headers };
-    return this.httpClient.delete(this.RestUrl +"Sanad_Kid/delete/"+id,options);  
+    return this.httpClient.delete(this.RestUrl +"Sanad_Kid/delete/"+id,this.httpOptions);  
   }
 
   add(obj : sanad_kid )  {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const httpParams: HttpParamsOptions= { 'obj': obj } as HttpParamsOptions;
-  
-    const options = {  headers: headers };
-    let user_fk= this.userService.Login_User;
-    return this.httpClient.post(this.RestUrl +"Sanad_Kid/add/"+user_fk,obj,options);  
+    let user_fk= this.userService.Login_User.user_seq;
+    return this.httpClient.post(this.RestUrl +"Sanad_Kid/add/"+user_fk,obj,this.httpOptions);  
   }
 
   update(obj : sanad_kid )  {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const httpParams: HttpParamsOptions = { 'obj': obj } as HttpParamsOptions;
-  
-    const options = {  headers: headers };
-    let user_fk= this.userService.Login_User;
-    return this.httpClient.put(this.RestUrl +"Sanad_Kid/update/"+user_fk,obj,options);  
+    let user_fk= this.userService.Login_User.user_seq;
+    return this.httpClient.put(this.RestUrl +"Sanad_Kid/update/"+user_fk,obj,this.httpOptions);  
   }
 
   search(req : any )  {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const httpParams: HttpParamsOptions= { 'obj': req } as HttpParamsOptions;
-  
-    const options = {  headers: headers };
-    return this.httpClient.post(this.RestUrl +"Sanad_Kid/Search",req,options);  
+    return this.httpClient.post(this.RestUrl +"Sanad_Kid/Search",req,this.httpOptions);  
   }
 
   getById(id: number){
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const options = {  headers: headers };  
-    return this.httpClient.get(this.RestUrl +"Sanad_Kid/GetByID/"+id,options) as Observable<sanad_kid>;  
+    return this.httpClient.get(this.RestUrl +"Sanad_Kid/GetByID/"+id,this.httpOptions) as Observable<sanad_kid>;  
     
   }
 
   getBySeq(seq: number){
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const options = {  headers: headers };  
-    return this.httpClient.get(this.RestUrl +"Sanad_Kid/GetBySeq/"+seq,options) as Observable<sanad_kid>;  
+    return this.httpClient.get(this.RestUrl +"Sanad_Kid/GetBySeq/"+seq,this.httpOptions) as Observable<sanad_kid>;  
     
   }
 }

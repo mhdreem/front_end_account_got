@@ -2,78 +2,54 @@ import { HttpClient, HttpHeaders, HttpParamsOptions } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { receipt_order } from '../models/receipt_order';
+import { BaseAPIService } from './base/base-api.service';
 import { UserService } from './user.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ReceiptOrderService {
+export class ReceiptOrderService extends BaseAPIService{
 
   public List_ReceiptOrder:receipt_order[] = [];
 
   public List_ReceiptOrder_BehaviorSubject:BehaviorSubject<receipt_order[]> = new BehaviorSubject<receipt_order[]>([]);
 
+  constructor(protected override httpClient : HttpClient,
+    private userService :UserService) { 
+      super(httpClient)
 
-
-  private RestUrl = 'https://localhost:7137/api/';
-  // private RestUrl = 'http://localhost:8083/api/';
-  private httpOptions = { 
-    headers: new HttpHeaders( { 'Content-Type': 'application/json;charset=UTF-8' }) 
- };
- 
-  constructor(private httpClient : HttpClient,
-    private userService :UserService) { }
+    }
 
   list()  {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const options = {  headers: headers };  
-    return this.httpClient.get(this.RestUrl +"Receipt_Order/list",options) as Observable<receipt_order[]>;  
+    return this.httpClient.get(this.RestUrl +"Receipt_Order/list",this.httpOptions) as Observable<receipt_order[]>;  
     
   }
 
 
   delete(id:number )  {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const options = {  headers: headers };
-    return this.httpClient.delete(this.RestUrl +"Receipt_Order/delete/"+id,options);  
+    return this.httpClient.delete(this.RestUrl +"Receipt_Order/delete/"+id,this.httpOptions);  
   }
 
   add(obj : receipt_order )  {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const httpParams: HttpParamsOptions= { 'obj': obj } as HttpParamsOptions;
-  
-    const options = {  headers: headers };
-    let user_fk= this.userService.Login_User;
-    return this.httpClient.post(this.RestUrl +"Receipt_Order/add/"+user_fk,obj,options);  
+    let user_fk= this.userService.Login_User.user_seq;
+    return this.httpClient.post(this.RestUrl +"Receipt_Order/add/"+user_fk,obj,this.httpOptions);  
   }
 
   update(obj : receipt_order )  {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const httpParams: HttpParamsOptions = { 'obj': obj } as HttpParamsOptions;
-  
-    const options = {  headers: headers };
-    let user_fk= this.userService.Login_User;
-    return this.httpClient.put(this.RestUrl +"Receipt_Order/update/"+user_fk,obj,options);  
+    let user_fk= this.userService.Login_User.user_seq;
+    return this.httpClient.put(this.RestUrl +"Receipt_Order/update/"+user_fk,obj,this.httpOptions);  
   }
 
   search(req : any )  {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const httpParams: HttpParamsOptions= { 'obj': req } as HttpParamsOptions;
-  
-    const options = {  headers: headers };
-    return this.httpClient.post(this.RestUrl +"Receipt_Order/Search",req,options);  
+    return this.httpClient.post(this.RestUrl +"Receipt_Order/Search",req,this.httpOptions);  
   }
 
   getById(id: number){
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const options = {  headers: headers };  
-    return this.httpClient.get(this.RestUrl +"Receipt_Order/GetByID/"+id,options) as Observable<receipt_order>;  
+    return this.httpClient.get(this.RestUrl +"Receipt_Order/GetByID/"+id,this.httpOptions) as Observable<receipt_order>;  
     
   }
 
   getBySeq(seq: number){
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const options = {  headers: headers };  
-    return this.httpClient.get(this.RestUrl +"Receipt_Order/GetBySeq/"+seq,options) as Observable<receipt_order>;  
+    return this.httpClient.get(this.RestUrl +"Receipt_Order/GetBySeq/"+seq,this.httpOptions) as Observable<receipt_order>;  
     
   }
 }

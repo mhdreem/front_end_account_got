@@ -72,6 +72,11 @@ export class CodingTablesComponent implements OnInit {
       iconComponent: { name: 'cil-pencil' },
     },
     {
+      name: 'مرحلة سند القيد' ,
+      url: 'codingTable/module/sanadKidStage',
+      iconComponent: { name: 'cil-pencil' },
+    },
+    {
       name: 'مرحلة أمر الصرف' ,
       url: 'codingTable/module/exchangeOrderStage',
       iconComponent: { name: 'cil-pencil' },

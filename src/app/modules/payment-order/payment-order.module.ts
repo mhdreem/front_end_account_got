@@ -24,6 +24,14 @@ import { GridModule } from '@coreui/angular';
 import {MatMenuModule} from '@angular/material/menu';
 import {CommonModuleModule} from '../common-module/common-module.module'
 import { CardModule } from '@coreui/angular';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatListModule} from '@angular/material/list';
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import {MatSelectModule} from '@angular/material/select';
+import {MatCardModule} from '@angular/material/card';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {PaymentOrderSearchBarComponent} from './components/payment-order-search-bar/payment-order-search-bar.component'
 
 const Import_Corui = [
   GridModule,
@@ -35,7 +43,8 @@ const Import_Corui = [
     PaymentOrderListComponent,
     PaymentOrderEditComponent,
     PaymentOrderDetailsComponent,
-    PaymentOrderAttachmentsComponent
+    PaymentOrderAttachmentsComponent,
+    PaymentOrderSearchBarComponent
   ],
   imports: [
     CommonModule,
@@ -54,7 +63,14 @@ const Import_Corui = [
     MatExpansionModule,
     MatMenuModule,
     Import_Corui,
-    CommonModuleModule
+    CommonModuleModule,
+    MatGridListModule,
+    MatCardModule,
+    MatSelectModule,
+    InfiniteScrollModule,
+    MatListModule,
+    MatDividerModule,
+    MatProgressBarModule
     
   ]
 })

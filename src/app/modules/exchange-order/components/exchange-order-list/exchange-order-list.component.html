@@ -7,7 +7,7 @@
         إدخال F12
     </button>
 
-    <button class="add" mat-raised-button class="add" (click)="View()">
+    <button class="add" mat-raised-button class="add" (click)="onViewClick()">
         <mat-icon>view_list</mat-icon>
         عرض F8
     </button>
@@ -292,6 +292,6 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;let idx=index;"
          ></tr>
 </table>
-
-<mat-paginator #paginator (page)="pageChanged($event)" [length]="totalRows"  [pageIndex]="currentPage" [pageSize]="pageSize" 
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<mat-paginator #paginator [length]="totalRows" 
     [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>

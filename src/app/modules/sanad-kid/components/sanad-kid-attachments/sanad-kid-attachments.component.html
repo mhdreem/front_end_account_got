@@ -12,7 +12,7 @@
         <input matInput [formControl]="type_fk" [matAutocomplete]="autoattachement_type" 
                 id="{{'type_fk_'+_index}}" (keyup.enter)="focusNext('attachmentDateDay_'+_index)" >
         <mat-autocomplete #autoattachement_type="matAutocomplete" 
-        (optionSelected)="Select_Attatchement_Type_Option($event)"
+        
         [displayWith]="display_Attachement_Type_Property.bind(this)"
         >
             <mat-option *ngFor="let option of attachment_type_filter | async" [value]="option.attachement_type_seq">

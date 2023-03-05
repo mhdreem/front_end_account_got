@@ -110,7 +110,7 @@ export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
+    public route: ActivatedRoute,
     private fb: FormBuilder,
     private PagePaymentOrderService: PagePaymentOrderService,
     private snackBar: MatSnackBar,
@@ -124,6 +124,12 @@ export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
     this.BuildForm();
 
     this.loadData();
+
+    this.PagePaymentOrderService.$payment_order.subscribe(res=>{
+      this.payment_order= res;
+      this.updateSum();
+      this.actionNum= this.payment_order.payment_order_details?.length!;
+    });
 
     if (this.payment_order != null && 
       this.payment_order.payment_order_entries!= null)
@@ -143,6 +149,9 @@ export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
       this._Subscription.add(this.paymentOrderService.getBySeq(seq).subscribe((res: any) => {
         if (res.value != null && (res.value as payment_order) != null) {
           this.payment_order = res.value;
+          this.updateSum();
+          this.actionNum= this.payment_order.payment_order_details?.length!;
+
         }
       }));
 
@@ -402,9 +411,11 @@ export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
 
 
   onDetailsDelete(index: number) {
+    this.payment_order.payment_order_details?.splice(index, 1);
     this.sum_details_creditor();
     this.sum_details_debtor();    
-    this.payment_order.payment_order_details?.splice(index, 1);
+    this.actionNum= this.payment_order.payment_order_details?.length!;
+
   }
 
 

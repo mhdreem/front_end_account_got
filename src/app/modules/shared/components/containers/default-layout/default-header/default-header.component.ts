@@ -253,8 +253,23 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
         iconComponent: { name: 'cil-pencil' },
       },
       {
+        name: 'مرحلة سند القيد' ,
+        url: 'codingTable/module/sanadKidStage',
+        iconComponent: { name: 'cil-pencil' },
+      },
+      {
         name: 'مرحلة أمر الصرف' ,
         url: 'codingTable/module/exchangeOrderStage',
+        iconComponent: { name: 'cil-pencil' },
+      },
+      {
+        name: 'مرحلة أمر الدفع' ,
+        url: 'codingTable/module/paymentOrderStage',
+        iconComponent: { name: 'cil-pencil' },
+      },
+      {
+        name: 'مرحلة أمر القبض' ,
+        url: 'codingTable/module/receiptOrderStage',
         iconComponent: { name: 'cil-pencil' },
       },
       {
@@ -272,4 +287,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
 
   }
   
+  showSideBar(){
+    document.querySelector('c-sidebar')?.classList.remove('hide');
+  }
 }

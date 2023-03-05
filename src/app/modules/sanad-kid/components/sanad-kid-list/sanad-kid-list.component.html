@@ -5,13 +5,13 @@
             <mat-icon>add</mat-icon>
             إدخال F12
         </button>
-        <button class="add" mat-raised-button class="add" (click)="View()">
+        <button class="add" mat-raised-button class="add" (click)="onViewClick()">
             <mat-icon>view_list</mat-icon>
             عرض F8
         </button>
-        <button class="add" mat-raised-button class="add" (click)="detail()">
+        <!-- <button class="add" mat-raised-button class="add" (click)="detail()">
             تفصيل سند القيد
-        </button>
+        </button> -->
         <button mat-raised-button id="excel" (click)="exportToExcel()">
             <mat-icon>view_comfy</mat-icon>
             تصدير الى اكسل F7
@@ -243,8 +243,8 @@
         [style.background-color]="rowClicked == idx ? 'yellow': 'none'"
         (click)="changeTableRowColor(idx)"></tr>
     </table>
-    
-    <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+    <mat-paginator #paginator [length]="totalRows"
     [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>
     
     <c-row>

@@ -25,7 +25,7 @@ export class SanadKidBookListComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<sanad_kid_book>();
   displayedColumns: string[] = ['sanad_kid_book_name', 'account_name', 'incumbent_id_generate_type_fk', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
-
+  isLoading: boolean= false;
   Subscription: Subscription = new Subscription();
 
 
@@ -58,6 +58,8 @@ export class SanadKidBookListComponent implements OnInit, OnDestroy {
 
 
   LoadData() {
+    this.isLoading= true;
+
     this.Subscription.add(
       this.sanadKidBookService.list().subscribe(
         res => {
@@ -65,7 +67,7 @@ export class SanadKidBookListComponent implements OnInit, OnDestroy {
             console.log('res',res);
             this.sanadKidBook_List = res;
             this.dataSource.data = this.sanadKidBook_List;
-
+            this.isLoading= false;
           }
         }
       )

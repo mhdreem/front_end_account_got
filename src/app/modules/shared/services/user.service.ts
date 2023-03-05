@@ -2,11 +2,12 @@ import { HttpClient, HttpHeaders, HttpParamsOptions } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { user } from '../models/user';
+import { BaseAPIService } from './base/base-api.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserService extends BaseAPIService{
 
   Login_User :user ;
   Login_User_BehavourSubject: BehaviorSubject<user> = new BehaviorSubject<user>({});
@@ -14,28 +15,18 @@ export class UserService {
   public List_User:user[] = [];
   public List_User_BehaviorSubject:BehaviorSubject<user[]> = new BehaviorSubject<user[]>([]);
 
-
-
-  private RestUrl = 'https://localhost:7137/api/';
-  // private RestUrl = 'http://localhost:8083/api/';
-  private httpOptions = { 
-    headers: new HttpHeaders( { 'Content-Type': 'application/json;charset=UTF-8' }) 
- };
- 
-  constructor(private httpClient : HttpClient) { }
+  constructor(protected override httpClient : HttpClient) { 
+    super(httpClient)
+  }
 
   list()  {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const options = {  headers: headers };  
-    return this.httpClient.get(this.RestUrl +"User/list",options) as Observable<user[]>;  
+    return this.httpClient.get(this.RestUrl +"User/list",this.httpOptions) as Observable<user[]>;  
     
   }
 
 
   fill()  {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const options = {  headers: headers };  
-     this.httpClient.get<user[]>(this.RestUrl +"User/list",options) .subscribe    (
+     this.httpClient.get<user[]>(this.RestUrl +"User/list",this.httpOptions) .subscribe    (
       data=>
       {
         this.List_User = data;
@@ -46,40 +37,23 @@ export class UserService {
   }
 
   delete(id:number )  {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const options = {  headers: headers };
-    return this.httpClient.delete(this.RestUrl +"User/delete/"+id,options);  
+    return this.httpClient.delete(this.RestUrl +"User/delete/"+id,this.httpOptions);  
   }
 
   add(obj : user )  {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const httpParams: HttpParamsOptions= { 'obj': obj } as HttpParamsOptions;
-  
-    const options = {  headers: headers };
-    return this.httpClient.post(this.RestUrl +"User/add",obj,options);  
+    return this.httpClient.post(this.RestUrl +"User/add",obj,this.httpOptions);  
   }
 
   update(obj : user )  {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const httpParams: HttpParamsOptions = { 'obj': obj } as HttpParamsOptions;
-  
-    const options = {  headers: headers };
-    return this.httpClient.put(this.RestUrl +"User/update",obj,options);  
+    return this.httpClient.put(this.RestUrl +"User/update",obj,this.httpOptions);  
   }
 
   validate_name(obj : user){
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const httpParams: HttpParamsOptions = { 'obj': obj } as HttpParamsOptions;
-  
-    const options = {  headers: headers };
-    return this.httpClient.post(this.RestUrl +"User/Validate_Name",obj,options);
+    return this.httpClient.post(this.RestUrl +"User/Validate_Name",obj,this.httpOptions);
   }
 
   login(obj :  user )
   {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin','*');
-    const options = {  headers: headers};  
-
-    return this.httpClient.post(this.RestUrl +"User/Login/",obj ,options);       
+    return this.httpClient.post(this.RestUrl +"User/Login/",obj ,this.httpOptions);       
   }
 }
