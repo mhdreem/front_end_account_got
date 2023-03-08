@@ -1,9 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&display=swap');
 @import "~@ng-select/ng-select/themes/material.theme.css";
+@import '~material-design-icons/iconfont/material-icons.css';
 
-*{
-    font-family: 'Noto Sans Arabic', sans-serif;
+button, span, mat-form-field,::ng-deep .mat-form-field , ::ng-deep mat-label, th, td, label, output, li, body{
+  font-family: 'Noto Sans Arabic', sans-serif !important;
 }
 
 body {

@@ -60,4 +60,15 @@ export class AccountTreeService extends BaseAPIService{
     return this.httpClient.post(this.RestUrl +"Accounts_Tree/Search",req,this.httpOptions);  
   }
 
+  validate_id(obj: accounts_tree) {
+    return this.httpClient.post(this.RestUrl + "Accounts_Tree/validate_account_id", obj, this.httpOptions);
+  }
+  
+  validate_name(obj: accounts_tree) {
+    return this.httpClient.post(this.RestUrl + "Accounts_Tree/validate_account_name", obj, this.httpOptions);
+  }
+
+  get_by_seq(){
+    return this.httpClient.get<accounts_tree>(this.RestUrl +"Accounts_Tree/?",this.httpOptions) ;  
+  }
 }

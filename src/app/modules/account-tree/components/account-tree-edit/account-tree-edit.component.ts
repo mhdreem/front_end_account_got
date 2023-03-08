@@ -1,8 +1,11 @@
+import { NestedTreeControl } from '@angular/cdk/tree';
 import { DOCUMENT } from '@angular/common';
 import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { ActivatedRoute } from '@angular/router';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
 import { account_center } from 'src/app/modules/shared/models/account_center';
 import { account_class } from 'src/app/modules/shared/models/account_class';
@@ -20,7 +23,10 @@ import { AccountLevelService } from 'src/app/modules/shared/services/account-lev
 import { AccountTreeService } from 'src/app/modules/shared/services/account-tree.service';
 import { BranchService } from 'src/app/modules/shared/services/branch.service';
 import { FinanceListService } from 'src/app/modules/shared/services/finance-list.service';
+import { FormValidationHelpersService } from 'src/app/modules/shared/services/form-validation-helpers.service';
 import {accounts_tree} from '../../../shared/models/accounts_tree'
+import { validateAccountId } from './Validators/validateAccountId';
+import { validateAccountName } from './Validators/validateAccountName';
 @Component({
   selector: 'app-account-tree-edit',
   templateUrl: './account-tree-edit.component.html',
@@ -40,7 +46,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
   _Subscription!: Subscription;
  
   Form!: FormGroup;
-  parentAccountName!: FormControl<string | undefined  | null>;
+  parentAccountName!: FormControl<number | undefined  | null>;
   account_id!: FormControl<number | undefined  | null>;
   account_name!: FormControl<string | undefined  | null>;
   account_level!: FormControl<number | undefined  | null>;
@@ -80,10 +86,17 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
 
   LoadingFinish : boolean;
 
-  constructor(public dialogRef: MatDialogRef<AccountTreeEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {action: string, account: accounts_tree},
+  // route parameter
+  seq: number;
+
+  treeDataSource = new MatTreeNestedDataSource<accounts_tree>();
+  treeControl = new NestedTreeControl<accounts_tree>(node => node.children);
+  hasChild = (_: number, node: accounts_tree) => !!node.children && node.children.length > 0;
+
+  constructor(
     private fb: UntypedFormBuilder,
     private snackBar: MatSnackBar,
+    public route: ActivatedRoute,
     @Inject(DOCUMENT) private _document: Document,
     private accountLevelService: AccountLevelService,
     private accountGroupService: AccountGroupService,
@@ -92,16 +105,11 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
     private accountFinalService: AccountFinalService,
     private accountTreeService: AccountTreeService,
     private account_centerService: account_centerService,
-    private branchService: BranchService) { 
+    private branchService: BranchService,
+    private formValidatorsService: FormValidationHelpersService) { 
       this.LoadingFinish = true;
       this.BuildForm();
       this.Load_Data();
-      
-      
-      if (this.data.action == 'update'){
-        this.selected_Account= data.account;
-        this.SetValue();
-      }
       
     }
 
@@ -110,24 +118,24 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
   
         this.Form = this.fb.group(
           {
-            'parentAccountName:': this.parentAccountName = new FormControl<string | undefined>(undefined, []),
-            'account_id:': this.account_id = new FormControl<number | undefined>(undefined, [Validators.required]),
-            'account_name:': this.account_name = new FormControl<string | undefined>(undefined, [Validators.required]),
-            'account_level:': this.account_level = new FormControl<number | undefined>(undefined, [Validators.required]),
-            'account_group:': this.account_group = new FormControl<number | undefined>(undefined, [Validators.required]),
-            'account_class:': this.account_class = new FormControl<number | undefined>(undefined, [Validators.required]),
-            'finance_list:': this.finance_list = new FormControl<number | undefined>(undefined, [Validators.required]),
-            'account_final:': this.account_final = new FormControl<number | undefined>(undefined, [Validators.required]),
-            'phone:': this.phone = new FormControl<number | undefined>(undefined),
-            'mobile:': this.mobil = new FormControl<number | undefined>(undefined),
-            'fax:': this.fax = new FormControl<number | undefined>(undefined),
-            'address:': this.address = new FormControl<string | undefined>(undefined),
-            'notice:': this.notice = new FormControl<string | undefined>(undefined),
+            'parentAccountName': this.parentAccountName = new FormControl<number | undefined>(undefined, []),
+            'account_id': this.account_id = new FormControl<number | undefined>(undefined, [Validators.required]),
+            'account_name': this.account_name = new FormControl<string | undefined>(undefined, [Validators.required]),
+            'account_level': this.account_level = new FormControl<number | undefined>(undefined, [Validators.required]),
+            'account_group': this.account_group = new FormControl<number | undefined>(undefined, [Validators.required]),
+            'account_class': this.account_class = new FormControl<number | undefined>(undefined, [Validators.required]),
+            'finance_list': this.finance_list = new FormControl<number | undefined>(undefined, [Validators.required]),
+            'account_final': this.account_final = new FormControl<number | undefined>(undefined, [Validators.required]),
+            'phone': this.phone = new FormControl<number | undefined>(undefined),
+            'mobile': this.mobil = new FormControl<number | undefined>(undefined),
+            'fax': this.fax = new FormControl<number | undefined>(undefined),
+            'address': this.address = new FormControl<string | undefined>(undefined),
+            'notice': this.notice = new FormControl<string | undefined>(undefined),
             'account_center_fk': this.account_center_fk = new FormControl<number | null>(null, []),
           'account_center': this.account_center = new FormControl<account_center | null>(null, []),
         'branch_fk': this.branch_fk = new FormControl<number | null>(null, [Validators.required]),
 
-          },
+          }
         );
   
       } catch (Exception: any) {
@@ -146,6 +154,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
         this.Load_ParentAccountName(),
         this.Load_Account_Center(),
       this.Load_Branch(),
+      this.BuildTree()
 
         ).subscribe(
           res => {
@@ -189,8 +198,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
           this.branchService.List_Branch = this.branch_List;
           this.branchService.List_Branch_BehaviorSubject.next(this.branch_List);
 
-          if (this.data!.account!.seq != null)
-            this.parentAccountName.setValue(this.parentAccountName_List.find(account=> account.seq == this.data!.account!.seq)?.account_name);
+          this.treeDataSource.data = [res[8]];
 
             this.Init_AutoComplete();
             this.LoadingFinish = true;
@@ -348,7 +356,6 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
         
         private _filterParentAccountName(value: string): accounts_tree[] {
           const filterValue = value.toLowerCase();
-      
           return this.parentAccountName_List.filter(option =>(option.account_id != null && option.account_name != null) && (option.account_id.toString().includes(filterValue) || option.account_name.includes(filterValue)));
         }
 
@@ -359,8 +366,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
 
         private _filterBranch(value: string): branch[] {
           const filterValue = value.toLowerCase();
-      
-          return this.branch_List.filter(option => option.branch_seq == +filterValue);
+          return this.branch_List.filter(option => option.branch_name!.toString().includes(filterValue));
         }
         
         public displayAccountLevelProperty(value: string): string {
@@ -410,9 +416,9 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
     
         public displayParentAccountNameProperty(value: string): string {
           if (value && this.parentAccountName_List) {
-            let cer: any = this.parentAccountName_List.find(cer => cer.seq!.toString() == value);
-            if (cer)
-              return cer.account_name;
+            let account: any = this.parentAccountName_List.find(cer => cer.seq!.toString() == value);
+            if (account)
+              return account.account_id + " - " + account.account_name!;
           }
           return '';
         }
@@ -440,7 +446,22 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
           this._Subscription.unsubscribe();
         }
         
-  ngOnInit() {      
+        BuildTree(): Observable<accounts_tree> {
+          return this.accountTreeService.BuildTree();
+        }
+
+  ngOnInit() {     
+    this.seq = this.route.snapshot.params['seq'];
+    if (this.seq != null && this.seq > 0) {
+      this.accountTreeService.get_by_seq().subscribe(res=>{
+        this.selected_Account= res;
+        this.SetValue();
+        if (this.seq != null && this.seq > 0)
+          this.parentAccountName.setValue(this.parentAccountName_List.find(account=> account.seq == this.selected_Account!.account_parent_seq)?.seq);
+      });
+    }
+    this.account_id.addAsyncValidators([validateAccountId(this.accountTreeService)]);
+    this.account_name.addAsyncValidators([validateAccountName(this.accountTreeService) ]);
   }
 
   public SetValue() {
@@ -489,6 +510,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
       if (this.selected_Account != null && this.selected_Account.branch_fk != null)
         this.branch_fk.setValue(this.selected_Account.branch_fk);
       
+      
     } catch (ex: any) {
 
 
@@ -512,14 +534,10 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
     this.selected_Account.account_center_fk = this.account_center_fk.value || undefined;
     this.selected_Account.branch_fk = this.branch_fk.value || undefined;
     
-    if (this.data.action == 'add'){
-      this.selected_Account.account_parent_seq = this.parentAccountName_List.find(account=> account.account_name == this.parentAccountName.value)?.seq || undefined;;
-    }
+    // if (this.data.action == 'add'){
+    this.selected_Account.account_parent_seq = this.parentAccountName_List.find(account=> account.seq == this.parentAccountName.value)?.seq || undefined;
+    // }
     
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
   }
 
   clear(){
@@ -535,7 +553,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
     // fill this.selected_AccountsIndex
     this.getValue();
     console.log('this.selected_Account', this.selected_Account);
-    if (this.data.action== 'add'){
+    if (this.seq == 0){
       this.accountTreeService.add( this.selected_Account).subscribe(res =>{
         console.log('res', res);
         if (res != null && (res as result)!= null &&  (res as result).success ){
@@ -543,7 +561,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
             duration: 3000,
             panelClass: ['green-snackbar'],
           });
-        this.dialogRef.close(1);
+          this.Form.reset();
         }
 
         else
@@ -554,14 +572,14 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
       });
     }
 
-    else if (this.data.action== 'update'){
+    else if (this.seq != null && this.seq > 0){
       this.accountTreeService.update( this.selected_Account).subscribe(res =>{
         if (res != null && (res as accounts_tree) != null && (res as accounts_tree).seq!= null ){
           this.snackBar.open('تم التعديل بنجاح', '', {
             duration: 3000,
             panelClass: ['green-snackbar'],
           });
-        this.dialogRef.close(1);
+        
         }
 
         else
@@ -581,4 +599,26 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
     }
   }
 
+  public fieldHasErrors(form: any, field: string) {
+    return this.formValidatorsService.fieldHasErrors(form, field);
+  }
+
+
+  public autoPrintFirstErrorMessage(
+    form: any,
+    controlName: string,
+    label: string,
+    isFemale?: boolean
+  ): string {
+    return this.formValidatorsService.autoPrintFirstErrorMessage(form, controlName, label, isFemale);
+  }
+
+  edit(node: accounts_tree){
+    this.selected_Account= node;
+    this.SetValue();
+    this.parentAccountName.setValue(null);
+  }
+
+  addSon(node: accounts_tree){
+  }
 }

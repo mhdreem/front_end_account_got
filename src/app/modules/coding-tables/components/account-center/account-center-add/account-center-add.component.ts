@@ -8,6 +8,7 @@ import { account_center } from 'src/app/modules/shared/models/account_center';
 import { result } from 'src/app/modules/shared/models/result';
 import { account_centerService } from 'src/app/modules/shared/services/account-center.service';
 import { FormValidationHelpersService } from 'src/app/modules/shared/services/form-validation-helpers.service';
+import { validateAccountCenterId } from './Validators/validateAccountCenterId';
 import { validateAccountCenterName } from './Validators/validateAccountCenterName';
 
 @Component({
@@ -187,7 +188,8 @@ export class AccountCenterAddComponent implements OnInit , OnDestroy {
   }
 
   ngOnInit(): void {
-    this.account_center_name.addAsyncValidators([validateAccountCenterName(this.accountCenterService, this.account_center_name.value)]);
+    this.account_center_name.addAsyncValidators([validateAccountCenterName(this.accountCenterService)]);
+    this.account_center_id.addAsyncValidators([validateAccountCenterId(this.accountCenterService)]);
 
   }
 

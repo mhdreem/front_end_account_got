@@ -138,7 +138,7 @@ export class FormValidationHelpersService {
             }
             return this.printNumberValidation()
           }
-          case("mobNumExists"): {
+          case("duplicate"): {
             if(x.message) {
               return x.message;
             }

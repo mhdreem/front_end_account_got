@@ -19,6 +19,7 @@ import { sanad_kid_detail } from 'src/app/modules/shared/models/sanad_kid_detail
 import { accounts_tree } from 'src/app/modules/shared/models/accounts_tree';
 import { AccountTreeService } from 'src/app/modules/shared/services/account-tree.service';
 import { Route, Router } from '@angular/router';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-sanad-kid-list',
@@ -54,7 +55,7 @@ export class SanadKidListComponent implements OnInit {
   dataSource = new MatTableDataSource<sanad_kid>();
   displayedColumns: string[] =
    ['date_time_create', 'document_id','document_date', 'sanad_total_value', 'incumbent_id', 'incumbent_date', 'sanad_close', 'name_of_owner', 'branch_name', 'action' ];
-
+   dataSourceIsEmpty: boolean= true;
   fromDateDay: string= '';
   fromDateMonth: string= '';
   fromDateYear: string= '';
@@ -170,10 +171,11 @@ export class SanadKidListComponent implements OnInit {
         })
       )
       .subscribe((data: any) => {
-        this.totalRows = data.Item2;
+        this.totalRows = data.total_row_count;
         this.dataSource = new MatTableDataSource(data.value);
         this.isLoading= false;
-
+        if (data.value?.length != 0)
+          this.dataSourceIsEmpty= false;
       });
   }
 
@@ -187,9 +189,11 @@ export class SanadKidListComponent implements OnInit {
     this.currentPage=0;
     this.pageSize=5;
     this.View().subscribe((data: any)=>{
-      this.totalRows = data.Item2;
+      this.totalRows = data.total_row_count;
       this.dataSource = new MatTableDataSource(data.value);
       this.isLoading= false;
+      if (data.value?.length != 0)
+        this.dataSourceIsEmpty= false;
     });
   }
   
@@ -234,7 +238,12 @@ export class SanadKidListComponent implements OnInit {
   }
 
   exportToExcel(){
-
+    this.sanadKidService.export2Excel().subscribe(
+      (res) => {
+        const file: Blob = new Blob([res], { type: 'application/xlsx' });
+        saveAs(file, `سندات القيد.xlsx`);
+    }
+    );
   }
 
   Delete(sanad: sanad_kid){

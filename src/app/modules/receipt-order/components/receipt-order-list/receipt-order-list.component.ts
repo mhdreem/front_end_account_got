@@ -45,7 +45,7 @@ export class ReceiptOrderListComponent {
   dataSource = new MatTableDataSource<receipt_order>();
   displayedColumns: string[] =
     ['incumbent_id', 'incumbent_date', 'document_id', 'document_date', 'total_value', 'name_of_owner', 'branch_fk', 'action'];
-
+    dataSourceIsEmpty: boolean= true;
   fromSanadDateDay: string = '';
   fromSanadDateMonth: string = '';
   fromSanadDateYear: string = '';
@@ -160,9 +160,11 @@ export class ReceiptOrderListComponent {
         })
       )
       .subscribe((data: any) => {
-        this.totalRows = data.Item2;
+        this.totalRows = data.total_row_count;
         this.dataSource = new MatTableDataSource(data.value);
         this.isLoading= false;
+        if (data.value?.length != 0)
+          this.dataSourceIsEmpty= false;
 
       });
   }
@@ -288,9 +290,11 @@ export class ReceiptOrderListComponent {
     this.currentPage=0;
     this.pageSize=5;
     this.View().subscribe((data: any)=>{
-      this.totalRows = data.Item2;
+      this.totalRows = data.total_row_count;
       this.dataSource = new MatTableDataSource(data.value);
       this.isLoading= false;
+      if (data.value?.length != 0)
+        this.dataSourceIsEmpty= false;
     });
   }
 

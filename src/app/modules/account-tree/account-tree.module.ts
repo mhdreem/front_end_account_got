@@ -21,6 +21,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTreeModule} from '@angular/material/tree';
 import {MatMenuModule} from '@angular/material/menu';
 import { CommonModuleModule } from '../common-module/common-module.module';
+import { GridModule } from '@coreui/angular';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { CommonModuleModule } from '../common-module/common-module.module';
     MatButtonModule,
     MatTreeModule,
     MatMenuModule,
-    CommonModuleModule
+    CommonModuleModule,
+    GridModule
   ]
 })
 export class AccountTreeModule { }

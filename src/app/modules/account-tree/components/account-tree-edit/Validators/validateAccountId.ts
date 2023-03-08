@@ -4,7 +4,8 @@ import { Observable, debounceTime } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { account_centerService } from 'src/app/modules/shared/services/account-center.service';
-export function validateAccountCenterName( accountCenterService:account_centerService,                                    
+import { AccountTreeService } from 'src/app/modules/shared/services/account-tree.service';
+export function validateAccountId( accountTreeService:AccountTreeService,                                    
                                             ) : AsyncValidatorFn
         {
 
@@ -12,17 +13,14 @@ export function validateAccountCenterName( accountCenterService:account_centerSe
             : Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
 
             let value_From_Control: string = control.value;
-            if (!value_From_Control ||
-                value_From_Control.length == 0
-            )
-            return of(null);
+            if ( value_From_Control == null ||value_From_Control.length == 0 )
+                return of(null);
 
-            return accountCenterService.
-                validate_name({account_center_name: value_From_Control}).
-                pipe(
+            return accountTreeService.
+            validate_id({account_id: value_From_Control})
+                .pipe(
                     map(
                         (result: any) => {
-                            console.log('result', result);
                             return (result && result.value) ? { "duplicate": true } : null;
                         }
                     ));

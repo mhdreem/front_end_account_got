@@ -12,7 +12,7 @@
             تصدير الى اكسل F7
         </button>
        
-        <button id="print" mat-raised-button class="add" [disabled]="!dataSource.data[0]" printSectionId="rank-section"
+        <button id="print" mat-raised-button class="add" [disabled]="dataSourceIsEmpty" printSectionId="rank-section"
             ngxPrint>
             <mat-icon>print</mat-icon>
             طباعة
@@ -262,6 +262,6 @@
              ></tr>
     </table>
     <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-    <mat-paginator #paginator [length]="totalRows"  
+    <mat-paginator #paginator [length]="totalRows"
         [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>
     

@@ -15,7 +15,7 @@
                         <c-col>
                             <mat-form-field >
                                 <mat-label #branch_name_element>اسم الفرع</mat-label>
-                                <input matInput [formControl]="branch_name" id="branch_name" (keyup.enter)="focusNext('frm_Branch_address')">
+                                <input matInput [formControl]="branch_name" id="branch_name" (keyup.enter)="focusNext('branch_address')">
                                 <mat-error *ngIf="fieldHasErrors(Form, 'branch_name')">
                                     {{
                                     autoPrintFirstErrorMessage(
@@ -32,7 +32,7 @@
                         <c-col>
                             <mat-form-field >
                                 <mat-label>عنوان الفرع</mat-label>
-                                <input matInput [formControl]="branch_address" id="branch_address" (keyup.enter)="focusNext('frm_Branch_phone')">
+                                <input matInput [formControl]="branch_address" id="branch_address" (keyup.enter)="focusNext('branch_phone')">
                             </mat-form-field>
                         </c-col>
 
@@ -44,14 +44,14 @@
                         <c-col>
                             <mat-form-field >
                                 <mat-label>هاتف الفرع</mat-label>
-                                <input matInput [formControl]="branch_phone" id="branch_phone" (keyup.enter)="focusNext('frm_Branch_email')">
+                                <input matInput [formControl]="branch_phone" [OnlyNumber]="true" id="branch_phone" (keyup.enter)="focusNext('branch_email')">
                             </mat-form-field>
                         </c-col>
 
                         <c-col>
                             <mat-form-field >
                                 <mat-label>ايميل الفرع</mat-label>
-                                <input matInput [formControl]="branch_email" id="branch_email" (keyup.enter)="focusNext('frm_Branch_website')">
+                                <input matInput [formControl]="branch_email" id="branch_email" (keyup.enter)="focusNext('branch_website')">
                             </mat-form-field>
                         </c-col>
                     </c-row>
@@ -59,7 +59,7 @@
                         <c-col>
                             <mat-form-field >
                                 <mat-label>الموقع الالكتروني للفرع</mat-label>
-                                <input matInput [formControl]="branch_website" id="branch_website" (keyup.enter)="focusNext('frm_Branch_name')">
+                                <input matInput [formControl]="branch_website" id="branch_website" (keyup.enter)="focusNext('branch_order')">
                             </mat-form-field>
                         </c-col>
 

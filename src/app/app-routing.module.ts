@@ -16,7 +16,7 @@ const routes: Routes = [
     children: [
   
   { path: 'sanadKid',
-  //  canActivate: [AuthGuardServiceService],
+   canActivate: [AuthGuardServiceService],
    loadChildren: () => import('./modules/sanad-kid/sanad-kid.module').then(m => m.SanadKidModule) },
   { path: 'tree', loadChildren: () => import('./modules/account-tree/account-tree.module').then(m => m.AccountTreeModule) },
   { path: 'codingTable', loadChildren: () => import('./modules/coding-tables/coding-tables.module').then(m => m.CodingTablesModule) },
@@ -25,6 +25,7 @@ const routes: Routes = [
   { path: 'receiptOrder', loadChildren: () => import('./modules/receipt-order/receipt-order.module').then(m => m.ReceiptOrderModule) },
   { path: 'mrBook', loadChildren: () => import('./modules/mr-book/mr-book.module').then(m => m.MrBookModule) },
   { path: 'mrBookAccountCenter', loadChildren: () => import('./modules/mr-book-account-center/mr-book-account-center.module').then(m => m.MrBookAccountCenterModule) },
+  { path: 'reviewBalance', loadChildren: () => import('./modules/review-balance/review-balance.module').then(m => m.ReviewBalanceModule) },
 
     ]
 
@@ -63,6 +64,7 @@ const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
  
   { path: 'common-module', loadChildren: () => import('./modules/common-module/common-module.module').then(m => m.CommonModuleModule) },
+ 
  
  
  

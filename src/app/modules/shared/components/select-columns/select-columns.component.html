@@ -1,0 +1,5 @@
+<div class="con">
+    <div *ngFor="let columnName of all_columns_names" style="display: inline-block;">
+        <mat-checkbox [(ngModel)]="checkBoxValues">{{columnName}}</mat-checkbox>
+    </div>
+</div>

@@ -63,4 +63,14 @@ export class SanadKidService extends BaseAPIService{
     return this.httpClient.get(this.RestUrl +"Sanad_Kid/GetBySeq/"+seq,this.httpOptions) as Observable<sanad_kid>;  
     
   }
+
+  export2Excel() {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
+      return this.httpClient.post<any>( this.RestUrl +'ExportExcel', this.httpOptions,
+          {headers: headers, responseType: 'blob' as 'json' }
+        );
+  }
 }

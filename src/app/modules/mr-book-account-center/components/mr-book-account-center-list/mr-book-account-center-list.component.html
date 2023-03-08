@@ -12,7 +12,7 @@
             تصدير الى اكسل F7
         </button>
        
-        <button id="print" mat-raised-button class="add" [disabled]="!dataSource.data[0]" printSectionId="rank-section"
+        <button id="print" mat-raised-button class="add" [disabled]="dataSourceIsEmpty" printSectionId="rank-section"
             ngxPrint>
             <mat-icon>print</mat-icon>
             طباعة

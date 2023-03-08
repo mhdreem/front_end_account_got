@@ -233,7 +233,7 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
   
         this.Form = this.fb.group(
           {
-            'sanad_kid_seq': this.sanad_kid_seq = new FormControl<number | null>(null, [Validators.required]),
+            'sanad_kid_seq': this.sanad_kid_seq = new FormControl<number | null>(null, []),
             'document_id': this.document_id = new FormControl<number | null>(null, [Validators.required]),
             'document_date': this.document_date = new FormControl<Date | null>(null, [Validators.required]),
             'incumbent_date': this.incumbent_date = new FormControl<Date | null>(null, []),

@@ -4,7 +4,7 @@ import { Observable, debounceTime } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { account_centerService } from 'src/app/modules/shared/services/account-center.service';
-export function validateAccountCenterName( accountCenterService:account_centerService,                                    
+export function validateAccountCenterId( accountCenterService:account_centerService,                                    
                                             ) : AsyncValidatorFn
         {
 
@@ -18,7 +18,7 @@ export function validateAccountCenterName( accountCenterService:account_centerSe
             return of(null);
 
             return accountCenterService.
-                validate_name({account_center_name: value_From_Control}).
+            validate_id({account_center_id: +value_From_Control}).
                 pipe(
                     map(
                         (result: any) => {

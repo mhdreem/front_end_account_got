@@ -190,6 +190,28 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     this.navService.navItems_Subject.next(this.navItems);
 
   }
+  
+  reviewBalanceAnchorClicked(){
+    this.navItems = [
+      {
+        name: 'ميزان المراجعة',
+        url: '/',
+        // iconComponent: { name: 'cil-speedometer' },
+        badge: {
+          color: 'info',
+          text: 'NEW'
+        }
+      },
+      {
+        name: 'عرض ميزان المراجعة' ,
+        url: 'reviewBalance/module/reviewBalance',
+        iconComponent: { name: 'cil-pencil' },
+    
+      },
+    ];
+    this.navService.navItems_Subject.next(this.navItems);
+
+  }
 
   tableAnchorClicked(){
     this.navItems = [

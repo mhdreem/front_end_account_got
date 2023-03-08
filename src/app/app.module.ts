@@ -35,6 +35,7 @@ import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { SelectColumnsComponent } from './modules/shared/components/select-columns/select-columns.component';
 
 const Import_Materail = [
   MatDialogModule,
@@ -76,7 +77,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     DefaultFooterComponent,
      DefaultHeaderComponent,
       DefaultLayoutComponent ,
-      LoginComponent
+      LoginComponent,
       
   ],
   imports:

@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
+import { forkJoin, map, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
 import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/confirmationdialog/confirmationdialog.component';
 import { account_class } from 'src/app/modules/shared/models/account_class';
 import { account_group } from 'src/app/modules/shared/models/account_group';
@@ -25,6 +25,7 @@ import { FinanceListService } from 'src/app/modules/shared/services/finance-list
 import { AccountTreeEditComponent } from '../account-tree-edit/account-tree-edit.component';
 import { branch } from 'src/app/modules/shared/models/branch';
 import { BranchService } from 'src/app/modules/shared/services/branch.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-account-tree-list',
@@ -58,6 +59,7 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<accounts_tree>();
   displayedColumns: string[] = [
     'Year_ID', 'action' ];
+    dataSourceIsEmpty: boolean= true;
 
   _Subscription!: Subscription;
 
@@ -71,6 +73,8 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
   account_class_fk!: FormControl<number | null>;
   finance_list_fk!: FormControl<number | null>;
   branch_fk : FormControl;
+  page_index!: FormControl<number | null>;
+  row_count!: FormControl<number | null>;
 
 
   // Filtering
@@ -91,12 +95,10 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
 
   totalRows = 0;
   pageSize = 5;
-  currentPage = 1;
+  currentPage = 0;
   pageSizeOptions: number[] = [5, 10, 25, 100];
   isDataSourceLoading: boolean= false;
-  treeDataSource = new MatTreeNestedDataSource<accounts_tree>();
-  treeControl = new NestedTreeControl<accounts_tree>(node => node.children);
-  hasChild = (_: number, node: accounts_tree) => !!node.children && node.children.length > 0;
+  
   // darkTheme: boolean;
 
 
@@ -111,7 +113,8 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
     private accountClassService: AccountClassService,
     private financeListService: FinanceListService,
     private accountTreeService: AccountTreeService,
-    private branchService: BranchService
+    private branchService: BranchService,
+    private router: Router
     // private themeService: ThemeService
     ) {
     this.LoadingFinish = true;
@@ -135,6 +138,8 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
             'account_class_fk': this.account_class_fk = new FormControl<number | null>(null, []),
             'finance_list_fk': this.finance_list_fk = new FormControl<number | null>(null, []),
             'branch_fk': this.branch_fk = new FormControl<number | null>(null, [Validators.required]),
+            'page_index': this.page_index = new FormControl<number | null>(null, []),
+          'row_count': this.row_count = new FormControl<number | null>(null, []),
           }
         );
   
@@ -153,7 +158,6 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
         this.Load_AccountClass(),
         this.Load_FinanceList(),
         this.Load_Branch(),
-        this.BuildTree()
         
       ).subscribe(
         res => {
@@ -187,7 +191,6 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
           this.branchService.List_Branch = this.branch_List;
           this.branchService.List_Branch_BehaviorSubject.next(this.branch_List);
 
-          this.treeDataSource.data = [res[6]];
   
           this.Init_AutoComplete();
   
@@ -247,9 +250,7 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
       return of(this.branchService.List_Branch);
     }
   
-    BuildTree(): Observable<accounts_tree> {
-      return this.accountTreeService.BuildTree();
-    }
+    
   
     public async Init_AutoComplete() {
       try {
@@ -391,8 +392,26 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+
+    this.paginator.page
+      .pipe(
+        startWith({}),
+        switchMap(()=>{
+          this.pageSize = this.paginator.pageSize;
+          this.currentPage = this.paginator.pageIndex + 1;
+          return this.View();
+        })
+      )
+      .subscribe((data: any) => {
+        this.totalRows = data.Item2;
+        this.dataSource = new MatTableDataSource(data.value);
+        this.isDataSourceLoading= false;
+        if (data.value?.length != 0)
+          this.dataSourceIsEmpty= false;
+
+      });
   }
 
   ngOnDestroy(): void {
@@ -405,15 +424,26 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
     else this.rowClicked = idx;
   }
 
+  onViewClick(){
+    this.currentPage=0;
+    this.pageSize=5;
+    this.View().subscribe((data: any)=>{
+      this.totalRows = data.Item2;
+      this.dataSource = new MatTableDataSource(data.value);
+      this.isDataSourceLoading= false;
+      if (data.value?.length != 0)
+        this.dataSourceIsEmpty= false;
+
+    });
+  }
+
   View(){
     this.isDataSourceLoading= true;
-    this.accountTreeService.search(this.Form.value).subscribe(
-      (res: any) =>{
-        this.dataSource.paginator= this.paginator;
-        this.dataSource.data = res;
-        this.isDataSourceLoading= false;
-      }
-    );
+
+    this.page_index.setValue(this.currentPage);
+    this.row_count.setValue(this.pageSize);
+    console.log('this.Form.value', this.Form.value);
+    return this.accountTreeService.search(this.Form.value);
 
     // let printRequest= {
     //   "year_id": this.UpgradeYear.value,
@@ -468,56 +498,40 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
   }
 
   Update(account: accounts_tree){
-    const dialogRef = this.dialog.open(AccountTreeEditComponent, {
-      position: {top: "8%" },
-      data: { action: 'update', account: account },
-    });
+    this.router.navigate(['/tree/module/accountTreeEdit', { seq: account.seq }]);
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result == 1) {
-        //update table
-        this.View();
+    // const dialogRef = this.dialog.open(AccountTreeEditComponent, {
+    //   position: {top: "8%" },
+    //   data: { action: 'update', account: account },
+    // });
 
-      }
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result == 1) {
+    //     //update table
+    //     this.onViewClick();
+
+    //   }
+    // });
   }
 
   add(){
-    const dialogRef = this.dialog.open(AccountTreeEditComponent, {
-      position: {top: "8%", left: "3%"},
-      width: "1150px",
-      data: { action: 'add', account: {} },
-    });
+    this.router.navigate(['/tree/module/accountTreeEdit', { seq: 0 }]);
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result == 1) {
-        //update table
-        this.View();
-      }
-    });
+    // const dialogRef = this.dialog.open(AccountTreeEditComponent, {
+    //   position: {top: "8%", left: "3%"},
+    //   width: "1150px",
+    //   data: { action: 'add', account: {} },
+    // });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result == 1) {
+    //     //update table
+    //     this.onViewClick();
+    //   }
+    // });
   }
 
-  addAccount(ParentNode: accounts_tree) {
-
-    const dialogRef = this.dialog.open(AccountTreeEditComponent, {
-      position: {top: "8%" , left: "3%"},
-      width: "1150px",
-      data: {action: 'add', account: ParentNode },
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result == 1) {
-        //update tree
-        this._Subscription.add(
-          this.BuildTree().subscribe(res => {
-            this.treeDataSource.data = [res];
-          })
-        );
-        //update table
-        this.View();
-      }
-    })
-  }
+ 
 }
 
 

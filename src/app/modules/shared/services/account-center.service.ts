@@ -49,9 +49,13 @@ export class account_centerService extends BaseAPIService {
   }
 
   validate_name(obj: account_center) {
-    console.log('accountCenter1');
 
     return this.httpClient.post(this.RestUrl + "Account_Center/Validate_Name", obj, this.httpOptions);
+  }
+  
+  validate_id(obj: account_center) {
+
+    return this.httpClient.post(this.RestUrl + "Account_Center/Validate_Account_Center_ID", obj, this.httpOptions);
   }
 
 

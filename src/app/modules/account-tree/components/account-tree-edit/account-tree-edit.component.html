@@ -1,176 +1,288 @@
-<h1 style="padding: 20px;" mat-dialog-title>{{data.action=='add'?'إضافة': 'تعديل'}} بطاقة حساب</h1>
-<div mat-dialog-content style="padding-inline: 20px;">
-    <!-- <mat-progress-bar *ngIf="LoadingFinish == false" mode="indeterminate" #progressbar></mat-progress-bar> -->
-    <!-- <ngx-hover-opacity [isHoverVisible]="!LoadingFinish"> -->
-        <form [formGroup]="Form">
+<h1 style="padding: 20px;">{{seq==0?'إضافة': 'تعديل'}} بطاقة حساب</h1>
+<c-container>
+    <c-row>
+        <c-col [sm]="3" *ngIf="seq==0">
+            <div class="right">
+                <span style="cursor: pointer;">الحسابات</span>
+                <mat-tree [dataSource]="treeDataSource" [treeControl]="treeControl" class="example-tree">
+                    <!-- This is the tree node template for leaf nodes -->
+                    <!-- There is inline padding applied to this node using styles.
+                    This padding value depends on the mat-icon-button width. -->
+                    <mat-tree-node *matTreeNodeDef="let node"   >
+                    <span matTreeNodeToggle (click)="edit(node)">{{node.account_name}}</span>
+                    <button class="add" mat-raised-button class="add" (click)="addSon(node)" style="margin-right: 10px;">
+                        <mat-icon>add</mat-icon>
+                        إضافة حساب ابن
+                    </button>
+                    </mat-tree-node>
+                    <!-- This is the tree node template for expandable nodes -->
+                    <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild" >
+                    <div class="Row">
+                        <div class=" mat-tree-node Column" >
+                        <button mat-icon-button matTreeNodeToggle>
+                            <mat-icon>
+                            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_left'}}
+                            </mat-icon>
+                        </button>
+                        <span matTreeNodeToggle (click)="edit(node)">
+                            {{node.account_name}}
+                        </span>
+                        <button class="add" mat-raised-button class="add" (click)="addSon(node)" style="margin-right: 10px;">
+                            <mat-icon>add</mat-icon>
+                            إضافة حساب ابن
+                        </button>
+                        </div>
+                    </div>
 
-            <div *ngIf="data.action == 'add'" style="display: inline-block">
-                <mat-form-field class="fitContent" appearance="fill">
-                    <mat-label>اسم الحساب الأب</mat-label>
-                    <input matInput [formControl]="parentAccountName" [matAutocomplete]="autoparentaccountName"
-                            id="parentAccountName" (keyup.enter)="focusNext('account_id')">
-                    <mat-autocomplete #autoparentaccountName="matAutocomplete" 
-                    [displayWith]="displayParentAccountNameProperty.bind(this)"
-                    >
-                        <mat-option *ngFor="let option of filteredparentAccountNameOptions | async" [value]="option.seq">
-                        {{option.account_name}}
-                        </mat-option>
-                    </mat-autocomplete>
-                </mat-form-field>
+                        <!-- There is inline padding applied to this div using styles.
+                            This padding value depends on the mat-icon-button width.  -->
+                        <div [class.example-tree-invisible]="!treeControl.isExpanded(node)"
+                            role="group">
+                        <ng-container matTreeNodeOutlet></ng-container>
+                    </div>
+                    </mat-nested-tree-node>
+                </mat-tree>
             </div>
+        </c-col>
 
-            <mat-form-field class="fitContent" appearance="fill">
-                <mat-label>رقم حساب</mat-label>
-                <input matInput [formControl]="account_id"
-                        id="account_id" (keyup.enter)="focusNext('account_name')" [OnlyNumber]="true">
-            </mat-form-field>
-            
-            <mat-form-field class="fitContent" appearance="fill">
-                <mat-label>اسم الحساب</mat-label>
-                <input matInput [formControl]="account_name"
-                        id="account_name" (keyup.enter)="focusNext('account_level')">
-            </mat-form-field>
+        <c-col [sm]="9">
+            <c-row>
+                <mat-toolbar>
+                    <button mat-raised-button id="save" class="add" (click)="save()" [disabled]="!Form.valid">
+                        <mat-icon class="mat-icon-rtl-mirror">save
+                        </mat-icon>
+                        حفظ F9
+                    </button>
+                </mat-toolbar>
+            </c-row>
+            <c-row>
+                <form [formGroup]="Form">
+                
+                    <div *ngIf="seq==0" style="display: inline-block">
+                        <mat-form-field class="fitContent" appearance="fill">
+                            <mat-label>اسم الحساب الأب</mat-label>
+                            <input matInput [formControl]="parentAccountName" [matAutocomplete]="autoparentaccountName"
+                                    id="parentAccountName" (keyup.enter)="focusNext('account_id')">
+                            <mat-autocomplete #autoparentaccountName="matAutocomplete" 
+                            [displayWith]="displayParentAccountNameProperty.bind(this)"
+                            >
+                                <mat-option *ngFor="let option of filteredparentAccountNameOptions | async" [value]="option.seq">
+                                    {{option.account_id + " - " + option.account_name}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label #label_account_id>رقم حساب</mat-label>
+                        <input matInput [formControl]="account_id"
+                                id="account_id" (keyup.enter)="focusNext('account_name')" [OnlyNumber]="true">
+                        <mat-error *ngIf="fieldHasErrors(Form, 'account_id')">
+                            {{
+                            autoPrintFirstErrorMessage(
+                            Form,
+                            "account_id",
+                            label_account_id.innerHTML
+                            )
+                            }}
+                        </mat-error>
+                    </mat-form-field>
+                    
+                    
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label #label_account_name>اسم الحساب</mat-label>
+                        <input matInput [formControl]="account_name"
+                                id="account_name" (keyup.enter)="focusNext('account_level')">
+                        <mat-error *ngIf="fieldHasErrors(Form, 'account_name')">
+                            {{
+                            autoPrintFirstErrorMessage(
+                            Form,
+                            "account_name",
+                            label_account_name.innerHTML
+                            )
+                            }}
+                        </mat-error>
+                    </mat-form-field>
+                
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label #label_account_level>مستوى الحساب</mat-label>
+                        <input matInput [formControl]="account_level" [matAutocomplete]="autoaccountLevel"
+                                id="account_level" (keyup.enter)="focusNext('account_group')">
+                        <mat-autocomplete #autoaccountLevel="matAutocomplete" 
+                        [displayWith]="displayAccountLevelProperty.bind(this)"
+                        >
+                            <mat-option *ngFor="let option of filteredAccountLevelOptions | async" [value]="option.account_level_seq">
+                            {{option.account_level_name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <mat-error *ngIf="fieldHasErrors(Form, 'account_level')">
+                            {{
+                            autoPrintFirstErrorMessage(
+                            Form,
+                            "account_level",
+                            label_account_level.innerHTML
+                            )
+                            }}
+                        </mat-error>
+                    </mat-form-field>
+                
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label #label_account_group>مجموعة الحساب</mat-label>
+                        <input matInput [formControl]="account_group" [matAutocomplete]="autoaccountGroup"
+                                id="account_group" (keyup.enter)="focusNext('account_class')">
+                        <mat-autocomplete #autoaccountGroup="matAutocomplete" 
+                        [displayWith]="displayAccountGroupProperty.bind(this)"
+                        >
+                            <mat-option *ngFor="let option of filteredAccountGroupOptions | async" [value]="option.account_group_seq">
+                            {{option.account_group_name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <mat-error *ngIf="fieldHasErrors(Form, 'account_group')">
+                            {{
+                            autoPrintFirstErrorMessage(
+                            Form,
+                            "account_group",
+                            label_account_group.innerHTML
+                            )
+                            }}
+                        </mat-error>
+                    </mat-form-field>
+                    
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label #label_account_class>تصنيف الحساب</mat-label>
+                        <input matInput [formControl]="account_class" [matAutocomplete]="autoaccountClass"
+                                id="account_class" (keyup.enter)="focusNext('finance_list')">
+                        <mat-autocomplete #autoaccountClass="matAutocomplete" 
+                        [displayWith]="displayAccountClassProperty.bind(this)"
+                        >
+                            <mat-option *ngFor="let option of filteredAccountClassOptions | async" [value]="option.account_class_seq">
+                            {{option.account_class_name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <mat-error *ngIf="fieldHasErrors(Form, 'account_class')">
+                            {{
+                            autoPrintFirstErrorMessage(
+                            Form,
+                            "account_class",
+                            label_account_class.innerHTML
+                            )
+                            }}
+                        </mat-error>
+                    </mat-form-field>
+                
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label #label_finance_list>القائمة المالية</mat-label>
+                        <input matInput [formControl]="finance_list" [matAutocomplete]="autofinanceList"
+                                id="finance_list" (keyup.enter)="focusNext('account_final')">
+                        <mat-autocomplete #autofinanceList="matAutocomplete" 
+                        [displayWith]="displayFinanceListProperty.bind(this)"
+                        >
+                            <mat-option *ngFor="let option of filteredfinanceListOptions | async" [value]="option.finance_list_seq">
+                            {{option.finance_list_name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <mat-error *ngIf="fieldHasErrors(Form, 'finance_list')">
+                            {{
+                            autoPrintFirstErrorMessage(
+                            Form,
+                            "finance_list",
+                            label_finance_list.innerHTML
+                            )
+                            }}
+                        </mat-error>
+                    </mat-form-field>
+                
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label #label_account_final>الحساب الختامي</mat-label>
+                        <input matInput [formControl]="account_final" [matAutocomplete]="autoaccount_final"
+                                id="account_final" (keyup.enter)="focusNext('account_center_fk')">
+                        <mat-autocomplete #autoaccount_final="matAutocomplete" 
+                        [displayWith]="displayAccountFinalProperty.bind(this)"
+                        >
+                            <mat-option *ngFor="let option of filteredAccountFinalOptions | async" [value]="option.account_final_seq">
+                            {{option.account_final_name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <mat-error *ngIf="fieldHasErrors(Form, 'account_final')">
+                            {{
+                            autoPrintFirstErrorMessage(
+                            Form,
+                            "account_final",
+                            label_account_final.innerHTML
+                            )
+                            }}
+                        </mat-error>
+                    </mat-form-field>
+                
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label>مركز الكلفة</mat-label>
+                        <input matInput [formControl]="account_center_fk" [matAutocomplete]="autoaccount_center_fk"
+                        id="account_center_fk" (keyup.enter)="focusNext('branch_fk')">
+                        <mat-autocomplete #autoaccount_center_fk="matAutocomplete"
+                        [displayWith]="display_Account_Center_Property.bind(this)"
+                        >
+                            <mat-option *ngFor="let option of account_center_filter | async" [value]="option.account_center_seq">
+                            {{option.account_center_name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label #label_branch_fk>الفرع</mat-label>
+                        <input matInput [formControl]="branch_fk" [matAutocomplete]="autobranch"
+                                id="branch_fk" (keyup.enter)="focusNext('phone')">
+                        <mat-autocomplete #autobranch="matAutocomplete" 
+                        [displayWith]="displayBranchProperty.bind(this)"
+                        >
+                            <mat-option *ngFor="let option of filteredBranchOptions | async" [value]="option.branch_seq">
+                            {{option.branch_name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <mat-error *ngIf="fieldHasErrors(Form, 'branch_fk')">
+                            {{
+                            autoPrintFirstErrorMessage(
+                            Form,
+                            "branch_fk",
+                            label_branch_fk.innerHTML
+                            )
+                            }}
+                        </mat-error>
+                    </mat-form-field>
+                    <hr>
+                
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label>الهاتف</mat-label>
+                        <input matInput [formControl]="phone"
+                                id="phone" (keyup.enter)="focusNext('mobil')">
+                    </mat-form-field>
+                
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label>الموبايل</mat-label>
+                        <input matInput [formControl]="mobil"
+                                id="mobil" (keyup.enter)="focusNext('fax')">
+                    </mat-form-field>
+                
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label>الفاكس</mat-label>
+                        <input matInput [formControl]="fax"
+                                id="fax" (keyup.enter)="focusNext('address')">
+                    </mat-form-field>
+                
+                    <mat-form-field class="fitContent" appearance="fill">
+                        <mat-label>العنوان</mat-label>
+                        <input matInput [formControl]="address"
+                                id="address" (keyup.enter)="focusNext('notice')">
+                    </mat-form-field>
+                
+                    <mat-form-field class="fitContent" appearance="fill" style="width: 100%;">
+                        <mat-label>الملاحظات</mat-label>
+                        <input matInput [formControl]="notice"
+                                id="notice" (keyup.enter)="focusNext('parentAccountName')">
+                    </mat-form-field>
+                </form>
+            </c-row>
+        </c-col>
+    </c-row>
+</c-container>
 
-            <mat-form-field class="fitContent" appearance="fill">
-                <mat-label>مستوى الحساب</mat-label>
-                <input matInput [formControl]="account_level" [matAutocomplete]="autoaccountLevel"
-                        id="account_level" (keyup.enter)="focusNext('account_group')">
-                <mat-autocomplete #autoaccountLevel="matAutocomplete" 
-                [displayWith]="displayAccountLevelProperty.bind(this)"
-                >
-                    <mat-option *ngFor="let option of filteredAccountLevelOptions | async" [value]="option.account_level_seq">
-                    {{option.account_level_name}}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-
-            <mat-form-field class="fitContent" appearance="fill">
-                <mat-label>مجموعة الحساب</mat-label>
-                <input matInput [formControl]="account_group" [matAutocomplete]="autoaccountGroup"
-                        id="account_group" (keyup.enter)="focusNext('account_class')">
-                <mat-autocomplete #autoaccountGroup="matAutocomplete" 
-                [displayWith]="displayAccountGroupProperty.bind(this)"
-                >
-                    <mat-option *ngFor="let option of filteredAccountGroupOptions | async" [value]="option.account_group_seq">
-                    {{option.account_group_name}}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-            
-            <mat-form-field class="fitContent" appearance="fill">
-                <mat-label>تصنيف الحساب</mat-label>
-                <input matInput [formControl]="account_class" [matAutocomplete]="autoaccountClass"
-                        id="account_class" (keyup.enter)="focusNext('finance_list')">
-                <mat-autocomplete #autoaccountClass="matAutocomplete" 
-                [displayWith]="displayAccountClassProperty.bind(this)"
-                >
-                    <mat-option *ngFor="let option of filteredAccountClassOptions | async" [value]="option.account_class_seq">
-                    {{option.account_class_name}}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-
-            <mat-form-field class="fitContent" appearance="fill">
-                <mat-label>القائمة المالية</mat-label>
-                <input matInput [formControl]="finance_list" [matAutocomplete]="autofinanceList"
-                        id="finance_list" (keyup.enter)="focusNext('account_final')">
-                <mat-autocomplete #autofinanceList="matAutocomplete" 
-                [displayWith]="displayFinanceListProperty.bind(this)"
-                >
-                    <mat-option *ngFor="let option of filteredfinanceListOptions | async" [value]="option.finance_list_seq">
-                    {{option.finance_list_name}}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-
-            <mat-form-field class="fitContent" appearance="fill">
-                <mat-label>الحساب الختامي</mat-label>
-                <input matInput [formControl]="account_final" [matAutocomplete]="autoaccount_final"
-                        id="account_final" (keyup.enter)="focusNext('account_center_fk')">
-                <mat-autocomplete #autoaccount_final="matAutocomplete" 
-                [displayWith]="displayAccountFinalProperty.bind(this)"
-                >
-                    <mat-option *ngFor="let option of filteredAccountFinalOptions | async" [value]="option.account_final_seq">
-                    {{option.account_final_name}}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-
-            <mat-form-field class="fitContent" appearance="fill">
-                <mat-label>مركز الكلفة</mat-label>
-                <input matInput [formControl]="account_center_fk" [matAutocomplete]="autoaccount_center_fk"
-                id="account_center_fk" (keyup.enter)="focusNext('branch_fk')">
-                <mat-autocomplete #autoaccount_center_fk="matAutocomplete"
-                [displayWith]="display_Account_Center_Property.bind(this)"
-                >
-                    <mat-option *ngFor="let option of account_center_filter | async" [value]="option.account_center_seq">
-                    {{option.account_center_name}}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-
-            <mat-form-field class="fitContent" appearance="fill">
-                <mat-label>الفرع</mat-label>
-                <input matInput [formControl]="branch_fk" [matAutocomplete]="autobranch"
-                        id="branch_fk" (keyup.enter)="focusNext('phone')">
-                <mat-autocomplete #autobranch="matAutocomplete" 
-                [displayWith]="displayBranchProperty.bind(this)"
-                >
-                    <mat-option *ngFor="let option of filteredBranchOptions | async" [value]="option.branch_seq">
-                    {{option.branch_name}}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-            <hr>
-
-            <mat-form-field class="fitContent" appearance="fill">
-                <mat-label>الهاتف</mat-label>
-                <input matInput [formControl]="phone"
-                        id="phone" (keyup.enter)="focusNext('mobil')">
-            </mat-form-field>
-
-            <mat-form-field class="fitContent" appearance="fill">
-                <mat-label>الموبايل</mat-label>
-                <input matInput [formControl]="mobil"
-                        id="mobil" (keyup.enter)="focusNext('fax')">
-            </mat-form-field>
-
-            <mat-form-field class="fitContent" appearance="fill">
-                <mat-label>الفاكس</mat-label>
-                <input matInput [formControl]="fax"
-                        id="fax" (keyup.enter)="focusNext('address')">
-            </mat-form-field>
-
-            <mat-form-field class="fitContent" appearance="fill">
-                <mat-label>العنوان</mat-label>
-                <input matInput [formControl]="address"
-                        id="address" (keyup.enter)="focusNext('notice')">
-            </mat-form-field>
-
-            <mat-form-field class="fitContent" appearance="fill" style="width: 100%;">
-                <mat-label>الملاحظات</mat-label>
-                <input matInput [formControl]="notice"
-                        id="notice" (keyup.enter)="focusNext('parentAccountName')">
-            </mat-form-field>
-        </form>
-    <!-- </ngx-hover-opacity> -->
     
-    
-</div>
-<div mat-dialog-actions style="padding-inline: 20px;">
-    <button mat-raised-button id="cancel" color="warn" (click)="onNoClick()">
-        <mat-icon class="mat-icon-rtl-mirror">close
-        </mat-icon>
-        الغاء
-    </button>
-    <button mat-raised-button id="clear" color="warn" (click)="clear()">
-        <mat-icon class="mat-icon-rtl-mirror">refresh
-        </mat-icon>
-        جديد
-    </button>
-    <button mat-raised-button id="save" class="add" (click)="save()" [disabled]="!Form.valid">
-        <mat-icon class="mat-icon-rtl-mirror">save
-        </mat-icon>
-        حفظ F9
-    </button>
-  </div>

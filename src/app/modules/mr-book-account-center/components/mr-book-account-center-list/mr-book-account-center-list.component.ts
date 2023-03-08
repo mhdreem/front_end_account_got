@@ -40,7 +40,7 @@ export class MrBookAccountCenterListComponent {
   dataSource = new MatTableDataSource<any>();
   displayedColumns: string[] =
     ['document_id', 'incumbent_date', 'document_id','account_center_name',  'document_date', 'account_center_name', 'operation_type', 'sanad_kid_book_name'];
-
+  dataSourceIsEmpty: boolean= true;
   fromSanadDateDay: string = '';
   fromSanadDateMonth: string = '';
   fromSanadDateYear: string = '';
@@ -150,10 +150,11 @@ export class MrBookAccountCenterListComponent {
         })
       )
       .subscribe((data: any) => {
-        // this.totalRows = data.Item2;
+        this.totalRows = data.total_row_count;
         this.dataSource = new MatTableDataSource(data.value);
         this.isLoading= false;
-
+        if (data.value.length != 0)
+          this.dataSourceIsEmpty= false;
       });
   }
 
@@ -239,10 +240,12 @@ export class MrBookAccountCenterListComponent {
     this.currentPage=0;
     this.pageSize=5;
     this.View().subscribe((data: any)=>{
-      // this.totalRows = data.Item2;
+      this.totalRows = data.total_row_count;
       console.log('data.value', data.value);
       this.dataSource = new MatTableDataSource(data.value);
       this.isLoading= false;
+      if (data.value.length != 0)
+          this.dataSourceIsEmpty= false;
     });
   }
 

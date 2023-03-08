@@ -14,8 +14,8 @@
               </mat-icon> حفظ
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="save()" [disabled]="sanad_kid.sanad_kid_details?.length == 0"> حفظ نظامي F9</button>
-                <button mat-menu-item (click)="save_as_draft()">مسوده</button>
+                <button mat-menu-item (click)="save()" [disabled]="sanad_kid.sanad_kid_details?.length == 0 || Form.invalid"> حفظ نظامي F9</button>
+                <button mat-menu-item (click)="save_as_draft()" [disabled]="Form.invalid">مسوده</button>
             </mat-menu>
         </div>
           
