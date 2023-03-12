@@ -5,6 +5,7 @@ import { delay, map } from 'rxjs/operators';
 import { BranchService } from 'src/app/modules/shared/services/branch.service';
 import { DepartmentService } from 'src/app/modules/shared/services/department.service';
 import { of } from 'rxjs';
+import { department } from 'src/app/modules/shared/models/department';
 
 export function validateDepartmentName( departmentService:DepartmentService,                                    
                                         name:string|null,) : AsyncValidatorFn
@@ -19,10 +20,26 @@ export function validateDepartmentName( departmentService:DepartmentService,
             )
             return of(null);
 
+            // Define Primart Key Variable
+let pk: number | undefined = undefined;
+
+let Form: FormGroup = control.parent as FormGroup;
+if (Form != null && Form.value != null) {
+    if (Form.controls['department_seq'] != null &&
+        Form.controls['department_seq'].value != null &&
+        Form.controls['department_seq'].value > 0
+    )
+        pk = Form.controls['department_seq'].value;
+}
+
+//Create Request For Add and Update
+
+let request: department = {
+    department_name: control.value,
+    department_seq: pk
+}
             return departmentService.
-            validate_name({
-                department_name: value_From_Control,
-                }).
+            validate_name(request).
                 pipe(
                     map(
                         (result: any) => {

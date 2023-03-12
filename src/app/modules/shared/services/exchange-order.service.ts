@@ -5,6 +5,7 @@ import { exchange_order } from '../models/exchange_order';
 import { BaseAPIService } from './base/base-api.service';
 import { UserService } from './user.service';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -52,4 +53,15 @@ export class ExchangeOrderService extends BaseAPIService{
     return this.httpClient.get(this.RestUrl +"Exchange_Order/GetBySeq/"+seq,this.httpOptions) as Observable<exchange_order>;  
     
   }
+
+  export2Excel() {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
+      return this.httpClient.post<any>( this.RestUrl +'Exchange_Order/ExportExcel', this.httpOptions,
+          {headers: headers, responseType: 'blob' as 'json' }
+        );
+  }
+
 }

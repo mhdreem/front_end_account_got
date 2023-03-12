@@ -16,6 +16,7 @@ import { sanad_kid_book } from 'src/app/modules/shared/models/sanad_kid_book';
 import { BranchService } from 'src/app/modules/shared/services/branch.service';
 import { ExchangeOrderService } from 'src/app/modules/shared/services/exchange-order.service';
 import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-book.service';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-exchange-order-list',
@@ -328,10 +329,7 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
     this.dataSource.data = [];
   }
 
-  exportToExcel() {
-
-  }
-
+ 
   Delete(order: exchange_order) {
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
       data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },
@@ -431,5 +429,12 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
 
   }
 
-
+  exportToExcel(){
+    this.exchangeOrderService.export2Excel().subscribe(
+      (res) => {
+        const file: Blob = new Blob([res], { type: 'application/xlsx' });
+        saveAs(file, `سندات القيد.xlsx`);
+    }
+    );
+  }
 }

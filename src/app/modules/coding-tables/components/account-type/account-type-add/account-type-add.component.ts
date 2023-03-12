@@ -72,6 +72,8 @@ export class AccountTypeAddComponent {
         'account_type_order': this.account_type_order = new FormControl<number | null>(null, []),
       },
     );
+    this.account_type_name.addAsyncValidators([validateAccountTypeName(this.account_typeService)]);
+
   }
 
   setValue()
@@ -165,8 +167,7 @@ export class AccountTypeAddComponent {
   }
 
   ngOnInit(): void {
-    this.account_type_name.addAsyncValidators([validateAccountTypeName(this.account_typeService, this.account_type_name.value)]);
-
+   
   }
 
   public focusNext(id: string) {

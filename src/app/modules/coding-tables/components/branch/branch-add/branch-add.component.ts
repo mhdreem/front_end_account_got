@@ -74,12 +74,13 @@ export class BranchAddComponent implements OnInit {
         'branch_seq': this.branch_seq = new FormControl<number | null>(null, []),
         'branch_name': this.branch_name = new FormControl<string | null>(null, [Validators.required],),
         'branch_address': this.branch_address = new FormControl<string | null>(null, [Validators.required]),
-        'branch_phone': this.branch_phone = new FormControl<string | null>(null, [Validators.required]),
-        'branch_email': this.branch_email = new FormControl<string | null>(null, [Validators.required, Validators.email]),
-        'branch_website': this.branch_website = new FormControl<string | null>(null, [Validators.required]),
+        'branch_phone': this.branch_phone = new FormControl<string | null>(null, []),
+        'branch_email': this.branch_email = new FormControl<string | null>(null, [ Validators.email]),
+        'branch_website': this.branch_website = new FormControl<string | null>(null, []),
         'branch_order': this.branch_order = new FormControl<number | null>(null, []),
       },
     );
+    this.branch_name.addAsyncValidators([validateBranchName(this.branchService)]);
   }
 
   setValue()
@@ -200,7 +201,7 @@ export class BranchAddComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.branch_name.addAsyncValidators([validateBranchName(this.branchService, this.branch_name.value)]);
+ 
 
   }
 
