@@ -8,6 +8,7 @@ import { AccountFinalService } from 'src/app/modules/shared/services/account-fin
 import { AccountGroupService } from 'src/app/modules/shared/services/account-group.service';
 import { AccountLevelService } from 'src/app/modules/shared/services/account-level.service';
 import { of } from 'rxjs';
+import { account_level } from 'src/app/modules/shared/models/account_level';
 
 export function validateAccountLevelName( accountLevelService:AccountLevelService,                                    
                                             name:string|null,) : AsyncValidatorFn
@@ -21,6 +22,27 @@ export function validateAccountLevelName( accountLevelService:AccountLevelServic
                 value_From_Control.length == 0
             )
             return of(null);
+
+
+// Define Primart Key Variable
+let pk: number | undefined = undefined;
+
+let Form: FormGroup = control.parent as FormGroup;
+if (Form != null && Form.value != null) {
+    if (Form.controls['account_level_seq'] != null &&
+        Form.controls['account_level_seq'].value != null &&
+        Form.controls['account_level_seq'].value > 0
+    )
+        pk = Form.controls['account_level_seq'].value;
+}
+
+//Create Request For Add and Update
+
+let request: account_level = {
+    account_level_name: control.value,
+    account_level_seq: pk
+}
+
 
             return accountLevelService.
             validate_name({

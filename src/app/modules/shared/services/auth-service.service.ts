@@ -27,11 +27,8 @@ export class AuthServiceService {
         return false;
 
       
-    let token:string ;
-  
-     token = localStorage.getItem('token') || '';    // Check whether the token is expired and return
     
     
-    return !this.jwtHelper.isTokenExpired(token);
+    return true;
   }
 }

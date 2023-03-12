@@ -4,9 +4,10 @@ import { Observable, debounceTime } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 import { BranchService } from 'src/app/modules/shared/services/branch.service';
 import { of } from 'rxjs';
+import { branch } from 'src/app/modules/shared/models/branch';
 
 export function validateBranchName( branchService:BranchService,                                    
-                                        name:string|null,) : AsyncValidatorFn
+                                        ) : AsyncValidatorFn
         {
 
             return (control: AbstractControl)
@@ -18,16 +19,34 @@ export function validateBranchName( branchService:BranchService,
             )
             return of(null);
 
+// Define Primart Key Variable
+let pk: number | undefined = undefined;
+
+let Form: FormGroup = control.parent as FormGroup;
+if (Form != null && Form.value != null) {
+    if (Form.controls['branch_seq'] != null &&
+        Form.controls['branch_seq'].value != null &&
+        Form.controls['branch_seq'].value > 0
+    )
+        pk = Form.controls['branch_seq'].value;
+}
+
+//Create Request For Add and Update
+
+let request: branch = {
+    branch_name: control.value,
+    branch_seq: pk
+}
+            
               
             return branchService.
-            validate_name({
-                branch_name: value_From_Control,
-                }).
+            validate_name(request).
                 pipe(
                     map(
                         (result: any) => {
                             return (result && result.value) ? { "duplicate": true } : null;
                         }
                     ));
+          
         };
     }

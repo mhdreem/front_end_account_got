@@ -19,8 +19,8 @@ export class UserService extends BaseAPIService{
     super(httpClient)
   }
 
-  list()  {
-    return this.httpClient.get(this.RestUrl +"User/list",this.httpOptions) as Observable<user[]>;  
+  list() :Observable<user[]> {
+    return this.httpClient.get<user[]>(this.RestUrl +"User/list",this.httpOptions) as Observable<user[]>;  
     
   }
 

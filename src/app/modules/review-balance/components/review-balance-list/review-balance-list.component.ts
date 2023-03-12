@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { result } from 'src/app/modules/shared/models/result';
 import { ReviewBalanceService } from 'src/app/modules/shared/services/review-balance.service';
 
 @Component({
@@ -89,11 +90,20 @@ export class ReviewBalanceListComponent {
   View() {
     this.isLoading= true;
 
-    return this.reviewBalanceService.search(this.Form.value).subscribe((data: any)=>{
-      this.dataSource = new MatTableDataSource(data.value);
+    return this.reviewBalanceService.search(this.Form.value).subscribe((data: result)=>{
       this.isLoading= false;
-      if (data.value.length != 0)
-        this.dataSourceIsEmpty= false;
+      if (data!= null && data.value!= null)
+      {
+        this.dataSource.data  = data.value;
+        if (data.value.length != 0)
+          this.dataSourceIsEmpty= false;
+      }else
+      {
+        this.dataSource.data = [];
+      }
+
+     
+      
     });
 
 

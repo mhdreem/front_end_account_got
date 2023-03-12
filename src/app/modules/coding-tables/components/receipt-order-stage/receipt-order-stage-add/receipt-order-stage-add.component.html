@@ -46,8 +46,13 @@
                         <c-col>
                             <span>المستخدمون:</span>
                             <div formArrayName="users">
-                                <div *ngFor="let user of users_list; let i=index">
-                                    <mat-checkbox color="primary" [formControlName]="i">{{user.user_first_name}} {{user.user_last_name}} ({{user.user_name}})</mat-checkbox>
+                                <div    
+                                *ngFor="let receipt_order_stage_user of users.controls; let i=index" 
+                                [formGroupName]="i">
+                                    <mat-checkbox color="primary" 
+                                                  formControlName="is_selected">
+                                                  {{getUser(i)!.user_first_name}} {{getUser(i)!.user_last_name}} ({{getUser(i)!.user_name}})
+                                                </mat-checkbox>
                                 </div>
                             </div>
                         </c-col>

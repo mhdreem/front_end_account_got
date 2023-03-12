@@ -5,6 +5,7 @@ import { delay, map } from 'rxjs/operators';
 import { account_centerService } from 'src/app/modules/shared/services/account-center.service';
 import { AccountClassService } from 'src/app/modules/shared/services/account-class.service';
 import { of } from 'rxjs';
+import { account_class } from 'src/app/modules/shared/models/account_class';
 
 export function validateAccountClassName( accountClassService:AccountClassService,                                    
                                             name:string|null,) : AsyncValidatorFn
@@ -19,9 +20,28 @@ export function validateAccountClassName( accountClassService:AccountClassServic
             )
             return of(null);
 
+            
+                // Define Primart Key Variable
+        let pk: number | undefined = undefined;
+
+        let Form: FormGroup = control.parent as FormGroup;
+        if (Form != null && Form.value != null) {
+            if (Form.controls['account_class_seq'] != null &&
+                Form.controls['account_class_seq'].value != null &&
+                Form.controls['account_class_seq'].value > 0
+            )
+                pk = Form.controls['account_class_seq'].value;
+        }
+
+        //Create Request For Add and Update
+
+        let request: account_class = {
+            account_class_name: control.value,
+            account_class_seq: pk
+        }
+
             return accountClassService.
-            validate_name({
-                "account_class_name": value_From_Control}).
+            validate_name(request).
                 pipe(
                     map(
                         (result: any) => {

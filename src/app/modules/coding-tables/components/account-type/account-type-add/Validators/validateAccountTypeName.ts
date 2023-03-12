@@ -9,9 +9,10 @@ import { AccountGroupService } from 'src/app/modules/shared/services/account-gro
 import { AccountLevelService } from 'src/app/modules/shared/services/account-level.service';
 import { account_typeService } from 'src/app/modules/shared/services/account-type.service';
 import { of } from 'rxjs';
+import { account_type } from 'src/app/modules/shared/models/account_type';
 
 export function validateAccountTypeName( account_typeService:account_typeService,                                    
-                                            name:string|null,) : AsyncValidatorFn
+                                            ) : AsyncValidatorFn
         {
 
             return (control: AbstractControl)
@@ -23,9 +24,28 @@ export function validateAccountTypeName( account_typeService:account_typeService
             )
             return of(null);
 
+// Define Primart Key Variable
+let pk: number | undefined = undefined;
+
+let Form: FormGroup = control.parent as FormGroup;
+if (Form != null && Form.value != null) {
+    if (Form.controls['account_type_seq'] != null &&
+        Form.controls['account_type_seq'].value != null &&
+        Form.controls['account_type_seq'].value > 0
+    )
+        pk = Form.controls['account_type_seq'].value;
+}
+
+//Create Request For Add and Update
+
+let request: account_type = {
+    account_type_name: control.value,
+    account_type_seq: pk
+}
+
+
             return account_typeService.
-            validate_name({
-                "account_type_name": value_From_Control}).
+            validate_name(request).
                 pipe(
                     map(
                         (result: any) => {
