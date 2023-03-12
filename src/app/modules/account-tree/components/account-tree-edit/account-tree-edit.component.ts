@@ -453,7 +453,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
   ngOnInit() {     
     this.seq = this.route.snapshot.params['seq'];
     if (this.seq != null && this.seq > 0) {
-      this.accountTreeService.get_by_seq().subscribe(res=>{
+      this.accountTreeService.get_by_seq(this.seq).subscribe(res=>{
         this.selected_Account= res;
         this.SetValue();
         if (this.seq != null && this.seq > 0)
@@ -467,6 +467,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
   public SetValue() {
     try {
 
+      console.log('this.selected_Account', this.selected_Account);
 
       if (this.selected_Account != null && this.selected_Account.account_id != null)
         this.account_id.setValue(+this.selected_Account.account_id);

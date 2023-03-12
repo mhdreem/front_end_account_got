@@ -150,11 +150,69 @@
             
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
             
+                <ng-container matColumnDef="account_id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>رقم الحساب </th>
+                    <td mat-cell *matCellDef="let element">{{element?.account_id}}</td>
+                </ng-container>
+                
+                <ng-container matColumnDef="account_name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>اسم الحساب </th>
+                    <td mat-cell *matCellDef="let element">{{element?.account_name}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="account_center_name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>مركز الكلفة </th>
+                    <td mat-cell *matCellDef="let element">{{element?.account_center.account_center_name}}</td>
+                </ng-container>
             
-                <!-- Year_ID Column -->
-                <ng-container matColumnDef="Year_ID">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>عام الترفيع </th>
-                    <td mat-cell *matCellDef="let element">{{element?.Year_ID}}</td>
+                <ng-container matColumnDef="account_class_name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>تصنيف الحساب </th>
+                    <td mat-cell *matCellDef="let element">{{element?.account_class.account_class_name}}</td>
+                </ng-container>
+            
+                <ng-container matColumnDef="account_final_name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>الحساب الختامي </th>
+                    <td mat-cell *matCellDef="let element">{{element?.account_final.account_final_name}}</td>
+                </ng-container>
+            
+                <ng-container matColumnDef="account_group_name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>مجموعة الحساب </th>
+                    <td mat-cell *matCellDef="let element">{{element?.account_group.account_group_name}}</td>
+                </ng-container>
+            
+                <ng-container matColumnDef="account_level_name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>مستوى الحساب </th>
+                    <td mat-cell *matCellDef="let element">{{element?.account_level.account_level_name}}</td>
+                </ng-container>
+            
+                <ng-container matColumnDef="finance_list_name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>القائمة المالية </th>
+                    <td mat-cell *matCellDef="let element">{{element?.finance_list.finance_list_name}}</td>
+                </ng-container>
+            
+                <ng-container matColumnDef="mobil">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>الموبايل </th>
+                    <td mat-cell *matCellDef="let element">{{element?.mobil}}</td>
+                </ng-container>
+            
+                <ng-container matColumnDef="phone">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>الهاتف </th>
+                    <td mat-cell *matCellDef="let element">{{element?.phone}}</td>
+                </ng-container>
+                
+                <ng-container matColumnDef="fax">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>الفاكس </th>
+                    <td mat-cell *matCellDef="let element">{{element?.fax}}</td>
+                </ng-container>
+                
+                <ng-container matColumnDef="address">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>العنوان </th>
+                    <td mat-cell *matCellDef="let element">{{element?.address}}</td>
+                </ng-container>
+                
+                <ng-container matColumnDef="notice">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>الملاحظات </th>
+                    <td mat-cell *matCellDef="let element">{{element?.notice}}</td>
                 </ng-container>
             
                 

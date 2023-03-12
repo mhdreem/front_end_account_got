@@ -13,11 +13,11 @@ export function validateAccountId( accountTreeService:AccountTreeService,
             : Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
 
             let value_From_Control: string = control.value;
-            if ( value_From_Control == null ||value_From_Control.length == 0 )
+            if ( value_From_Control == null || +value_From_Control == 0 ||value_From_Control.length == 0 )
                 return of(null);
 
             return accountTreeService.
-            validate_id({account_id: value_From_Control})
+            validate_id({account_id: value_From_Control+''})
                 .pipe(
                     map(
                         (result: any) => {

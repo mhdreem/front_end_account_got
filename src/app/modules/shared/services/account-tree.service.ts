@@ -68,7 +68,7 @@ export class AccountTreeService extends BaseAPIService{
     return this.httpClient.post(this.RestUrl + "Accounts_Tree/validate_account_name", obj, this.httpOptions);
   }
 
-  get_by_seq(){
-    return this.httpClient.get<accounts_tree>(this.RestUrl +"Accounts_Tree/?",this.httpOptions) ;  
+  get_by_seq(seq: number){
+    return this.httpClient.get<accounts_tree>(this.RestUrl +"Accounts_Tree/GetBySeq/"+seq,this.httpOptions) ;  
   }
 }

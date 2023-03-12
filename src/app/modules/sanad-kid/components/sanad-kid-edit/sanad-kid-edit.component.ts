@@ -128,12 +128,17 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
         this.sanad_kid= res;
         this.updateSum();
         this.actionNum= this.sanad_kid.sanad_kid_details?.length!;
+
+        console.log('111', this.sanad_kid);
+        if (this.sanad_kid != null && 
+          this.sanad_kid.sanad_kid_entries!= null){
+console.log('222');
+            this.dataSource_sanad_kid_entry.data = this.sanad_kid.sanad_kid_entries!;
+          }
+    
       });
 
-      if (this.sanad_kid != null && 
-        this.sanad_kid.sanad_kid_entries!= null)
-        this.dataSource_sanad_kid_entry.data = this.sanad_kid.sanad_kid_entries!;
-  
+      
     }
   ngAfterViewInit(): void {
     this.dataSource_sanad_kid_entry.paginator = this.paginator;

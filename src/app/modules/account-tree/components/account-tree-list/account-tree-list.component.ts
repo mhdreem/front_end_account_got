@@ -58,7 +58,7 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<accounts_tree>();
   displayedColumns: string[] = [
-    'Year_ID', 'action' ];
+    'account_id', 'account_name', 'account_center_name' , 'account_class_name', 'account_final_name', 'account_group_name', 'account_level_name', 'finance_list_name', 'mobil', 'phone', 'fax', 'address', 'notice','action' ];
     dataSourceIsEmpty: boolean= true;
 
   _Subscription!: Subscription;
@@ -405,7 +405,7 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((data: any) => {
-        this.totalRows = data.Item2;
+        this.totalRows = data.total_row_count;
         this.dataSource = new MatTableDataSource(data.value);
         this.isDataSourceLoading= false;
         if (data.value?.length != 0)

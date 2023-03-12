@@ -16,7 +16,7 @@ const routes: Routes = [
     children: [
   
   { path: 'sanadKid',
-   canActivate: [AuthGuardServiceService],
+  //  canActivate: [AuthGuardServiceService],
    loadChildren: () => import('./modules/sanad-kid/sanad-kid.module').then(m => m.SanadKidModule) },
   { path: 'tree', loadChildren: () => import('./modules/account-tree/account-tree.module').then(m => m.AccountTreeModule) },
   { path: 'codingTable', loadChildren: () => import('./modules/coding-tables/coding-tables.module').then(m => m.CodingTablesModule) },
