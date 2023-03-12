@@ -230,7 +230,7 @@ export class SanadKidBookAddComponent {
           if (this.incumbent_id_generate_type_fk.value!= null)
           this.selected_SanadKidBook.incumbent_id_generate_type_fk = this.incumbent_id_generate_type_fk.value;
           
-          if (this.sanad_kid_book_order.value!= null)
+          if (this.sanad_kid_book_order.value!= null && (this.sanad_kid_book_order.value+ "") != "")
           this.selected_SanadKidBook.sanad_kid_book_order = this.sanad_kid_book_order.value;
 
 

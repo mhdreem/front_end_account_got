@@ -101,7 +101,7 @@ export class AccountTypeAddComponent {
           if (this.account_type_name.value!= null)
           this.selected_account_type.account_type_name = this.account_type_name.value;
 
-          if (this.account_type_order.value!= null)
+          if (this.account_type_order.value!= null && (this.account_type_order.value+ "") != "")
           this.selected_account_type.account_type_order = this.account_type_order.value;
        
         }

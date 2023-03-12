@@ -7,6 +7,8 @@ import { DepartmentService } from 'src/app/modules/shared/services/department.se
 import { of } from 'rxjs';
 import { ExchangeOrderStageService } from 'src/app/modules/shared/services/exchange-order-stage.service';
 import { SanadKidStageService } from 'src/app/modules/shared/services/sanad-kid-stage.service';
+import { Sanad_kid_stage_user } from 'src/app/modules/shared/models/sanad_kid_stage_user';
+import { Sanad_kid_stage } from 'src/app/modules/shared/models/sanad_kid_stage';
 
 export function validateSndKidStgName( sanadKidStageService:SanadKidStageService,                                    
                                         name:string|null,) : AsyncValidatorFn
@@ -21,10 +23,27 @@ export function validateSndKidStgName( sanadKidStageService:SanadKidStageService
             )
             return of(null);
 
+            // Define Primart Key Variable
+let pk: number | undefined = undefined;
+
+let Form: FormGroup = control.parent as FormGroup;
+if (Form != null && Form.value != null) {
+    if (Form.controls['snd_kid_stg_seq'] != null &&
+        Form.controls['snd_kid_stg_seq'].value != null &&
+        Form.controls['snd_kid_stg_seq'].value > 0
+    )
+        pk = Form.controls['snd_kid_stg_seq'].value;
+}
+ 
+//Create Request For Add and Update
+
+let request: Sanad_kid_stage = {
+    snd_kid_stg_name: control.value,
+    snd_kid_stg_seq: pk
+}
+
             return sanadKidStageService.
-            validate_name({
-                snd_kid_stg_name: value_From_Control,
-                }).
+            validate_name(request).
                 pipe(
                     map(
                         (result: any) => {

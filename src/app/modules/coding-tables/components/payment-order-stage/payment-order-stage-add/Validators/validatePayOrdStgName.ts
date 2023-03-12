@@ -7,6 +7,7 @@ import { DepartmentService } from 'src/app/modules/shared/services/department.se
 import { of } from 'rxjs';
 import { ExchangeOrderStageService } from 'src/app/modules/shared/services/exchange-order-stage.service';
 import { PaymentOrderStageService } from 'src/app/modules/shared/services/payment-order-stage.service';
+import { payment_order_stage } from 'src/app/modules/shared/models/payment_order_stage';
 
 export function validatePayOrdStgName( paymentOrderStageService:PaymentOrderStageService,                                    
                                         name:string|null,) : AsyncValidatorFn
@@ -21,10 +22,27 @@ export function validatePayOrdStgName( paymentOrderStageService:PaymentOrderStag
             )
             return of(null);
 
+            // Define Primart Key Variable
+let pk: number | undefined = undefined;
+
+let Form: FormGroup = control.parent as FormGroup;
+if (Form != null && Form.value != null) {
+    if (Form.controls['pay_ord_stg_seq'] != null &&
+        Form.controls['pay_ord_stg_seq'].value != null &&
+        Form.controls['pay_ord_stg_seq'].value > 0
+    )
+        pk = Form.controls['pay_ord_stg_seq'].value;
+}
+ 
+//Create Request For Add and Update
+
+let request: payment_order_stage = {
+    pay_ord_stg_name: control.value,
+    pay_ord_stg_seq: pk
+}
+
             return paymentOrderStageService.
-            validate_name({
-                pay_ord_stg_name: value_From_Control,
-                }).
+            validate_name(request).
                 pipe(
                     map(
                         (result: any) => {

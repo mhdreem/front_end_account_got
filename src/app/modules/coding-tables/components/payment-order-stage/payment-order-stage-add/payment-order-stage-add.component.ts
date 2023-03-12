@@ -4,7 +4,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormValidationHelpersService } from 'src/app/modules/shared/services/form-validation-helpers.service';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { result } from 'src/app/modules/shared/models/result';
 import { user } from 'src/app/modules/shared/models/user';
 import { UserService } from 'src/app/modules/shared/services/user.service';
@@ -41,7 +41,6 @@ export class PaymentOrderStageAddComponent {
   pay_ord_stg_seq: FormControl<number | null>;
   pay_ord_stg_name: FormControl<string | null>;
   pay_ord_stg_order: FormControl<number | null>;
-  users: FormArray<FormControl<unknown>>;
  
   users_list: user[]= [];
   Subscription:Subscription = new Subscription();
@@ -56,17 +55,33 @@ export class PaymentOrderStageAddComponent {
     private userService: UserService,
     )  {
 
-     this.BuildForm();
-
-     if (this.data != null && this.data.obj != null )     
+      
+      if (this.data != null && this.data.obj != null )     
       this.selected_payment_order_stage = this.data.obj;
-    
+      
+      this.BuildForm();
+
+      this.load_date();
+      // الان انشاء الواجهة
   }
 
   ngOnDestroy(): void {
    if (this.Subscription!= null)  this.Subscription.unsubscribe();  
   }
 
+  load_date()
+  {    
+    forkJoin(
+      this.userService.list()
+    ).subscribe(
+      res=>
+      {
+        this.users_list = res[0];
+        this.setValue();
+
+      }
+    )
+  }
 
   BuildForm()
   {
@@ -75,15 +90,81 @@ export class PaymentOrderStageAddComponent {
         'pay_ord_stg_seq': this.pay_ord_stg_seq = new FormControl<number | null>(null, []),
         'pay_ord_stg_name': this.pay_ord_stg_name = new FormControl<string | null>(null, [Validators.required]),
         'pay_ord_stg_order': this.pay_ord_stg_order = new FormControl<number | null>(null, []),
-        'users': this.users= this.frmBuilder.array([
-        ])
+        'users':  this.frmBuilder.array([ ])
+
       },
     );
   }
 
-  getUsers(i: number) {
-    return this.users.controls[i].value;
+  get users():FormArray
+  {
+    return this.Form.get('users') as FormArray;
   }
+
+  create_receipt_order_stage_user_form()
+  {
+    if ( this.users_list != null && this.users_list.length>0)
+    {
+
+      
+      this.users_list.forEach(tempuser => {
+
+        let Form = this.frmBuilder.group(
+          {
+            'is_selected':  new FormControl<boolean | undefined>(undefined, []),
+            'user_fk':  new FormControl<number | undefined>(undefined, []),
+            'user':  new FormControl<user | undefined>(undefined, []),
+            'pay_ord_stg_user_seq':  new FormControl<number | undefined>(undefined, []),        
+            'pay_ord_stg_fk':  new FormControl<number | undefined>(undefined, []),        
+          }
+        );
+        Form.controls['user_fk'].setValue(tempuser.user_seq);
+        Form.controls['user'].setValue(tempuser);
+        Form.controls['pay_ord_stg_user_seq'].setValue(null);
+        Form.controls['pay_ord_stg_fk'].setValue(this._selected_payment_order_stage.pay_ord_stg_seq);
+
+        if (this.selected_payment_order_stage!= null &&
+          this.selected_payment_order_stage.payment_order_stage_users!= null 
+         )
+         {
+          var arr  =this.selected_payment_order_stage.payment_order_stage_users.filter(x=>x.user_fk==tempuser.user_seq);
+          if (arr != null && arr.length>0)          
+            Form.controls['is_selected'].setValue(true);
+           else           
+             Form.controls['is_selected'].setValue(false);
+
+          
+         }
+         this.users.push( Form ); 
+      });
+     
+     
+
+    }
+        
+
+
+    
+    
+  }
+
+  getUser(i: number) : user {
+    if (this.users!= null && this.users.length>0)
+    {
+      var userFormGroup= this.users.controls[i] as FormGroup;
+      if (userFormGroup!= null )
+      {
+        var user = userFormGroup.controls['user'].value;
+        return user;
+      }
+
+    }
+    
+    return {};
+  
+  }
+
+ 
 
   setValue()
   {
@@ -98,15 +179,8 @@ export class PaymentOrderStageAddComponent {
         if (this.selected_payment_order_stage!.pay_ord_stg_order! != null)
         this.pay_ord_stg_order.setValue(this.selected_payment_order_stage!.pay_ord_stg_order);
 
-        if ( this.selected_payment_order_stage!.payment_order_stage_users!= null)
-        for (let i=0; i< this.selected_payment_order_stage!.payment_order_stage_users.length; i++){
-          if (this.selected_payment_order_stage!.payment_order_stage_users[i]!= null )
-          this.users_list.forEach((user, index) =>{
-            if (this.selected_payment_order_stage!.payment_order_stage_users!= null && this.selected_payment_order_stage!.payment_order_stage_users[i]!= null )
-              if (user.user_seq== this.selected_payment_order_stage.payment_order_stage_users[i].user_fk)
-              this.users.controls[index].setValue(true);
-            });  
-        }
+        this.create_receipt_order_stage_user_form();
+
     }
   }
 
@@ -119,19 +193,17 @@ export class PaymentOrderStageAddComponent {
           this.selected_payment_order_stage.pay_ord_stg_name = this.pay_ord_stg_name.value;
 
 
-          if (this.pay_ord_stg_order.value!= null)
+          if (this.pay_ord_stg_order.value!= null && (this.pay_ord_stg_order.value+ "") != "")
           this.selected_payment_order_stage.pay_ord_stg_order = this.pay_ord_stg_order.value;
 
           console.log('this.users.controls', this.users.controls);
-          for (let i=0; i< this.users_list.length; i++){
-            console.log('i', i);
-            console.log('this.users.controls[i].value', this.users.controls[i].value);
-            if (this.users.controls[i].value!= null)
-              if (this.users.controls[i].value == true){
-                this.selected_payment_order_stage.payment_order_stage_users= [];
-                this.selected_payment_order_stage.payment_order_stage_users?.push({user_fk: this.users_list[i].user_seq, user: this.users_list[i]});
-              }
-          }
+          var users =this.users.value as any[];
+         if (users!= null && users.length>0)
+         {
+          var selectedusers=  users.filter(x=>x.is_selected == true);
+          if (selectedusers!= null && selectedusers.length>0)
+          this.selected_payment_order_stage.payment_order_stage_users = selectedusers;
+         } 
           
 
        
@@ -200,12 +272,7 @@ export class PaymentOrderStageAddComponent {
   ngOnInit(): void {
     this.pay_ord_stg_name.addAsyncValidators([validatePayOrdStgName(this.paymentOrderStageService, this.pay_ord_stg_name.value)]);
 
-    this.userService.list().subscribe(res =>{
-      this.users_list= res;
-      this.users_list.forEach(user =>{
-        this.users.push(this.frmBuilder.control(''));
-      });
-    })
+    
   }
   
 

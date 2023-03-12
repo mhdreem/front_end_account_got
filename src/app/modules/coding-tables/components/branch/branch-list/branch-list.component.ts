@@ -127,12 +127,13 @@ export class BranchListComponent implements OnInit {
 
             this._snaker.open('تم الحذف بنجاح', '', {
               duration: 3000,
+              panelClass: ['green-snackbar']
             });
             this.LoadData();
           }
         else 
         {
-          this._snaker.open('لم يتم الحذف بنجاح','',{});
+          this._snaker.open('لم يتم الحذف بنجاح','',{panelClass: ['red-snackbar']});
         
         }
         }

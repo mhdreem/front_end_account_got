@@ -99,7 +99,7 @@ export class FinanceListAddComponent {
           if (this.finance_list_name.value!= null)
           this.selected_finance_list.finance_list_name = this.finance_list_name.value;
 
-          if (this.finance_list_order.value!= null)
+          if (this.finance_list_order.value!= null && (this.finance_list_order.value+ "") != "")
           this.selected_finance_list.finance_list_order = this.finance_list_order.value;
        
         }

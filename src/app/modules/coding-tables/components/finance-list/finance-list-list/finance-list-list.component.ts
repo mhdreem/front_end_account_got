@@ -146,12 +146,13 @@ export class FinanceListListComponent {
 
             this._snaker.open('تم الحذف بنجاح', '', {
               duration: 3000,
+              panelClass: ['green-snackbar']
             });
             this.LoadData();
           }
         else 
         {
-          this._snaker.open('لم يتم الحذف بنجاح','',{});
+          this._snaker.open('لم يتم الحذف بنجاح','',{panelClass: ['red-snackbar']});
         
         }
         }
@@ -207,12 +208,13 @@ export class FinanceListListComponent {
   
         this._snaker.open('تم الاستيراد بنجاح', '', {
           duration: 3000,
+          panelClass: ['green-snackbar']
         });
         this.LoadData();
       }
     else 
     {
-      this._snaker.open('لم يتم الاستيراد بنجاح','',{});
+      this._snaker.open('لم يتم الاستيراد بنجاح','',{panelClass: ['red-snackbar']});
     
     }
     })

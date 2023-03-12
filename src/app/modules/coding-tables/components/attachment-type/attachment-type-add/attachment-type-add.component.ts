@@ -99,7 +99,7 @@ export class AttachmentTypeAddComponent {
           if (this.attachement_type_name.value!= null)
           this.selected_attachment_type.attachement_type_name = this.attachement_type_name.value;
 
-          if (this.attachement_type_order.value!= null)
+          if (this.attachement_type_order.value!= null && (this.attachement_type_order.value+ "") != "")
           this.selected_attachment_type.attachement_type_order = this.attachement_type_order.value;
        
         }

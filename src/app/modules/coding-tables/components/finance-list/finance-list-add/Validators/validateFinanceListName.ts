@@ -10,6 +10,7 @@ import { AccountLevelService } from 'src/app/modules/shared/services/account-lev
 import { account_typeService } from 'src/app/modules/shared/services/account-type.service';
 import { FinanceListService } from 'src/app/modules/shared/services/finance-list.service';
 import { of } from 'rxjs';
+import { finance_list } from 'src/app/modules/shared/models/finance_list';
 
 export function validateFinanceListName( financeListService:FinanceListService,                                    
                                             name:string|null,) : AsyncValidatorFn
@@ -24,9 +25,27 @@ export function validateFinanceListName( financeListService:FinanceListService,
             )
             return of(null);
 
+                // Define Primart Key Variable
+let pk: number | undefined = undefined;
+
+let Form: FormGroup = control.parent as FormGroup;
+if (Form != null && Form.value != null) {
+    if (Form.controls['finance_list_seq'] != null &&
+        Form.controls['finance_list_seq'].value != null &&
+        Form.controls['finance_list_seq'].value > 0
+    )
+        pk = Form.controls['finance_list_seq'].value;
+}
+ 
+//Create Request For Add and Update
+
+let request: finance_list = {
+    finance_list_name: control.value,
+    finance_list_seq: pk
+}
+
             return financeListService.
-            validate_name({
-                "finance_list_name": value_From_Control}).
+            validate_name(request).
                 pipe(
                     map(
                         (result: any) => {

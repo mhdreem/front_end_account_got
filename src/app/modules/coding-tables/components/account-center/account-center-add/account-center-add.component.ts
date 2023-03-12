@@ -84,7 +84,7 @@ export class AccountCenterAddComponent implements OnInit , OnDestroy {
   {
     if (this.Form!= null )
     {
-      if (this.selected_account_center!.account_center_seq!!= null)
+      if (this.selected_account_center!.account_center_seq! != null)
         this.account_center_seq.setValue(this.selected_account_center!.account_center_seq);
 
         if (this.selected_account_center!.account_center_id! != null)
@@ -96,7 +96,7 @@ export class AccountCenterAddComponent implements OnInit , OnDestroy {
         if (this.selected_account_center!.account_center_final_seq!!= null)
         this.account_center_final_seq.setValue(this.selected_account_center!.account_center_final_seq);
 
-        if (this.selected_account_center!.account_center_order!!= null)
+        if (this.selected_account_center!.account_center_order! != null)
         this.account_center_order.setValue(this.selected_account_center!.account_center_order);
     }
   }
@@ -119,7 +119,7 @@ export class AccountCenterAddComponent implements OnInit , OnDestroy {
           if (this.account_center_final_seq.value!= null)
           this.selected_account_center.account_center_final_seq = this.account_center_final_seq.value;
 
-          if (this.account_center_order.value!= null)
+          if (this.account_center_order.value!= null && (this.account_center_order.value+ "") != "")
           this.selected_account_center.account_center_order = this.account_center_order.value;
 
 

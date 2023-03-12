@@ -99,7 +99,7 @@ export class AccountGroupAddComponent {
           if (this.account_group_name.value!= null)
           this.selected_account_group.account_group_name = this.account_group_name.value;
 
-          if (this.account_group_order.value!= null)
+          if (this.account_group_order.value!= null && (this.account_group_order.value+ "") != "")
           this.selected_account_group.account_group_order = this.account_group_order.value;
        
         }

@@ -99,7 +99,7 @@ export class AccountLevelAddComponent {
           if (this.account_level_name.value!= null)
           this.selected_account_level.account_level_name = this.account_level_name.value;
 
-          if (this.account_level_order.value!= null)
+          if (this.account_level_order.value!= null && (this.account_level_order.value+ "") != "")
           this.selected_account_level.account_level_order = this.account_level_order.value;
        
         }

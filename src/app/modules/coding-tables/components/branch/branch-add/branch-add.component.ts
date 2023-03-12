@@ -58,8 +58,9 @@ export class BranchAddComponent implements OnInit {
 
      this.BuildForm();
 
+     console.log('data', this.data);
      if (this.data != null && this.data.obj != null )     
-      this._selected_branch = this.data.obj;
+      this.selected_branch = this.data.obj;
     
   }
 
@@ -87,7 +88,8 @@ export class BranchAddComponent implements OnInit {
   {
     if (this.Form!= null )
     {
-      if (this._selected_branch!.branch_seq!!= null)
+      
+      if (this._selected_branch!.branch_seq! != null)
         this.branch_seq.setValue(this._selected_branch!.branch_seq);
 
         if (this._selected_branch!.branch_name! != null)
@@ -96,16 +98,16 @@ export class BranchAddComponent implements OnInit {
         if (this._selected_branch!.branch_address! != null)
         this.branch_address.setValue(this._selected_branch!.branch_address);
 
-        if (this._selected_branch!.branch_phone!!= null)
+        if (this._selected_branch!.branch_phone! != null)
         this.branch_phone.setValue(this._selected_branch!.branch_phone);
 
-        if (this._selected_branch!.branch_email!!= null)
+        if (this._selected_branch!.branch_email! != null)
         this.branch_email.setValue(this._selected_branch!.branch_email);
         
-        if (this._selected_branch!.branch_website!!= null)
+        if (this._selected_branch!.branch_website! != null)
         this.branch_website.setValue(this._selected_branch!.branch_website);
         
-        if (this._selected_branch!.branch_order!!= null)
+        if (this._selected_branch!.branch_order! != null)
         this.branch_order.setValue(this._selected_branch!.branch_order);
     }
   }
@@ -133,7 +135,7 @@ export class BranchAddComponent implements OnInit {
           if (this.branch_website.value!= null)
           this._selected_branch.branch_website = this.branch_website.value;
           
-          if (this.branch_order.value!= null)
+          if (this.branch_order.value!= null && (this.branch_order.value+ "") != "")
           this._selected_branch.branch_order = this.branch_order.value;
 
 
@@ -154,6 +156,7 @@ export class BranchAddComponent implements OnInit {
     }
     this.getValue();
 
+    console.log('this.Form.value', this.Form.value);
     if (this._selected_branch.branch_seq!!= null)
     {
       this.branchService.update(this.Form.value).subscribe(

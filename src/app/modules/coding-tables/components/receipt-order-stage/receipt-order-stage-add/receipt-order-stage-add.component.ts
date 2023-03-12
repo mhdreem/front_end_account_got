@@ -200,7 +200,7 @@ export class ReceiptOrderStageAddComponent {
           this.selected_receipt_order_stage.rec_ord_stg_name = this.rec_ord_stg_name.value;
 
 
-          if (this.rec_ord_stg_order.value!= null)
+          if (this.rec_ord_stg_order.value!= null && (this.rec_ord_stg_order.value+ "") != "")
           this.selected_receipt_order_stage.rec_ord_stg_order = this.rec_ord_stg_order.value;
 
           console.log('this.users.controls', this.users.controls);

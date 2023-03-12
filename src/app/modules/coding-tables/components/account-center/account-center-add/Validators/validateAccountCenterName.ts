@@ -34,7 +34,7 @@ export function validateAccountCenterName( accountCenterService:account_centerSe
         //Create Request For Add and Update
 
         let request: account_center = {
-            account_center_id: control.value,
+            account_center_name: control.value,
             account_center_seq: pk
         }
                     return accountCenterService.

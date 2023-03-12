@@ -6,6 +6,7 @@ import { BranchService } from 'src/app/modules/shared/services/branch.service';
 import { DepartmentService } from 'src/app/modules/shared/services/department.service';
 import { of } from 'rxjs';
 import { ExchangeOrderStageService } from 'src/app/modules/shared/services/exchange-order-stage.service';
+import { exchange_order_stage } from 'src/app/modules/shared/models/exchange_order_stage';
 
 export function validateExOrdStgName( exchangeOrderStageService:ExchangeOrderStageService,                                    
                                         name:string|null,) : AsyncValidatorFn
@@ -20,10 +21,27 @@ export function validateExOrdStgName( exchangeOrderStageService:ExchangeOrderSta
             )
             return of(null);
 
+            // Define Primart Key Variable
+let pk: number | undefined = undefined;
+
+let Form: FormGroup = control.parent as FormGroup;
+if (Form != null && Form.value != null) {
+    if (Form.controls['ex_ord_stg_seq'] != null &&
+        Form.controls['ex_ord_stg_seq'].value != null &&
+        Form.controls['ex_ord_stg_seq'].value > 0
+    )
+        pk = Form.controls['ex_ord_stg_seq'].value;
+}
+ 
+//Create Request For Add and Update
+
+let request: exchange_order_stage = {
+    ex_ord_stg_name: control.value,
+    ex_ord_stg_seq: pk
+}
+
             return exchangeOrderStageService.
-            validate_name({
-                ex_ord_stg_name: value_From_Control,
-                }).
+            validate_name(request).
                 pipe(
                     map(
                         (result: any) => {

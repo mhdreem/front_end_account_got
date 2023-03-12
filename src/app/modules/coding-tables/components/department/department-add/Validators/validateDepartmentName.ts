@@ -31,7 +31,7 @@ if (Form != null && Form.value != null) {
     )
         pk = Form.controls['department_seq'].value;
 }
-
+ 
 //Create Request For Add and Update
 
 let request: department = {

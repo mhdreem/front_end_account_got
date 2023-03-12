@@ -7,6 +7,7 @@ import { DepartmentService } from 'src/app/modules/shared/services/department.se
 import { of } from 'rxjs';
 import { ExchangeOrderStageService } from 'src/app/modules/shared/services/exchange-order-stage.service';
 import { ReceiptOrderStageService } from 'src/app/modules/shared/services/receipt-order-stage.service';
+import { receipt_order_stage } from 'src/app/modules/shared/models/receipt_order_stage';
 
 export function validateRecOrdStgName( receiptOrderStageService:ReceiptOrderStageService,                                    
                                         name:string|null,) : AsyncValidatorFn
@@ -21,10 +22,27 @@ export function validateRecOrdStgName( receiptOrderStageService:ReceiptOrderStag
             )
             return of(null);
 
+            // Define Primart Key Variable
+let pk: number | undefined = undefined;
+
+let Form: FormGroup = control.parent as FormGroup;
+if (Form != null && Form.value != null) {
+    if (Form.controls['rec_ord_stg_user_seq'] != null &&
+        Form.controls['rec_ord_stg_user_seq'].value != null &&
+        Form.controls['rec_ord_stg_user_seq'].value > 0
+    )
+        pk = Form.controls['rec_ord_stg_user_seq'].value;
+}
+ 
+//Create Request For Add and Update
+
+let request: receipt_order_stage = {
+    rec_ord_stg_name: control.value,
+    rec_ord_stg_seq: pk
+}
+
             return receiptOrderStageService.
-            validate_name({
-                rec_ord_stg_name: value_From_Control,
-                }).
+            validate_name(request).
                 pipe(
                     map(
                         (result: any) => {

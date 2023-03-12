@@ -99,7 +99,7 @@ export class AccountFinalAddComponent {
           if (this.account_final_name.value!= null)
           this.selected_account_final.account_final_name = this.account_final_name.value;
 
-          if (this.account_final_order.value!= null)
+          if (this.account_final_order.value!= null && (this.account_final_order.value+ "") != "")
           this.selected_account_final.account_final_order = this.account_final_order.value;
        
         }

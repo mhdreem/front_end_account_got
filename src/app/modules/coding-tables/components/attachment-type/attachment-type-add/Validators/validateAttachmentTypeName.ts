@@ -10,6 +10,7 @@ import { AccountLevelService } from 'src/app/modules/shared/services/account-lev
 import { account_typeService } from 'src/app/modules/shared/services/account-type.service';
 import { of } from 'rxjs';
 import { AttachmentTypeService } from 'src/app/modules/shared/services/attachment-type.service';
+import { attachement_type } from 'src/app/modules/shared/models/attachement_type';
 
 export function validateAttachmentTypeName( attachmentTypeService:AttachmentTypeService,                                    
                                             name:string|null,) : AsyncValidatorFn
@@ -24,6 +25,25 @@ export function validateAttachmentTypeName( attachmentTypeService:AttachmentType
             )
             return of(null);
 
+
+            // Define Primart Key Variable
+let pk: number | undefined = undefined;
+
+let Form: FormGroup = control.parent as FormGroup;
+if (Form != null && Form.value != null) {
+    if (Form.controls['attachement_type_seq'] != null &&
+        Form.controls['attachement_type_seq'].value != null &&
+        Form.controls['attachement_type_seq'].value > 0
+    )
+        pk = Form.controls['attachement_type_seq'].value;
+}
+ 
+//Create Request For Add and Update
+
+let request: attachement_type = {
+    attachement_type_name: control.value,
+    attachement_type_seq: pk
+}
             return attachmentTypeService.
             validate_name({
                 "attachement_type_name": value_From_Control}).

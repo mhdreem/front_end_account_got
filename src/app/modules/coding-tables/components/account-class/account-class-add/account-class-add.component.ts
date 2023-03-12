@@ -99,7 +99,7 @@ export class AccountClassAddComponent {
           if (this.account_class_name.value!= null)
           this.selected_account_class.account_class_name = this.account_class_name.value;
 
-          if (this.account_class_order.value!= null)
+          if (this.account_class_order.value!= null && (this.account_class_order.value+ "") != "")
           this.selected_account_class.account_class_order = this.account_class_order.value;
        
         }

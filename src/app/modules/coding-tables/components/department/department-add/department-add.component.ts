@@ -100,7 +100,7 @@ export class DepartmentAddComponent implements OnInit {
           this.selected_department.department_name = this.department_name.value;
 
 
-          if (this.department_order.value!= null)
+          if (this.department_order.value!= null && (this.department_order.value+ "") != "")
           this.selected_department.department_order = this.department_order.value;
 
 
