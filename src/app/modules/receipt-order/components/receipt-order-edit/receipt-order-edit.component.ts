@@ -47,7 +47,8 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
   }
 
   set receipt_order(obj: receipt_order) {
-    this.PageReceiptOrderService.receipt_order = obj;
+    // this.PageReceiptOrderService.receipt_order = obj;
+    this.receipt_order= obj;
     this.SetValue();
   }
 
@@ -149,7 +150,7 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
     if (seq != null && seq > 0) {
       this._Subscription.add(this.receiptOrderService.getBySeq(seq).subscribe((res: any) => {
         if (res.value != null && (res.value as receipt_order) != null) {
-          this.receipt_order = res.value;
+          this.PageReceiptOrderService.set(res.value);
           this.updateSum();
           this.actionNum= this.receipt_order.receipt_order_details?.length!;
 
@@ -162,6 +163,24 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
       this.receipt_order= {};
       this.receipt_order.receipt_order_details= [];
       this.receipt_order.receipt_order_attachements= [];
+      this.Form.reset();
+        this.dataSource_receipt_order_entry.data= [];
+        this.sumDebtor= 0;
+        this.sumCreditor= 0;
+        this.balance= 0;
+        this.sanadDateDay= '';
+        this.sanadDateMonth= '';
+        this.sanadDateYear= '';
+        this.incumbentDateDay= '';
+        this.incumbentDateMonth= '';
+        this.incumbentDateYear= '';
+
+        this.sanadDateDayIsFilled= false;
+        this.sanadDateMonthIsFilled= false;
+        this.sanadDateYearIsFilled= false;
+        this.incumbentDateDayIsFilled= false;
+        this.incumbentDateMonthIsFilled= false;
+        this.incumbentDateYearIsFilled= false;
     }
 
 
@@ -402,17 +421,22 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
 
   addAttachment() {
     this.receipt_order.receipt_order_attachements?.push({ receipt_order_fk: this.receipt_order.receipt_order_seq });
+    this.PageReceiptOrderService.set(this.receipt_order);
     }
  
 
   onAttachmentDelete(index: number) {
     this.getValue();
     this.receipt_order.receipt_order_attachements?.splice(index, 1);
+    this.PageReceiptOrderService.set(this.receipt_order);
+
   }
 
 
   onDetailsDelete(index: number) {
     this.receipt_order.receipt_order_details?.splice(index, 1);
+    this.PageReceiptOrderService.set(this.receipt_order);
+
     this.sum_details_creditor();
     this.sum_details_debtor();
     this.actionNum= this.receipt_order.receipt_order_details?.length!;
@@ -422,6 +446,8 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
 
   addDetails() {
     this.receipt_order.receipt_order_details?.push({ receipt_order_fk: this.receipt_order.receipt_order_seq });  
+    this.PageReceiptOrderService.set(this.receipt_order);
+
     this.actionNum= this.receipt_order.receipt_order_details?.length!;
     this.sum_details_creditor();
     this.sum_details_debtor();

@@ -45,7 +45,8 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
 
   set sanad_kid(obj:sanad_kid) 
   {
-    this.PageSanadKidService.sanad_kid= obj;
+    // this.PageSanadKidService.set(obj);
+    this.sanad_kid= obj;
     this.SetValue();
   }
 
@@ -129,11 +130,10 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
         this.updateSum();
         this.actionNum= this.sanad_kid.sanad_kid_details?.length!;
 
-        console.log('111', this.sanad_kid);
         if (this.sanad_kid != null && 
           this.sanad_kid.sanad_kid_entries!= null){
-console.log('222');
             this.dataSource_sanad_kid_entry.data = this.sanad_kid.sanad_kid_entries!;
+            console.log('2222', this.dataSource_sanad_kid_entry.data[0].sanad_kid_stage!.snd_kid_stg_name);
           }
     
       });
@@ -273,15 +273,33 @@ console.log('222');
       if (seq!= null && seq>0){
         this.sanadKidService.getBySeq(seq).subscribe((res: any) =>{
           console.log('res.value', res.value);
-          this.sanad_kid= res.value;
+          this.PageSanadKidService.set(res.value);
           this.updateSum();
           this.actionNum= this.sanad_kid.sanad_kid_details?.length!;
         })
       }
       else{
-        this.sanad_kid= {};
+        this.PageSanadKidService.set({});
         this.sanad_kid.sanad_kid_details= [];
         this.sanad_kid.sanad_kid_attachements= [];
+        this.Form.reset();
+        this.dataSource_sanad_kid_entry.data= [];
+        this.sumDebtor= 0;
+        this.sumCreditor= 0;
+        this.balance= 0;
+        this.sanadDateDay= '';
+        this.sanadDateMonth= '';
+        this.sanadDateYear= '';
+        this.incumbentDateDay= '';
+        this.incumbentDateMonth= '';
+        this.incumbentDateYear= '';
+
+        this.sanadDateDayIsFilled= false;
+        this.sanadDateMonthIsFilled= false;
+        this.sanadDateYearIsFilled= false;
+        this.incumbentDateDayIsFilled= false;
+        this.incumbentDateMonthIsFilled= false;
+        this.incumbentDateYearIsFilled= false;
       }
       
     }
@@ -295,7 +313,6 @@ console.log('222');
 
   public SetValue() {
 
-    console.log('this.sanad_kid', this.sanad_kid);
     if (this.sanad_kid != null && this.sanad_kid.sanad_kid_seq != null)
     this.sanad_kid_seq.setValue(this.sanad_kid?.sanad_kid_seq!);
 
@@ -421,17 +438,21 @@ console.log('222');
 
     addAttachment() {
       this.sanad_kid.sanad_kid_attachements?.push({ sanad_kid_fk: this.sanad_kid.sanad_kid_seq });
+      this.PageSanadKidService.set(this.sanad_kid);
       }
    
   
     onAttachmentDelete(index: number) {
       this.getValue();
       this.sanad_kid.sanad_kid_attachements?.splice(index, 1);
+      this.PageSanadKidService.set(this.sanad_kid);
+
     }
   
   
     onDetailsDelete(index: number) {
       this.sanad_kid.sanad_kid_details?.splice(index, 1);
+      this.PageSanadKidService.set(this.sanad_kid);
       this.sum_details_creditor();
       this.sum_details_debtor();    
       this.actionNum= this.sanad_kid.sanad_kid_details?.length!;
@@ -440,6 +461,7 @@ console.log('222');
   
     addDetails() {
       this.sanad_kid.sanad_kid_details?.push({ sanad_Kid_fk: this.sanad_kid.sanad_kid_seq });  
+      this.PageSanadKidService.set(this.sanad_kid);
       this.actionNum= this.sanad_kid.sanad_kid_details?.length!;
       this.sum_details_creditor();
       this.sum_details_debtor();

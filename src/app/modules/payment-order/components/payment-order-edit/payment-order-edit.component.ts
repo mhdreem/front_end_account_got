@@ -46,7 +46,8 @@ export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
   }
 
   set payment_order(obj: payment_order) {
-    this.PagePaymentOrderService.payment_order = obj;
+    // this.PagePaymentOrderService.payment_order = obj;
+    this.payment_order= obj;
     this.SetValue();
   }
 
@@ -148,7 +149,7 @@ export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
     if (seq != null && seq > 0) {
       this._Subscription.add(this.paymentOrderService.getBySeq(seq).subscribe((res: any) => {
         if (res.value != null && (res.value as payment_order) != null) {
-          this.payment_order = res.value;
+          this.PagePaymentOrderService.set(res.value);
           this.updateSum();
           this.actionNum= this.payment_order.payment_order_details?.length!;
 
@@ -161,6 +162,24 @@ export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
       this.payment_order= {};
       this.payment_order.payment_order_details= [];
       this.payment_order.payment_order_attachements= [];
+      this.Form.reset();
+        this.dataSource_payment_order_entry.data= [];
+        this.sumDebtor= 0;
+        this.sumCreditor= 0;
+        this.balance= 0;
+        this.sanadDateDay= '';
+        this.sanadDateMonth= '';
+        this.sanadDateYear= '';
+        this.incumbentDateDay= '';
+        this.incumbentDateMonth= '';
+        this.incumbentDateYear= '';
+
+        this.sanadDateDayIsFilled= false;
+        this.sanadDateMonthIsFilled= false;
+        this.sanadDateYearIsFilled= false;
+        this.incumbentDateDayIsFilled= false;
+        this.incumbentDateMonthIsFilled= false;
+        this.incumbentDateYearIsFilled= false;
     }
 
 
@@ -401,17 +420,22 @@ export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
 
   addAttachment() {
     this.payment_order.payment_order_attachements?.push({ payment_order_fk: this.payment_order.payment_order_seq });
+    this.PagePaymentOrderService.set(this.payment_order);
     }
  
 
   onAttachmentDelete(index: number) {
     this.getValue();
     this.payment_order.payment_order_attachements?.splice(index, 1);
+    this.PagePaymentOrderService.set(this.payment_order);
+
   }
 
 
   onDetailsDelete(index: number) {
     this.payment_order.payment_order_details?.splice(index, 1);
+    this.PagePaymentOrderService.set(this.payment_order);
+
     this.sum_details_creditor();
     this.sum_details_debtor();    
     this.actionNum= this.payment_order.payment_order_details?.length!;
@@ -421,6 +445,8 @@ export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
 
   addDetails() {
     this.payment_order.payment_order_details?.push({ payment_order_fk: this.payment_order.payment_order_seq });  
+    this.PagePaymentOrderService.set(this.payment_order);
+
     this.actionNum= this.payment_order.payment_order_details?.length!;
     this.sum_details_creditor();
     this.sum_details_debtor();

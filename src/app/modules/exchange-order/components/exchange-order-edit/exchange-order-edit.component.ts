@@ -47,7 +47,8 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
   }
 
   set exchange_order(obj: exchange_order) {
-    this.PageExchangeOrderService.exchange_order = obj;
+    // this.PageExchangeOrderService.exchange_order = obj;
+    this.exchange_order= obj;
     this.SetValue();
   }
 
@@ -149,7 +150,7 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
     if (seq != null && seq > 0) {
       this._Subscription.add(this.exchangeOrderService.getBySeq(seq).subscribe((res: any) => {
         if (res.value != null && (res.value as exchange_order) != null) {
-          this.exchange_order = res.value;
+          this.PageExchangeOrderService.set(res.value);
           this.updateSum();
           this.actionNum= this.exchange_order.exchange_order_details?.length!;
 
@@ -166,6 +167,24 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
       this.exchange_order= {};
       this.exchange_order.exchange_order_details= [];
       this.exchange_order.exchange_order_attachements= [];
+      this.Form.reset();
+        this.dataSource_exchange_order_entry.data= [];
+        this.sumDebtor= 0;
+        this.sumCreditor= 0;
+        this.balance= 0;
+        this.sanadDateDay= '';
+        this.sanadDateMonth= '';
+        this.sanadDateYear= '';
+        this.incumbentDateDay= '';
+        this.incumbentDateMonth= '';
+        this.incumbentDateYear= '';
+
+        this.sanadDateDayIsFilled= false;
+        this.sanadDateMonthIsFilled= false;
+        this.sanadDateYearIsFilled= false;
+        this.incumbentDateDayIsFilled= false;
+        this.incumbentDateMonthIsFilled= false;
+        this.incumbentDateYearIsFilled= false;
     }
 
 
@@ -406,17 +425,22 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
 
   addAttachment() {
     this.exchange_order.exchange_order_attachements?.push({ exchange_order_fk: this.exchange_order.exchange_order_seq });
+    this.PageExchangeOrderService.set(this.exchange_order);
     }
  
 
   onAttachmentDelete(index: number) {
     this.getValue();
     this.exchange_order.exchange_order_attachements?.splice(index, 1);
+    this.PageExchangeOrderService.set(this.exchange_order);
+
   }
 
 
   onDetailsDelete(index: number) {
     this.exchange_order.exchange_order_details?.splice(index, 1);
+    this.PageExchangeOrderService.set(this.exchange_order);
+
     this.sum_details_creditor();
     this.sum_details_debtor();    
     this.actionNum= this.exchange_order.exchange_order_details?.length!;
@@ -426,6 +450,8 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
 
   addDetails() {
     this.exchange_order.exchange_order_details?.push({ exchange_order_fk: this.exchange_order.exchange_order_seq });  
+    this.PageExchangeOrderService.set(this.exchange_order);
+
     this.actionNum= this.exchange_order.exchange_order_details?.length!;
     this.sum_details_creditor();
     this.sum_details_debtor();

@@ -30,6 +30,7 @@ export class PageSanadKidService {
 
   set(sanad_kid:sanad_kid)
   {
+    console.log('333', sanad_kid);
     this.sanad_kid = sanad_kid;
     this.$sanad_kid.next( this.sanad_kid);
   } 
