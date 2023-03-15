@@ -156,4 +156,8 @@ export class BranchListComponent implements OnInit {
     })
     this.branchService.orderRow(orderReq);
   }
+
+  view(){
+    this.LoadData();
+   }
 }

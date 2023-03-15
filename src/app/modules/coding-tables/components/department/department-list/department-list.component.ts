@@ -155,4 +155,8 @@ export class DepartmentListComponent implements OnInit {
     })
     this.departmentService.orderRow(orderReq);
   }
+
+  view(){
+    this.LoadData();
+   }
 }

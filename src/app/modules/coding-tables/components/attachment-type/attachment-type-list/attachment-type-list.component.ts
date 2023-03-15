@@ -227,4 +227,8 @@ export class AttachmentTypeListComponent {
     const csvExporter = new ExportToCsv(this.excelOptions);
    csvExporter.generateCsv(this.excelData);
  }
+
+ view(){
+  this.LoadData();
+ }
 }

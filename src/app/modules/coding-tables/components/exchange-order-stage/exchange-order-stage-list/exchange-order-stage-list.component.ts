@@ -155,4 +155,8 @@ export class ExchangeOrderStageListComponent {
     })
     this.exchangeOrderStageService.orderRow(orderReq);
   }
+
+  view(){
+    this.LoadData();
+   }
 }

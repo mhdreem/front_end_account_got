@@ -157,4 +157,8 @@ export class SanadKidBookListComponent implements OnInit, OnDestroy {
     })
     this.sanadKidBookService.orderRow(orderReq);
   }
+
+  view(){
+    this.LoadData();
+   }
 }

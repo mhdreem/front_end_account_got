@@ -155,4 +155,8 @@ export class SanadKidStageListComponent {
     })
     this.sanadKidStageService.orderRow(orderReq);
   }
+
+  view(){
+    this.LoadData();
+   }
 }

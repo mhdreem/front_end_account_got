@@ -155,4 +155,8 @@ export class PaymentOrderStageListComponent {
     })
     this.paymentOrderStageService.orderRow(orderReq);
   }
+
+  view(){
+    this.LoadData();
+   }
 }

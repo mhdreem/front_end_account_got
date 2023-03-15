@@ -155,4 +155,8 @@ export class ReceiptOrderStageListComponent {
     })
     this.receiptOrderStageService.orderRow(orderReq);
   }
+
+  view(){
+    this.LoadData();
+   }
 }

@@ -145,4 +145,7 @@ export class UserListComponent implements OnInit {
 
   }
   
+  view(){
+    this.LoadData();
+   }
 }

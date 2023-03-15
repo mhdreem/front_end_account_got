@@ -6,10 +6,15 @@
             <div>
                 <button mat-raised-button class="add" (click)="add()">
                     +اضافة</button>
+                <button mat-raised-button class="add" (click)="view()">
+                    <mat-icon>visibility</mat-icon>عرض
+                </button>
                 <button mat-raised-button id="excel" (click)="add()">
-                    <mat-icon>view_comfy</mat-icon>تصدير الى اكسل</button>
+                    <mat-icon>view_comfy</mat-icon>تصدير الى اكسل
+                </button>
                 <button #import mat-raised-button id="excel" (click)="importFromExcelClicked()">
-                    <mat-icon>view_comfy</mat-icon>استيراد من اكسل</button>
+                    <mat-icon>view_comfy</mat-icon>استيراد من اكسل
+                </button>
                 
             </div>
         </c-row>
