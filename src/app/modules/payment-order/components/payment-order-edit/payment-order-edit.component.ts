@@ -45,12 +45,12 @@ export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
     return {};
   }
 
+  
   set payment_order(obj: payment_order) {
     // this.PagePaymentOrderService.payment_order = obj;
-    this.payment_order= obj;
+    this.PagePaymentOrderService.payment_order= obj;
     this.SetValue();
   }
-
 
   _Subscription: Subscription = new Subscription;
 

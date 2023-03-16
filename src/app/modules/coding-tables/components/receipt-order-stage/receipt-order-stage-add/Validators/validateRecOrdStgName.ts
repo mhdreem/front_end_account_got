@@ -27,11 +27,11 @@ let pk: number | undefined = undefined;
 
 let Form: FormGroup = control.parent as FormGroup;
 if (Form != null && Form.value != null) {
-    if (Form.controls['rec_ord_stg_user_seq'] != null &&
-        Form.controls['rec_ord_stg_user_seq'].value != null &&
-        Form.controls['rec_ord_stg_user_seq'].value > 0
+    if (Form.controls['rec_ord_stg_seq'] != null &&
+        Form.controls['rec_ord_stg_seq'].value != null &&
+        Form.controls['rec_ord_stg_seq'].value > 0
     )
-        pk = Form.controls['rec_ord_stg_user_seq'].value;
+        pk = Form.controls['rec_ord_stg_seq'].value;
 }
  
 //Create Request For Add and Update
@@ -40,6 +40,8 @@ let request: receipt_order_stage = {
     rec_ord_stg_name: control.value,
     rec_ord_stg_seq: pk
 }
+
+console.log(request);
 
             return receiptOrderStageService.
             validate_name(request).
