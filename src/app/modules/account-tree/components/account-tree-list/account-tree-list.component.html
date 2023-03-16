@@ -31,13 +31,13 @@
                 <div class="inputGroup1" style="display: flex; flex-direction: column;">
                     <mat-form-field class="fitContent" appearance="fill">
                         <mat-label>من رقم حساب</mat-label>
-                        <input type="number" matInput [formControl]="account_id_from"
+                        <input [OnlyNumber]="true" matInput [formControl]="account_id_from"
                                 id="account_id_from_list" (keyup.enter)="focusNext('account_id_to_list')" [OnlyNumber]="true">
                     </mat-form-field>
         
                     <mat-form-field class="fitContent" appearance="fill">
                         <mat-label>الى رقم حساب</mat-label>
-                        <input type="number" matInput [formControl]="account_id_to"
+                        <input [OnlyNumber]="true" matInput [formControl]="account_id_to"
                                 id="account_id_to_list" (keyup.enter)="focusNext('account_name_list')" [OnlyNumber]="true">
                     </mat-form-field>
             
@@ -162,32 +162,32 @@
 
                 <ng-container matColumnDef="account_center_name">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>مركز الكلفة </th>
-                    <td mat-cell *matCellDef="let element">{{element?.account_center.account_center_name}}</td>
+                    <td mat-cell *matCellDef="let element">{{element?.account_center?.account_center_name}}</td>
                 </ng-container>
             
                 <ng-container matColumnDef="account_class_name">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>تصنيف الحساب </th>
-                    <td mat-cell *matCellDef="let element">{{element?.account_class.account_class_name}}</td>
+                    <td mat-cell *matCellDef="let element">{{element?.account_class?.account_class_name}}</td>
                 </ng-container>
             
                 <ng-container matColumnDef="account_final_name">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>الحساب الختامي </th>
-                    <td mat-cell *matCellDef="let element">{{element?.account_final.account_final_name}}</td>
+                    <td mat-cell *matCellDef="let element">{{element?.account_final?.account_final_name}}</td>
                 </ng-container>
             
                 <ng-container matColumnDef="account_group_name">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>مجموعة الحساب </th>
-                    <td mat-cell *matCellDef="let element">{{element?.account_group.account_group_name}}</td>
+                    <td mat-cell *matCellDef="let element">{{element?.account_group?.account_group_name}}</td>
                 </ng-container>
             
                 <ng-container matColumnDef="account_level_name">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>مستوى الحساب </th>
-                    <td mat-cell *matCellDef="let element">{{element?.account_level.account_level_name}}</td>
+                    <td mat-cell *matCellDef="let element">{{element?.account_level?.account_level_name}}</td>
                 </ng-container>
             
                 <ng-container matColumnDef="finance_list_name">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>القائمة المالية </th>
-                    <td mat-cell *matCellDef="let element">{{element?.finance_list.finance_list_name}}</td>
+                    <td mat-cell *matCellDef="let element">{{element?.finance_list?.finance_list_name}}</td>
                 </ng-container>
             
                 <ng-container matColumnDef="mobil">

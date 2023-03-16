@@ -64,14 +64,14 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
   _Subscription!: Subscription;
 
   Form!: FormGroup;
-  account_id_from!: FormControl<number | null>;
-  account_id_to!: FormControl<number | null>;
+  account_id_from!: FormControl<string | null>;
+  account_id_to!: FormControl<string | null>;
   account_name!: FormControl<string | null>;
-  account_type_fk!: FormControl<number | null>;
-  account_level_fk!: FormControl<number | null>;
-  account_group_fk!: FormControl<number | null>;
-  account_class_fk!: FormControl<number | null>;
-  finance_list_fk!: FormControl<number | null>;
+  account_type_fk!: FormControl<number | string | null>;
+  account_level_fk!: FormControl<number | string | null>;
+  account_group_fk!: FormControl<number | string | null>;
+  account_class_fk!: FormControl<number | string | null>;
+  finance_list_fk!: FormControl<number | string | null>;
   branch_fk : FormControl;
   page_index!: FormControl<number | null>;
   row_count!: FormControl<number | null>;
@@ -129,15 +129,15 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
   
         this.Form = this.fb.group(
           {
-            'account_id_from': this.account_id_from = new FormControl<number | null>(null, []),
-            'account_id_to': this.account_id_to = new FormControl<number | null>(null, []),
+            'account_id_from': this.account_id_from = new FormControl<string | null>(null, []),
+            'account_id_to': this.account_id_to = new FormControl<string | null>(null, []),
             'account_name': this.account_name = new FormControl<string | null>(null, []),
-            'account_type_fk': this.account_type_fk = new FormControl<number | null>(null, []),
-            'account_level_fk': this.account_level_fk = new FormControl<number | null>(null, []),
-            'account_group_fk': this.account_group_fk = new FormControl<number | null>(null, []),
-            'account_class_fk': this.account_class_fk = new FormControl<number | null>(null, []),
-            'finance_list_fk': this.finance_list_fk = new FormControl<number | null>(null, []),
-            'branch_fk': this.branch_fk = new FormControl<number | null>(null, [Validators.required]),
+            'account_type_fk': this.account_type_fk = new FormControl<number | string | null>(null, []),
+            'account_level_fk': this.account_level_fk = new FormControl<number | string | null>(null, []),
+            'account_group_fk': this.account_group_fk = new FormControl<number | string | null>(null, []),
+            'account_class_fk': this.account_class_fk = new FormControl<number | string | null>(null, []),
+            'finance_list_fk': this.finance_list_fk = new FormControl<number | string | null>(null, []),
+            'branch_fk': this.branch_fk = new FormControl<number | string | null>(null, [Validators.required]),
             'page_index': this.page_index = new FormControl<number | null>(null, []),
           'row_count': this.row_count = new FormControl<number | null>(null, []),
           }
@@ -437,12 +437,26 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
     });
   }
 
+  turnsEmptyStringIntoNull(){
+    if (this.account_level_fk.value  == "")
+      this.account_level_fk.setValue(null);
+    if (this.account_group_fk.value  == "")
+      this.account_group_fk.setValue(null);
+    if (this.account_class_fk.value  == "")
+      this.account_class_fk.setValue(null);
+    if (this.finance_list_fk.value  == "")
+      this.finance_list_fk.setValue(null);
+    if (this.branch_fk.value  == "")
+      this.branch_fk.setValue(null);
+  }
+
   View(){
     this.isDataSourceLoading= true;
 
     this.page_index.setValue(this.currentPage);
     this.row_count.setValue(this.pageSize);
     console.log('this.Form.value', this.Form.value);
+    this.turnsEmptyStringIntoNull();
     return this.accountTreeService.search(this.Form.value);
 
     // let printRequest= {

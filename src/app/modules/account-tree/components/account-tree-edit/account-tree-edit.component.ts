@@ -201,6 +201,17 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
           this.treeDataSource.data = [res[8]];
 
             this.Init_AutoComplete();
+
+            this.seq = this.route.snapshot.params['seq'];
+            if (this.seq != null && this.seq > 0) {
+              this.accountTreeService.get_by_seq(this.seq).subscribe((res: any)=>{
+                this.selected_Account= res.value;
+                this.SetValue();
+                if (this.seq != null && this.seq > 0)
+                  this.parentAccountName.setValue(this.parentAccountName_List.find(account=> account.seq == this.selected_Account!.account_parent_seq)?.seq);
+              });
+            }
+
             this.LoadingFinish = true;
 
           }
@@ -451,15 +462,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
         }
 
   ngOnInit() {     
-    this.seq = this.route.snapshot.params['seq'];
-    if (this.seq != null && this.seq > 0) {
-      this.accountTreeService.get_by_seq(this.seq).subscribe(res=>{
-        this.selected_Account= res;
-        this.SetValue();
-        if (this.seq != null && this.seq > 0)
-          this.parentAccountName.setValue(this.parentAccountName_List.find(account=> account.seq == this.selected_Account!.account_parent_seq)?.seq);
-      });
-    }
+    
     this.account_id.addAsyncValidators([validateAccountId(this.accountTreeService)]);
     this.account_name.addAsyncValidators([validateAccountName(this.accountTreeService) ]);
   }
