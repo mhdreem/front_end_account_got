@@ -164,9 +164,9 @@
               <c-row>
                 <table mat-table [dataSource]="dataSource_receipt_order_entry" class="mat-elevation-z8" matSort>
     
-                  <ng-container matColumnDef="ex_ord_stg_name">
+                  <ng-container matColumnDef="rec_ord_stg_name">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>المرحلة </th>
-                    <td mat-cell *matCellDef="let element">{{element?.exchange_order_stage?.ex_ord_stg_name}}</td>
+                    <td mat-cell *matCellDef="let element">{{element?.receipt_order_stage?.rec_ord_stg_name}}</td>
                   </ng-container>
     
                   <ng-container matColumnDef="user_entry">

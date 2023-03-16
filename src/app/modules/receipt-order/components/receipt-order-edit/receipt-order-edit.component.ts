@@ -37,6 +37,7 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
     }
   }
 
+  _receipt_order: receipt_order;
 
   get receipt_order(): receipt_order {
     if (
@@ -48,7 +49,7 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
 
   set receipt_order(obj: receipt_order) {
     // this.PageReceiptOrderService.receipt_order = obj;
-    this.receipt_order= obj;
+    this._receipt_order= obj;
     this.SetValue();
   }
 
@@ -98,7 +99,7 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
 
   dataSource_receipt_order_entry = new MatTableDataSource<receipt_order_entry>();
   receipt_order_entry_displayedColumns: string[] =
-    ["ex_ord_stg_name", 'user_entry', 'date_entry'];
+    ["rec_ord_stg_name", 'user_entry', 'date_entry'];
 
   totalRows = 0;
   pageSize = 5;
@@ -133,10 +134,7 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
       this.actionNum= this.receipt_order.receipt_order_details?.length!;
     });
 
-    if (this.receipt_order != null && 
-      this.receipt_order.receipt_order_entries!= null)
-      this.dataSource_receipt_order_entry.data = this.receipt_order.receipt_order_entries!;
-
+    
   }
 
   ngOnDestroy(): void {
@@ -153,6 +151,11 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
           this.PageReceiptOrderService.set(res.value);
           this.updateSum();
           this.actionNum= this.receipt_order.receipt_order_details?.length!;
+
+          console.log('this.receipt_order', this.receipt_order);
+          if (this.receipt_order != null && 
+            this.receipt_order.receipt_order_entries!= null)
+            this.dataSource_receipt_order_entry.data = this.receipt_order.receipt_order_entries!;
 
         }
       }));

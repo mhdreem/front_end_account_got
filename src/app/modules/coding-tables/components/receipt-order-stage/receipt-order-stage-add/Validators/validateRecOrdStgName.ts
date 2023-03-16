@@ -46,6 +46,7 @@ let request: receipt_order_stage = {
                 pipe(
                     map(
                         (result: any) => {
+                            console.log('res123', result);
                             return (result && result.value) ? { "duplicate": true } : null;
                         }
                     ));

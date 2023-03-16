@@ -37,6 +37,7 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
     }
   }
 
+  _exchange_order: exchange_order;
 
   get exchange_order(): exchange_order {
     if (
@@ -48,7 +49,7 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
 
   set exchange_order(obj: exchange_order) {
     // this.PageExchangeOrderService.exchange_order = obj;
-    this.exchange_order= obj;
+    this._exchange_order= obj;
     this.SetValue();
   }
 
@@ -133,10 +134,7 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
       this.actionNum= this.exchange_order.exchange_order_details?.length!;
     });
 
-    if (this.exchange_order != null && 
-      this.exchange_order.exchange_order_entries!= null)
-      this.dataSource_exchange_order_entry.data = this.exchange_order.exchange_order_entries!;
-
+    
   }
 
   ngOnDestroy(): void {

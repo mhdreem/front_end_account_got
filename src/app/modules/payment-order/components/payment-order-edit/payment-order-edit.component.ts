@@ -36,6 +36,7 @@ export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
     }
   }
 
+  _payment_order: payment_order;
 
   get payment_order(): payment_order {
     if (
@@ -47,7 +48,7 @@ export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
 
   set payment_order(obj: payment_order) {
     // this.PagePaymentOrderService.payment_order = obj;
-    this.payment_order= obj;
+    this._payment_order= obj;
     this.SetValue();
   }
 
@@ -132,10 +133,7 @@ export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
       this.actionNum= this.payment_order.payment_order_details?.length!;
     });
 
-    if (this.payment_order != null && 
-      this.payment_order.payment_order_entries!= null)
-      this.dataSource_payment_order_entry.data = this.payment_order.payment_order_entries!;
-
+    
   }
 
   ngOnDestroy(): void {
@@ -153,6 +151,10 @@ export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
           this.updateSum();
           this.actionNum= this.payment_order.payment_order_details?.length!;
 
+          if (this.payment_order != null && 
+            this.payment_order.payment_order_entries!= null)
+            this.dataSource_payment_order_entry.data = this.payment_order.payment_order_entries!;
+      
         }
       }));
 

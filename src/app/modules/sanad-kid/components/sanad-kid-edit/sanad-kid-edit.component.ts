@@ -33,6 +33,8 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
     }
   }
 
+  _sanad_kid: sanad_kid;
+
   get sanad_kid():sanad_kid 
   {
     if (
@@ -46,7 +48,7 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
   set sanad_kid(obj:sanad_kid) 
   {
     // this.PageSanadKidService.set(obj);
-    this.sanad_kid= obj;
+    this._sanad_kid= obj;
     this.SetValue();
   }
 
@@ -130,11 +132,7 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
         this.updateSum();
         this.actionNum= this.sanad_kid.sanad_kid_details?.length!;
 
-        if (this.sanad_kid != null && 
-          this.sanad_kid.sanad_kid_entries!= null){
-            this.dataSource_sanad_kid_entry.data = this.sanad_kid.sanad_kid_entries!;
-            console.log('2222', this.dataSource_sanad_kid_entry.data[0].sanad_kid_stage!.snd_kid_stg_name);
-          }
+        
     
       });
 
@@ -276,6 +274,12 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
           this.PageSanadKidService.set(res.value);
           this.updateSum();
           this.actionNum= this.sanad_kid.sanad_kid_details?.length!;
+
+          if (this.sanad_kid != null && 
+            this.sanad_kid.sanad_kid_entries!= null){
+              this.dataSource_sanad_kid_entry.data = this.sanad_kid.sanad_kid_entries!;
+              console.log('2222', this.dataSource_sanad_kid_entry.data[0].sanad_kid_stage!.snd_kid_stg_name);
+            }
         })
       }
       else{
