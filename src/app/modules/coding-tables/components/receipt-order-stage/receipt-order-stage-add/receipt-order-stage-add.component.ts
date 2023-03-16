@@ -176,7 +176,6 @@ export class ReceiptOrderStageAddComponent {
   {
     if (this.Form!= null )
     {
-      console.log(this.selected_receipt_order_stage!.rec_ord_stg_seq);
       if (this.selected_receipt_order_stage!.rec_ord_stg_seq!!= null)
         this.rec_ord_stg_seq.setValue(this.selected_receipt_order_stage!.rec_ord_stg_seq);
 
