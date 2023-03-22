@@ -142,9 +142,6 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
     this.dataSource_sanad_kid_entry.paginator = this.paginator;
     this.dataSource_sanad_kid_entry.sort = this.sort;
 
-    setTimeout(()=>{
-      document.querySelector('c-sidebar')?.classList.add('hide');
-    }, 1000);
   }
 
     load_sanad_kid_book():Observable<sanad_kid_book[]>

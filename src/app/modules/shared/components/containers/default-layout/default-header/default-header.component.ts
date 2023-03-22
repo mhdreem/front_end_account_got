@@ -310,6 +310,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   }
   
   showSideBar(){
-    document.querySelector('c-sidebar')?.classList.remove('hide');
+    document.getElementById('menu')?.click();
+    // document.querySelector('c-sidebar')?.classList.remove('hide');
   }
 }

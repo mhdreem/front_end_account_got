@@ -192,9 +192,7 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
     this.dataSource_exchange_order_entry.paginator = this.paginator;
     this.dataSource_exchange_order_entry.sort = this.sort;
 
-    setTimeout(()=>{
-      document.querySelector('c-sidebar')?.classList.add('hide');
-    }, 1000);
+    
   }
 
   public BuildForm() {

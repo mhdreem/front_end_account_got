@@ -5,18 +5,18 @@ textarea{
 }
 
 .small-width{
-    width: 80px;
+    width: 33%;
     margin-left: 0px !important;
   }
 
   .date{
-    width: fit-content;
+    width: 39%;
     display: inline-block;
   }
 
   form{
     padding: 10px;
-    width: 580px;
+    width: 100%;
   }
 
   mat-form-field{
@@ -39,11 +39,6 @@ mat-form-field, ::ng-deep .mat-mdc-form-field-label{
   color: black !important;
 }
 
-
-.small-width{
-  width: 70px !important;
-  margin-left: 0px !important;
-}
 
 mat-form-field{
   width: 170px;

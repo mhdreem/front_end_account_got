@@ -1,17 +1,17 @@
 
     <form [formGroup]="Form" #form="ngForm">
     
-                    <button mat-raised-button (click)="delete()" color="warn"><mat-icon class="mat-icon-rtl-mirror">delete
+                    <button mat-raised-button (click)="delete()" color="warn" style="width: 15%;"><mat-icon class="mat-icon-rtl-mirror">delete
                         </mat-icon> حذف</button>
     
-                    <mat-form-field appearance="fill" style="margin-top: 30px; width: 120px;">
+                    <mat-form-field appearance="fill" style="margin-top: 30px; width: 19%;">
                         <mat-label>رقم المرفق</mat-label>
                         <input matInput [formControl]="exchange_order_attachement_id" [OnlyNumber]="true"
                             id="{{'exchange_order_attachement_id_'+_index}}" (keyup.enter)="focusNext('type_fk_'+_index)">
                     </mat-form-field>
     
     
-                    <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px; width: 120px;">
+                    <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px; width: 19%;">
                         <mat-label #label_accounts_tree_fk>نوع المرفق</mat-label>
                         <input matInput [formControl]="type_fk" [matAutocomplete]="autoattachement_type"
                             id="{{'type_fk_'+_index}}" (keyup.enter)="focusNext('attachmentDateDay_'+_index)">
@@ -55,7 +55,7 @@
     
           
     
-                <mat-form-field style="width: 557px;">
+                <mat-form-field style="width: 96%;">
                     <mat-label>بيان المرفق</mat-label>
                     <input matInput id="{{'exchange_order_attachement_note_'+_index}}"
                         [formControl]="exchange_order_attachement_note">

@@ -20,7 +20,18 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
   @HostListener('document:mouseover', ['$event'])
     mouseover(event: any) {
         if(event.target.matches('c-sidebar')) {
-          document.querySelector('c-sidebar')?.classList.remove('hide');
+          if (document.querySelector('c-sidebar')?.classList.contains('hide'))
+            document.getElementById('menu')?.click();
+        }
+    }
+
+    @HostListener('document:mouseout', ['$event'])
+    mouseout(event: any) {
+        if(event.target.matches('c-sidebar')) {
+          if (!document.querySelector('c-sidebar')?.classList.contains('hide'))
+            setTimeout(()=>{
+              document.getElementById('menu')?.click();
+            }, 500);
         }
     }
 

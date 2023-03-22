@@ -193,9 +193,7 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
     this.dataSource_receipt_order_entry.paginator = this.paginator;
     this.dataSource_receipt_order_entry.sort = this.sort;
 
-    setTimeout(()=>{
-      document.querySelector('c-sidebar')?.classList.add('hide');
-    }, 1000);
+    
   }
 
   public BuildForm() {
