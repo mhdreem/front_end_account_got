@@ -121,7 +121,9 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
 
   selected_order: exchange_order = {};
 
-
+  exchangePrintInput: exchange_order= {};
+  exchangePrintRowsInput: exchange_order[]= [];
+  displayed_rows: exchange_order[]= [];
 
   constructor(
     private fb: FormBuilder,
@@ -168,6 +170,7 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
       .subscribe((data: any) => {
         this.totalRows = data.total_row_count;
         this.dataSource = new MatTableDataSource(data.value);
+        this.displayed_rows= data.value;
         this.isLoading= false;
         if (data.value?.length != 0)
           this.dataSourceIsEmpty= false;
@@ -298,6 +301,7 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
     this.View().subscribe((data: any)=>{
       this.totalRows = data.total_row_count;
       this.dataSource = new MatTableDataSource(data.value);
+      this.displayed_rows= data.value;
       this.isLoading= false;
       if (data.value?.length != 0)
         this.dataSourceIsEmpty= false;
@@ -437,4 +441,12 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
     }
     );
   }
+
+  printOne(sanad_kid: exchange_order){
+    this.exchangePrintInput= sanad_kid;
+   }
+
+   printRows(rows: exchange_order[]){
+    this.exchangePrintRowsInput= rows;
+   }
 }

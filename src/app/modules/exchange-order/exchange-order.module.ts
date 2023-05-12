@@ -31,6 +31,11 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { ExchangeOrderPrintComponent } from './components/exchange-order-print/exchange-order-print.component';
+import {NgxPrintModule} from 'ngx-print';
+import { ExchangeOrderPrintRowsComponent } from './components/exchange-order-print-rows/exchange-order-print-rows.component';
+import { ExchangeOrderEntriesViewComponent } from './components/exchange-order-entries-view/exchange-order-entries-view.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 const Import_Corui = [
   GridModule,
@@ -45,6 +50,10 @@ const Import_Corui = [
     ExchangeOrderDetailComponent,
     ExchangeOrderAttachmentsComponent,
     ExchangeOrderSearchBarComponent,
+    ExchangeOrderPrintComponent,
+    ExchangeOrderPrintRowsComponent,
+    ExchangeOrderEntriesViewComponent,
+    
     ],
   imports: [
     CommonModule,
@@ -70,7 +79,9 @@ const Import_Corui = [
     MatDividerModule,
     MatSelectModule,
     MatCardModule,
-    MatGridListModule
+    MatGridListModule,
+    NgxPrintModule,
+    MatDialogModule
     
   ],
 })

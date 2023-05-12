@@ -32,7 +32,11 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
-
+import { SanadKidPrintComponent } from './components/sanad-kid-print/sanad-kid-print.component';
+import {NgxPrintModule} from 'ngx-print';
+import { SanadKidPrintRowsComponent } from './components/sanad-kid-print-rows/sanad-kid-print-rows.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import { SanadKidEntriesViewComponent } from './components/sanad-kid-entries-view/sanad-kid-entries-view.component';
 
 const Import_Corui = [
   GridModule,
@@ -47,7 +51,9 @@ const Import_Corui = [
     SanadKidDetailComponent,
     SanadKidAttachmentsComponent,
     SanadKidSearchBarComponent,
-    
+    SanadKidPrintComponent,
+    SanadKidPrintRowsComponent,
+    SanadKidEntriesViewComponent
   ],
   imports: [
     CommonModule,
@@ -73,7 +79,10 @@ const Import_Corui = [
     MatGridListModule,
     MatDividerModule,
     MatListModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    NgxPrintModule,
+    MatDialogModule
+    
   ],
 })
 export class SanadKidModule { }

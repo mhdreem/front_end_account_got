@@ -183,6 +183,16 @@
                 <td mat-cell *matCellDef="let element">{{element?.date_entry | date:'yyyy/MM/dd'}}</td>
               </ng-container>
 
+              <ng-container matColumnDef="view">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>عرض </th>
+                <td mat-cell *matCellDef="let element">
+                  <button class="add" mat-raised-button (click)="onViewClick(element?.data)">
+                    <!-- <mat-icon>view_list</mat-icon> -->
+                    عرض
+                </button>
+                </td>
+                
+              </ng-container>
 
               <tr mat-header-row *matHeaderRowDef="sanad_kid_entry_displayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: sanad_kid_entry_displayedColumns;let idx=index;"

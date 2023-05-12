@@ -9,6 +9,7 @@ import { ReturnBtnService } from '../../../services/return-btn.service';
 // import { ThemeService } from '../../../services/theme.service';
 import { NavService } from './nav.service';
 import { cilPencil, cilMenu } from '@coreui/icons';
+import { NavbarService } from '../../../services/navbar.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,25 +18,20 @@ import { cilPencil, cilMenu } from '@coreui/icons';
 
 })
 export class DefaultLayoutComponent implements OnInit, AfterViewInit {
-  @HostListener('document:mouseover', ['$event'])
-    mouseover(event: any) {
-        if(event.target.matches('c-sidebar')) {
-          if (document.querySelector('c-sidebar')?.classList.contains('hide'))
-            document.getElementById('menu')?.click();
-        }
+  @HostListener('document:mousemove', ['$event'])
+    mousemove(event: any) {
+      if (event.clientX > 95/100*window. innerWidth){
+        document.querySelector('c-sidebar')?.classList.remove('hide');
+      }
+      if (event.clientX > 80/100*window. innerWidth && this.navbarService.isHeaderAnchClicked == true){
+        document.querySelector('c-sidebar')?.classList.remove('hide');
+        this.navbarService.onNavbarVisit();
+      }
+      if (event.clientX < 80/100*window. innerWidth && this.navbarService.isHeaderAnchClicked == false){
+        document.querySelector('c-sidebar')?.classList.remove('headerAnchorClicked');
+        document.querySelector('c-sidebar')?.classList.add('hide');
+      }
     }
-
-    @HostListener('document:mouseout', ['$event'])
-    mouseout(event: any) {
-        if(event.target.matches('c-sidebar')) {
-          if (!document.querySelector('c-sidebar')?.classList.contains('hide'))
-            setTimeout(()=>{
-              document.getElementById('menu')?.click();
-            }, 500);
-        }
-    }
-
-    
 
   _navItems: INavData[];
   
@@ -128,7 +124,8 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
     // private userService :TBLShamelUserService,
     private returnBtnService: ReturnBtnService,
     private router: Router,
-    public iconSet: IconSetService
+    public iconSet: IconSetService,
+    public navbarService: NavbarService
     ) {
       iconSet.icons = {cilPencil, cilMenu};
       // this.load_User();

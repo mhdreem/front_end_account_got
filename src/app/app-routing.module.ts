@@ -26,6 +26,7 @@ const routes: Routes = [
   { path: 'mrBook', loadChildren: () => import('./modules/mr-book/mr-book.module').then(m => m.MrBookModule) },
   { path: 'mrBookAccountCenter', loadChildren: () => import('./modules/mr-book-account-center/mr-book-account-center.module').then(m => m.MrBookAccountCenterModule) },
   { path: 'reviewBalance', loadChildren: () => import('./modules/review-balance/review-balance.module').then(m => m.ReviewBalanceModule) },
+  { path: 'accountCenters', loadChildren: () => import('./modules/account-centers/account-centers.module').then(m => m.AccountCentersModule) },
 
     ]
 
@@ -64,6 +65,7 @@ const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
  
   { path: 'common-module', loadChildren: () => import('./modules/common-module/common-module.module').then(m => m.CommonModuleModule) },
+ 
  
  
  

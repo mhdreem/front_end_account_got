@@ -116,7 +116,9 @@ export class PaymentOrderListComponent {
 
   selected_order: payment_order = {};
 
-
+  paymentPrintInput: payment_order= {};
+  paymentPrintRowsInput: payment_order[]= [];
+  displayed_rows: payment_order[]= [];
 
   constructor(
     private fb: FormBuilder,
@@ -163,6 +165,7 @@ export class PaymentOrderListComponent {
       .subscribe((data: any) => {
         this.totalRows = data.total_row_count;
         this.dataSource = new MatTableDataSource(data.value);
+        this.displayed_rows= data.value;
         this.isLoading= false;
         if (data.value?.length != 0)
           this.dataSourceIsEmpty= false;
@@ -292,6 +295,7 @@ export class PaymentOrderListComponent {
     this.View().subscribe((data: any)=>{
       this.totalRows = data.total_row_count;
       this.dataSource = new MatTableDataSource(data.value);
+      this.displayed_rows= data.value;
       this.isLoading= false;
       if (data.value?.length != 0)
         this.dataSourceIsEmpty= false;
@@ -427,4 +431,11 @@ export class PaymentOrderListComponent {
   }
 
 
+  printOne(sanad_kid: payment_order){
+    this.paymentPrintInput= sanad_kid;
+   }
+
+   printRows(rows: payment_order[]){
+    this.paymentPrintRowsInput= rows;
+   }
 }

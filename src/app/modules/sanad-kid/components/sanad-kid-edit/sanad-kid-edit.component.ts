@@ -1,7 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, HostListener, ViewChild, Inject, OnInit ,AfterViewInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
@@ -17,6 +17,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { SanadKidEntry } from 'src/app/modules/shared/models/sanad-kid-entry';
+import { SanadKidEntriesViewComponent } from '../sanad-kid-entries-view/sanad-kid-entries-view.component';
 
 @Component({
   selector: 'app-sanad-kid-edit',
@@ -99,7 +100,7 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
 
   dataSource_sanad_kid_entry = new MatTableDataSource<SanadKidEntry>();
   sanad_kid_entry_displayedColumns: string[] =
-    ["snd_kid_stg_name", 'user_entry', 'date_entry'];
+    ["snd_kid_stg_name", 'user_entry', 'date_entry', 'view'];
 
   totalRows = 0;
   pageSize = 5;
@@ -122,7 +123,8 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
     private PageSanadKidService:PageSanadKidService,
     private snackBar: MatSnackBar,
     @Inject(DOCUMENT) private _document: Document,
-    private sanadKidService: SanadKidService) { 
+    private sanadKidService: SanadKidService,
+    public dialog: MatDialog) { 
       this.LoadingFinish = true;
       this.BuildForm();
       this.loadData();
@@ -274,6 +276,9 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
 
           if (this.sanad_kid != null && 
             this.sanad_kid.sanad_kid_entries!= null){
+              this.sanad_kid.sanad_kid_entries.forEach(sanad_kid_entry=>{
+                sanad_kid_entry.data= JSON.parse(sanad_kid_entry.data!)
+              });
               this.dataSource_sanad_kid_entry.data = this.sanad_kid.sanad_kid_entries!;
               console.log('2222', this.dataSource_sanad_kid_entry.data[0].sanad_kid_stage!.snd_kid_stg_name);
             }
@@ -647,4 +652,11 @@ export class SanadKidEditComponent implements OnInit, AfterViewInit {
     }
   }
 
+  onViewClick(sanad_kid: sanad_kid){
+    const dialogRef = this.dialog.open(SanadKidEntriesViewComponent, {
+      data: sanad_kid,
+      width: '1000px',
+      height: '600px'
+    });
+  }
 }

@@ -32,6 +32,11 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {PaymentOrderSearchBarComponent} from './components/payment-order-search-bar/payment-order-search-bar.component'
+import {NgxPrintModule} from 'ngx-print';
+import { PaymentOrderPrintComponent } from './components/payment-order-print/payment-order-print.component';
+import { PaymentOrderPrintRowsComponent } from './components/payment-order-print-rows/payment-order-print-rows.component';
+import { PaymentOrderEntriesViewComponent } from './components/payment-order-entries-view/payment-order-entries-view.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 const Import_Corui = [
   GridModule,
@@ -44,7 +49,10 @@ const Import_Corui = [
     PaymentOrderEditComponent,
     PaymentOrderDetailsComponent,
     PaymentOrderAttachmentsComponent,
-    PaymentOrderSearchBarComponent
+    PaymentOrderSearchBarComponent,
+    PaymentOrderPrintComponent,
+    PaymentOrderPrintRowsComponent,
+    PaymentOrderEntriesViewComponent
   ],
   imports: [
     CommonModule,
@@ -70,7 +78,9 @@ const Import_Corui = [
     InfiniteScrollModule,
     MatListModule,
     MatDividerModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    NgxPrintModule,
+    MatDialogModule
     
   ]
 })

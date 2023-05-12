@@ -23,8 +23,7 @@
             طباعة
         </button>
     
-        <button id="print2" mat-raised-button class="add" [disabled]="dataSourceIsEmpty" printSectionId="rank-section"
-            ngxPrint>
+        <button id="print2" mat-raised-button class="add" [disabled]="dataSourceIsEmpty" printSectionId="printReceiptRows-section" ngxPrint (mouseover)="printRows(displayed_rows)">
             <mat-icon>print</mat-icon>
             طباعة السندات المعروضة
         </button>
@@ -284,6 +283,9 @@
                 <button class="edit" mat-icon-button (click)="Update(element)">
                     <mat-icon>edit</mat-icon>
                 </button>
+                <button class="edit" mat-icon-button (mouseover)="printOne(element)" printSectionId="printOneReceipt-section" ngxPrint>
+                    <mat-icon>print</mat-icon>
+                </button>
     
             </td>
         </ng-container>
@@ -296,3 +298,10 @@
     <mat-paginator #paginator [length]="totalRows" 
         [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>
     
+    <div id="printOneReceipt-section">
+        <app-receipt-order-print [data]="receiptPrintInput"></app-receipt-order-print>
+    </div> 
+
+    <div id="printReceiptRows-section">
+        <app-receipt-order-print-rows [documents]="receiptPrintRowsInput"></app-receipt-order-print-rows>
+    </div> 

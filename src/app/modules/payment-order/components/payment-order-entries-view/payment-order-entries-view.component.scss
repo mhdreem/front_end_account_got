@@ -1,0 +1,48 @@
+@import '../../../../../theme.scss';
+
+
+.green{
+    background-color: #9FBCC2;
+    color: white;
+}
+
+c-card-body{
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+span{
+    margin-left: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+div{
+    display: flex;
+}
+
+.circle{
+    border: 1px solid rgb(199, 198, 198);
+    width: fit-content;
+    height: 5px;
+    padding: 10px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .detail{
+    // background: $lightBackground;
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgb(0 0 0 / 10%);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding-block: 20px;
+    margin-block: 20px;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}

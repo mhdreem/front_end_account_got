@@ -1,6 +1,6 @@
 import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { forkJoin, map, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
@@ -45,6 +45,7 @@ export class SanadKidListComponent implements OnInit {
     }
     
   }
+
 
   // formname:string = 'عرض بيانات الترفيع';
   LoadingFinish : boolean;
@@ -102,8 +103,13 @@ export class SanadKidListComponent implements OnInit {
   isLoading: boolean= false;
   selected_sanad: sanad_kid= {};
 
+  sanadPrintInput: sanad_kid= {};
+  sanadPrintRowsInput: sanad_kid[]= [];
 
+  matPaginatorIntl: MatPaginatorIntl;
 
+  // for printing
+  displayed_rows: sanad_kid[]= [];
   constructor(
     private fb: UntypedFormBuilder,
     private snackBar: MatSnackBar,
@@ -115,7 +121,7 @@ export class SanadKidListComponent implements OnInit {
     private router: Router
     ) {
     this.LoadingFinish = true;
-
+    
       this.BuildForm();
 
      }
@@ -159,6 +165,12 @@ export class SanadKidListComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    this.matPaginatorIntl = new MatPaginatorIntl();
+    this.matPaginatorIntl.nextPageLabel= "";
+    this.matPaginatorIntl.previousPageLabel= "";
+    this.matPaginatorIntl.firstPageLabel= "";
+    this.matPaginatorIntl.lastPageLabel= "";
+      this.paginator._intl= this.matPaginatorIntl;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.paginator.page
@@ -173,6 +185,7 @@ export class SanadKidListComponent implements OnInit {
       .subscribe((data: any) => {
         this.totalRows = data.total_row_count;
         this.dataSource = new MatTableDataSource(data.value);
+        this.displayed_rows= data.value;
         this.isLoading= false;
         if (data.value?.length != 0)
           this.dataSourceIsEmpty= false;
@@ -191,6 +204,7 @@ export class SanadKidListComponent implements OnInit {
     this.View().subscribe((data: any)=>{
       this.totalRows = data.total_row_count;
       this.dataSource = new MatTableDataSource(data.value);
+      this.displayed_rows= data.value;
       this.isLoading= false;
       if (data.value?.length != 0)
         this.dataSourceIsEmpty= false;
@@ -309,5 +323,11 @@ export class SanadKidListComponent implements OnInit {
     }
    }
 
-   
+   printOne(sanad_kid: sanad_kid){
+    this.sanadPrintInput= sanad_kid;
+   }
+
+   printRows(rows: sanad_kid[]){
+    this.sanadPrintRowsInput= rows;
+   }
 }

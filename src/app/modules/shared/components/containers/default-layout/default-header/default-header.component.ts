@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { ClassToggleService, HeaderComponent, INavData } from '@coreui/angular';
+import { NavbarService } from 'src/app/modules/shared/services/navbar.service';
 import { NavService } from '../nav.service';
 
 
@@ -24,6 +25,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   constructor(
     private classToggler: ClassToggleService,
     private navService:NavService,
+    private navbarService: NavbarService
     ) {
     super();
   }
@@ -213,6 +215,27 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
 
   }
 
+  accountCenterAnchorClicked(){
+    this.navItems = [
+      {
+        name: 'مراكز الكلفة',
+        url: '/',
+        // iconComponent: { name: 'cil-speedometer' },
+        badge: {
+          color: 'info',
+          text: 'NEW'
+        }
+      },
+      {
+        name: 'عرض مراكز الكلفة' ,
+        url: 'accountCenters/module/accountCenters',
+        iconComponent: { name: 'cil-pencil' },
+    
+      },
+    ];
+    this.navService.navItems_Subject.next(this.navItems);
+  }
+
   tableAnchorClicked(){
     this.navItems = [
       {
@@ -310,7 +333,10 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   }
   
   showSideBar(){
-    document.getElementById('menu')?.click();
+    // document.getElementById('menu')?.click();
+    document.querySelector('c-sidebar')?.classList.remove('hide');
+    document.querySelector('c-sidebar')?.classList.add('headerAnchorClicked');
+    this.navbarService.isHeaderAnchClicked= true;
     // document.querySelector('c-sidebar')?.classList.remove('hide');
   }
 }

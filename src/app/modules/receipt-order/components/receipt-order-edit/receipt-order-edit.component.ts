@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, HostListener, Inject, OnDestroy, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
@@ -16,6 +17,7 @@ import { sanad_kid_book } from 'src/app/modules/shared/models/sanad_kid_book';
 import { ReceiptOrderService } from 'src/app/modules/shared/services/receipt-order.service';
 import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-book.service';
 import { PageReceiptOrderService } from '../../pageservice/page-receipt-order.service';
+import { ReceiptOrderEntriesViewComponent } from '../receipt-order-entries-view/receipt-order-entries-view.component';
 
 
 @Component({
@@ -99,7 +101,7 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
 
   dataSource_receipt_order_entry = new MatTableDataSource<receipt_order_entry>();
   receipt_order_entry_displayedColumns: string[] =
-    ["rec_ord_stg_name", 'user_entry', 'date_entry'];
+    ["rec_ord_stg_name", 'user_entry', 'date_entry', 'view'];
 
   totalRows = 0;
   pageSize = 5;
@@ -119,7 +121,8 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
     private snackBar: MatSnackBar,
     private SanadKidBookService: SanadKidBookService,
     @Inject(DOCUMENT) private _document: Document,
-    private receiptOrderService: ReceiptOrderService
+    private receiptOrderService: ReceiptOrderService,
+    public dialog: MatDialog
   ) {
 
     this.LoadingFinish = true;
@@ -154,8 +157,12 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
 
           console.log('this.receipt_order', this.receipt_order);
           if (this.receipt_order != null && 
-            this.receipt_order.receipt_order_entries!= null)
-            this.dataSource_receipt_order_entry.data = this.receipt_order.receipt_order_entries!;
+            this.receipt_order.receipt_order_entries!= null){
+              this.receipt_order.receipt_order_entries.forEach(receipt_order_entry=>{
+                receipt_order_entry.data= JSON.parse(receipt_order_entry.data!)
+              });
+              this.dataSource_receipt_order_entry.data = this.receipt_order.receipt_order_entries!;
+            }
 
         }
       }));
@@ -660,4 +667,11 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
     }
   }
 
+  onViewClick(receipt_order: receipt_order){
+    const dialogRef = this.dialog.open(ReceiptOrderEntriesViewComponent, {
+      data: receipt_order,
+      width: '1000px',
+      height: '600px'
+    });
+  }
 }

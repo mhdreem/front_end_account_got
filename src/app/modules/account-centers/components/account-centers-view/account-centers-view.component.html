@@ -1,0 +1,237 @@
+<!-- <mat-toolbar>
+
+    <button class="add" mat-raised-button class="add" (click)="onViewClick()">
+        <mat-icon>view_list</mat-icon>
+        عرض F8
+    </button>
+   
+    <button mat-raised-button id="excel" (click)="exportToExcel()">
+        <mat-icon>view_comfy</mat-icon>
+        تصدير الى اكسل F7
+    </button>
+   
+    <button id="print" mat-raised-button class="add">
+        توليد سند إقفال
+    </button>
+    
+    <button id="print" mat-raised-button class="add">
+        توليد سندات إقفال بدون وضع مركز كلفة
+    </button>
+    
+    <button id="print" mat-raised-button class="add">
+        توليد سندات إقفال يدوي
+    </button>
+
+</mat-toolbar>
+
+<c-container>
+    <c-row>
+        <mat-accordion class="example-headers-align" multi>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        بحث
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        اكتب ما تريد ان تبحث عنه
+                        <mat-icon>search</mat-icon>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <form class="example-form" [formGroup]="Form" #form="ngForm">
+                    <div class="inputGroup1" style="display: flex; flex-direction: column; margin-left: 10px; border-left: 1px solid #bbbbbb; padding-left: 10px;">
+                        <div class="date">
+                            <span class="white" style="margin-bottom: 10px; display: block;">من تاريخ</span>
+                           
+                            <div class="content">
+                                <mat-form-field class="example-full-width small-width" appearance="fill">
+                                    <mat-label>اليوم</mat-label>
+                                    <input matInput placeholder="ex: 21" (change)="fromDateChange('day')"
+                                        [(ngModel)]='fromDateDay' [ngModelOptions]="{standalone: true}"
+                                        id="fromDateDay" (keyup.enter)="focusNext('fromDateMonth')">
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width small-width" appearance="fill">
+                                    <mat-label>الشهر</mat-label>
+                                    <input matInput placeholder="ex: 1" (change)="fromDateChange('month')"
+                                        [(ngModel)]='fromDateMonth' [ngModelOptions]="{standalone: true}"
+                                        id="fromDateMonth" (keyup.enter)="focusNext('fromDateYear')">
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width small-width" appearance="fill">
+                                    <mat-label>العام</mat-label>
+                                    <input matInput placeholder="ex: 2023" (change)="fromDateChange('year')"
+                                        [(ngModel)]='fromDateYear' [ngModelOptions]="{standalone: true}"
+                                        id="fromDateYear" (keyup.enter)="focusNext('toDateDay')">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="date">
+                            <span class="white" style="margin-bottom: 10px; display: block;">الى تاريخ</span>
+                            <div class="content">
+                                <mat-form-field class="example-full-width small-width" appearance="fill">
+                                    <mat-label>اليوم</mat-label>
+                                    <input matInput placeholder="ex: 21" (change)="toDateChange('day')"
+                                        [(ngModel)]='toDateDay' [ngModelOptions]="{standalone: true}"
+                                        id="toDateDay" (keyup.enter)="focusNext('toDateMonth')">
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width small-width" appearance="fill">
+                                    <mat-label>الشهر</mat-label>
+                                    <input matInput placeholder="ex: 1" (change)="toDateChange('month')"
+                                        [(ngModel)]='toDateMonth' [ngModelOptions]="{standalone: true}"
+                                        id="toDateMonth" (keyup.enter)="focusNext('toDateYear')">
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width small-width" appearance="fill">
+                                    <mat-label>العام</mat-label>
+                                    <input matInput placeholder="ex: 2023" (change)="toDateChange('year')"
+                                        [(ngModel)]='toDateYear' [ngModelOptions]="{standalone: true}"
+                                        id="toDateYear" (keyup.enter)="focusNext('fromIncumbentDateDay')">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="inputGroup2" style="display: flex; flex-direction: column; margin-left: 10px; margin-left: 10px; border-left: 1px solid #bbbbbb; padding-left: 10px;">
+                        
+                        <mat-form-field class="fitContent" appearance="fill" style="width: 270px;">
+                            <mat-label>بداية مركز الكلفة</mat-label>
+                            <input matInput [formControl]="centerStart" id="centerStart"
+                                (keyup.enter)="focusNext('attach')">
+                        </mat-form-field>
+                        
+                        <mat-form-field class="fitContent" appearance="fill" style="width: 270px;">
+                            <mat-label>نهاية مركز الكلفة</mat-label>
+                            <input matInput [formControl]="centerEnd" id="centerEnd"
+                                (keyup.enter)="focusNext('attach')">
+                        </mat-form-field>
+                        
+
+                    </div>
+
+                    <div class="inputGroup3" style="display: flex; flex-direction: column; margin-top: 30px; margin-left: 10px;  border-left: 1px solid #bbbbbb;">
+                    
+                        <mat-form-field class="fitContent" appearance="fill" style="width: 270px;">
+                            <mat-label>بداية رقم الحساب</mat-label>
+                            <input matInput [formControl]="accountIdStart" id="accountIdStart"
+                                (keyup.enter)="focusNext('attach')">
+                        </mat-form-field>
+                        
+                        <mat-form-field class="fitContent" appearance="fill" style="width: 270px;">
+                            <mat-label>نهاية رقم الحساب</mat-label>
+                            <input matInput [formControl]="accountIdEnd" id="accountIdEnd"
+                                (keyup.enter)="focusNext('attach')">
+                        </mat-form-field>
+
+                    </div>
+
+                </form>
+
+            </mat-expansion-panel>
+        </mat-accordion>
+    </c-row>
+</c-container>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+
+    <ng-container matColumnDef="incumbent_id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>رقم السند </th>
+        <td mat-cell *matCellDef="let element">{{element?.incumbent_id}}</td>
+    </ng-container>
+    <ng-container matColumnDef="document_id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>رقم المذكرة </th>
+        <td mat-cell *matCellDef="let element">{{element?.document_id}}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="incumbent_date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>تاريخ المذكرة </th>
+        <td mat-cell *matCellDef="let element">{{element?.incumbent_date | date:'yyyy/MM/dd'}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="document_date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>تاريخ السند </th>
+        <td mat-cell *matCellDef="let element">{{element?.document_date | date:'yyyy/MM/dd'}}</td>
+    </ng-container>
+  
+
+    <ng-container matColumnDef="exchange_order_type_fk">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>نوع السند </th>
+        <td mat-cell *matCellDef="let element">{{element?.exchange_order_type_fk}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="total_value">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>مبلغ السند </th>
+        <td mat-cell *matCellDef="let element">{{element?.total_value}}</td>
+    </ng-container>
+
+   
+
+
+    <ng-container matColumnDef="name_of_owner">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>اسم صاحب الاستحقاق </th>
+        <td mat-cell *matCellDef="let element">{{element?.name_of_owner}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="branch_fk">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>الفرع </th>
+        <td mat-cell *matCellDef="let element">{{element?.branch?.branch_name}}</td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> حذف\تعديل </th>
+
+        <td mat-cell *matCellDef="let element" style="width:20%">
+            <button class="delete" mat-icon-button color="warn" (click)="Delete(element)">
+                <mat-icon>delete</mat-icon>
+            </button>
+            <button class="edit" mat-icon-button (click)="Update(element)">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button class="edit" mat-icon-button (mouseover)="printOne(element)" printSectionId="printOneExchange-section" ngxPrint>
+                <mat-icon>print</mat-icon>
+            </button>
+
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;let idx=index;"
+         ></tr>
+</table>
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<mat-paginator #paginator [length]="totalRows" 
+    [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>
+
+    <c-container>
+        <c-row>
+            <c-col [cCol]="2">
+                <c-card class="my-4 card smallCard zoom">
+                  <c-card-header class="card-header">عدد الحسابات</c-card-header>
+                  <c-card-body class="card-body">
+                    <output>{{accountsNum}}</output>
+                  </c-card-body>
+                </c-card>
+              </c-col>
+            <c-col [cCol]="2">
+              <c-card class="my-4 card smallCard zoom">
+                <c-card-header class="card-header">مجموع مدين</c-card-header>
+                <c-card-body class="card-body">
+                  <output>{{sumDebtor}}</output>
+                </c-card-body>
+              </c-card>
+            </c-col>
+            <c-col [cCol]="2">
+              <c-card class="my-4 card smallCard zoom">
+                <c-card-header class="card-header">مجموع دائن</c-card-header>
+                <c-card-body class="card-body">
+                  <output>{{sumCreditor}}</output>
+                </c-card-body>
+              </c-card>
+            </c-col>
+            
+            
+          </c-row>
+        </c-col>
+      </c-row>
+    </c-container> -->

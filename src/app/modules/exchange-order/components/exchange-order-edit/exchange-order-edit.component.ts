@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, HostListener, Inject, OnDestroy, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
@@ -16,6 +17,7 @@ import { sanad_kid_book } from 'src/app/modules/shared/models/sanad_kid_book';
 import { ExchangeOrderService } from 'src/app/modules/shared/services/exchange-order.service';
 import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-book.service';
 import { PageExchangeOrderService } from '../../pageservice/page-exchange-order.service';
+import { ExchangeOrderEntriesViewComponent } from '../exchange-order-entries-view/exchange-order-entries-view.component';
 
 @Component({
   selector: 'app-exchange-order-edit',
@@ -99,7 +101,7 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
 
   dataSource_exchange_order_entry = new MatTableDataSource<exchange_order_entry>();
   exchange_order_entry_displayedColumns: string[] =
-    ["ex_ord_stg_name", 'user_entry', 'date_entry'];
+    ["ex_ord_stg_name", 'user_entry', 'date_entry', 'view'];
 
   totalRows = 0;
   pageSize = 5;
@@ -119,7 +121,8 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
     private snackBar: MatSnackBar,
     private SanadKidBookService: SanadKidBookService,
     @Inject(DOCUMENT) private _document: Document,
-    private exchangeOrderService: ExchangeOrderService
+    private exchangeOrderService: ExchangeOrderService,
+    public dialog: MatDialog
   ) {
 
     this.LoadingFinish = true;
@@ -153,8 +156,12 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
           this.actionNum= this.exchange_order.exchange_order_details?.length!;
 
           if (this.exchange_order != null && 
-            this.exchange_order.exchange_order_entries!= null)
-            this.dataSource_exchange_order_entry.data = this.exchange_order.exchange_order_entries!;
+            this.exchange_order.exchange_order_entries!= null){
+              this.exchange_order.exchange_order_entries.forEach(exchange_order_entry=>{
+                exchange_order_entry.data= JSON.parse(exchange_order_entry.data!)
+              });
+              this.dataSource_exchange_order_entry.data = this.exchange_order.exchange_order_entries!;
+            }
       
         }
       }));
@@ -658,4 +665,11 @@ updateSum(){
     }
   }
 
+  onViewClick(exchange_order: exchange_order){
+    const dialogRef = this.dialog.open(ExchangeOrderEntriesViewComponent, {
+      data: exchange_order,
+      width: '1000px',
+      height: '600px'
+    });
+  }
 }

@@ -36,6 +36,7 @@ import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { SelectColumnsComponent } from './modules/shared/components/select-columns/select-columns.component';
+import {NgxPrintModule} from 'ngx-print';
 
 const Import_Materail = [
   MatDialogModule,
@@ -88,7 +89,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       HttpClientModule,
       Import_Materail, 
       Import_Corui,
-      PerfectScrollbarModule
+      PerfectScrollbarModule,
+      NgxPrintModule
 
     ],
   providers: [

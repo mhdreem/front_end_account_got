@@ -1,0 +1,111 @@
+
+<mat-dialog-content>
+    <c-container>
+        <c-row>
+            <c-card class="mb-4 card">
+              <c-card-header class="card-header">معلومات السند</c-card-header>
+              <c-card-body class="card-body">
+              <div class="spanGroup1" style="display: flex; flex-direction: column; margin-left: 10px; border-left: 1px solid #bbbbbb; padding-left: 10px;">
+                <div>
+                    <span>تاريخ السند</span>
+                    <span class="green">{{data.document_date | date:"dd/MM/yyyy"}}</span>
+                </div>
+                <div>
+                    <span>تاريخ المذكرة</span>
+                    <span class="green">{{data.incumbent_date | date:"dd/MM/yyyy"}}</span>
+                </div>
+              </div>
+              <div class="spanGroup2" style="display: flex; flex-direction: column; margin-left: 10px; border-left: 1px solid #bbbbbb; padding-left: 10px;">
+                <div>
+                    <span>رقم المذكرة</span>
+                    <span class="green">{{data.incumbent_id}}</span>
+                </div>
+                <div>
+                    <span>رقم السند</span>
+                    <span class="green">{{data.document_id}}</span>
+                </div>
+              </div>
+              <div class="spanGroup2" style="display: flex; flex-direction: column; margin-left: 10px; border-left: 1px solid #bbbbbb; padding-left: 10px;">
+                <div>
+                    <span>دفتر السندات</span>
+                    <span class="green">{{data.sanad_kid_book?.sanad_kid_book_default}}</span>
+                </div>
+                <div>
+                    <span>اسم صاحب الاستحقاق</span>
+                    <span class="green">{{data.name_of_owner}}</span>
+                </div>
+              </div>
+              </c-card-body>
+            </c-card>
+        </c-row>
+
+        <c-row>
+              <c-card class="mb-4">
+        
+                <c-card-header class="card-header">
+                  المرفقات
+                </c-card-header>
+        
+                <c-card-body class="card-body">
+                  <div class="detail" *ngFor="let attachment of data.payment_order_attachements; let i=index;">
+                    <div class="circle">{{i+1}}</div>
+                    <div>
+                        <span>رقم المرفق</span>
+                        <span class="green">{{attachment.payment_order_attachement_id}}</span>
+                    </div>
+                    <div>
+                        <span>نوع المرفق</span>
+                        <span class="green">{{attachment.type_fk}}</span>
+                    </div>
+                    <div>
+                        <span>تاريخ المذكرة</span>
+                        <span class="green">{{attachment.payment_order_attachement_date | date:"dd/MM/yyyy"}}</span>
+                    </div>
+                    <div>
+                        <span>بيان المرفق</span>
+                        <span class="green">{{attachment.payment_order_attachement_note}}</span>
+                    </div>
+                  </div>
+                </c-card-body>
+              </c-card>
+        </c-row>
+
+        <c-row>
+              <c-card>
+                <c-card-header class="card-header">
+                  تفاصيل أمر الدفع
+                </c-card-header>
+        
+                <c-card-body class="card-body">
+                  <div class="detail" *ngFor="let details of data.payment_order_details; let i=index;">
+                    <div class="circle">{{i+1}}</div>
+                    <div>
+                        <span>مبلغ مدين</span>
+                        <span class="green">{{details.debtor}}</span>
+                    </div>
+                    <div>
+                        <span>مبلغ دائن</span>
+                        <span class="green">{{details.creditor}}</span>
+                    </div>
+                    <div>
+                        <span>رقم الحساب</span>
+                        <span class="green">{{details.accounts_tree}}</span>
+                    </div>
+                    <div>
+                        <span>مركز الكلفة</span>
+                        <span class="green">{{details.account_center}}</span>
+                    </div>
+                    <div>
+                        <span>بيان الحساب</span>
+                        <span class="green">{{details.account_notice}}</span>
+                    </div>
+                  </div>
+                </c-card-body>
+              </c-card>
+          </c-row>
+    </c-container>
+</mat-dialog-content>
+
+<mat-dialog-actions >
+	<button mat-raised-button mat-dialog-close color="warn">إغلاق</button>
+</mat-dialog-actions>

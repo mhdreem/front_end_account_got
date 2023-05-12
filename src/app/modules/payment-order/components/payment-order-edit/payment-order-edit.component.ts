@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, HostListener, Inject, OnDestroy, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
@@ -16,6 +17,7 @@ import { sanad_kid_book } from 'src/app/modules/shared/models/sanad_kid_book';
 import { PaymentOrderService } from 'src/app/modules/shared/services/payment-order.service';
 import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-book.service';
 import { PagePaymentOrderService } from '../../pageservice/page-payment-order.service';
+import { PaymentOrderEntriesViewComponent } from '../payment-order-entries-view/payment-order-entries-view.component';
 
 @Component({
   selector: 'app-payment-order-edit',
@@ -98,7 +100,7 @@ export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
 
   dataSource_payment_order_entry = new MatTableDataSource<payment_order_entry>();
   payment_order_entry_displayedColumns: string[] =
-    ["pay_ord_stg_name", 'user_entry', 'date_entry'];
+    ["pay_ord_stg_name", 'user_entry', 'date_entry', 'view'];
 
   totalRows = 0;
   pageSize = 5;
@@ -118,7 +120,8 @@ export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
     private snackBar: MatSnackBar,
     private SanadKidBookService: SanadKidBookService,
     @Inject(DOCUMENT) private _document: Document,
-    private paymentOrderService: PaymentOrderService
+    private paymentOrderService: PaymentOrderService,
+    public dialog: MatDialog
   ) {
 
     this.LoadingFinish = true;
@@ -152,8 +155,12 @@ export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
           this.actionNum= this.payment_order.payment_order_details?.length!;
 
           if (this.payment_order != null && 
-            this.payment_order.payment_order_entries!= null)
-            this.dataSource_payment_order_entry.data = this.payment_order.payment_order_entries!;
+            this.payment_order.payment_order_entries!= null){
+              this.payment_order.payment_order_entries.forEach(payment_order_entry=>{
+                payment_order_entry.data= JSON.parse(payment_order_entry.data!)
+              });
+              this.dataSource_payment_order_entry.data = this.payment_order.payment_order_entries!;
+            }
       
         }
       }));
@@ -657,4 +664,11 @@ export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
     }
   }
 
+  onViewClick(payment_order: payment_order){
+    const dialogRef = this.dialog.open(PaymentOrderEntriesViewComponent, {
+      data: payment_order,
+      width: '1000px',
+      height: '600px'
+    });
+  }
 }
