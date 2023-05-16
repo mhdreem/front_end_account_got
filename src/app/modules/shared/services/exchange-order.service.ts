@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { exchange_order } from '../models/exchange_order';
 import { BaseAPIService } from './base/base-api.service';
 import { UserService } from './user.service';
+import { result } from '../models/result';
 
 
 @Injectable({
@@ -49,9 +50,19 @@ export class ExchangeOrderService extends BaseAPIService{
     
   }
 
-  getBySeq(seq: number){
-    return this.httpClient.get(this.RestUrl +"Exchange_Order/GetBySeq/"+seq,this.httpOptions) as Observable<exchange_order>;  
+  getBySeq(seq: number):Observable<result>{
+    return this.httpClient.get<result>(this.RestUrl +"Exchange_Order/GetBySeq/"+seq,this.httpOptions) as Observable<result>;  
     
+  }
+
+
+  generate_incumbent_id(incumbent_id_generate_type_fk: number,month: number):Observable<result>{
+    return this.httpClient.get<result>(this.RestUrl +`Exchange_Order/generate_incumbent_id/${incumbent_id_generate_type_fk}/${month}`,this.httpOptions) as Observable<result>;      
+  }
+
+
+  generate_document_id(incumbent_id_generate_type_fk: number,month: number):Observable<result>{
+    return this.httpClient.get<result>(this.RestUrl +`Exchange_Order/generate_document_id/${incumbent_id_generate_type_fk}/${month}`,this.httpOptions) as Observable<result>;      
   }
 
   export2Excel() {

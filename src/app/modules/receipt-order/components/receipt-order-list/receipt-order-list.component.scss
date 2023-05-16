@@ -10,9 +10,9 @@ form{
         margin-left: 20px;
     }
 }
-
 table{
-    width: 100%;
+  width: 100%;
+  margin-top: 40px;
 }
 
 td, th{
@@ -222,7 +222,7 @@ mat-tree-node{
   }
 
   ::ng-deep .mat-expansion-indicator{
-    left: 101%;
+    left: 1041px;
     position: relative;
   }
 
@@ -253,6 +253,55 @@ table, c-card{
   zoom: 90%;
 }
 
-app-receipt-order-print, app-receipt-order-print-rows{
-  display: none;
+
+:host
+{
+    font-size: small;
 }
+
+
+mat-form-field
+{
+    width: 100% !important;
+    font-size: small;
+}
+
+
+.mat-icon
+{
+    font-size: small;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+
+
+.isVisible{
+  visibility: collapse;
+  }
+  
+  :host
+  {
+      font-size: small;
+  }
+  
+  
+  mat-form-field
+  {
+      width: 100% !important;
+      font-size: small;
+  }
+  
+  
+  .mat-icon
+  {
+      font-size: small;
+      font-weight: bold;
+      vertical-align: middle;
+  }
+  
+  
+  
+  .isVisible{
+      visibility: collapse;
+      }

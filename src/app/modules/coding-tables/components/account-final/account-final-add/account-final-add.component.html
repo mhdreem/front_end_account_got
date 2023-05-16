@@ -16,7 +16,7 @@
                             <mat-form-field>
                                 <mat-label #label_account_final_name>اسم الحساب الختامي</mat-label>
                                 <input matInput [formControl]="account_final_name" id="account_final_name"
-                                    (keyup.enter)="focusNext('account_center_id')">
+                                    (keyup.enter)="focusNext('account_final_order')">
                                 <mat-error *ngIf="fieldHasErrors(Form, 'account_final_name')">
                                     {{
                                     autoPrintFirstErrorMessage(
@@ -35,7 +35,7 @@
                             <mat-form-field>
                                 <mat-label>ترتيب الحساب الختامي</mat-label>
                                 <input matInput [formControl]="account_final_order" id="account_final_order"
-                                    (keyup.enter)="focusNext('account_class_order')" [OnlyNumber]="true">
+                                    (keyup.enter)="focusNext('btnSave')" [OnlyNumber]="true">
                             </mat-form-field>
                         </c-col>
                     </c-row>
@@ -50,7 +50,7 @@
 
         </mat-card-content>
         <mat-card-actions>
-            <button mat-raised-button class="add" (click)="save()" [disabled]="!Form.valid">F9 حفظ </button>
+            <button mat-raised-button id="btnSave" class="add" (click)="save()" [disabled]="!Form.valid">F9 حفظ </button>
             <button mat-raised-button (click)="closeDialog()" color="warn">إلغاء</button>
         </mat-card-actions>
     </mat-card>

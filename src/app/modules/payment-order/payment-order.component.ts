@@ -25,7 +25,7 @@ export class PaymentOrderComponent implements OnInit {
       iconComponent: { name: 'cil-pencil' },
   
     },
-    
+   
   ];
 
   constructor(private navService:NavService){

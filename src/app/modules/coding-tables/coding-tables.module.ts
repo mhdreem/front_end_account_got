@@ -53,6 +53,12 @@ import {PaymentOrderStageAddComponent} from './components/payment-order-stage/pa
 import {ReceiptOrderStageListComponent} from './components/receipt-order-stage/receipt-order-stage-list/receipt-order-stage-list.component'
 import {ReceiptOrderStageAddComponent} from './components/receipt-order-stage/receipt-order-stage-add/receipt-order-stage-add.component'
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { PaymentSafeListComponent } from './components/payment_safe/payment_safe-list/payment_safe-list.component';
+import { PaymentSafeAddComponent } from './components/payment_safe/payment_safe-add/payment_safe-add.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { IconModule, IconSetService  } from '@coreui/icons-angular';
+import { SubFinancialListAddComponent } from './components/sub-financial-list/sub-financial-list-add/sub-financial-list-add.component';
+import { SubFinancialListComponent } from './components/sub-financial-list/sub-financial-list-list/sub-financial-list-list.component';
 
 
 const Import_Materail = [
@@ -115,7 +121,11 @@ const Import_Corui = [
     PaymentOrderStageListComponent,
     PaymentOrderStageAddComponent,
     ReceiptOrderStageListComponent,
-    ReceiptOrderStageAddComponent
+    ReceiptOrderStageAddComponent,
+    PaymentSafeAddComponent,
+    PaymentSafeListComponent,
+    SubFinancialListAddComponent,
+    SubFinancialListComponent
   ],
   imports: [
     CommonModule,
@@ -125,8 +135,13 @@ const Import_Corui = [
     FormsModule,
     Import_Corui,
     Import_Materail,
-    CommonModuleModule
+    CommonModuleModule,
+    NgSelectModule,
+    IconModule,
     
+  ],
+  providers:[
+    IconSetService
   ]
 })
 export class CodingTablesModule { }

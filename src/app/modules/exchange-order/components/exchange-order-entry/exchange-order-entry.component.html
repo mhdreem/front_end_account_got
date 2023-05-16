@@ -1,0 +1,128 @@
+<ng-template #MainToolBar>
+  <nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item fw-bold">
+        <a routerLink=".">
+          أوامر الصرف
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        أمر صرف
+      </li>
+    </ol>
+
+    <div class="d-flex justify-content-end ms-auto">
+
+
+
+
+      <app-exchange-order-search-bar [Title]="'لائحة أوامر الصرف'" (OnSelectItem)="OnSelectItem($event)">
+      </app-exchange-order-search-bar>
+
+      <button type="button" class="btn btn-info btn-sm" (click)="new_record()">
+        <mat-icon>save</mat-icon>
+      جديد
+      </button>
+
+      <button type="button" class="btn btn-info btn-sm" (click)="save()">
+        <mat-icon>save</mat-icon>
+        حفظ
+      </button>
+
+
+      <button type="button" class="btn btn-info btn-sm" (click)="save_as_draft()">
+        <mat-icon>save</mat-icon>
+        حفظ كمسودة
+      </button>
+
+
+
+
+    </div>
+
+  </nav>
+
+
+</ng-template>
+
+
+<div class="has-tabs-breadcrumb">
+  <nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item fw-bold">
+        <a routerLink=".">
+          امر صرف
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        إضافة أوامر الصرف
+      </li>
+    </ol>
+    <div class="d-flex justify-content-end ms-auto">
+
+      <app-tool-bar [ngTemplateOutlet]="MainToolBar">
+      </app-tool-bar>
+    </div>
+
+  </nav>
+
+
+  <nav class="page-tabs">
+    <ul ngbNav #defaultNav="ngbNav" [(activeId)]="defaultNavActiveId" class="nav-fu mx-xs-3 mx-sm-3 mx-md-4 mx-lg-0">
+      <li [ngbNavItem]="1" [destroyOnHide]="false">
+        <a ngbNavLink class="px-2 px-md-4">
+          <i class="feather icon-credit-card btn-icon-prepend fs-5 me-1"></i>
+          بيانات امر الصرف
+        </a>
+        <ng-template ngbNavContent>
+          <br />
+          <br />
+          <br />
+          <br />
+          <app-exchange-order-edit [exchange_order]="this.exchange_order" (OnSaveComplete)="re_load_data($event)">
+
+          </app-exchange-order-edit>
+        </ng-template>
+      </li>
+
+      <li [ngbNavItem]="2" [destroyOnHide]="true">
+        <a ngbNavLink class="px-2 px-md-4">
+          <i class="feather icon-credit-card btn-icon-prepend fs-5 me-1"></i>
+          بيانات القيد المحاسبي المرتبط به
+        </a>
+        <ng-template ngbNavContent>
+          <br />
+          <br />
+          <br />
+          <br />
+          <app-automatic-sanad-kid 
+            [operation_code_fk]="this.operation_code_fk"
+            [operation_type_fk]="this.operation_type_fk">
+
+          </app-automatic-sanad-kid>
+        </ng-template>
+
+
+      </li>
+
+      <li [ngbNavItem]="3" [destroyOnHide]="true">
+        <a ngbNavLink class="px-2 px-md-4">
+          <i class="feather icon-credit-card btn-icon-prepend fs-5 me-1"></i>
+          طباعة أمر الصرف
+        </a>
+        <ng-template ngbNavContent>
+          <br />
+          <br />
+          <br />
+          <br />
+          <app-exchange-order-print [seq]="this.seq">
+          </app-exchange-order-print>
+        </ng-template>
+
+      </li>
+    </ul>
+  </nav>
+  <div class="page-content container">
+    <div [ngbNavOutlet]="defaultNav"></div>
+  </div>
+</div>

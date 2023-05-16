@@ -16,4 +16,8 @@ export interface payment_order_attachement
     attachement_type?: attachement_type;
 
     payment_order_attachement_note?: string;
+
+    payment_order_ownership ?:string ;
+    payment_order_Source_number?:string ;
+ 
 }

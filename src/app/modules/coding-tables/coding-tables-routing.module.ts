@@ -18,6 +18,8 @@ import { SanadKidBookAddComponent } from './components/sanad-kid-book/sanad-kid-
 import { SanadKidBookListComponent } from './components/sanad-kid-book/sanad-kid-book-list/sanad-kid-book-list.component';
 import { SanadKidStageListComponent } from './components/sanad-kid-stage/sanad-kid-stage-list/sanad-kid-stage-list.component';
 import { UserListComponent } from './components/user/user-list/user-list.component';
+import { PaymentSafeListComponent } from './components/payment_safe/payment_safe-list/payment_safe-list.component';
+import { SubFinancialListComponent } from './components/sub-financial-list/sub-financial-list-list/sub-financial-list-list.component';
 
 const routes: Routes = [
   {
@@ -40,6 +42,23 @@ const routes: Routes = [
           data:
           {
             title: 'الفرع'
+          }
+        },
+
+        { 
+          path: 'subfinanciallist', component: SubFinancialListComponent,
+          data:
+          {
+            title: 'القوائم الفرعية'
+          }
+        },
+
+
+        { 
+          path: 'paymentsafe', component: PaymentSafeListComponent,
+          data:
+          {
+            title: 'صناديق المؤسسة'
           }
         },
         { 

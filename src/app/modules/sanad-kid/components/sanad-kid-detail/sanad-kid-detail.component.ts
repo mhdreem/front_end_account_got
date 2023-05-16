@@ -35,28 +35,20 @@ export class SanadKidDetailComponent implements OnChanges, OnDestroy, OnInit {
   @Input() set index(i: number) {
     this._index = i;
   }
+  get index():number
+  {
+    return this._index;
+  }
+  
+  _sanad_kid_detail:sanad_kid_detail;
+
   get sanad_kid_detail(): sanad_kid_detail {
-    if (
-      this.PageSanadKidService.sanad_kid != null &&
-      this.PageSanadKidService.sanad_kid.sanad_kid_details != null &&
-      this._index >= 0 &&
-      this._index < this.PageSanadKidService.sanad_kid.sanad_kid_details?.length) {
-      console.log('this.PageSanadKidService.sanad_kid', this.PageSanadKidService.sanad_kid);
-      console.log('this.index', this.index);
-      return this.PageSanadKidService.sanad_kid.sanad_kid_details[this._index];
-    }
-    return {};
+   return this._sanad_kid_detail;
+
   }
 
-  set sanad_kid_detail(obj: sanad_kid_detail) {
-    if (
-      this.PageSanadKidService.sanad_kid != null &&
-      this.PageSanadKidService.sanad_kid.sanad_kid_details != null &&
-      this._index >= 0 &&
-      this._index <= this.PageSanadKidService.sanad_kid.sanad_kid_details?.length) {
-      this.PageSanadKidService.sanad_kid.sanad_kid_details[this.index] = obj;
-    }
-
+  @Input() set sanad_kid_detail(obj: sanad_kid_detail) {
+     this._sanad_kid_detail = obj;
   }
 
   _Subscription!: Subscription;

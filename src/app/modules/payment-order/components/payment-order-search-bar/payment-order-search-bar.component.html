@@ -1,49 +1,84 @@
-<div class="theme" [class.darkTheme]="darkTheme">
-    <mat-card>
-      <mat-card-title>
-        <h2>لائحة الوثائق</h2>
-      </mat-card-title>
-      <mat-card-content>
-        <c-container >
-    
-          <c-row>
-        
-                <mat-form-field appearance="fill" >
-                  <mat-label>من رقم</mat-label>
-                  <input type="text"
-                  (focusout)="PerformSearch()" matInput [formControl]="from_number"
-                    id="from_number" (keyup.enter)="focusNext('to_number')" />
-                </mat-form-field>
-        
-                <mat-form-field appearance="fill" >
-                  <mat-label>الى رقم</mat-label>
-                  <input type="text"
-                  (focusout)="PerformSearch()" matInput [formControl]="to_number"
-                    id="to_number" (keyup.enter)="focusNext('sanad_month')" />
-                </mat-form-field>
-        
-                <mat-form-field appearance="fill">
-                    <mat-label>شهر الوثيقة</mat-label>
-                    <mat-select [formControl]="sanad_month" multiple (selectionChange)="PerformSearch()"
-                    id="sanad_month" (keyup.enter)="focusNext('incumbent_month')"
-                    (focusout)="PerformSearch()">
-                      <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="i">{{i}}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-        
-                <mat-form-field appearance="fill">
-                    <mat-label>شهر المذكرة</mat-label>
-                    <mat-select [formControl]="incumbent_month" multiple (selectionChange)="PerformSearch()"
-                    id="incumbent_month" (keyup.enter)="focusNext('from_number')"
-                    (focusout)="PerformSearch()">
-                      <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="i">{{i}}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-        
-          </c-row>
-        
-        
-        
+<button type="button" class="btn btn-primary btn-sm" (click)="openBasicModal(ListItemsModal)">
+  <mat-icon>search</mat-icon>
+  {{Title}}
+</button>
+
+<ng-template #ListItemsModal let-modal>
+  <mat-card>
+    <mat-card-content>
+      <c-container>
+        <c-row>
+          <div class="col-lg-3 col-md-3 col-6 col-sm-6 mb-3">
+            <mat-form-field appearance="outline">
+              <mat-label>
+                من رقم المذكرة <span class="text-danger"> </span>
+              </mat-label>
+              <input matInput (focusout)="PerformSearch()" [formControl]="incumbent_id_from" id="incumbent_id_from"
+                (keyup.enter)="focusNext('to_number')" />
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-3 col-md-3 col-6 col-sm-6 mb-3">
+            <mat-form-field appearance="outline">
+              <mat-label>
+                إلى رقم المذكرة <span class="text-danger"> </span>
+              </mat-label>
+              <input matInput (focusout)="PerformSearch()" matInput [formControl]="incumbent_id_to" id="to_number"
+                (keyup.enter)="focusNext('document_id_from')" />
+            </mat-form-field>
+          </div>
+
+
+          <div class="col-lg-3 col-md-3 col-6 col-sm-6 mb-3">
+            <mat-form-field appearance="outline">
+              <mat-label>من رقم مستند</mat-label>
+
+
+              <input matInput type="text" class="form-control" (focusout)="PerformSearch()"
+                [formControl]="document_id_from" id="document_id_from" (keyup.enter)="focusNext('document_id_to')" />
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-3 col-md-3 col-6 col-sm-6 mb-3">
+            <mat-form-field appearance="outline">
+              <mat-label>
+                إلى رقم مستند <span class="text-danger"> </span>
+              </mat-label>
+              <input matInput (focusout)="PerformSearch()" matInput [formControl]="document_id_to" id="document_id_to"
+                (keyup.enter)="focusNext('sanad_month')" />
+            </mat-form-field>
+          </div>
+
+
+
+          <div class="col-lg-6 col-md-6 col-6 col-sm-12 mb-3">
+
+            <label class="form-label">
+              شهر الوثيقة <span class="text-danger"> </span>
+            </label>
+
+
+            <ng-select [formControl]="sanad_month" [multiple]="true" [items]="months" bindValue="id" bindLabel="name"
+              placeholder="قم باختيار الاشهر" id="sanad_month" (keyup.enter)="focusNext('incumbent_month')"
+              (focusout)="PerformSearch()">
+            </ng-select>
+
+          </div>
+
+          <div class="col-lg-6 col-md-6 col-6 col-sm-12 mb-3">
+            <label class="form-label">
+              شهر المذكرة <span class="text-danger"> </span>
+            </label>
+
+            <ng-select [formControl]="incumbent_month" id="incumbent_month" [multiple]="true" [items]="months"
+              bindValue="id" bindLabel="name" (keyup.enter)="focusNext('from_number')" (focusout)="PerformSearch()">
+            </ng-select>
+
+          </div>
+        </c-row>
+
+
+
         <c-row>
         
           <div  infinite-scroll [infiniteScrollDistance]="20" [infiniteScrollUpDistance]="1"
@@ -96,10 +131,10 @@
         
           </div>
         </c-row>
-        
-        </c-container>
-      </mat-card-content>
-     
-    </mat-card>
-    
-  </div>
+
+      </c-container>
+    </mat-card-content>
+
+  </mat-card>
+
+</ng-template>

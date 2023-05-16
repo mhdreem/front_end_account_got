@@ -5,6 +5,7 @@ import { delay, map } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { account_centerService } from 'src/app/modules/shared/services/account-center.service';
 import { AccountTreeService } from 'src/app/modules/shared/services/account-tree.service';
+import { accounts_tree } from 'src/app/modules/shared/models/accounts_tree';
 export function validateAccountId( accountTreeService:AccountTreeService,                                    
                                             ) : AsyncValidatorFn
         {
@@ -12,12 +13,40 @@ export function validateAccountId( accountTreeService:AccountTreeService,
             return (control: AbstractControl)
             : Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
 
-            let value_From_Control: string = control.value;
-            if ( value_From_Control == null || +value_From_Control == 0 ||value_From_Control.length == 0 )
+
+                
+                let value_From_Control: string = control.value;
+                if (!value_From_Control ||
+                    value_From_Control.length == 0
+                )
                 return of(null);
+    
+                
+                    // Define Primart Key Variable
+            let pk: number | undefined = undefined;
+    
+            let Form: FormGroup = control.parent as FormGroup;
+            if (Form != null && Form.value != null) {
+                if (Form.controls['seq'] != null &&
+                    Form.controls['seq'].value != null &&
+                    Form.controls['seq'].value > 0
+                )
+                    pk = Form.controls['seq'].value;
+            }
+    
+            //Create Request For Add and Update
+    
+            let request: accounts_tree = {
+                account_id: control.value,
+                seq: pk
+            }
+
+            
+
+           
 
             return accountTreeService.
-            validate_id({account_id: value_From_Control+''})
+            validate_id(request)
                 .pipe(
                     map(
                         (result: any) => {

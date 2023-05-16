@@ -108,6 +108,7 @@ export class AccountLevelAddComponent {
   ResetForm()
   {
     this.Form.reset();
+    this.focusNext('account_level_name')
   }
 
   save()

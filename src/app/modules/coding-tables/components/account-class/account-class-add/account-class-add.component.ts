@@ -105,10 +105,13 @@ export class AccountClassAddComponent {
         }
   }
 
+ 
   ResetForm()
   {
     this.Form.reset();
+    this.focusNext('account_class_name')
   }
+
 
   save()
   {

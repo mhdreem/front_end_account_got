@@ -1,6 +1,57 @@
-@import '../../../../../theme.scss';
+:host
+{
+    font-size: small;
+}
+
+.mat-form-field
+{
+    width: 100% !important;
+    font-size: small;
+}
+
+.mat-icon
+{
+    font-size: small;
+    font-weight: bold;
+    vertical-align: middle;
+}
 
 
+
+.isVisible{
+  visibility: collapse;
+  }
+  
+  :host
+  {
+      font-size: small;
+  }
+  
+  
+  mat-form-field
+  {
+      width: 100% !important;
+      font-size: small;
+  }
+  
+  
+  .mat-icon
+  {
+      font-size: small;
+      font-weight: bold;
+      vertical-align: middle;
+  }
+  
+  
+  
+  .isVisible{
+      visibility: collapse;
+      }
+
+//@import '../../../../../theme.scss';
+
+
+/*
 form{
     display: flex;
     flex-wrap: wrap;
@@ -168,6 +219,7 @@ output{
 /*
  * This padding sets alignment of the nested nodes.
  */
+
 .example-tree .mat-nested-tree-node div[role=group] {
   padding-left: 40px;
 }
@@ -177,6 +229,7 @@ output{
  * Leaf nodes need to have padding so as to align with other non-leaf nodes
  * under the same parent.
  */
+ /*
 .example-tree div[role=group] > .mat-tree-node {
   padding-left: 40px;
 }
@@ -222,7 +275,7 @@ mat-tree-node{
   }
 
   ::ng-deep .mat-expansion-indicator{
-    left: 101%;
+    left: 1041px;
     position: relative;
   }
 
@@ -252,7 +305,4 @@ mat-form-field{
 table, c-card{
   zoom: 90%;
 }
-
-app-exchange-order-print, app-exchange-order-print-rows{
-  display: none;
-}
+*/

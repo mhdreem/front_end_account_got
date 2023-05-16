@@ -6,7 +6,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { forkJoin, map, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
 import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/confirmationdialog/confirmationdialog.component';
@@ -17,6 +17,8 @@ import { BranchService } from 'src/app/modules/shared/services/branch.service';
 import { ExchangeOrderService } from 'src/app/modules/shared/services/exchange-order.service';
 import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-book.service';
 import { saveAs } from 'file-saver';
+import { PageExchangeOrderService } from '../../pageservice/page-exchange-order.service';
+import { result } from 'src/app/modules/shared/models/result';
 
 @Component({
   selector: 'app-exchange-order-list',
@@ -26,6 +28,12 @@ import { saveAs } from 'file-saver';
 
 
 export class ExchangeOrderListComponent implements OnInit, OnDestroy {
+  Request: any = {};// Represent Request 
+  Subscriptions: Subscription[] = [];
+
+  RowCount: number = 0;
+  SumTotal: number = 0;
+
 
 
   @HostListener('window:keydown', ['$event'])
@@ -51,52 +59,9 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<exchange_order>();
   displayedColumns: string[] =
     ['incumbent_id', 'incumbent_date', 'document_id', 'document_date', 'total_value', 'name_of_owner', 'branch_fk', 'action'];
-    dataSourceIsEmpty: boolean= true;
-  fromSanadDateDay: string = '';
-  fromSanadDateMonth: string = '';
-  fromSanadDateYear: string = '';
-  toSanadDateDay: string = '';
-  toSanadDateMonth: string = '';
-  toSanadDateYear: string = '';
+  dataSourceIsEmpty: boolean = true;
 
-  fromSanadDateDayIsFilled: boolean = false;
-  fromSanadDateMonthIsFilled: boolean = false;
-  fromSanadDateYearIsFilled: boolean = false;
-  toSanadDateDayIsFilled: boolean = false;
-  toSanadDateMonthIsFilled: boolean = false;
-  toSanadDateYearIsFilled: boolean = false;
 
-  fromIncumbentDateDay: string = '';
-  fromIncumbentDateMonth: string = '';
-  fromIncumbentDateYear: string = '';
-  toIncumbentDateDay: string = '';
-  toIncumbentDateMonth: string = '';
-  toIncumbentDateYear: string = '';
-
-  fromIncumbentDateDayIsFilled: boolean = false;
-  fromIncumbentDateMonthIsFilled: boolean = false;
-  fromIncumbentDateYearIsFilled: boolean = false;
-  toIncumbentDateDayIsFilled: boolean = false;
-  toIncumbentDateMonthIsFilled: boolean = false;
-  toIncumbentDateYearIsFilled: boolean = false;
-
-  Form!: FormGroup;
-  document_id_from!: FormControl<number | null>;
-  document_id_to!: FormControl<number | null>;
-  document_date_from!: FormControl<Date | null>;
-  document_date_to!: FormControl<Date | null>;
-  sanad_kid_fk!: FormControl<number | null>;
-  incumbent_id_from!: FormControl<number | null>;
-  incumbent_id_to!: FormControl<number | null>;
-  incumbent_date_from!: FormControl<Date | null>;
-  incumbent_date_to!: FormControl<Date | null>;
-  exchange_order_type_fk!: FormControl<number | null>;
-  book_fk!: FormControl<number | null>;
-  name_of_owner!: FormControl<string | null>;
-  attach!: FormControl<string | null>;
-  branch_fk!: FormControl<number | null>;
-  page_index!: FormControl<number | null>;
-  row_count!: FormControl<number | null>;
 
   LoadingFinish: boolean;
 
@@ -110,54 +75,53 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
 
 
 
-
-
   totalRows = 0;
   pageSize = 5;
   currentPage = 0;
   pageSizeOptions: number[] = [5, 10, 25, 100];
-  isLoading: boolean= false;
-  
+  isLoading: boolean = false;
+
 
   selected_order: exchange_order = {};
 
-  exchangePrintInput: exchange_order= {};
-  exchangePrintRowsInput: exchange_order[]= [];
-  displayed_rows: exchange_order[]= [];
+
 
   constructor(
+    private ActivatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
     @Inject(DOCUMENT) private _document: Document,
     private router: Router,
     private exchangeOrderService: ExchangeOrderService,
+    private PageExchangeOrderService: PageExchangeOrderService,
+
     private sanadKidBookService: SanadKidBookService,
     private BranchService: BranchService,
   ) {
     this.LoadingFinish = true;
 
-    this.BuildForm();
+
     this.Load_Data();
 
 
   }
 
   ngOnInit(): void {
- 
-  }
-      
-      
-  ngOnDestroy()
-  {
 
   }
 
-    
+
+  ngOnDestroy() {
+
+  }
+
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
+    /*
     this.paginator.page
       .pipe(
         startWith({}),
@@ -170,43 +134,12 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
       .subscribe((data: any) => {
         this.totalRows = data.total_row_count;
         this.dataSource = new MatTableDataSource(data.value);
-        this.displayed_rows= data.value;
         this.isLoading= false;
         if (data.value?.length != 0)
           this.dataSourceIsEmpty= false;
 
       });
-  }
-
-
-  public BuildForm() {
-    try {
-
-      this.Form = this.fb.group(
-        {
-          'document_id_from': this.document_id_from = new FormControl<number | null>(null, []),
-          'document_id_to': this.document_id_to = new FormControl<number | null>(null, []),
-          'document_date_from': this.document_date_from = new FormControl<Date | null>(null, []),
-          'document_date_to': this.document_date_to = new FormControl<Date | null>(null, []),
-          'sanad_kid_fk': this.sanad_kid_fk = new FormControl<number | null>(null, []),
-          'incumbent_id_from': this.incumbent_id_from = new FormControl<number | null>(null, []),
-          'incumbent_id_to': this.incumbent_id_to = new FormControl<number | null>(null, []),
-          'incumbent_date_from': this.incumbent_date_from = new FormControl<Date | null>(null, []),
-          'incumbent_date_to': this.incumbent_date_to = new FormControl<Date | null>(null, []),
-          'exchange_order_type_fk': this.exchange_order_type_fk = new FormControl<number | null>(null, []),
-          'book_fk': this.book_fk = new FormControl<number | null>(null, []),
-          'name_of_owner': this.name_of_owner = new FormControl<string | null>(null, []),
-          'attach': this.attach = new FormControl<string | null>(null, []),
-          'branch_fk': this.branch_fk = new FormControl<number | null>(null, []),
-          'page_index': this.page_index = new FormControl<number | null>(null, []),
-          'row_count': this.row_count = new FormControl<number | null>(null, []),
-        }
-      );
-
-
-    } catch (Exception: any) {
-      console.log(Exception);
-    }
+      */
   }
 
   Load_Data() {
@@ -251,25 +184,6 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
   }
 
 
-  public async Init_AutoComplete() {
-    try {
-
-      this.book_filter = this.book_fk.valueChanges
-        .pipe(
-          startWith(''),
-          map((value) => value && typeof value === 'string' ? this._filter_book(value) : this.book_list.slice())
-        );
-
-      this.branch_filter = this.branch_fk.valueChanges
-        .pipe(
-          startWith(''),
-          map((value) => value && typeof value === 'string' ? this._filter_branch(value) : this.branch_list.slice())
-        );
-
-
-    } catch (Exception: any) { }
-  }
-
 
   private _filter_book(value: string): sanad_kid_book[] {
     const filterValue = value.toLowerCase();
@@ -295,32 +209,78 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  onViewClick(){
-    this.currentPage=0;
-    this.pageSize=5;
-    this.View().subscribe((data: any)=>{
-      this.totalRows = data.total_row_count;
-      this.dataSource = new MatTableDataSource(data.value);
-      this.displayed_rows= data.value;
-      this.isLoading= false;
-      if (data.value?.length != 0)
-        this.dataSourceIsEmpty= false;
-    });
+
+  onViewClick(request: any) {
+
+    this.Request = request;
+    this.isLoading = true;
+    this.Subscriptions.push
+      (
+
+        this.exchangeOrderService.search(request)
+          .subscribe((data: any) => {
+            this.totalRows = data.total_row_count;
+            this.dataSource = new MatTableDataSource(data.value);
+            this.isLoading = false;
+            if (data.value?.length != 0)
+              this.dataSourceIsEmpty = false;
+
+
+            this.totalRows = data.total_row_count;
+            this.RowCount = data.total_row_count;
+
+            let arr: exchange_order[] = [];
+
+            arr = (data.value as exchange_order[]);
+            if (arr != null && arr.length > 0) {
+              this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.total_value : 0), 0);
+            }
+
+          })
+
+      )
+
+
+
+
   }
 
   View() {
+    this.isLoading = true;
+    if (this.Request != null) {
+      this.Request.page_index = this.currentPage;
+      this.Request.row_count = this.pageSize;
 
-    this.isLoading= true;
+    }
 
-    this.page_index.setValue(this.currentPage);
-    this.row_count.setValue(this.pageSize);
+    this.exchangeOrderService.search(this.Request).subscribe((data: any) => {
 
-    return this.exchangeOrderService.search(this.Form.value);
+
+      this.dataSource = new MatTableDataSource(data.value);
+      this.isLoading = false;
+      if (data.value?.length != 0)
+        this.dataSourceIsEmpty = false;
+
+
+
+      this.totalRows = data.total_row_count;
+      this.RowCount = data.total_row_count;
+
+      let arr: exchange_order[] = [];
+
+      arr = (data.value as exchange_order[]);
+      if (arr != null && arr.length > 0) {
+        this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.total_value : 0), 0);
+      }
+
+    });
 
 
   }
 
-  
+
+
+
 
   public focusNext(id: string) {
     let element = this._document.getElementById(id);
@@ -333,8 +293,57 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
     this.dataSource.data = [];
   }
 
- 
+
   Delete(order: exchange_order) {
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },
+    });
+
+    dialogRef.afterClosed().subscribe(res => {
+      if (res == 1) {
+        this.exchangeOrderService.delete(order.exchange_order_seq!).subscribe(res => {
+          if (res != null && (res as result) != null && (res as result).success == true) {
+            this.snackBar.open('تم الحذف بنجاح', '', {
+              duration: 3000,
+              panelClass: ['green-snackbar'],
+            });
+            this.View();
+            return;
+
+          } else {
+            this.snackBar.open('خطأ لم يتم الحذف', 'خطأ', {
+              duration: 3000,
+              panelClass: ['green-snackbar'],
+            });
+            return;
+          }
+
+        })
+      }
+    });
+  }
+
+  Update(order: exchange_order) {
+    this.PageExchangeOrderService.exchange_order = order;
+    this.PageExchangeOrderService.$exchange_order.next(order);
+
+    this.router.navigate(['../edit'], { relativeTo: this.ActivatedRoute });
+
+  }
+
+  add() {
+    this.PageExchangeOrderService.exchange_order = {};
+    this.PageExchangeOrderService.$exchange_order.next({});
+    this.router.navigate(['../edit'], { relativeTo: this.ActivatedRoute });
+  }
+
+
+
+
+
+  /*
+
+   Delete(order: exchange_order) {
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
       data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },
     });
@@ -350,103 +359,28 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
       }
     });
   }
-
+  
   Update(order: exchange_order) {
-    this.router.navigate(['/exchangeOrder/module/exchangeOrderEdit', { id: order.exchange_order_seq }])
-
+    //this.router.navigate(['edit', { id: order.exchange_order_seq }])
+    this.router.navigate(['../edit'],{relativeTo: this.ActivatedRoute});
   }
 
   add() {
-    this.router.navigate(['/exchangeOrder/module/exchangeOrderEdit', { id: 0 }]);
+    //this.router.navigate(['edit', { id: 0 }]);
+    this.router.navigate(['../edit'],{relativeTo: this.ActivatedRoute});
   }
-
-
-  fromSanadDateChange(changeSource: string) {
-    if (changeSource == 'day')
-      this.fromSanadDateDayIsFilled = true;
-    else if (changeSource == 'month')
-      this.fromSanadDateMonthIsFilled = true;
-    else if (changeSource == 'year')
-      this.fromSanadDateYearIsFilled = true;
-
-    if (this.fromSanadDateDayIsFilled && this.fromSanadDateMonthIsFilled && this.fromSanadDateYearIsFilled) {
-      this.document_date_from.setValue(moment(this.fromSanadDateMonth + '/' + this.fromSanadDateDay + '/' + this.fromSanadDateYear).set({ hour: 2 }).toDate());
-    }
-  }
-
-  toSanadDateChange(changeSource: string) {
-    if (changeSource == 'day')
-      this.toSanadDateDayIsFilled = true;
-    else if (changeSource == 'month')
-      this.toSanadDateMonthIsFilled = true;
-    else if (changeSource == 'year')
-      this.toSanadDateYearIsFilled = true;
-
-    if (this.toSanadDateDayIsFilled && this.toSanadDateMonthIsFilled && this.toSanadDateYearIsFilled) {
-      this.document_date_to.setValue(moment(this.toSanadDateMonth + '/' + this.toSanadDateDay + '/' + this.toSanadDateYear).set({ hour: 2 }).toDate());
-    }
-  }
-
-  fromIncumbentDateChange(changeSource: string) {
-    if (changeSource == 'day')
-      this.fromIncumbentDateDayIsFilled = true;
-    else if (changeSource == 'month')
-      this.fromIncumbentDateMonthIsFilled = true;
-    else if (changeSource == 'year')
-      this.fromIncumbentDateYearIsFilled = true;
-
-    if (this.fromIncumbentDateDayIsFilled && this.fromIncumbentDateMonthIsFilled && this.fromIncumbentDateYearIsFilled) {
-      this.incumbent_date_from.setValue(moment(this.fromIncumbentDateMonth + '/' + this.fromIncumbentDateDay + '/' + this.fromIncumbentDateYear).set({ hour: 2 }).toDate());
-    }
-  }
-
-  toIncumbentDateChange(changeSource: string) {
-    if (changeSource == 'day')
-      this.toIncumbentDateDayIsFilled = true;
-    else if (changeSource == 'month')
-      this.toIncumbentDateMonthIsFilled = true;
-    else if (changeSource == 'year')
-      this.toIncumbentDateYearIsFilled = true;
-
-    if (this.toIncumbentDateDayIsFilled && this.toIncumbentDateMonthIsFilled && this.toIncumbentDateYearIsFilled) {
-      this.incumbent_date_to.setValue(moment(this.toIncumbentDateMonth + '/' + this.toIncumbentDateDay + '/' + this.toIncumbentDateYear).set({ hour: 2 }).toDate());
-    }
-  }
+  */
 
 
 
-  select_Book_Option(event: any) {
-
-    const selectedValue = event.option.value;
-
-    if (selectedValue != null) {
-
-      var books = this.book_list.filter(x => x.sanad_kid_book_seq == selectedValue);
-      if (books != null && books.length > 0 && books[0].branch_fk != null) {
-        
-        this.branch_fk.setValue(books[0].branch_fk);
 
 
-      }
-
-    }
-
-  }
-
-  exportToExcel(){
+  exportToExcel() {
     this.exchangeOrderService.export2Excel().subscribe(
       (res) => {
         const file: Blob = new Blob([res], { type: 'application/xlsx' });
         saveAs(file, `سندات القيد.xlsx`);
-    }
+      }
     );
   }
-
-  printOne(sanad_kid: exchange_order){
-    this.exchangePrintInput= sanad_kid;
-   }
-
-   printRows(rows: exchange_order[]){
-    this.exchangePrintRowsInput= rows;
-   }
 }

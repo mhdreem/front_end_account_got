@@ -15,8 +15,10 @@
                         <c-col>
                             <mat-form-field>
                                 <mat-label #label_finance_list_name>اسم القائمة المالية</mat-label>
-                                <input matInput [formControl]="finance_list_name" id="finance_list_name"
-                                    (keyup.enter)="focusNext('account_center_id')">
+                                <input matInput 
+                                [formControl]="finance_list_name"
+                                id="finance_list_name"
+                                (keyup.enter)="focusNext('finance_list_order')">
                                 <mat-error *ngIf="fieldHasErrors(Form, 'finance_list_name')">
                                     {{
                                     autoPrintFirstErrorMessage(

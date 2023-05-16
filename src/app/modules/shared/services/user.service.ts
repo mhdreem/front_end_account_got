@@ -9,8 +9,8 @@ import { BaseAPIService } from './base/base-api.service';
 })
 export class UserService extends BaseAPIService{
 
-  Login_User :user ;
-  Login_User_BehavourSubject: BehaviorSubject<user> = new BehaviorSubject<user>({});
+  public Login_User :user ;
+  public Login_User_BehavourSubject: BehaviorSubject<user> = new BehaviorSubject<user>({});
 
   public List_User:user[] = [];
   public List_User_BehaviorSubject:BehaviorSubject<user[]> = new BehaviorSubject<user[]>([]);

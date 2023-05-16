@@ -1,37 +1,18 @@
-@import '../../../../../theme.scss';
 
-
-mat-form-field, button{
-    margin-left: 10px;
+.example-tree-invisible {
+  display: none;
 }
+
+.example-tree ul,
+.example-tree li {
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style-type: none;
+}
+
 
 form{
     direction: rtl;
-}
-
-.add, .edit{
-    color: white !important;
-    background-color: $lightPrimary !important;
-    margin-block: 10px;
-  }
-
-
-  .add:disabled, .edit:disabled{
-    background-color: rgba(0,0,0,.12) !important;
-    color: rgba(0,0,0,.26);
-}
-
-.save{
-    color: white !important;
-    background-color: $lightPrimary !important;
-}
-
-button{
-    font-weight: 700;
-}
-
-button, span, mat-form-field,:ng-deep .mat-mdc-form-field , ::ng-deep mat-label, th, td, label, output{
-    font-family: 'Noto Sans Arabic', sans-serif !important;
 }
 
 .small-width{
@@ -40,9 +21,9 @@ button, span, mat-form-field,:ng-deep .mat-mdc-form-field , ::ng-deep mat-label,
   }
 
   mat-form-field{
-    width: 170px;
-    height: 70px;
-    font-size: 14px;
+    width: 100%;
+    font-size: small;
+
   }
 
   ::ng-deep .mat-mdc-floating-label, ::ng-deep .mat-mdc-input-element, ::ng-deep .mat-mdc-select-min-line{

@@ -24,7 +24,7 @@ export class FinanceListListComponent {
 
   finance_list_List: finance_list[] = [];
   dataSource = new MatTableDataSource<finance_list>();
-  displayedColumns: string[] = ['finance_list_name', 'action'];
+  displayedColumns: string[] = ['finance_list_name','finance_list_order', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
 
   Subscription: Subscription = new Subscription();
@@ -94,7 +94,7 @@ export class FinanceListListComponent {
 
   add() {
     const dialogRef = this.dialog.open(FinanceListAddComponent, {
-      width: '300px',
+      width: '600px',
       position: {top: "8%" },
       data: {
         obj: null
@@ -110,7 +110,7 @@ export class FinanceListListComponent {
   update(obj: finance_list) {
 
     const dialogRef = this.dialog.open(FinanceListAddComponent, {
-      width: '300px',
+      width: '600px',
       position: {top: "8%" },
       data: {
         obj: obj
@@ -131,7 +131,7 @@ export class FinanceListListComponent {
   delete(obj: finance_list) {
 
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
-      width: '300px',
+      width: '600px',
       data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },
     });
 
@@ -187,7 +187,7 @@ export class FinanceListListComponent {
 
   importFromExcelClicked(){
     const dialogRef = this.dialog.open(ImportFromExcelComponent, {
-      width: '300px',
+      width: '600px',
       data: '',
     });
 

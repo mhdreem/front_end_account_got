@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { INavData } from '@coreui/angular';
 import { NavService } from '../shared/components/containers/default-layout/nav.service';
 import { ReturnBtnService } from '../shared/services/return-btn.service';
+import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { IconSetService } from '@coreui/icons-angular';
+import { iconSubset } from 'src/app/coreui/icons/icon-subset';
 
 @Component({
   selector: 'app-exchange-order',
@@ -31,14 +35,17 @@ export class ExchangeOrderComponent {
   ];
 
   constructor(private navService:NavService,
-    private returnBtnService: ReturnBtnService) {
-  
-      this.navService.navItems_Subject.next(this.navItems);
-      // this.returnBtnService.navItems= this.returnNavItems;
-    }
-  
+    private returnBtnService: ReturnBtnService,
+    private router: Router,
+    private titleService: Title,
+    private iconSetService: IconSetService) {
+    
+      // iconSet singleton
+      iconSetService.icons = { ...iconSubset };
+
+     }
+    
     ngOnInit(): void {
-    this.navService.navItems_Subject.next(this.navItems);
   
     }
 }

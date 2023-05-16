@@ -113,7 +113,7 @@ export class SanadKidBookListComponent implements OnInit, OnDestroy {
 
   delete(obj: sanad_kid_book) {
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
-      width: '300px',
+      width: '600px',
       data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },
     });
 

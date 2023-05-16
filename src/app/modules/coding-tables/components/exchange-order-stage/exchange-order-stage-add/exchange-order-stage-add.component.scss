@@ -72,3 +72,17 @@ mat-form-field{
 table{
   zoom: 90%;
 }
+
+
+
+:host
+{
+    font-size: small;
+}
+
+
+mat-form-field
+{
+    width: 100% !important;
+    font-size: small;
+}

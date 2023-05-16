@@ -1,78 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&display=swap');
-@import "~@ng-select/ng-select/themes/material.theme.css";
+
+@use '@angular/material' as mat;
+
 @import '~material-design-icons/iconfont/material-icons.css';
 
-button, span, mat-form-field,::ng-deep .mat-form-field , ::ng-deep mat-label, th, td, label, output, li, body{
-  font-family: 'Noto Sans Arabic', sans-serif !important;
-}
+/* You can add global styles to this file, and also import other style files */
+@import "~@ng-select/ng-select/themes/material.theme.css";
+@import "~@ng-select/ng-select/themes/default.theme.css";
 
-body {
-    padding: 0;
-    margin: 0!important;
-    direction: rtl;
-    // zoom: 90% !important;
-  }
-  
-html, body { height: 100%;margin: 0 }
-body { margin: 0; font-family: 'Roboto' , Tahoma , sans-serif; }
+.my-special-section {
+    $special-primary: mat.define-palette(mat.$orange-palette);
+    $special-accent: mat.define-palette(mat.$brown-palette);
+    $special-theme: mat.define-dark-theme((
+      color: (primary: $special-primary, accent: $special-accent),
+    ));
+   
+    @include mat.button-color($special-theme);
+   }
 
-$color1: #9FBCC2;
-$color2: #FAE5F6;
-$color3: #DD200B;
-
-:host{
-  direction: rtl;
-}
-
-.background-red{
-  background-color: black;
-  color: white;
-}
-
-.customize+* .mat-menu-panel {
-  background: #FAE5F6;
-}
-
-@media (max-width: 992px){
-  span.mat-button-wrapper{
-    font-size: 12px;
-  }
-}
-
-.green-snackbar .mdc-snackbar__surface{
-  background-color: green !important;
-}
-
-.red-snackbar .mdc-snackbar__surface{
-  background-color: red !important;
-}
-
-html,body
-{
-    margin: 0px !important;
-    padding-inline: 0px !important;
-    // overflow-x: hidden !important; 
-}
-// /* Importing Bootstrap SCSS file. */
-// @import '~bootstrap/scss/bootstrap';
-
-// /* Importing Bootstrap SCSS file. */
-// @import '~bootstrap/scss/bootstrap';
-
-// /* Importing Bootstrap SCSS file. */
-// @import '~bootstrap/scss/bootstrap';
-
-// @media (max-width: 350px){
-//   body{
-//     width: 350px !important;
-//   }
-// }
-/* Importing Bootstrap SCSS file. */
-// @import '~bootstrap/scss/bootstrap';
-
-@import './theme.scss';
-
-button{
-  zoom: 90%;
+   button, span, mat-form-field,::ng-deep .mat-mdc-form-field , ::ng-deep mat-label, th, td, label, output, li, body{
+    font-family: 'Noto Sans Arabic', sans-serif !important;
 }

@@ -5,30 +5,22 @@ import { AccountTreeEditComponent } from './components/account-tree-edit/account
 import { AccountTreeListComponent } from './components/account-tree-list/account-tree-list.component';
 
 const routes: Routes = [
-  { path: 'module',
-  component: AccountTreeComponent,
-  data:
-      {
-        title: 'شجرة الحسابات'
-      },
-  children:
-  [
+  
     {
-      path: 'accountTree', component: AccountTreeListComponent,
+      path: 'list', component: AccountTreeListComponent,
       data:
       {
         title: 'عرض شجرة الحسابات'
       }
     },
     {
-      path: 'accountTreeEdit', component: AccountTreeEditComponent,
+      path: 'edit', component: AccountTreeEditComponent,
       data:
       {
         title: 'تعديل/إضافة شجرة الحسابات'
       }
     }
-  ]
-}
+ 
 ];
 
 @NgModule({

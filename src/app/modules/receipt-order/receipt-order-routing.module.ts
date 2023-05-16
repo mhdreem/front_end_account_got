@@ -5,31 +5,22 @@ import { ReceiptOrderListComponent } from './components/receipt-order-list/recei
 import { ReceiptOrderComponent } from './receipt-order.component';
 
 const routes: Routes = [
+
   {
-    path: 'module',
-    component: ReceiptOrderComponent,
+    path: 'list', component: ReceiptOrderListComponent,
     data:
-      {
-        title: 'أوامر القبض'
-      },
-      children:[
-        {
-          path: 'receiptOrder', component: ReceiptOrderListComponent,
-          data:
-          {
-            title: 'عرض أوامر القبض'
-          }
-        },
-        {
-          path: 'receiptOrderEdit', component: ReceiptOrderEditComponent,
-          data:
-          {
-            title: 'تعديل أمر القبض'
-          }
-        },
-      ]
+    {
+      title: 'عرض أوامر القبض'
     }
-  ];
+  },
+  {
+    path: 'edit', component: ReceiptOrderEditComponent,
+    data:
+    {
+      title: 'تعديل أمر القبض'
+    }
+  }
+];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

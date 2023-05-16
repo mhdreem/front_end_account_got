@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, HostListener, EventEmitter, Inject, Input, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { Component, HostListener, EventEmitter, Inject, Input, OnDestroy, Output, SimpleChanges, OnChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
@@ -13,7 +13,7 @@ import { PagePaymentOrderService } from '../../pageservice/page-payment-order.se
   templateUrl: './payment-order-attachments.component.html',
   styleUrls: ['./payment-order-attachments.component.scss']
 })
-export class PaymentOrderAttachmentsComponent {
+export class PaymentOrderAttachmentsComponent implements OnDestroy,OnChanges{
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
     // enter
@@ -27,30 +27,23 @@ export class PaymentOrderAttachmentsComponent {
   @Input() set index(i: number) {
     this._index = i;
   }
-
-  get payment_order_attachement(): payment_order_attachement {
-    if (
-      this.PagePaymentOrderService.payment_order != null &&
-      this.PagePaymentOrderService.payment_order.payment_order_attachements != null &&
-      this._index >= 0 &&
-      this._index < this.PagePaymentOrderService.payment_order.payment_order_attachements?.length) {
-      return this.PagePaymentOrderService.payment_order.payment_order_attachements[this._index];
-    }
-    return {};
+  get index(): number {
+    return this._index;
   }
 
-  set payment_order_attachement(obj: payment_order_attachement) {
-    if (
-      this.PagePaymentOrderService.payment_order != null &&
-      this.PagePaymentOrderService.payment_order.payment_order_attachements != null &&
-      this._index >= 0 &&
-      this._index <= this.PagePaymentOrderService.payment_order.payment_order_attachements?.length) {
-      this.PagePaymentOrderService.payment_order.payment_order_attachements[this.index] = obj;
-    }
+  _payment_order_attachement: payment_order_attachement;
 
+  get payment_order_attachement(): payment_order_attachement {
+    return this._payment_order_attachement;
+  }
+
+  @Input() set payment_order_attachement(obj: payment_order_attachement) {
+    this._payment_order_attachement = obj;
   }
 
   _Subscription!: Subscription;
+
+
 
   Form!: FormGroup;
   payment_order_attachement_seq!: FormControl<number | null>;

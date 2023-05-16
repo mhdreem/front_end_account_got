@@ -75,7 +75,7 @@ export class DepartmentListComponent implements OnInit {
 
   add() {
     const dialogRef = this.dialog.open(DepartmentAddComponent, {
-      width: '300px',
+      width: '600px',
       position: {top: "8%" },
       data: {
         obj: null
@@ -91,7 +91,7 @@ export class DepartmentListComponent implements OnInit {
   update(obj: department) {
 
     const dialogRef = this.dialog.open(DepartmentAddComponent, {
-      width: '300px',
+      width: '600px',
       position: {top: "8%" },
       data: {
         obj: obj
@@ -111,7 +111,7 @@ export class DepartmentListComponent implements OnInit {
 
   delete(obj: department) {
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
-      width: '300px',
+      width: '600px',
       data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },
     });
 

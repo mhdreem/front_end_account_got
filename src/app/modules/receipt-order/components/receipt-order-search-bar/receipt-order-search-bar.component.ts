@@ -1,10 +1,12 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { receipt_order } from 'src/app/modules/shared/models/receipt_order';
 import { ReceiptOrderService } from 'src/app/modules/shared/services/receipt-order.service';
 import { PageReceiptOrderService } from '../../pageservice/page-receipt-order.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { month, months } from 'src/app/modules/shared/models/month';
 
 @Component({
   selector: 'app-receipt-order-search-bar',
@@ -12,16 +14,26 @@ import { PageReceiptOrderService } from '../../pageservice/page-receipt-order.se
   styleUrls: ['./receipt-order-search-bar.component.scss']
 })
 export class ReceiptOrderSearchBarComponent {
-  Selected_receipt_order: receipt_order;
 
+  @Input() Title:string = '';
+  @Output() OnSelectItem : EventEmitter<any> = new EventEmitter<any>();
 
-  from_number: FormControl<number|null> ;
-  to_number:  FormControl<number|null> ;
-  sanad_month:  FormControl<number|null> ;
-  incumbent_month:  FormControl<number|null> ;
-  page_index:  FormControl<number|null> ;
-  
+  Selected_receipt_order: receipt_order;  
   receipt_order_list: receipt_order[]= [];
+
+  months:month[]=months ;
+
+  incumbent_id_from: FormControl<number|null> ;
+  incumbent_id_to:  FormControl<number|null> ;
+
+  document_id_from: FormControl<number|null> ;
+  document_id_to:  FormControl<number|null> ;
+
+  
+
+  sanad_month:  FormControl<number[]|null> ;
+  incumbent_month:  FormControl<number[]|null> ;
+  page_index:  FormControl<number|null> ;
   
   from_num_is_inserted: boolean= false;
   to_num_is_inserted: boolean= false;
@@ -30,20 +42,25 @@ export class ReceiptOrderSearchBarComponent {
   
   darkTheme: boolean;
   
+  
   constructor(
+    private modalService: NgbModal,  
     private fb: FormBuilder,
     private pageService:PageReceiptOrderService,
     public dialog: MatDialog,
     private receiptOrderService: ReceiptOrderService,
     @Inject(DOCUMENT) private _document: Document) {
-      this.Form =this.fb.group({
+      
         
-      'incumbent_id_from':this.from_number = new  FormControl<number|null>(null) ,
-      'incumbent_id_to':this.to_number=new  FormControl<number|null> (null),
-      'month_incumbent':this.sanad_month= new  FormControl<number|null> (null),
-      'month_document':this.incumbent_month=new  FormControl<number|null> (null),
-      'page_index':this.page_index=new  FormControl<number|null> (1),
-      });
+        this.Form =this.fb.group({        
+          'incumbent_id_from':this.incumbent_id_from = new  FormControl<number|null>(null) ,
+          'incumbent_id_to':this.incumbent_id_to=new  FormControl<number|null> (null),
+          'document_id_from':this.document_id_from = new  FormControl<number|null>(null) ,
+          'document_id_to':this.document_id_to=new  FormControl<number|null> (null),
+          'month_incumbent':this.sanad_month= new  FormControl<number[]|null> (null),
+          'month_document':this.incumbent_month=new  FormControl<number[]|null> (null),
+          'page_index':this.page_index=new  FormControl<number|null> (1),
+          });
   
      
      }
@@ -52,6 +69,19 @@ export class ReceiptOrderSearchBarComponent {
   ngOnInit(): void {
     
   }
+  
+  
+  
+  
+  
+  
+  
+  
+ 
+
+  
+  
+  
   
   PerformSearch()
   {
@@ -71,9 +101,12 @@ export class ReceiptOrderSearchBarComponent {
   }
   
   
-  SelectItemChange (Selected_receipt_order: receipt_order)
+ 
+  
+  
+  SelectItemChange (Selected_Exchange_order: receipt_order)
   {
-    this.Selected_receipt_order = Selected_receipt_order;
+    this.Selected_receipt_order = Selected_Exchange_order;
     this.pageService.$receipt_order.next(this.Selected_receipt_order);
   }
   
@@ -98,4 +131,25 @@ export class ReceiptOrderSearchBarComponent {
       element.focus();
     }
   }
+
+  
+  openBasicModal(content: TemplateRef<any>) {
+    this.modalService.open(content, { windowClass: 'sidepanel sidepanel-fade', size: 'side-40', backdropClass: 'light-blue-backdrop' }).result.then((Result) => {  
+
+if (Result==1)
+      {
+        
+      }
+else 
+{
+
+}
+
+
+    }).catch(() => {
+
+    });
+  }
+
+ 
 }

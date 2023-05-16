@@ -24,7 +24,7 @@ export class AccountLevelListComponent {
 
   account_level_List: account_level[] = [];
   dataSource = new MatTableDataSource<account_level>();
-  displayedColumns: string[] = ['account_level_name', 'action'];
+  displayedColumns: string[] = ['account_level_name','account_level_order', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
   isLoading: boolean= false;
   Subscription: Subscription = new Subscription();
@@ -94,7 +94,7 @@ export class AccountLevelListComponent {
 
   add() {
     const dialogRef = this.dialog.open(AccountLevelAddComponent, {
-      width: '300px',
+      width: '600px',
       position: {top: "8%" },
       data: {
         obj: null
@@ -110,7 +110,7 @@ export class AccountLevelListComponent {
   update(obj: account_level) {
 
     const dialogRef = this.dialog.open(AccountLevelAddComponent, {
-      width: '300px',
+      width: '600px',
       position: {top: "8%" },
       data: {
         obj: obj
@@ -131,7 +131,7 @@ export class AccountLevelListComponent {
   delete(obj: account_level) {
 
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
-      width: '300px',
+      width: '600px',
       data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },
     });
 
@@ -187,7 +187,7 @@ export class AccountLevelListComponent {
 
   importFromExcelClicked(){
     const dialogRef = this.dialog.open(ImportFromExcelComponent, {
-      width: '300px',
+      width: '600px',
       data: '',
     });
 

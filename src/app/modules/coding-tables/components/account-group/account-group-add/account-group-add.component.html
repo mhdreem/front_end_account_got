@@ -16,7 +16,7 @@
                             <mat-form-field>
                                 <mat-label #label_account_group_name>اسم مجموعة الحسابات</mat-label>
                                 <input matInput [formControl]="account_group_name" id="account_group_name"
-                                    (keyup.enter)="focusNext('account_center_id')">
+                                    (keyup.enter)="focusNext('account_group_order')">
                                 <mat-error *ngIf="fieldHasErrors(Form, 'account_group_name')">
                                     {{
                                     autoPrintFirstErrorMessage(

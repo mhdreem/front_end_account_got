@@ -12,7 +12,34 @@
 
                 <c-container>
                     <c-row>
-                        <c-col>
+                        <div class="row">
+                            
+
+                          
+                        <div class="col-12" >
+
+                            <div>
+                                <label>اسم مركز الكلفة الاب</label>
+                                <ng-select
+                                id="account_center_parent_fk"
+                                formControlName="account_center_parent_fk" 
+                                [searchable]="true"                              
+                                placeholder="قم باختيار مركز الكلفة الاب"
+                                (keyup.enter)="focusNext('account_center_name')"
+                                >
+                                <ng-option [value]="-1" >الجذر</ng-option>
+                                <ng-option *ngFor="let item of list_account_center" [value]="item.account_center_seq">{{item.account_center_id + '-' + item.account_center_name}}</ng-option>
+                                </ng-select>
+                            </div>
+
+                                                    
+                       </div>
+
+
+
+
+                        <div class="col-12" >
+
                             <mat-form-field>
                                 <mat-label #label_account_center_name>اسم مركز الكلفة</mat-label>
                                 <input matInput [formControl]="account_center_name" id="account_center_name"
@@ -27,14 +54,13 @@
                                     }}
                                 </mat-error>
                             </mat-form-field>
-                        </c-col>
-                    </c-row>
-                    <c-row>
-                        <c-col>
+                       </div>
+                    
+                        <div class="col-12" >
                             <mat-form-field>
                                 <mat-label #label_account_center_id>رقم مركز الكلفة</mat-label>
                                 <input matInput [formControl]="account_center_id" id="account_center_id"
-                                    (keyup.enter)="focusNext('account_center_order')" [OnlyNumber]="true" >
+                                    (keyup.enter)="focusNext('account_center_final_seq')" [OnlyNumber]="true" >
                                 <mat-error *ngIf="fieldHasErrors(Form, 'account_center_id')">
                                     {{
                                     autoPrintFirstErrorMessage(
@@ -45,16 +71,40 @@
                                     }}
                                 </mat-error>
                             </mat-form-field>
-                        </c-col>
-                    </c-row>
-                    <c-row>
-                        <c-col>
+                       </div>
+                    
+                    <div class="col-12" >
+
+                        <div>
+                            <label>اسم الحساب الختامي</label>
+                            <ng-select
+                            id="account_center_final_seq"
+                            formControlName="account_center_final_seq"
+                            placeholder="قم باختيار الحساب الختامي"
+                            [searchable]="true"
+                            (keyup.enter)="focusNext('account_center_order')"
+                            >
+                            <ng-option [value]="-1"  >عدم تحديد</ng-option>
+                            <ng-option *ngFor="let item of list_accounts_tree" [value]="item.seq">{{item.account_id + '-' + item.account_name}}</ng-option>
+                            </ng-select>
+                        </div>
+
+                                                
+                   </div>
+
+
+                  
+                        <div class="col-12" >
                             <mat-form-field>
                                 <mat-label>ترتيب مركز الكلفة</mat-label>
                                 <input matInput [formControl]="account_center_order" id="account_center_order"
                                     (keyup.enter)="focusNext('account_center_name')" [OnlyNumber]="true">
                             </mat-form-field>
-                        </c-col>
+                       </div>
+
+
+                        </div>
+
                     </c-row>
 
 

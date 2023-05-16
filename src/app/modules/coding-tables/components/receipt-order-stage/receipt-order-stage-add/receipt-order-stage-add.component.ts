@@ -223,6 +223,7 @@ export class ReceiptOrderStageAddComponent {
   ResetForm()
   {
     this.Form.reset();
+    this.focusNext('rec_ord_stg_name')
   }
 
   save()

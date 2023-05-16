@@ -212,9 +212,11 @@ export class SanadKidStageAddComponent {
         }
   }
 
+ 
   ResetForm()
   {
     this.Form.reset();
+    this.focusNext('snd_kid_stg_name')
   }
 
   save()

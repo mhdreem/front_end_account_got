@@ -1,4 +1,5 @@
-<div class=WordSection1>
+
+<div class=WordSection1 *ngIf="exchange_order!= null">
 
     <div align=center>
     
@@ -13,7 +14,7 @@
       dir=ltr><br>
       </span><span lang=AR-SY style='font-family:"Arial",sans-serif'>وزارة الصناعة<br>
       المؤسسة العامة للتبغ<br>
-      مديرية: </span><span>{{data.branch?.branch_name}}</span><span lang=AR-SY style='font-family:
+      مديرية: </span><span *ngIf="exchange_order!= null && exchange_order.branch!= null ">{{ getByObject (exchange_order.branch,'branch_name')}}</span><span lang=AR-SY style='font-family:
       "Arial",sans-serif'><br>
       قسم: </span><span >القسم المحاسبي</span></p>
       </td>
@@ -28,7 +29,7 @@
       <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
       center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
       style='font-size:12.0pt;font-family:"Arial",sans-serif'>اسم صاحب الاستحقاق </span><span
-      dir=ltr style='font-size:12.0pt'>{{data.name_of_owner}}</span></p>
+      dir=ltr style='font-size:12.0pt'>{{(exchange_order!= null && exchange_order.name_of_owner!= null)?exchange_order.name_of_owner :''}}</span></p>
       </td>
       <td width=208 style='width:155.85pt;padding:0in 5.4pt 0in 5.4pt;height:19.75pt'>
       <p class=MsoNormal dir=rtl style='margin-bottom:0in;text-align:right;
@@ -92,19 +93,19 @@
       style='font-family:"Arial",sans-serif'>بيان</span></p>
       </td>
      </tr>
-     <tr *ngFor="let attachment of data.exchange_order_attachements">
+     <tr *ngFor="let attachment of exchange_order.exchange_order_attachements">
       <td width=156 valign=top style='width:116.85pt;border:solid windowtext 1.0pt;
       border-top:none;padding:0in 5.4pt 0in 5.4pt'>
       <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
       center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
-      style='font-family:"Arial",sans-serif'>{{attachment.exchange_order_attachement_id}}</span></p>
+      style='font-family:"Arial",sans-serif'>{{attachment.attachement_id}}</span></p>
       </td>
       <td width=156 valign=top style='width:116.85pt;border-top:none;border-left:
       solid windowtext 1.0pt;border-bottom:solid windowtext 1.0pt;border-right:
       none;padding:0in 5.4pt 0in 5.4pt'>
       <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
       center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
-      style='font-family:"Arial",sans-serif'>{{attachment.exchange_order_attachement_date | date:'yyyy/MM/dd'}}</span></p>
+      style='font-family:"Arial",sans-serif'>{{attachment.attachement_date | date:'yyyy/MM/dd'}}</span></p>
       </td>
       <td width=156 valign=top style='width:116.9pt;border-top:none;border-left:
       solid windowtext 1.0pt;border-bottom:solid windowtext 1.0pt;border-right:
@@ -118,13 +119,14 @@
       none;padding:0in 5.4pt 0in 5.4pt'>
       <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
       center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
-      style='font-family:"Arial",sans-serif'>{{attachment.exchange_order_attachement_note}}</span></p>
+      style='font-family:"Arial",sans-serif'>{{attachment.attachement_note}}</span></p>
       </td>
      </tr>
     </table>
     
     </div>
     
+
     <p class=MsoNormal align=center dir=rtl style='text-align:center;direction:
     rtl;unicode-bidi:embed'><span lang=AR-SA style='font-family:"Arial",sans-serif'>&nbsp;</span></p>
     
@@ -150,7 +152,7 @@
       border-left:solid windowtext 1.0pt;border-bottom:none;border-right:none;
       padding:0in 5.4pt 0in 5.4pt;height:1.25pt'>
       <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
-      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span dir=ltr>{{data.document_id}}</span></p>
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span dir=ltr>{{exchange_order.document_id}}</span></p>
       </td>
      </tr>
      <tr style='height:1.25pt'>
@@ -169,7 +171,7 @@
       <td width=109 style='width:81.7pt;border:none;border-left:solid windowtext 1.0pt;
       padding:0in 5.4pt 0in 5.4pt;height:1.25pt'>
       <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
-      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span>{{data.incumbent_date | date:'yyyy/MM/dd'}}</span></p>
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span>{{exchange_order.incumbent_date | date:'yyyy/MM/dd'}}</span></p>
       </td>
      </tr>
      <tr style='height:1.25pt'>
@@ -270,7 +272,7 @@
       style='font-family:"Arial",sans-serif'>ليرة سورية</span></p>
       </td>
      </tr>
-     <tr *ngFor="let detail of data.exchange_order_details; let i= index;">
+     <tr *ngFor="let detail of exchange_order.exchange_order_details; let i= index;">
       <td width=125 valign=top style='width:93.5pt;border:solid windowtext 1.0pt;
       border-top:none;padding:0in 5.4pt 0in 5.4pt'>
       <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
@@ -432,7 +434,7 @@
       <td width=208 valign=top style='width:155.85pt;padding:0in 5.4pt 0in 5.4pt'>
       <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
       center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SY
-      style='font-family:"Arial",sans-serif'>عدد الحركات الكلية: {{data.exchange_order_details?.length}}</span></p>
+      style='font-family:"Arial",sans-serif'>عدد الحركات الكلية: {{exchange_order.exchange_order_details?.length}}</span></p>
       </td>
      </tr>
     </table>

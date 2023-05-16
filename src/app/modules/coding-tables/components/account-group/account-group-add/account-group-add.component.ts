@@ -108,6 +108,7 @@ export class AccountGroupAddComponent {
   ResetForm()
   {
     this.Form.reset();
+    this.focusNext('account_group_name')
   }
 
   save()

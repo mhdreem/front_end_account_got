@@ -1,50 +1,33 @@
-@import '../../../../../theme.scss';
-
-button{
-    margin-top: 10px;
+:host
+{
+    font-size: small;
 }
 
-button, span, mat-form-field,:ng-deep .mat-mdc-form-field , ::ng-deep mat-label, th, td, label, output{
-    font-family: 'Noto Sans Arabic', sans-serif !important;
+
+mat-form-field
+{
+    width: 100% !important;
+    font-size: small;
 }
 
-form{
-    width: 100%;
-    padding: 10px;
+/*
+
+
+.form-control {
+    height: 90% !important;
 }
 
-textarea{
-    resize: none;
-}
-
-::ng-deep .mat-mdc-form-field-underline::before{
-    background-color: black !important;
-}
-
-mat-form-field ::ng-deep .mat-mdc-form-field-flex, mat-form-field ::ng-deep .mat-mdc-text-field-wrapper{
-    background-color: white !important;
-}
-
-mat-form-field, ::ng-deep .mat-mdc-form-field-label{
-  color: black !important;
-}
-
-.small-width{
-    width: 90px !important;
-    margin-left: 0px !important;
+.ng-select .ng-select-container {
+    height: 100% !important;
   }
-
-  mat-form-field{
-    width: 18%;
-    height: 70px;
-    font-size: 14px;
-    margin-right: 10px;
+  
+  .ng-select.ng-select-single .ng-select-container {
+    height: 100% !important;
   }
-
-  ::ng-deep .mat-mdc-floating-label, ::ng-deep .mat-mdc-input-element, ::ng-deep .mat-mdc-select-min-line{
-    font-size: 14px;
+*/
+/*
+  ::ng-deep .ng-select-container {
+    height: 5px !important;
+    font-size: 1em!important;
   }
-
-  table, c-card{
-    zoom: 90%;
-  }
+  */

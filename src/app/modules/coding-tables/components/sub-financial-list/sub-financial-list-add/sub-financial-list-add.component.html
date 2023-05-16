@@ -1,0 +1,104 @@
+<c-container>
+
+    <mat-card>
+
+        <mat-card-header>
+            <mat-card-title>القائمة الفرعية لقوائم المالية</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <form [formGroup]="Form">
+
+                <c-container>
+                    <c-row>
+                        <div class="row">
+
+
+
+
+
+
+
+                            <div class="col-12">
+
+                                <mat-form-field>
+                                    <mat-label #label_sub_financial_list_name>اسم القائمة الفرعية</mat-label>
+                                    <input matInput [formControl]="sub_financial_list_name" id="sub_financial_list_name"
+                                        (keyup.enter)="focusNext('direct_cost_center_fk')">
+                                    <mat-error *ngIf="fieldHasErrors(Form, 'sub_financial_list_name')">
+                                        {{
+                                        autoPrintFirstErrorMessage(
+                                        Form,
+                                        "sub_financial_list_name",
+                                        label_sub_financial_list_name.innerHTML
+                                        )
+                                        }}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-12">
+                                <div>
+                                    <label #label_direct_cost_center_fk>رقم مركز الكلفة المباشر</label>
+                                    <ng-select
+                                    [formControl]="direct_cost_center_fk" 
+                                    id="direct_cost_center_fk"
+                                    (keyup.enter)="focusNext('indirect_cost_center_fk')" 
+                                    placeholder="قم باختيار مركز الكلفة المباشر"
+
+
+                                    >
+                                    <ng-option [value]="-1"  >عدم تحديد</ng-option>
+                                    <ng-option *ngFor="let item of list_account_center" [value]="item.account_center_seq">{{item.account_center_id + '-' + item.account_center_name}}</ng-option>
+
+                                    </ng-select>
+                                    
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div>
+                                    <label #label_indirect_cost_center_fk>رقم مركز الكلفة المباشر</label>
+                                    <ng-select
+                                    [formControl]="indirect_cost_center_fk" 
+                                    id="indirect_cost_center_fk"
+                                    
+                                    placeholder="قم باختيار مركز الكلفة المباشر"
+
+
+                                    >
+                                    <ng-option [value]="-1"  >عدم تحديد</ng-option>
+                                    <ng-option *ngFor="let item of list_account_center" [value]="item.account_center_seq">{{item.account_center_id + '-' + item.account_center_name}}</ng-option>
+
+                                    </ng-select>
+                                    
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+
+                        </div>
+
+                    </c-row>
+
+
+
+                </c-container>
+
+
+            </form>
+
+
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button class="add" (click)="save()" [disabled]="!Form.valid">F9 حفظ </button>
+            <button mat-raised-button (click)="closeDialog()" color="warn">إلغاء</button>
+        </mat-card-actions>
+    </mat-card>
+</c-container>

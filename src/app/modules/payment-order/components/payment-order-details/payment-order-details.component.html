@@ -1,25 +1,38 @@
+<c-container>
     <form [formGroup]="Form" #form="ngForm">
-                <button mat-raised-button (click)="delete()" color="warn" style="margin-bottom: 25px;"><mat-icon class="mat-icon-rtl-mirror">delete
-                </mat-icon> حذف</button>
+        <c-row>
+                       
+            <c-col [cCol]="1">
+                <button type="button" class="btn btn-danger btn-sm"  (click)="delete()" >
+                    حذف
+                    <span class="badge bg-info"> {{index+1}} </span> 
+                </button>
+            </c-col>
 
-                <mat-form-field class="fitContent" appearance="fill">
+            <c-col [cCol]="2">
+                <mat-form-field  appearance="outline">
+               
                     <mat-label>مبلغ مدين</mat-label>
                     <input matInput [OnlyNumber]="true" id="{{'debtor_'+_index}}"
                      [formControl]="debtor"(input)="onDebtorFilling()"    
                         (keyup.enter)="focusNext('creditor_'+ _index )"
                         >
                 </mat-form-field>
+            </c-col>
 
-                <mat-form-field class="fitContent" appearance="fill">
+            <c-col [cCol]="2">
+                <mat-form-field  appearance="outline">
                     <mat-label>مبلغ دائن</mat-label>
                     <input matInput [OnlyNumber]="true"  [formControl]="creditor"
                     (input)="onCreditorFilling()" id="{{'creditor_'+_index}}"
                         (keyup.enter)="focusNext( 'accounts_tree_fk_'+_index )">
                 </mat-form-field>
+            </c-col>
 
 
 
-                <mat-form-field class="fitContent" appearance="fill">
+            <c-col [cCol]="4">
+                <mat-form-field  appearance="outline">
                     <mat-label #label_accounts_tree_fk>رقم الحساب</mat-label>
                     <input matInput [formControl]="accounts_tree_fk" [matAutocomplete]="autoaccounts_tree_fk"
                     id="{{'accounts_tree_fk_'+_index}}"  
@@ -41,8 +54,10 @@
                         }}
                     </mat-error>
                 </mat-form-field>
+            </c-col>
 
-                <mat-form-field class="fitContent" appearance="fill">
+            <c-col [cCol]="3">
+                <mat-form-field  appearance="outline">
                     <mat-label>مركز الكلفة</mat-label>
                     <input matInput [formControl]="account_center_fk" [matAutocomplete]="autoaccount_center_fk"
                     id="{{'account_center_fk_'+_index}}"    
@@ -56,15 +71,23 @@
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
+            </c-col>
 
 
+        </c-row>
 
-                <mat-form-field class="fitContent" appearance="fill" style="width: 83%;">
+        <c-row>
+            <c-col [cCol]="12">
+                <mat-form-field appearance="outline">
                     <mat-label>بيان الحساب</mat-label>
                     <input matInput id="{{'account_notice_'+_index}}"
                         [formControl]="account_notice">
                 </mat-form-field>
 
+            </c-col>
 
             
+        </c-row>
     </form>
+
+</c-container>

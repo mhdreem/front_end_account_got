@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, HostListener, EventEmitter, Inject, Input, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { Component, HostListener, EventEmitter, Inject, Input, OnDestroy, Output, SimpleChanges, OnChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
 import { account_center } from 'src/app/modules/shared/models/account_center';
@@ -16,7 +16,7 @@ import { validate_account_tree } from './validators/validate_account_tree';
   templateUrl: './receipt-order-details.component.html',
   styleUrls: ['./receipt-order-details.component.scss']
 })
-export class ReceiptOrderDetailsComponent {
+export class ReceiptOrderDetailsComponent implements OnDestroy,OnChanges{
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
     // enter
@@ -24,6 +24,7 @@ export class ReceiptOrderDetailsComponent {
       event.preventDefault();
     }
   }
+  
   _index: number;
   @Output() onDelete: EventEmitter<number> = new EventEmitter();
   @Output() updateSum: EventEmitter<number> = new EventEmitter();
@@ -31,26 +32,20 @@ export class ReceiptOrderDetailsComponent {
   @Input() set index(i: number) {
     this._index = i;
   }
+  get index():number
+  {
+    return this._index;
+  }
+  
+  _receipt_order_detail:receipt_order_detail;
+
   get receipt_order_detail(): receipt_order_detail {
-    if (
-      this.PageReceiptOrderService.receipt_order != null &&
-      this.PageReceiptOrderService.receipt_order.receipt_order_details != null &&
-      this._index >= 0 &&
-      this._index < this.PageReceiptOrderService.receipt_order.receipt_order_details?.length) {
-       return this.PageReceiptOrderService.receipt_order.receipt_order_details[this._index];
-    }
-    return {};
+   return this._receipt_order_detail;
+
   }
 
-  set receipt_order_detail(obj: receipt_order_detail) {
-    if (
-      this.PageReceiptOrderService.receipt_order != null &&
-      this.PageReceiptOrderService.receipt_order.receipt_order_details != null &&
-      this._index >= 0 &&
-      this._index <= this.PageReceiptOrderService.receipt_order.receipt_order_details?.length) {
-      this.PageReceiptOrderService.receipt_order.receipt_order_details[this.index] = obj;
-    }
-
+  @Input() set receipt_order_detail(obj: receipt_order_detail) {
+     this._receipt_order_detail = obj;
   }
 
   _Subscription!: Subscription;

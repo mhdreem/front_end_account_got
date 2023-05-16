@@ -56,6 +56,13 @@
                 <td mat-cell *matCellDef="let element"> {{element.account_class_name}} </td>
             </ng-container>
 
+
+            <ng-container matColumnDef="account_class_order">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ترتيب صنف الحساب</th>
+                <td mat-cell *matCellDef="let element"> <span *ngIf="element.account_class_order!= null">{{element.account_class_order}}</span>  </td>
+            </ng-container>
+
+
             <!-- Action Column -->
             <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef> </th>

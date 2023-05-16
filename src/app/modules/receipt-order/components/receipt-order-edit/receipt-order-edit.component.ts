@@ -1,14 +1,13 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, HostListener, Inject, OnDestroy, ViewChild, OnInit, AfterViewInit } from '@angular/core';
+import { Component, HostListener, Inject, OnDestroy, ViewChild, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
-import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
+import { combineLatest, forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
 import { branch } from 'src/app/modules/shared/models/branch';
 import { receipt_order } from 'src/app/modules/shared/models/receipt_order';
 import { receipt_order_entry } from 'src/app/modules/shared/models/receipt_order_entry';
@@ -17,7 +16,10 @@ import { sanad_kid_book } from 'src/app/modules/shared/models/sanad_kid_book';
 import { ReceiptOrderService } from 'src/app/modules/shared/services/receipt-order.service';
 import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-book.service';
 import { PageReceiptOrderService } from '../../pageservice/page-receipt-order.service';
-import { ReceiptOrderEntriesViewComponent } from '../receipt-order-entries-view/receipt-order-entries-view.component';
+import { payment_safe } from 'src/app/modules/shared/models/payment_safe';
+import { PaymentSafeService } from 'src/app/modules/shared/services/payment_safe.service';
+import { BranchService } from 'src/app/modules/shared/services/branch.service';
+import { receipt_order_detail } from 'src/app/modules/shared/models/receipt_order_detail';
 
 
 @Component({
@@ -26,6 +28,8 @@ import { ReceiptOrderEntriesViewComponent } from '../receipt-order-entries-view/
   styleUrls: ['./receipt-order-edit.component.scss']
 })
 export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewInit{
+
+
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.keyCode == 120) {
@@ -39,24 +43,23 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
     }
   }
 
+
   _receipt_order: receipt_order;
 
   get receipt_order(): receipt_order {
-    if (
-      this.PageReceiptOrderService.receipt_order != null) {
-      return this.PageReceiptOrderService.receipt_order;
-    }
-    return {};
+    return this._receipt_order;
   }
 
   set receipt_order(obj: receipt_order) {
-    // this.PageReceiptOrderService.receipt_order = obj;
-    this._receipt_order= obj;
+    this._receipt_order = obj;
     this.SetValue();
   }
 
 
-  _Subscription: Subscription = new Subscription;
+  
+
+
+  _Subscription: Subscription[] = [];
 
   Form!: FormGroup;
   receipt_order_seq!: FormControl<number | null>;
@@ -75,7 +78,8 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
 
 
   selected_sanad_kid_book: sanad_kid_book;
-
+  List_Payment_Safe: payment_safe[] = [];
+  list_branch: branch[] = [];
   List_sanad_kid_book: sanad_kid_book[];
   filter_List_sanad_kid_book: Observable<sanad_kid_book[]>;
 
@@ -101,7 +105,7 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
 
   dataSource_receipt_order_entry = new MatTableDataSource<receipt_order_entry>();
   receipt_order_entry_displayedColumns: string[] =
-    ["rec_ord_stg_name", 'user_entry', 'date_entry', 'view'];
+    ["ex_ord_stg_name", 'user_entry', 'date_entry'];
 
   totalRows = 0;
   pageSize = 5;
@@ -122,7 +126,8 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
     private SanadKidBookService: SanadKidBookService,
     @Inject(DOCUMENT) private _document: Document,
     private receiptOrderService: ReceiptOrderService,
-    public dialog: MatDialog
+    private PaymentSafeService: PaymentSafeService,
+    private BranchService: BranchService,
   ) {
 
     this.LoadingFinish = true;
@@ -137,14 +142,58 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
       this.actionNum= this.receipt_order.receipt_order_details?.length!;
     });
 
-    
+    if (this.receipt_order != null && 
+      this.receipt_order.receipt_order_entries!= null)
+      this.dataSource_receipt_order_entry.data = this.receipt_order.receipt_order_entries!;
+
   }
 
   ngOnDestroy(): void {
-    this._Subscription.unsubscribe();
+    this._Subscription.forEach(Sub => {
+      if (Sub != null) Sub.unsubscribe();
+    });
   }
 
+
+  public Load_Receipt_Order(receipt_order_seq: number | number | undefined): Observable<result> {
+    if (receipt_order_seq == null ||
+      receipt_order_seq == undefined ||
+      receipt_order_seq == 0) {
+        this.receipt_order= {};
+        this.receipt_order.receipt_order_details= [];
+        this.receipt_order.receipt_order_attachements= [];
+        this.Form.reset();
+          this.dataSource_receipt_order_entry.data= [];
+          this.sumDebtor= 0;
+          this.sumCreditor= 0;
+          this.balance= 0;
+          this.sanadDateDay= '';
+          this.sanadDateMonth= '';
+          this.sanadDateYear= '';
+          this.incumbentDateDay= '';
+          this.incumbentDateMonth= '';
+          this.incumbentDateYear= '';
+  
+          this.sanadDateDayIsFilled= false;
+          this.sanadDateMonthIsFilled= false;
+          this.sanadDateYearIsFilled= false;
+          this.incumbentDateDayIsFilled= false;
+          this.incumbentDateMonthIsFilled= false;
+          this.incumbentDateYearIsFilled= false;
+          let result: result = {
+            value: this.receipt_order,
+            error: '',
+            success: true
+          }
+      return of(result);
+    }
+
+    return this.receiptOrderService.getBySeq(receipt_order_seq);
+  }
+
+
   ngOnInit() {
+    /*
     this.PageReceiptOrderService.new();
 
     let seq: number = this.route.snapshot.params['id'];
@@ -155,52 +204,26 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
           this.updateSum();
           this.actionNum= this.receipt_order.receipt_order_details?.length!;
 
-          console.log('this.receipt_order', this.receipt_order);
-          if (this.receipt_order != null && 
-            this.receipt_order.receipt_order_entries!= null){
-              this.receipt_order.receipt_order_entries.forEach(receipt_order_entry=>{
-                receipt_order_entry.data= JSON.parse(receipt_order_entry.data!)
-              });
-              this.dataSource_receipt_order_entry.data = this.receipt_order.receipt_order_entries!;
-            }
-
         }
       }));
 
 
     }
     else{
-      this.receipt_order= {};
-      this.receipt_order.receipt_order_details= [];
-      this.receipt_order.receipt_order_attachements= [];
-      this.Form.reset();
-        this.dataSource_receipt_order_entry.data= [];
-        this.sumDebtor= 0;
-        this.sumCreditor= 0;
-        this.balance= 0;
-        this.sanadDateDay= '';
-        this.sanadDateMonth= '';
-        this.sanadDateYear= '';
-        this.incumbentDateDay= '';
-        this.incumbentDateMonth= '';
-        this.incumbentDateYear= '';
-
-        this.sanadDateDayIsFilled= false;
-        this.sanadDateMonthIsFilled= false;
-        this.sanadDateYearIsFilled= false;
-        this.incumbentDateDayIsFilled= false;
-        this.incumbentDateMonthIsFilled= false;
-        this.incumbentDateYearIsFilled= false;
+      
     }
 
-
+ */
   }
 
   ngAfterViewInit() {
     this.dataSource_receipt_order_entry.paginator = this.paginator;
     this.dataSource_receipt_order_entry.sort = this.sort;
 
-    
+    setTimeout(()=>{
+      document.querySelector('c-sidebar')?.classList.add('hide');
+    }, 1000);
+   
   }
 
   public BuildForm() {
@@ -242,13 +265,40 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
 
   }
 
+  public Load_Payment_Safe(): Observable<any[]> {
+    return this.PaymentSafeService.list();
+  }
+
+ 
+
+  public Load_Branch(): Observable<any[]> {
+    return this.BranchService.list();
+  }
+
+
+
+  
 
   loadData() {
-    this._Subscription.add
+
+    
+    combineLatest(this.PageReceiptOrderService.$receipt_order).subscribe(
+      res => {
+        this.receipt_order = res[0];
+        let receipt_order_seq: number | undefined | null = res[0]?.receipt_order_seq;
+
+        this.updateSum();
+        this.actionNum = this.receipt_order.receipt_order_details?.length!;
+
+        
+    this._Subscription.push
       (
         forkJoin(
-          this.load_sanad_kid_book()
-
+          this.load_sanad_kid_book(),
+          this.Load_Payment_Safe(),
+          this.Load_Branch(),
+          this.Load_Receipt_Order(receipt_order_seq)
+         
         ).subscribe(
           res => {
 
@@ -257,12 +307,32 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
             this.SanadKidBookService.List_SanadKidBook = res[0];
             this.SanadKidBookService.List_SanadKidBook_BehaviorSubject.next(res[0]);
 
+            this.PaymentSafeService.List_Payment_Safe = res[1];
+            this.PaymentSafeService.List_Payment_Safe_BehaviorSubject.next(res[1]);
+            this.List_Payment_Safe = res[1];
+
+
+            this.list_branch = res[2];
+
+
+            if (res[3] != null && res[3].value != null)
+              this.receipt_order = res[3].value;
+
+            this.updateSum();
+
+            this.actionNum = this.receipt_order.receipt_order_details?.length!;
+
+            if (this.receipt_order != null &&
+              this.receipt_order.receipt_order_entries != null) {
+              this.dataSource_receipt_order_entry.data = this.receipt_order.receipt_order_entries!;
+            }
 
             this.Init_AutoComplete();
           }
         )
       );
-
+    }
+    );
   }
 
 
@@ -466,6 +536,107 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
   }
 
 
+  Payment_Safe_Check(receipt_order_detail: receipt_order_detail): boolean {
+    if (this.List_Payment_Safe != null) {
+      var Result = this.List_Payment_Safe.filter(x => x.accounts_tree_fk == receipt_order_detail.accounts_tree_fk);
+      if (Result != null && Result.length > 0)
+        return true;
+    }
+    return false;
+
+  }
+
+  Add_Account_Tree_Payment_Safe_To_Details() {
+    if (this.book_fk != null && this.book_fk.value != null && this.book_fk.value > 0) {
+
+      var Results = this.List_sanad_kid_book.filter(x => x.sanad_kid_book_seq == this.book_fk.value);
+      if (Results != null && Results.length > 0) {
+        var sanad_kid_book = Results[0];
+        var sum_debtor = this.sum_details_debtor();
+        var sum_creditor = this.sum_details_creditor();
+
+
+        if (sum_creditor-sum_debtor>0)
+        {
+          let receipt_order_detail: receipt_order_detail = {
+            account_center_fk: undefined,
+            accounts_tree_fk: sanad_kid_book.cash_account_fk,
+            creditor: 0,
+            debtor: sum_creditor-sum_debtor,
+            account_notice: 'اضافة حساب الصندوق للموازنة'
+          }
+          this.receipt_order.receipt_order_details?.push(receipt_order_detail);
+        } 
+          
+        
+
+
+
+
+      }
+
+
+
+      if (
+        this.List_Payment_Safe != null &&
+        this.List_Payment_Safe.length > 0 &&
+        this.receipt_order != null && this.receipt_order.receipt_order_details != null) {
+        let indexFound: number[] = [];
+
+        this.receipt_order.receipt_order_details.forEach((det, index) => {
+          if (det != null && det.accounts_tree_fk != null) {
+            if (this.Payment_Safe_Check(det))
+              indexFound.push(index);
+          }
+        });
+        if (indexFound != null &&
+          indexFound.length > 0) {
+          indexFound.forEach(index => {
+            this.receipt_order.receipt_order_details = this.receipt_order.receipt_order_details?.splice(index, 1);
+          });
+        }
+
+
+      }
+
+
+    }
+  }
+
+
+  Reomve_Account_Tree_Payment_Safe_From_Details() {
+
+
+    if (
+      this.List_Payment_Safe != null &&
+      this.List_Payment_Safe.length > 0 &&
+      this.receipt_order != null &&
+      this.receipt_order.receipt_order_details != null &&
+      this.receipt_order.receipt_order_details.length > 0) {
+      let indexFound: number[] = [];
+
+      this.receipt_order.receipt_order_details.forEach((det, index) => {
+        if (det != null && det.accounts_tree_fk != null) {
+          if (this.Payment_Safe_Check(det))
+            indexFound.push(index);
+        }
+      });
+
+      if (indexFound != null &&
+        indexFound.length > 0) {
+        indexFound.forEach(index => {
+          this.receipt_order.receipt_order_details = this.receipt_order.receipt_order_details?.splice(index, 1);
+        });
+      }
+
+
+
+
+
+    }
+  }
+
+
   select_Book_Option(event: any) {
 
     const selectedValue = event.option.value;
@@ -476,60 +647,58 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
       if (books != null && books.length > 0 && books[0].branch_fk != null) {
         this.selected_sanad_kid_book = books[0];
         this.branch_fk.setValue(books[0].branch_fk);
-        if (books[0].branch!= null)
+        if (books[0].branch != null)
           this.branch.setValue(books[0].branch);
 
 
+
       }
+
+
+
 
     }
 
   }
 
+  sum_details_debtor(): number {
+    if (this.receipt_order != null &&
+      this.receipt_order.receipt_order_details != null &&
+      this.receipt_order.receipt_order_details.length > 0) {
 
-  sum_details_debtor():number
-  {
-    if (this.receipt_order!= null &&
-      this.receipt_order.receipt_order_details!= null &&
-      this.receipt_order.receipt_order_details.length>0)
-      {
+      let sum: number = 0;
+      this.receipt_order.receipt_order_details.forEach(element => {
+        if (element.debtor != null) sum = sum + (+element.debtor);
+      });
 
-        let sum:number =0;
-         this.receipt_order.receipt_order_details.forEach(element => {
-           if (element.debtor!= null )  sum = sum  + (+element.debtor);  
-         }); 
+      this.sumDebtor = sum;
+      return sum;
 
-        this.sumDebtor= sum;
-        return sum;
+    }
 
-      }
-
-      return 0;
+    return 0;
 
 
   }
 
-  sum_details_creditor():number
-  {
-    if (this.receipt_order!= null &&
-      this.receipt_order.receipt_order_details!= null &&
-      this.receipt_order.receipt_order_details.length>0)
-      {
+  sum_details_creditor(): number {
+    if (this.receipt_order != null &&
+      this.receipt_order.receipt_order_details != null &&
+      this.receipt_order.receipt_order_details.length > 0) {
 
-        let sum:number =0;
-         this.receipt_order.receipt_order_details.forEach(element => {
-           if (element.creditor!= null )  sum = sum  + (+element.creditor);  
-         }); 
-         
-        this.sumCreditor= sum;
-        return sum;
+      let sum: number = 0;
+      this.receipt_order.receipt_order_details.forEach(element => {
+        if (element.creditor != null) sum = sum + (+element.creditor);
+      });
 
-      }
-      return 0;
+      this.sumCreditor = sum;
+      return sum;
+
+    }
+    return 0;
   }
 
-  vaidate_details()
-  {
+  vaidate_details() {
 
 
   }
@@ -667,11 +836,10 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
     }
   }
 
-  onViewClick(receipt_order: receipt_order){
-    const dialogRef = this.dialog.open(ReceiptOrderEntriesViewComponent, {
-      data: receipt_order,
-      width: '1000px',
-      height: '600px'
-    });
+
+  OnSelectItem(receipt_order:receipt_order)
+  {
+
   }
+
 }

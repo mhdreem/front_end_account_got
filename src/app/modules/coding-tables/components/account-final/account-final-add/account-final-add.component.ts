@@ -108,6 +108,7 @@ export class AccountFinalAddComponent {
   ResetForm()
   {
     this.Form.reset();
+    this.focusNext('account_final_name')
   }
 
   save()

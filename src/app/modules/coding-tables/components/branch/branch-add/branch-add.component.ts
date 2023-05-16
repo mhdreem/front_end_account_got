@@ -143,9 +143,11 @@ export class BranchAddComponent implements OnInit {
         }
   }
 
+  
   ResetForm()
   {
     this.Form.reset();
+    this.focusNext('branch_name')
   }
 
   save()

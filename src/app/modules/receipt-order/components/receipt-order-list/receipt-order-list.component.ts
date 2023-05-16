@@ -6,7 +6,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { forkJoin, map, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
 import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/confirmationdialog/confirmationdialog.component';
@@ -16,12 +16,23 @@ import { sanad_kid_book } from 'src/app/modules/shared/models/sanad_kid_book';
 import { BranchService } from 'src/app/modules/shared/services/branch.service';
 import { ReceiptOrderService } from 'src/app/modules/shared/services/receipt-order.service';
 import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-book.service';
+import { PageReceiptOrderService } from '../../pageservice/page-receipt-order.service';
+import { result } from 'src/app/modules/shared/models/result';
+import { saveAs } from 'file-saver';
+
 @Component({
   selector: 'app-receipt-order-list',
   templateUrl: './receipt-order-list.component.html',
   styleUrls: ['./receipt-order-list.component.scss']
 })
 export class ReceiptOrderListComponent {
+  Request: any = {};// Represent Request 
+  Subscriptions: Subscription[] = [];
+
+  RowCount: number = 0;
+  SumTotal: number = 0;
+
+
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.keyCode == 123) {
@@ -115,18 +126,17 @@ export class ReceiptOrderListComponent {
 
   selected_order: receipt_order = {};
 
-  receiptPrintInput: receipt_order= {};
-  receiptPrintRowsInput: receipt_order[]= [];
-  displayed_rows: receipt_order[]= [];
 
 
   constructor(
     private fb: FormBuilder,
+    private ActivatedRoute:ActivatedRoute,
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
     @Inject(DOCUMENT) private _document: Document,
     private router: Router,
     private receiptOrderService: ReceiptOrderService,
+    private PageReceiptOrderService:PageReceiptOrderService,
     private sanadKidBookService: SanadKidBookService,
     private BranchService: BranchService,
   ) {
@@ -153,6 +163,7 @@ export class ReceiptOrderListComponent {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
+    /*
     this.paginator.page
       .pipe(
         startWith({}),
@@ -165,12 +176,12 @@ export class ReceiptOrderListComponent {
       .subscribe((data: any) => {
         this.totalRows = data.total_row_count;
         this.dataSource = new MatTableDataSource(data.value);
-        this.displayed_rows= data.value;
         this.isLoading= false;
         if (data.value?.length != 0)
           this.dataSourceIsEmpty= false;
 
       });
+      */
   }
 
 
@@ -190,6 +201,7 @@ export class ReceiptOrderListComponent {
           'incumbent_date_to': this.incumbent_date_to = new FormControl<Date | null>(null, []),
           'receipt_order_type_fk': this.receipt_order_type_fk = new FormControl<number | null>(null, []),
           'book_fk': this.book_fk = new FormControl<number | null>(null, []),
+          
           'name_of_owner': this.name_of_owner = new FormControl<string | null>(null, []),
           'attach': this.attach = new FormControl<string | null>(null, []),
           'branch_fk': this.branch_fk = new FormControl<number | null>(null, []),
@@ -209,6 +221,7 @@ export class ReceiptOrderListComponent {
     this._Subscription = forkJoin(
       this.Load_sanad_kid_book(),
       this.Load_branch(),
+     
     ).subscribe(
       res => {
         this.book_list = res[0];
@@ -290,32 +303,77 @@ export class ReceiptOrderListComponent {
     return '';
   }
 
-  onViewClick(){
-    this.currentPage=0;
-    this.pageSize=5;
-    this.View().subscribe((data: any)=>{
-      this.totalRows = data.total_row_count;
-      this.dataSource = new MatTableDataSource(data.value);
-      this.displayed_rows= data.value;
-      this.isLoading= false;
-      if (data.value?.length != 0)
-        this.dataSourceIsEmpty= false;
-    });
+  onViewClick(request: any) {
+
+    this.Request = request;
+    this.isLoading = true;
+    this.Subscriptions.push
+      (
+
+        this.receiptOrderService.search(request)
+          .subscribe((data: any) => {
+            this.totalRows = data.total_row_count;
+            this.dataSource = new MatTableDataSource(data.value);
+            this.isLoading = false;
+            if (data.value?.length != 0)
+              this.dataSourceIsEmpty = false;
+
+
+            this.totalRows = data.total_row_count;
+            this.RowCount = data.total_row_count;
+
+            let arr: receipt_order[] = [];
+
+            arr = (data.value as receipt_order[]);
+            if (arr != null && arr.length > 0) {
+              this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.total_value : 0), 0);
+            }
+
+          })
+
+      )
+
+
+
+
   }
 
   View() {
+    this.isLoading = true;
+    if (this.Request != null) {
+      this.Request.page_index = this.currentPage;
+      this.Request.row_count = this.pageSize;
 
-    this.isLoading= true;
+    }
 
-    this.page_index.setValue(this.currentPage);
-    this.row_count.setValue(this.pageSize);
+    this.receiptOrderService.search(this.Request).subscribe((data: any) => {
 
-    return this.receiptOrderService.search(this.Form.value);
+
+      this.dataSource = new MatTableDataSource(data.value);
+      this.isLoading = false;
+      if (data.value?.length != 0)
+        this.dataSourceIsEmpty = false;
+
+
+
+      this.totalRows = data.total_row_count;
+      this.RowCount = data.total_row_count;
+
+      let arr: receipt_order[] = [];
+
+      arr = (data.value as receipt_order[]);
+      if (arr != null && arr.length > 0) {
+        this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.total_value : 0), 0);
+      }
+
+    });
 
 
   }
 
-  
+
+
+
 
   public focusNext(id: string) {
     let element = this._document.getElementById(id);
@@ -328,9 +386,50 @@ export class ReceiptOrderListComponent {
     this.dataSource.data = [];
   }
 
-  exportToExcel() {
+
+  Delete(order: receipt_order) {
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },
+    });
+
+    dialogRef.afterClosed().subscribe(res => {
+      if (res == 1) {
+        this.receiptOrderService.delete(order.receipt_order_seq!).subscribe(res => {
+          if (res != null && (res as result) != null && (res as result).success == true) {
+            this.snackBar.open('تم الحذف بنجاح', '', {
+              duration: 3000,
+              panelClass: ['green-snackbar'],
+            });
+            this.View();
+            return;
+
+          } else {
+            this.snackBar.open('خطأ لم يتم الحذف', 'خطأ', {
+              duration: 3000,
+              panelClass: ['green-snackbar'],
+            });
+            return;
+          }
+
+        })
+      }
+    });
+  }
+
+  Update(order: receipt_order) {
+    this.PageReceiptOrderService.receipt_order = order;
+    this.PageReceiptOrderService.$receipt_order.next(order);
+
+    this.router.navigate(['../edit'], { relativeTo: this.ActivatedRoute });
 
   }
+
+  add() {
+    this.PageReceiptOrderService.receipt_order = {};
+    this.PageReceiptOrderService.$receipt_order.next({});
+    this.router.navigate(['../edit'], { relativeTo: this.ActivatedRoute });
+  }
+  /*
 
   Delete(order: receipt_order) {
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
@@ -350,14 +449,15 @@ export class ReceiptOrderListComponent {
   }
 
   Update(order: receipt_order) {
-    this.router.navigate(['/receiptOrder/module/receiptOrderEdit', { id: order.receipt_order_seq }])
+    this.router.navigate(['../edit'],{relativeTo: this.ActivatedRoute});
 
   }
 
   add() {
-    this.router.navigate(['/receiptOrder/module/receiptOrderEdit', { id: 0 }]);
+    this.router.navigate(['../edit'],{relativeTo: this.ActivatedRoute});
   }
 
+*/
 
   fromSanadDateChange(changeSource: string) {
     if (changeSource == 'day')
@@ -431,11 +531,14 @@ export class ReceiptOrderListComponent {
 
   }
 
-  printOne(sanad_kid: receipt_order){
-    this.receiptPrintInput= sanad_kid;
-   }
 
-   printRows(rows: receipt_order[]){
-    this.receiptPrintRowsInput= rows;
-   }
+  exportToExcel() {
+    this.receiptOrderService.export2Excel().subscribe(
+      (res) => {
+        const file: Blob = new Blob([res], { type: 'application/xlsx' });
+        saveAs(file, `سندات القيد.xlsx`);
+      }
+    );
+  }
+
 }

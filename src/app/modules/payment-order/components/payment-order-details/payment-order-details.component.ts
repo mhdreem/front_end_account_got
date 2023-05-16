@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, HostListener, EventEmitter, Inject, Input, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { Component, HostListener, EventEmitter, Inject, Input, OnDestroy, Output, SimpleChanges, OnChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
@@ -18,7 +18,7 @@ import { validate_account_tree } from './validators/validate_account_tree';
   templateUrl: './payment-order-details.component.html',
   styleUrls: ['./payment-order-details.component.scss']
 })
-export class PaymentOrderDetailsComponent {
+export class PaymentOrderDetailsComponent  implements OnDestroy,OnChanges{
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
     // enter
@@ -26,6 +26,7 @@ export class PaymentOrderDetailsComponent {
       event.preventDefault();
     }
   }
+  
   _index: number;
   @Output() onDelete: EventEmitter<number> = new EventEmitter();
   @Output() updateSum: EventEmitter<number> = new EventEmitter();
@@ -33,26 +34,20 @@ export class PaymentOrderDetailsComponent {
   @Input() set index(i: number) {
     this._index = i;
   }
+  get index():number
+  {
+    return this._index;
+  }
+  
+  _payment_order_detail:payment_order_detail;
+
   get payment_order_detail(): payment_order_detail {
-    if (
-      this.PagePaymentOrderService.payment_order != null &&
-      this.PagePaymentOrderService.payment_order.payment_order_details != null &&
-      this._index >= 0 &&
-      this._index < this.PagePaymentOrderService.payment_order.payment_order_details?.length) {
-       return this.PagePaymentOrderService.payment_order.payment_order_details[this._index];
-    }
-    return {};
+   return this._payment_order_detail;
+
   }
 
-  set payment_order_detail(obj: payment_order_detail) {
-    if (
-      this.PagePaymentOrderService.payment_order != null &&
-      this.PagePaymentOrderService.payment_order.payment_order_details != null &&
-      this._index >= 0 &&
-      this._index <= this.PagePaymentOrderService.payment_order.payment_order_details?.length) {
-      this.PagePaymentOrderService.payment_order.payment_order_details[this.index] = obj;
-    }
-
+  @Input() set payment_order_detail(obj: payment_order_detail) {
+     this._payment_order_detail = obj;
   }
 
   _Subscription!: Subscription;

@@ -25,7 +25,16 @@ export class AccountCenterListComponent implements OnInit, AfterViewInit, OnDest
 
   account_center_List: account_center[] = [];
   dataSource = new MatTableDataSource<account_center>();
-  displayedColumns: string[] = ['account_center_id', 'account_center_name', 'action'];
+  displayedColumns: string[] = [
+    'balance_debtor',
+    'balance_creditor',
+    'total',
+    'general',
+    'assistant',
+    'sub',
+    'partial',
+    'analytical'
+    , 'account_center_name', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
 
   Subscription: Subscription = new Subscription();
@@ -95,7 +104,7 @@ export class AccountCenterListComponent implements OnInit, AfterViewInit, OnDest
 
   add() {
     const dialogRef = this.dialog.open(AccountCenterAddComponent, {
-      width: '300px',
+      width: '600px',
       position: {top: "8%" },
       data: {
         obj: null
@@ -111,7 +120,7 @@ export class AccountCenterListComponent implements OnInit, AfterViewInit, OnDest
   update(obj: account_center) {
 
     const dialogRef = this.dialog.open(AccountCenterAddComponent, {
-      width: '300px',
+      width: '600px',
       position: {top: "8%" },
       data: {
         obj: obj
@@ -132,7 +141,7 @@ export class AccountCenterListComponent implements OnInit, AfterViewInit, OnDest
   delete(obj: account_center) {
 
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
-      width: '300px',
+      width: '600px',
       data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },
     });
 
@@ -190,7 +199,7 @@ export class AccountCenterListComponent implements OnInit, AfterViewInit, OnDest
 
   importFromExcelClicked(){
     const dialogRef = this.dialog.open(ImportFromExcelComponent, {
-      width: '300px',
+      width: '600px',
       data: '',
     });
 

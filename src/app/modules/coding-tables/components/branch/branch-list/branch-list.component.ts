@@ -76,7 +76,7 @@ export class BranchListComponent implements OnInit {
 
   add() {
     const dialogRef = this.dialog.open(BranchAddComponent, {
-      width: '300px',
+      width: '600px',
       position: {top: "8%" },
       data: {
         obj: null
@@ -92,7 +92,7 @@ export class BranchListComponent implements OnInit {
   update(obj: branch) {
 
     const dialogRef = this.dialog.open(BranchAddComponent, {
-      width: '300px',
+      width: '600px',
       position: {top: "8%" },
       data: {
         obj: obj
@@ -112,7 +112,7 @@ export class BranchListComponent implements OnInit {
 
   delete(obj: branch) {
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
-      width: '300px',
+      width: '600px',
       data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },
     });
 

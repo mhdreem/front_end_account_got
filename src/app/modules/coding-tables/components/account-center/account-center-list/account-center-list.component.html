@@ -53,10 +53,52 @@
         <table cdkDropList mat-table [dataSource]="dataSource" matSort class="my-table mat-elevation-z8"
             (cdkDropListDropped)="drop($event)">
 
-            <ng-container matColumnDef="account_center_id">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> رقم مركز الكلفة </th>
-                <td mat-cell *matCellDef="let element"> {{element.account_center_id}} </td>
+
+            <ng-container matColumnDef="balance_debtor">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> رصيد مدين </th>
+                <td mat-cell *matCellDef="let element"> {{element.balance_debtor}} </td>
             </ng-container>
+
+            <ng-container matColumnDef="balance_creditor">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>رصيد دائن  </th>
+                <td mat-cell *matCellDef="let element"> {{element.balance_creditor}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>العام  </th>
+                <td mat-cell *matCellDef="let element"> <span *ngIf="element.account_center_id.toString().length==1">{{element.account_center_id}}</span> </td>
+            </ng-container>
+
+
+          
+
+            <ng-container matColumnDef="general">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>العام  </th>
+                <td mat-cell *matCellDef="let element"> <span *ngIf="element.account_center_id.toString().length==2">{{element.account_center_id}}</span> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="assistant">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>المساعد  </th>
+                <td mat-cell *matCellDef="let element"> <span *ngIf="element.account_center_id.toString().length==3">{{element.account_center_id}}</span> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="sub">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>الفرعي  </th>
+                <td mat-cell *matCellDef="let element"> <span *ngIf="element.account_center_id.toString().length==4">{{element.account_center_id}}</span> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="partial">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>الجزئي  </th>
+                <td mat-cell *matCellDef="let element"> <span *ngIf="element.account_center_id.toString().length==5">{{element.account_center_id}}</span> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="analytical">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>التحليلي  </th>
+                <td mat-cell *matCellDef="let element"> <span *ngIf="element.account_center_id.toString().length==6">{{element.account_center_id}}</span> </td>
+            </ng-container>
+
+
+           
 
             <!-- Name Column -->
             <ng-container matColumnDef="account_center_name">

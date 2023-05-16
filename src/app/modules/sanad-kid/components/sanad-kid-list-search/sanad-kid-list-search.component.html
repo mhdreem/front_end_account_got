@@ -1,0 +1,290 @@
+<button type="button" class="btn btn-primary btn-sm" (click)="openBasicModal(itemsModal)">
+    <mat-icon>search</mat-icon>
+    {{Title}}
+</button>
+
+
+
+
+
+
+<!-- Modal -->
+<ng-template #itemsModal let-modal>
+    <div class="modal-header">
+        <h2 class="modal-title">
+            <i class="feather icon-columns fs-3 me-2"></i>
+            {{Title}}
+        </h2>
+        <button type="button" class="btn-close" (click)="modal.close('by: close icon')" aria-label="Close"></button>
+    </div>
+
+    <div class="sidebar-sub-header">
+        <a class="settings-sidebar-toggler" (click)="modal.close()">
+            <i class="icon feather icon-settings"></i>
+        </a>
+    </div>
+    <div class="modal-body bg-gray-100">
+
+        <c-container fluid>
+           
+
+            <form class="example-form" [formGroup]="Form" #form="ngForm">
+                <div class="row">
+
+                    <div class="col-6">
+
+                        <div class="date">
+                            <span class="white" style="  display: block;">من تاريخ سند</span>
+
+                            <div class="input-group inline ">
+
+                            <input  
+                            autofocus
+                            type="text" class="form-control" 
+                            placeholder="اليوم" (change)="fromDateChange('day')"
+                            [(ngModel)]='fromDateDay' [ngModelOptions]="{standalone: true}"
+                            id="fromDateDay" 
+                            (keyup.enter)="focusNext('fromDateMonth')">
+                          
+                          
+                          
+                            <input type="text" class="form-control"  placeholder="الشهر" (change)="fromDateChange('month')"
+                            [(ngModel)]='fromDateMonth' [ngModelOptions]="{standalone: true}"
+                            id="fromDateMonth" (keyup.enter)="focusNext('fromDateYear')">
+                          
+                          
+                          
+                            <input type="text" class="form-control" placeholder="السنة" (change)="fromDateChange('year')"
+                            [(ngModel)]='fromDateYear' [ngModelOptions]="{standalone: true}"
+                            id="fromDateYear" (keyup.enter)="focusNext('toDateDay')">
+                          
+                        </div>
+                      </div>
+                      </div>
+
+        
+                      <div class="col-6">
+
+                        <div class="date">
+                            <span class="white" style="  display: block;">من تاريخ سند</span>
+
+                            <div class="input-group inline ">
+
+                          
+                            <input  type="text" class="form-control" placeholder="اليوم" (change)="toDateChange('day')"
+                            [(ngModel)]='toDateDay' [ngModelOptions]="{standalone: true}"
+                            id="toDateDay" (keyup.enter)="focusNext('toDateMonth')">
+                          
+                          
+                          
+                            <input type="text" class="form-control"  placeholder="الشهر" (change)="toDateChange('month')"
+                            [(ngModel)]='toDateMonth' [ngModelOptions]="{standalone: true}"
+                            id="toDateMonth" (keyup.enter)="focusNext('toDateYear')">
+                          
+                          
+                            <input  type="text" class="form-control" placeholder="السنة" (change)="toDateChange('year')"
+                            [(ngModel)]='toDateYear' [ngModelOptions]="{standalone: true}"
+                            id="toDateYear" (keyup.enter)="focusNext('sanad_kid_seq')">
+                          
+                        </div>
+                      </div>
+                    
+
+                      
+                </div>
+
+
+
+
+
+                <div class="col-6">
+
+                    <div class="date">
+                        <span class="white" style="  display: block;">من تاريخ مذكرة</span>
+
+                        <div class="input-group inline ">
+
+                        <input  
+                        autofocus
+                        type="text" class="form-control" 
+                        placeholder="اليوم" (change)="IncumbentFromDateChange('day')"
+                        [(ngModel)]='incumbentDateFromDay'
+                         [ngModelOptions]="{standalone: true}"
+                        id="incumbentfromDateDay" 
+                        (keyup.enter)="focusNext('incumbentfromDateMonth')">
+                      
+                      
+                      
+                        <input type="text" class="form-control"  placeholder="الشهر" (change)="IncumbentFromDateChange('month')"
+                        [(ngModel)]='incumbentDateFromMonth'
+                         [ngModelOptions]="{standalone: true}"
+                        id="incumbentfromDateMonth" 
+                        (keyup.enter)="focusNext('incumbentfromDateYear')">
+                      
+                      
+                      
+                        <input type="text" class="form-control" placeholder="السنة" (change)="IncumbentFromDateChange('year')"
+                        [(ngModel)]='incumbentDateFromYear' 
+                        [ngModelOptions]="{standalone: true}"
+                        id="incumbentfromDateYear"
+                         (keyup.enter)="focusNext('incumbenttoDateDay')">
+                      
+                    </div>
+                  </div>
+                  </div>
+
+    
+                  <div class="col-6">
+
+                    <div class="date">
+                        <span class="white" style="  display: block;">إلى تاريخ مذكرة</span>
+
+                        <div class="input-group inline ">
+
+                      
+                        <input  type="text" class="form-control" placeholder="اليوم" (change)="IncumbentToDateChange('day')"
+                        [(ngModel)]='incumbentDateToDay' 
+                        [ngModelOptions]="{standalone: true}"
+                        id="incumbenttoDateDay" 
+                        (keyup.enter)="focusNext('incumbenttoDateMonth')">
+                      
+                      
+                      
+                        <input type="text" class="form-control"  placeholder="الشهر" (change)="IncumbentToDateChange('month')"
+                        [(ngModel)]='incumbentDateToMonth' 
+                        [ngModelOptions]="{standalone: true}"
+                        id="incumbenttoDateMonth" 
+                        (keyup.enter)="focusNext('incumbenttoDateYear')">
+                      
+                      
+                        <input  type="text" class="form-control" placeholder="السنة" (change)="IncumbentToDateChange('year')"
+                        [(ngModel)]='incumbentDateToYear' 
+                        [ngModelOptions]="{standalone: true}"
+                        id="incumbenttoDateYear" 
+                        (keyup.enter)="focusNext('sanad_kid_seq')">
+                      
+                    </div>
+                  </div>
+                
+
+                  
+            </div>
+
+
+
+
+
+                
+
+
+                <div class="col-6">
+        
+                      <mat-form-field   appearance="outline">
+                        <mat-label>رقم تسلسلي أو الرقم الآلي</mat-label>
+                        <input matInput [formControl]="sanad_kid_seq"
+                                id="sanad_kid_seq" 
+                                (keyup.enter)="focusNext('name_of_owner')">
+                    </mat-form-field>
+                    </div>
+                    <div class="col-6">
+
+                      <mat-form-field   appearance="outline">
+                        <mat-label>اسم صاحب الاستحقاق</mat-label>
+                        <input matInput [formControl]="name_of_owner"
+                                id="name_of_owner"
+                                 (keyup.enter)="focusNext('incumbent_id_from')">
+                    </mat-form-field>
+                    
+                </div>
+        
+                <div class="col-6">
+
+                      <mat-form-field   appearance="outline">
+                        <mat-label>من رقم المذكرة</mat-label>
+                        <input matInput [formControl]="incumbent_id_from"
+                                id="incumbent_id_from" 
+                                (keyup.enter)="focusNext('incumbent_id_to')">
+                    </mat-form-field>
+                    </div>
+
+
+                    <div class="col-6">
+        
+                      <mat-form-field   appearance="outline">
+                        <mat-label>الى رقم المذكرة</mat-label>
+                        <input matInput [formControl]="incumbent_id_to"
+                                id="incumbent_id_to"
+                                 (keyup.enter)="focusNext('sanad_kid_id_from')">
+                    </mat-form-field>
+                </div>
+        
+                <div class="col-6">
+
+                      <mat-form-field   appearance="outline">
+                        <mat-label>من رقم سند</mat-label>
+                        <input matInput [formControl]="sanad_kid_id_from"
+                                id="sanad_kid_id_from" 
+                                (keyup.enter)="focusNext('sanad_kid_id_to')">
+                    </mat-form-field>
+                    </div>
+
+
+                    <div class="col-6">
+
+        
+                      <mat-form-field   appearance="outline">
+                        <mat-label>الى رقم سند</mat-label>
+                        <input matInput [formControl]="sanad_kid_id_to"
+                                id="sanad_kid_id_to" (keyup.enter)="focusNext('sanad_kid_id_to')">
+                    </mat-form-field>
+                </div>
+        
+
+
+                <div class="col-6">
+                    <label class="form-label">نوع الأمر </label>
+                    <ng-select id="sanad_kid_type_fk" formControlName="sanad_kid_type_fk"
+                        [items]="List_Type_Sanad"
+                        bindValue="value"
+                         bindLabel="name"
+                        placeholder="قم باختيار نوع الأمر"></ng-select>
+
+                </div>
+
+                <div class="col-6">
+
+                    <mat-checkbox (change)="OnChangeSanadClose($event)"
+                     [formControl]="sanad_close_boolean" id="sanad_kid_id_to" (keyup.enter)="focusNext('name_of_owner')">سند إقفال</mat-checkbox>
+                </div>
+        </div>
+                
+            </form>
+           
+           
+
+
+
+
+        </c-container>
+    </div>
+    
+    <div class="modal-footer">
+
+
+        <button type="button" class="btn btn-icon-text btn-success me-1" (click)="modal.close(1)">
+            <i class="feather icon-save btn-icon-prepend"></i>
+            بحث
+        </button>
+
+        <button type="button" class="btn btn-icon-text btn-warning me-1" (click)="this.Form.reset()">
+            <i class="feather icon-save btn-icon-prepend"></i>
+            افراغ مفاتيح البحث
+        </button>
+
+
+        <button type="button" class="btn btn-icon-text btn-outline me-1" (click)="modal.close(2)">
+            <i class="feather icon-x btn-icon-prepend"></i>
+            الغاء
+        </button>
+    </div>
+</ng-template>

@@ -111,7 +111,7 @@ export class PaymentOrderStageListComponent {
 
   delete(obj: payment_order_stage) {
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
-      width: '300px',
+      width: '600px',
       data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },
     });
 

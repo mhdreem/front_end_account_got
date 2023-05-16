@@ -1,0 +1,181 @@
+<ng-template #sanad_kid  >
+    <table class="table bg-gray-50" *ngIf="data!= null && type=='sanad_kid'">
+        <tbody>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">حساب الصندوق</td>
+                <td class="bg-white"><span
+                        *ngIf="data!=null && data.sanad_kid_book!= null && data.sanad_kid_book.accounts_tree!= null && data.sanad_kid_book.accounts_tree.account_id!= null && data.sanad_kid_book.accounts_tree.account_name!= null">{{data.sanad_kid_book.accounts_tree.account_id
+                        + ' '+data.sanad_kid_book.accounts_tree.account_name }}</span></td>
+            </tr>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">طريقة توليد الرقم</td>
+                <td class="bg-white"><span
+                        *ngIf="data!=null && data.sanad_kid_book!= null && data.sanad_kid_book.incumbent_id_generate_type_fk!= null  ">{{
+                        (data.sanad_kid_book.incumbent_id_generate_type_fk== 1)? 'توليد على اساس الشهر':'على مدار السنة'
+                        }}</span> </td>
+            </tr>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">عدد الاقلام</td>
+                <td class="bg-white"><span *ngIf="data!=null && data.sanad_kid_details!= null  ">{{
+                        data.sanad_kid_details.length }}</span> </td>
+            </tr>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">مجموع مدين</td>
+                <td class="bg-white"><span *ngIf="data!=null && data.sanad_kid_details!= null  ">{{ total_sanad_debt()
+                        }}</span> </td>
+            </tr>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">مجموع دائن</td>
+                <td class="bg-white"><span *ngIf="data!=null && data.sanad_kid_details!= null  ">{{ total_sanad_credit()
+                        }}</span> </td>
+            </tr>
+
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">رصيد</td>
+                <td class="bg-white"><span *ngIf="data!=null && data.sanad_kid_details!= null  ">{{ total_sanad_debt() -
+                        total_sanad_credit() }}</span> </td>
+            </tr>
+
+        </tbody>
+    </table>
+</ng-template>
+
+<ng-template #exchange_order  >
+    <table class="table bg-gray-50" *ngIf="data!= null && type=='exchange_order'">
+        <tbody>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">حساب الصندوق</td>
+                <td class="bg-white"><span
+                        *ngIf="data!=null && data.sanad_kid_book!= null && data.sanad_kid_book.cash_accounts_tree!= null && data.sanad_kid_book.cash_accounts_tree.account_id!= null && data.sanad_kid_book.cash_accounts_tree.account_name!= null">{{data.sanad_kid_book.cash_accounts_tree.account_id
+                        + ' '+data.sanad_kid_book.cash_accounts_tree.account_name }}</span></td>
+            </tr>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">طريقة توليد الرقم</td>
+                <td class="bg-white"><span
+                        *ngIf="data!=null && data.sanad_kid_book!= null && data.sanad_kid_book.incumbent_id_generate_type_fk!= null  ">{{
+                        (data.sanad_kid_book.incumbent_id_generate_type_fk== 1)? 'توليد على اساس الشهر':'على مدار السنة'
+                        }}</span> </td>
+            </tr>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">عدد الاقلام</td>
+                <td class="bg-white"><span *ngIf="data!=null && data.exchange_order_details!= null  ">{{
+                        data.exchange_order_details.length }}</span> </td>
+            </tr>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">مجموع مدين</td>
+                <td class="bg-white"><span *ngIf="data!=null && data.exchange_order_details!= null  ">{{
+                        total_exchange_order_debt() }}</span> </td>
+            </tr>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">مجموع دائن</td>
+                <td class="bg-white"><span *ngIf="data!=null && data.exchange_order_details!= null  ">{{
+                        total_exchange_order_credit() }}</span> </td>
+            </tr>
+
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">رصيد</td>
+                <td class="bg-white"><span *ngIf="data!=null && data.exchange_order_details!= null  ">{{
+                        total_exchange_order_debt() - total_exchange_order_credit() }}</span> </td>
+            </tr>
+
+        </tbody>
+    </table>
+</ng-template>
+
+<ng-template #payment_order  >
+    <table class="table bg-gray-50" *ngIf="data!= null && type=='payment_order'">
+        <tbody>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">حساب الصندوق</td>
+                <td class="bg-white"><span
+                        *ngIf="data!=null && data.sanad_kid_book!= null && data.sanad_kid_book.accounts_tree!= null && data.sanad_kid_book.accounts_tree.account_id!= null && data.sanad_kid_book.accounts_tree.account_name!= null">{{data.sanad_kid_book.accounts_tree.account_id
+                        + ' '+data.sanad_kid_book.accounts_tree.account_name }}</span></td>
+            </tr>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">طريقة توليد الرقم</td>
+                <td class="bg-white"><span
+                        *ngIf="data!=null && data.sanad_kid_book!= null && data.sanad_kid_book.incumbent_id_generate_type_fk!= null  ">{{
+                        (data.sanad_kid_book.incumbent_id_generate_type_fk== 1)? 'توليد على اساس الشهر':'على مدار السنة'
+                        }}</span> </td>
+            </tr>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">عدد الاقلام</td>
+                <td class="bg-white"><span *ngIf="data!=null && data.payment_order_details!= null  ">{{
+                        data.payment_order_details.length }}</span> </td>
+            </tr>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">مجموع مدين</td>
+                <td class="bg-white"><span *ngIf="data!=null && data.payment_order_details!= null  ">{{
+                        total_payment_order_debt() }}</span> </td>
+            </tr>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">مجموع دائن</td>
+                <td class="bg-white"><span *ngIf="data!=null && data.payment_order_details!= null  ">{{
+                        total_payment_order_credit() }}</span> </td>
+            </tr>
+
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">رصيد</td>
+                <td class="bg-white"><span *ngIf="data!=null && data.payment_order_details!= null  ">{{
+                        total_payment_order_debt() - total_payment_order_credit() }}</span> </td>
+            </tr>
+
+        </tbody>
+    </table>
+</ng-template>
+
+<ng-template #receipt_order  >
+    <table class="table bg-gray-50" *ngIf="data!= null && type=='receipt_order'">
+        <tbody>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">حساب الصندوق</td>
+                <td class="bg-white"><span
+                        *ngIf="data!=null && data.sanad_kid_book!= null && data.sanad_kid_book.accounts_tree!= null && data.sanad_kid_book.accounts_tree.account_id!= null && data.sanad_kid_book.accounts_tree.account_name!= null">{{data.sanad_kid_book.accounts_tree.account_id
+                        + ' '+data.sanad_kid_book.accounts_tree.account_name }}</span></td>
+            </tr>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">طريقة توليد الرقم</td>
+                <td class="bg-white"><span
+                        *ngIf="data!=null && data.sanad_kid_book!= null && data.sanad_kid_book.incumbent_id_generate_type_fk!= null  ">{{
+                        (data.sanad_kid_book.incumbent_id_generate_type_fk== 1)? 'توليد على اساس الشهر':'على مدار السنة'
+                        }}</span> </td>
+            </tr>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">عدد الاقلام</td>
+                <td class="bg-white"><span *ngIf="data!=null && data.receipt_order_details!= null  ">{{
+                        data.receipt_order_details.length }}</span> </td>
+            </tr>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">مجموع مدين</td>
+                <td class="bg-white"><span *ngIf="data!=null && data.receipt_order_details!= null  ">{{
+                        total_receipt_order_debt() }}</span> </td>
+            </tr>
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">مجموع دائن</td>
+                <td class="bg-white"><span *ngIf="data!=null && data.receipt_order_details!= null  ">{{
+                        total_receipt_order_credit() }}</span> </td>
+            </tr>
+
+            <tr>
+                <td class="width-150 fw-bold border-end ps-4">رصيد</td>
+                <td class="bg-white"><span *ngIf="data!=null && data.receipt_order_details!= null  ">{{
+                        total_receipt_order_debt() - total_receipt_order_credit() }}</span> </td>
+            </tr>
+
+        </tbody>
+    </table>
+</ng-template>
+
+
+<ng-container *ngIf="data!= null && this.type =='sanad_kid'" [ngTemplateOutlet]="sanad_kid">
+</ng-container>
+
+<ng-container *ngIf="data!= null && this.type =='exchange_order'" [ngTemplateOutlet]="exchange_order"></ng-container>
+
+
+<ng-container *ngIf="data!= null && this.type =='payment_order'" [ngTemplateOutlet]="payment_order"></ng-container>
+
+
+<ng-container *ngIf="data!= null && this.type =='receipt_order'" [ngTemplateOutlet]="receipt_order"></ng-container>
+
+

@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { sanad_kid } from '../models/sanad-kid';
 import { BaseAPIService } from './base/base-api.service';
 import { UserService } from './user.service';
+import { result } from '../models/result';
 
 @Injectable({
   providedIn: 'root'
@@ -50,18 +51,21 @@ export class SanadKidService extends BaseAPIService{
     return this.httpClient.put(this.RestUrl +"Sanad_Kid/update/"+user_fk,obj,this.httpOptions);  
   }
 
-  search(req : any )  {
-    return this.httpClient.post(this.RestUrl +"Sanad_Kid/Search",req,this.httpOptions);  
+  search(req : any ) :Observable<any[]> {
+    return this.httpClient.post<any[]>(this.RestUrl +"Sanad_Kid/Search",req,this.httpOptions);  
   }
 
   getById(id: number){
-    return this.httpClient.get(this.RestUrl +"Sanad_Kid/GetByID/"+id,this.httpOptions) as Observable<sanad_kid>;  
-    
+    return this.httpClient.get(this.RestUrl +"Sanad_Kid/GetByID/"+id,this.httpOptions) as Observable<sanad_kid>;      
   }
 
-  getBySeq(seq: number){
-    return this.httpClient.get(this.RestUrl +"Sanad_Kid/GetBySeq/"+seq,this.httpOptions) as Observable<sanad_kid>;  
-    
+  getBySeq(seq: number):Observable<result>{
+    return this.httpClient.get<result>(this.RestUrl +"Sanad_Kid/GetBySeq/"+seq,this.httpOptions) as Observable<result>;      
+  }
+
+  
+  getByOperationCode(operation_code_fk: number,operation_type_fk:number):Observable<result>{
+    return this.httpClient.get<result>(this.RestUrl +`Sanad_Kid/getByOperationCode/${operation_code_fk}/${operation_type_fk}`,this.httpOptions) as Observable<result>;      
   }
 
   export2Excel() {

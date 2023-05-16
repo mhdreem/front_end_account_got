@@ -108,6 +108,7 @@ export class FinanceListAddComponent {
   ResetForm()
   {
     this.Form.reset();
+    this.focusNext('finance_list_name')
   }
 
   save()

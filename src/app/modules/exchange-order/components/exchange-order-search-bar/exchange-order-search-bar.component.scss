@@ -1,178 +1,18 @@
-@import '../../../../../theme.scss';
-
-
 :host
 {
     font-size: small;
 }
 
-.mat-form-field
+mat-form-field
 {
     width: 100% !important;
+    font-size: small;
 }
 
-
-.mat-form-field-infix
-{
-    width: 100% !important;
-}
 
 .mat-icon
 {
-    font-size: smaller;
+    font-size: small;
     font-weight: bold;
     vertical-align: middle;
 }
-
-
-
-.mat-button-toggle-group
-{
-    width: 100%;
-}
-
-.mat-button-toggle
-{
-    width:100%;
-}
-
-mat-list-item
-{
-    cursor: pointer; 
-}
-
-
-
-mat-list-item:hover {
-    background: #76b900 !important;
-  }
-
-  
-
-.darkTheme mat-form-field, .darkTheme ::ng-deep .mat-form-field-label{
-    color: white !important;
-}
-
-.darkTheme ::ngg-deep .mat-form-field-underline::before{
-    background-color: white !important;
-}
-
-.darkTheme mat-form-field ::ng-deep .mat-form-field-flex{
-    background-color: $darkSecondary !important;
-}
-
-.darkTheme button{
-    color: white !important;
-    background-color: $darkPrimary !important;
-  }
-
-  .darkTheme ::ng-deep .mat-grid-tile{
-    color: white;
-}
-
-.darkTheme ::ng-deep .mat-list-item{
-    background-color: $darkSecondary;
-    border: 1px solid $darkBackground;
-}
-
-.darkTheme mat-card{
-    background-color: $darkBackground;
-}
-
-.darkTheme h4{
-    color: white;
-}
-
-.darkTheme ::ng-deep .mat-form-field-label{
-    height: 19px !important;
-}
-
-.darkTheme mat-card-title h3{
-    color: white;
-}
-
-
-
-button{
-    color: white !important;
-    background-color: $lightPrimary !important;
-}
-
-mat-card{
-    background-color: $lightBackground;
-}
-
-::ng-deep .mat-list-item{
-    background-color: white;
-    border: 1px solid $lightBackground;
-}
-
-mat-form-field ::ng-deep .mat-mdc-form-field-flex, mat-form-field ::ng-deep .mat-mdc-text-field-wrapper{
-    background-color: white !important;
-}
-
-mat-form-field, ::ng-deep .mat-mdc-form-field-label{
-    color: black !important;
-}
-
-::ngg-deep .mat-mdc-form-field-underline::before{
-    background-color: black !important;
-}
-
-
-mat-form-field{
-    width: 133px;
-    margin-bottom: 10px;
-}
-
-mat-form-field ::ng-deep label, mat-form-field ::ng-deep input{
-    font-size: 11px !important;
-}
-
-h2{
-    text-align: center;
-}
-
-mat-card{
-    padding-block: 20px;
-}
-
-.theme{
-    padding: 10px
-}
-
-.small-width{
-    width: 80px !important;
-    margin-left: 0px !important;
-  }
-
-  mat-form-field{
-    height: 70px;
-    font-size: 14px;
-  }
-
-  ::ng-deep .mat-mdc-floating-label, ::ng-deep .mat-mdc-input-element, ::ng-deep .mat-mdc-select-min-line{
-    font-size: 14px;
-  }
-
-  ::ng-deep mat-grid-list mat-grid-tile{
-    font-size: 10px !important;
-    width: 100px !important;
-  }
-
-  ::ng-deep .mdc-list-item.mdc-list-item--with-one-line{
-    height: 130px !important;
-  }
-
-  mat-list-item{
-    padding-inline: 0 !important;
-  }
-
-  mat-card-content{
-    padding: 0px 15px !important;
-  }
-
-  mat-list-item{
-    cursor: pointer;
-    border-bottom: 1px solid grey;
-  }

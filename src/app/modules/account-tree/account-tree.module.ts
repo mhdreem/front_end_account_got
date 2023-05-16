@@ -22,16 +22,35 @@ import {MatTreeModule} from '@angular/material/tree';
 import {MatMenuModule} from '@angular/material/menu';
 import { CommonModuleModule } from '../common-module/common-module.module';
 import { GridModule } from '@coreui/angular';
+import { AccountTreeListSearchComponent } from './components/account-tree-list-search/account-tree-list-search.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ViewsModule } from '../views/views.module';
+import { PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { AccountTreeDisplayComponent } from './components/account-tree-display/account-tree-display.component';
+import { TreeviewComponent } from './components/treeview/treeview.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AsdasdComponent } from './components/asdasd/asdasd.component';
+import {MatExpansionModule} from '@angular/material/expansion'; 
 
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true
+};
 
 @NgModule({
   declarations: [
     AccountTreeComponent,
     AccountTreeListComponent,
-    AccountTreeEditComponent
+    AccountTreeEditComponent,
+    AccountTreeListSearchComponent,
+    AccountTreeDisplayComponent,
+    TreeviewComponent,
+    AsdasdComponent
   ],
   imports: [
     CommonModule,
+    MatExpansionModule,
+    PerfectScrollbarModule,
     AccountTreeRoutingModule,
     MatTableModule,
     ReactiveFormsModule,
@@ -48,7 +67,20 @@ import { GridModule } from '@coreui/angular';
     MatTreeModule,
     MatMenuModule,
     CommonModuleModule,
-    GridModule
-  ]
+    GridModule,
+    NgSelectModule,
+    NgbModule ,    
+    ViewsModule,
+    
+    FontAwesomeModule
+  ],
+  providers: [
+  
+    {
+      provide: PERFECT_SCROLLBAR_CONFIG,
+      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+    }
+  
+  ],
 })
 export class AccountTreeModule { }

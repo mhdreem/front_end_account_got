@@ -1,0 +1,79 @@
+<c-container>
+
+    <mat-card>
+
+        <mat-card-header>
+            <mat-card-title>الصناديق الخزينة في المؤسسة </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <form [formGroup]="Form">
+
+                <c-container>
+                    <c-row>
+
+                        <c-col>
+                            <mat-form-field>
+                                <mat-label #label_payment_safe_name>اسم الصندوق في الفرع</mat-label>
+                                <input matInput [formControl]="payment_safe_name" id="payment_safe_name"
+                                    (keyup.enter)="focusNext('accounts_tree_fk')">
+                                <mat-error *ngIf="fieldHasErrors(Form, 'payment_safe_name')">
+                                    {{
+                                    autoPrintFirstErrorMessage(
+                                    Form,
+                                    "payment_safe_name",
+                                    label_payment_safe_name.innerHTML
+                                    )
+                                    }}
+                                </mat-error>
+                            </mat-form-field>
+                        </c-col>
+                    </c-row>
+
+                    <c-row>
+                        <c-col>
+                       <div>
+                            <label for="accounts_tree_fk">حساب الصندوق</label>
+                            <ng-select
+                            id="accounts_tree_fk"
+                            formControlName="accounts_tree_fk"
+                            [items]="list_account_tree"
+                            bindValue="seq"
+                            bindLabel="account_name"                        
+                            (keyup.enter)="focusNext('payment_safe_order')"
+                            ></ng-select>
+                          </div>
+
+
+                               
+                          
+                        </c-col>
+                    </c-row>
+
+                    
+                    <c-row>
+                        <c-col>
+                            <mat-form-field>
+                                <mat-label>ترتيب الصندوق</mat-label>
+                                <input matInput id="payment_safe_order" [formControl]="payment_safe_order" id="payment_safe_order"
+                                     [OnlyNumber]="true">
+                            </mat-form-field>
+                        </c-col>
+                    </c-row>
+
+
+
+                </c-container>
+
+             
+            </form>
+
+
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button class="add" (click)="save()" [disabled]="!Form.valid">F9 حفظ </button>
+            <button mat-raised-button (click)="closeDialog()" color="warn">إلغاء</button>
+        </mat-card-actions>
+    </mat-card>
+</c-container>

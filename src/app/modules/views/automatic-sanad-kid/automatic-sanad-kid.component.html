@@ -1,0 +1,182 @@
+<c-container fluid>
+    <c-row>
+        <c-card class="mb-4 card " >
+            <c-card-header class="card-header">معلومات السند</c-card-header>
+            <c-card-body class="card-body">
+                <table class="table table-sm table-middel bg-gray-50">
+                    <tbody>
+                        <tr>
+                            <td class="wd-150 fw-bold border-end ps-4">رقم السند </td>
+                            <td>
+                                <span>{{getValue('document_id')}}</span>
+                            </td>
+                            <td class="wd-150 fw-bold border-end ps-4">تاريخ السند </td>
+                            <td>
+                                <span>{{getValue('document_date')}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="wd-150 fw-bold border-end ps-4">رقم المذكرة </td>
+                            <td>
+                                <span>{{getValue('incumbent_id')}}</span>
+                            </td>
+                            <td class="wd-150 fw-bold border-end ps-4">تاريخ المذكرة </td>
+                            <td>
+                                <span>{{getValue('incumbent_date')}}</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="wd-150 fw-bold border-end ps-4">مبلغ السند </td>
+                            <td>
+                                <span>{{getValue('sanad_total_value')}}</span>
+                            </td>
+                            <td class="wd-150 fw-bold border-end ps-4">اسم حساب الصندوق </td>
+                            <td>
+                                <span>{{getValue('name_of_owner')}}</span>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </c-card-body>
+        </c-card>
+    </c-row>
+
+    <c-row>
+
+        <c-card class="mb-4">
+            <c-card-header class="card-header">
+                التفاصيل
+            </c-card-header>
+
+            <c-card-body class="card-body">
+
+                <div
+                    *ngIf="sanad_kid!= null && sanad_kid.sanad_kid_details!= null && sanad_kid.sanad_kid_details.length>0">
+                    <div class="detail">
+
+                        <table class="table table-edit table-bordered table-middel bg-gray-50">
+                            <thead>
+                                <tr>
+                                    <th class="min-width-110"> مدين</th>
+                                    <th class="min-width-110"> دائن</th>
+                                    <th class="min-width-250"> اسم الحساب</th>
+                                    <th class="min-width-250"> مركز الكلفة</th>
+                                    <th class="min-width-300"> بيان</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngFor="let detail of sanad_kid_details(); let _index = index;">
+                                    <td>
+                                        <span>{{getByObject(detail,'debtor')}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{getByObject(detail,'creditor')}}</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            *ngIf="detail.accounts_tree!= null ">{{getByObject(detail.accounts_tree,'account_id')
+                                            + ' - ' + getByObject(detail.accounts_tree,'account_name') }} </span>
+                                    </td>
+
+                                    <td>
+                                        <span
+                                            *ngIf="detail.account_center!= null ">{{getByObject(detail.account_center,'account_center_id')
+                                            + ' - ' + getByObject(detail.account_center,'account_center_name') }}
+                                        </span>
+                                    </td>
+
+
+                                    <td>
+                                        <span>{{getByObject(detail,'account_notice')}}</span>
+                                    </td>
+
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+            </c-card-body>
+            <c-card-footer>
+
+            </c-card-footer>
+        </c-card>
+    </c-row>
+
+    <c-row>
+
+        <c-card class="mb-4">
+            <c-card-header class="card-header">
+                المرفقات
+            </c-card-header>
+
+            <c-card-body class="card-body">
+
+                <div
+                    *ngIf="sanad_kid!= null && sanad_kid.sanad_kid_attachements!= null && sanad_kid.sanad_kid_attachements.length>0">
+                    <div class="detail" *ngFor="let attachment of sanad_kid.sanad_kid_attachements; let i=index;">
+
+                        <table class="table table-edit table-bordered table-middel bg-gray-50">
+                            <thead>
+                                <tr>
+                                    <th class="max-width-80 min-width-80"> رقم المرفق</th>
+                                    <th class="max-width-130 min-width-130"> نوع المرفق</th>
+                                    <th class="max-width-100 min-width-100"> تاريخ المرفق </th>
+                                    <th class="max-width-80 min-width-80"> رقم الوثيقة</th>
+                                    <th class="max-width-150 min-width-150"> عائدية الوثيقة</th>
+                                    <th class="max-width-150 min-width-150"> بيان المرفق</th>
+                                    <th class="max-width-80 min-width-80"> عمليات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngFor="let attach of sanad_kid_attachements(); let _index = index;">
+                                    <td>
+                                        <span>{{getByObject(attach,'attachement_id')}}</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            *ngIf="attach.attachement_type!= null ">{{getByObject(attach.attachement_type,'attachement_type_name')}}</span>
+                                    </td>
+
+                                    <td>
+                                        <span>{{getByObject(attach,'attachement_date')}}</span>
+                                    </td>
+
+
+                                    <td>
+                                        <span>{{getByObject(attach,'Source_number')}}</span>
+                                    </td>
+
+                                    <td>
+                                        <span>{{getByObject(attach,'ownership')}}</span>
+                                    </td>
+
+                                    <td>
+                                        <span>{{getByObject(attach,'attachement_note')}}</span>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+            </c-card-body>
+            <c-card-footer>
+
+            </c-card-footer>
+        </c-card>
+    </c-row>
+
+
+
+</c-container>

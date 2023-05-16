@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { payment_order } from '../models/payment_order';
 import { BaseAPIService } from './base/base-api.service';
 import { UserService } from './user.service';
+import { result } from '../models/result';
 
 @Injectable({
   providedIn: 'root'
@@ -49,8 +50,21 @@ export class PaymentOrderService extends BaseAPIService{
     
   }
 
-  getBySeq(seq: number){
-    return this.httpClient.get(this.RestUrl +"Payment_Order/GetBySeq/"+seq,this.httpOptions) as Observable<payment_order>;  
+  getBySeq(seq: number):Observable<result>{
+    return this.httpClient.get<result>(this.RestUrl +"Payment_Order/GetBySeq/"+seq,this.httpOptions) as Observable<result>;  
     
   }
+
+
+  export2Excel() {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
+      return this.httpClient.post<any>( this.RestUrl +'Payment_Order/ExportExcel', this.httpOptions,
+          {headers: headers, responseType: 'blob' as 'json' }
+        );
+  }
+
+
 }

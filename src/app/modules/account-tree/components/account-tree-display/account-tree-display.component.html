@@ -1,0 +1,77 @@
+<button type="button" class="btn btn-primary btn-sm" (click)="openBasicModal(itemsModal)">
+    <mat-icon>search</mat-icon>
+    {{Title}}
+</button>
+
+<!-- Modal -->
+<ng-template #itemsModal let-modal>
+    <div class="modal-header">
+        <h2 class="modal-title">
+            <i class="feadiver icon-columns fs-3 me-2"></i>
+            {{Title}}
+        </h2>
+        <button type="button" class="btn-close" (click)="modal.close('by: close icon')" aria-label="Close"></button>
+    </div>
+
+    <div class="sidebar-sub-header">
+        <a class="settings-sidebar-toggler" (click)="modal.close()">
+            <i class="icon feadiver icon-settings"></i>
+        </a>
+    </div>
+    <div class="modal-body bg-gray-100">
+
+        <div class="page-content overflow-hidden p-0">
+            <div class="row">
+                <ul>
+                    <li>
+                        <div class="row">
+                            <div class="col-1">اختيار</div>
+                            <div class="col-1">رصيد مدين</div>
+                            <div class="col-1">رصيد دائن</div>
+                            <div class="col-1">الإجمالي</div>
+                            <div class="col-1">العام</div>
+                            <div class="col-1">المساعد</div>
+                            <div class="col-1">الفرعي</div>
+                            <div class="col-1">الجزئي</div>
+                            <div class="col-1">التحليلي</div>
+                            <div class="col-3">الحساب</div>
+                        </div>
+                    </li>
+                    <li>
+                        <app-treeview [root]="Root" (OnSelect)="SelectAccountTree($event)">
+
+                        </app-treeview>
+                    </li>
+                </ul>
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+    <div class="modal-footer">
+
+        <span *ngIf=""></span>
+
+        <button type="button" class="btn btn-icon-text btn-success me-1" (click)="modal.close(1)">
+            <i class="feadiver icon-save btn-icon-prepend"></i>
+            تعديل العنصر المختار
+        </button>
+
+
+
+        <button type="button" class="btn btn-icon-text btn-outline me-1" (click)="modal.close(2)">
+            <i class="feadiver icon-x btn-icon-prepend"></i>
+            الغاء
+        </button>
+    </div>
+</ng-template>

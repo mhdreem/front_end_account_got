@@ -44,20 +44,20 @@ export class AccountTreeService extends BaseAPIService{
     return this.httpClient.delete(this.RestUrl +"Accounts_Tree/delete/"+id,this.httpOptions);  
   }
 
-  add(obj : accounts_tree )  {
-   return this.httpClient.post(this.RestUrl +"Accounts_Tree/add",obj,this.httpOptions);  
+  add(obj : accounts_tree ):Observable<any>  {
+   return this.httpClient.post<any>(this.RestUrl +"Accounts_Tree/add",obj,this.httpOptions);  
   }
 
-  update(obj : accounts_tree )  {
-     return this.httpClient.put(this.RestUrl +"Accounts_Tree/update",obj,this.httpOptions);  
+  update(obj : accounts_tree ) :Observable<any> {
+     return this.httpClient.put<any>(this.RestUrl +"Accounts_Tree/update",obj,this.httpOptions);  
   }
 
   BuildTree()  {
      return this.httpClient.get(this.RestUrl +"Accounts_Tree/BuildTree",this.httpOptions) as Observable<accounts_tree>;      
   }
 
-  search(req : any )  {   
-    return this.httpClient.post(this.RestUrl +"Accounts_Tree/Search",req,this.httpOptions);  
+  search(req : any ) :Observable<any> {   
+    return this.httpClient.post<any>(this.RestUrl +"Accounts_Tree/Search",req,this.httpOptions);  
   }
 
   validate_id(obj: accounts_tree) {

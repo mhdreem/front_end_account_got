@@ -25,7 +25,7 @@ export class AttachmentTypeListComponent {
 
   attachment_type_List: attachement_type[] = [];
   dataSource = new MatTableDataSource<attachement_type>();
-  displayedColumns: string[] = ['attachement_type_name', 'action'];
+  displayedColumns: string[] = ['attachement_type_name','attachement_type_order', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
   isLoading: boolean= false;
   Subscription: Subscription = new Subscription();
@@ -95,7 +95,7 @@ export class AttachmentTypeListComponent {
 
   add() {
     const dialogRef = this.dialog.open(AttachmentTypeAddComponent, {
-      width: '300px',
+      width: '600px',
       position: {top: "8%" },
       data: {
         obj: null
@@ -111,7 +111,7 @@ export class AttachmentTypeListComponent {
   update(obj: attachement_type) {
 
     const dialogRef = this.dialog.open(AttachmentTypeAddComponent, {
-      width: '300px',
+      width: '600px',
       position: {top: "8%" },
       data: {
         obj: obj
@@ -132,7 +132,7 @@ export class AttachmentTypeListComponent {
   delete(obj: attachement_type) {
 
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
-      width: '300px',
+      width: '600px',
       data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },
     });
 
@@ -188,7 +188,7 @@ export class AttachmentTypeListComponent {
 
   importFromExcelClicked(){
     const dialogRef = this.dialog.open(ImportFromExcelComponent, {
-      width: '300px',
+      width: '600px',
       data: '',
     });
 

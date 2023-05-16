@@ -25,7 +25,7 @@ export class AccountGroupListComponent {
 
   account_group_List: account_group[] = [];
   dataSource = new MatTableDataSource<account_group>();
-  displayedColumns: string[] = ['account_group_name', 'action'];
+  displayedColumns: string[] = ['account_group_name','account_group_order', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
   isLoading: boolean= false;
   Subscription: Subscription = new Subscription();
@@ -95,7 +95,7 @@ export class AccountGroupListComponent {
 
   add() {
     const dialogRef = this.dialog.open(AccountGroupAddComponent, {
-      width: '300px',
+      width: '600px',
       position: {top: "8%" },
       data: {
         obj: null
@@ -111,7 +111,7 @@ export class AccountGroupListComponent {
   update(obj: account_group) {
 
     const dialogRef = this.dialog.open(AccountGroupAddComponent, {
-      width: '300px',
+      width: '600px',
       position: {top: "8%" },
       data: {
         obj: obj
@@ -132,7 +132,7 @@ export class AccountGroupListComponent {
   delete(obj: account_group) {
 
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
-      width: '300px',
+      width: '600px',
       data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },
     });
 
@@ -188,7 +188,7 @@ export class AccountGroupListComponent {
 
   importFromExcelClicked(){
     const dialogRef = this.dialog.open(ImportFromExcelComponent, {
-      width: '300px',
+      width: '600px',
       data: '',
     });
 

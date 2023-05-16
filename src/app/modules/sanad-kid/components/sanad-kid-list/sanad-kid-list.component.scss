@@ -10,9 +10,9 @@ form{
         margin-left: 20px;
     }
 }
-
 table{
-    width: 100%;
+  width: 100%;
+  margin-top: 40px;
 }
 
 td, th{
@@ -226,7 +226,7 @@ mat-tree-node{
   }
 
   ::ng-deep .mat-expansion-indicator{
-    left: 101%;
+    left: 1041px;
     position: relative;
   }
 
@@ -249,33 +249,46 @@ mat-tree-node{
 
 c-card{
   background-color: $lightBackground;
-  padding: 20px;
 }
 
-.inputGroup1, .inputGroup2, .inputGroup3, .inputGroup4, .inputGroup5, .inputGroup7{
-  border-left: 1px solid #bbbbbb;
-  margin-left: 20px;
-} 
 
 .small-width{
   width: 90px !important;
   margin-left: 0px !important;
 }
 
-mat-form-field{
-  width: 170px;
-  height: 70px;
-  font-size: 14px;
-}
 
-::ng-deep .mat-mdc-floating-label, ::ng-deep .mat-mdc-input-element, ::ng-deep .mat-mdc-select-min-line{
-  font-size: 14px;
-}
 
 table, c-card{
   zoom: 90%;
 }
 
-app-sanad-kid-print, app-sanad-kid-print-rows{
-  display: none;
+.isVisible{
+visibility: collapse;
 }
+
+:host
+{
+    font-size: small;
+}
+
+
+mat-form-field
+{
+    width: 100% !important;
+    font-size: small;
+}
+
+
+.mat-icon
+{
+    font-size: small;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+
+
+.isVisible{
+    visibility: collapse;
+    }

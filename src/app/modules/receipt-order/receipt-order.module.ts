@@ -12,7 +12,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatExpansionModule} from '@angular/material/expansion';
-import { GridModule } from '@coreui/angular';
+import { BreadcrumbModule, GridModule } from '@coreui/angular';
 import {MatMenuModule} from '@angular/material/menu';
 import {CommonModuleModule} from '../common-module/common-module.module'
 import { CardModule } from '@coreui/angular';
@@ -32,15 +32,16 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
-import {NgxPrintModule} from 'ngx-print';
-import { ReceiptOrderPrintComponent } from './components/receipt-order-print/receipt-order-print.component';
-import { ReceiptOrderPrintRowsComponent } from './components/receipt-order-print-rows/receipt-order-print-rows.component';
-import {MatDialogModule} from '@angular/material/dialog';
-import {ReceiptOrderEntriesViewComponent} from './components/receipt-order-entries-view/receipt-order-entries-view.component';
+import { ReceiptOrderListSearchComponent } from './components/receipt-order-list-search/receipt-order-list-search.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ViewsModule } from '../views/views.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const Import_Corui = [
   GridModule,
-  CardModule
+  CardModule,
+  BreadcrumbModule
 ];
 
 @NgModule({
@@ -51,9 +52,7 @@ const Import_Corui = [
     ReceiptOrderDetailsComponent,
     ReceiptOrderAttachmentsComponent,
     ReceiptOrderSearchBarComponent,
-    ReceiptOrderPrintComponent,
-    ReceiptOrderPrintRowsComponent,
-    ReceiptOrderEntriesViewComponent
+    ReceiptOrderListSearchComponent,
   ],
   imports: [
     CommonModule,
@@ -80,8 +79,10 @@ const Import_Corui = [
     MatListModule,
     MatDividerModule,
     MatProgressBarModule,
-    NgxPrintModule,
-    MatDialogModule
+    NgSelectModule,
+    NgbModule ,    
+    ViewsModule,
+    FontAwesomeModule
   ]
 })
 export class ReceiptOrderModule { }

@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { CommonModule, JsonPipe } from '@angular/common';
 
 import { ExchangeOrderRoutingModule } from './exchange-order-routing.module';
 import { ExchangeOrderComponent } from './exchange-order.component';
@@ -19,7 +19,7 @@ import {ExchangeOrderEditComponent} from './components/exchange-order-edit/excha
 import {ExchangeOrderDetailComponent} from './components/exchange-order-detail/exchange-order-detail.component'
 import {ExchangeOrderAttachmentsComponent} from './components/exchange-order-attachments/exchange-order-attachments.component'
 import {MatExpansionModule} from '@angular/material/expansion';
-import { GridModule } from '@coreui/angular';
+import { BreadcrumbModule, GridModule, NavModule, TabsModule } from '@coreui/angular';
 import {MatMenuModule} from '@angular/material/menu';
 import {CommonModuleModule} from '../common-module/common-module.module'
 import { CardModule } from '@coreui/angular';
@@ -31,16 +31,30 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
-import { ExchangeOrderPrintComponent } from './components/exchange-order-print/exchange-order-print.component';
-import {NgxPrintModule} from 'ngx-print';
+import { OffcanvasModule } from '@coreui/angular';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { ExchangeOrderListSearchComponent } from './components/exchange-order-list-search/exchange-order-list-search.component';
+import { NgbDatepickerModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ViewsModule } from '../views/views.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { IconModule, IconSetService } from '@coreui/icons-angular';
+import { PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { ExchangeOrderEntryComponent } from './components/exchange-order-entry/exchange-order-entry.component';
 import { ExchangeOrderPrintRowsComponent } from './components/exchange-order-print-rows/exchange-order-print-rows.component';
-import { ExchangeOrderEntriesViewComponent } from './components/exchange-order-entries-view/exchange-order-entries-view.component';
-import {MatDialogModule} from '@angular/material/dialog';
-
+import { ExchangeOrderPrintComponent } from './components/exchange-order-print/exchange-order-print.component';
+import {MatTabsModule} from '@angular/material/tabs'; 
 const Import_Corui = [
   GridModule,
-  CardModule
+  CardModule,
+  NavModule, 
+  TabsModule
 ];
+
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true
+};
+
+
 
 @NgModule({
   declarations: [
@@ -50,39 +64,52 @@ const Import_Corui = [
     ExchangeOrderDetailComponent,
     ExchangeOrderAttachmentsComponent,
     ExchangeOrderSearchBarComponent,
-    ExchangeOrderPrintComponent,
-    ExchangeOrderPrintRowsComponent,
-    ExchangeOrderEntriesViewComponent,
-    
+    ExchangeOrderListSearchComponent,
+    ExchangeOrderEntryComponent,ExchangeOrderPrintRowsComponent,
+    ExchangeOrderPrintComponent
     ],
   imports: [
     CommonModule,
+    ViewsModule,
     ExchangeOrderRoutingModule,
-    MatButtonModule,
-    MatAutocompleteModule,
-    MatCheckboxModule,
-    MatTableModule,
-    MatPaginatorModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatIconModule,
     MatToolbarModule,
-    MatFormFieldModule,
+    MatProgressBarModule,
+    MatIconModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatCheckboxModule,
+    NgbDatepickerModule,
+    JsonPipe,
+    MatAutocompleteModule,
+    MatButtonModule,
     MatExpansionModule,
+    MatFormFieldModule,
     MatMenuModule,
     Import_Corui,
     CommonModuleModule,
-    MatProgressBarModule,
-    InfiniteScrollModule,
-    MatListModule,
-    MatDividerModule,
     MatSelectModule,
     MatCardModule,
     MatGridListModule,
-    NgxPrintModule,
-    MatDialogModule
+    MatDividerModule,
+    MatListModule,
+    InfiniteScrollModule,
+    NgSelectModule,
+    NgbModule ,    
+    FontAwesomeModule,
+    IconModule,
+   PerfectScrollbarModule,
+   MatTabsModule
     
-  ],
+  ],providers:[
+   
+    IconSetService,
+    {
+      provide: PERFECT_SCROLLBAR_CONFIG,
+      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+    }
+  ]
 })
 export class ExchangeOrderModule { }

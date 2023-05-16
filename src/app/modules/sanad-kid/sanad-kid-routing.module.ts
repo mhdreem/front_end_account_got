@@ -5,29 +5,20 @@ import { SanadKidListComponent } from './components/sanad-kid-list/sanad-kid-lis
 import { SanadKidComponent } from './sanad-kid.component';
 
 const routes: Routes = [
-  { path: 'module', component: SanadKidComponent,
+  {
+    path: 'list', component: SanadKidListComponent,
     data:
     {
-      title: 'سند القيد'
-    },
-    children:
-    [
-      {
-        path: 'sanadKid', component: SanadKidListComponent,
-        data:
-        {
-          title: 'عرض سندات القيد'
-        }
-      },
-      {
-        path: 'sanadKidEdit', component: SanadKidEditComponent,
-        data:
-        {
-          title: 'تعديل سند القيد'
-        }
-      },
-    ]
-  }
+      title: 'عرض سندات القيد'
+    }
+  },
+  {
+    path: 'edit', component: SanadKidEditComponent,
+    data:
+    {
+      title: 'تعديل سند القيد'
+    }
+  } 
 ];
 
 @NgModule({

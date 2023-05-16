@@ -16,7 +16,7 @@
                             <mat-form-field>
                                 <mat-label #label_attachement_type_name>اسم نوع المرفق</mat-label>
                                 <input matInput [formControl]="attachement_type_name" id="attachement_type_name"
-                                    (keyup.enter)="focusNext('account_center_id')">
+                                    (keyup.enter)="focusNext('attachement_type_order')">
                                 <mat-error *ngIf="fieldHasErrors(Form, 'attachement_type_name')">
                                     {{
                                     autoPrintFirstErrorMessage(

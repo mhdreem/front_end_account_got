@@ -13,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { GridModule } from '@coreui/angular';
+import { GridModule, NavModule } from '@coreui/angular';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ImportFromExcelComponent } from './modules/shared/components/import-from-excel/import-from-excel.component';
@@ -36,7 +36,11 @@ import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { SelectColumnsComponent } from './modules/shared/components/select-columns/select-columns.component';
-import {NgxPrintModule} from 'ngx-print';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AuthGuard } from './modules/shared/guard/authguard';
+import { AuthGuardServiceService } from './modules/shared/services/auth-guard-service.service';
+
 
 const Import_Materail = [
   MatDialogModule,
@@ -63,6 +67,7 @@ const Import_Corui = [
   AvatarModule,
   SidebarModule,
   IconModule,
+  NavModule,
   
 ];
 
@@ -76,9 +81,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ConfirmationdialogComponent,
     ImportFromExcelComponent,
     DefaultFooterComponent,
-     DefaultHeaderComponent,
+    DefaultHeaderComponent,
       DefaultLayoutComponent ,
       LoginComponent,
+   
       
   ],
   imports:
@@ -90,15 +96,20 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       Import_Materail, 
       Import_Corui,
       PerfectScrollbarModule,
-      NgxPrintModule
+      NgbModule,
+      FontAwesomeModule,
+      IconModule,
 
     ],
   providers: [
+    AuthGuard,
+    AuthGuardServiceService,
+    IconSetService,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
     },
-    IconSetService,
+  
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService,
     

@@ -1,65 +1,68 @@
+<form [formGroup]="Form" #form="ngForm">
+    <c-row>
+        <c-col [cCol]="1">
+            <button type="button" class="btn btn-danger btn-sm" (click)="delete()">
+                حذف
+                <span class="badge bg-info"> {{index+1}} </span>
+            </button>
+        </c-col>
 
-    <form [formGroup]="Form" #form="ngForm">
-    
-        <button mat-raised-button (click)="delete()" color="warn" style="width: 15%;"><mat-icon class="mat-icon-rtl-mirror">delete
-            </mat-icon> حذف</button>
+        <c-col [cCol]="2">            
+            <mat-form-field appearance="outline">
+                <mat-label>رقم المرفق</mat-label>
+                <input matInput [formControl]="payment_order_attachement_id" [OnlyNumber]="true"
+                    id="{{'payment_order_attachement_id'+_index}}" (keyup.enter)="focusNext('type_fk_'+_index)">
+            </mat-form-field>
+        </c-col>
 
-        <mat-form-field appearance="fill" style="margin-top: 30px; width: 19%;">
-            <mat-label>رقم المرفق</mat-label>
-            <input matInput [formControl]="payment_order_attachement_id" [OnlyNumber]="true"
-                id="{{'payment_order_attachement_id'+_index}}" (keyup.enter)="focusNext('type_fk_'+_index)">
-        </mat-form-field>
+        <c-col [cCol]="2">
+            <mat-form-field appearance="outline">
+                <mat-label #label_accounts_tree_fk>نوع المرفق</mat-label>
+                <input matInput [formControl]="type_fk" [matAutocomplete]="autoattachement_type"
+                    id="{{'type_fk_'+_index}}" (keyup.enter)="focusNext('attachmentDateDay_'+_index)">
+                <mat-autocomplete #autoattachement_type="matAutocomplete"
+                    [displayWith]="display_Attachement_Type_Property.bind(this)">
+                    <mat-option *ngFor="let option of attachment_type_filter | async"
+                        [value]="option.attachement_type_seq">
+                        {{option.attachement_type_name}}
+                    </mat-option>
+                </mat-autocomplete>
 
+            </mat-form-field>
+        </c-col>
 
-        <mat-form-field class="fitContent" appearance="fill" style="margin-top: 30px; width: 19%;">
-            <mat-label #label_accounts_tree_fk>نوع المرفق</mat-label>
-            <input matInput [formControl]="type_fk" [matAutocomplete]="autoattachement_type"
-                id="{{'type_fk_'+_index}}" (keyup.enter)="focusNext('attachmentDateDay_'+_index)">
-            <mat-autocomplete #autoattachement_type="matAutocomplete"
-                [displayWith]="display_Attachement_Type_Property.bind(this)">
-                <mat-option *ngFor="let option of attachment_type_filter | async"
-                    [value]="option.attachement_type_seq">
-                    {{option.attachement_type_name}}
-                </mat-option>
-            </mat-autocomplete>
-
-        </mat-form-field>
-
+        <c-col [cCol]="3">
             <div class="date">
-                <span class="white" style="margin-bottom: 10px; display: block;  font-size: 14px;">تاريخ
-                    المرفق</span>
-                        <mat-form-field class="example-full-width small-width" appearance="fill">
-                            <mat-label>اليوم</mat-label>
-                            <input matInput placeholder="ex: 21" (change)="attachmentDateChange('day')"
-                                [(ngModel)]='attachmentDateDay' [ngModelOptions]="{standalone: true}"
-                                id="{{'attachmentDateDay_'+_index}}"
-                                (keyup.enter)="focusNext('attachmentDateMonth_'+_index)" [OnlyNumber]="true">
-                        </mat-form-field>
+                <span class="white" style=" display: block;">تاريخ المرفق</span>
+                <div class="input-group inline input-group-lg">
+                    <input class="form-control" placeholder="اليوم" (change)="attachmentDateChange('day')"
+                        [(ngModel)]='attachmentDateDay' [ngModelOptions]="{standalone: true}"
+                        id="{{'attachmentDateDay_'+_index}}" (keyup.enter)="focusNext('attachmentDateMonth_'+_index)"
+                        [OnlyNumber]="true">
 
-                        <mat-form-field class="example-full-width small-width" appearance="fill">
-                            <mat-label>الشهر</mat-label>
-                            <input matInput placeholder="ex: 1" (change)="attachmentDateChange('month')"
-                                [(ngModel)]='attachmentDateMonth' [ngModelOptions]="{standalone: true}"
-                                id="{{'attachmentDateMonth_'+_index}}"
-                                (keyup.enter)="focusNext('attachmentDateYear_'+_index)" [OnlyNumber]="true">
-                        </mat-form-field>
-                        <mat-form-field class="example-full-width small-width" appearance="fill">
-                            <mat-label>العام</mat-label>
-                            <input matInput placeholder="ex: 2023" (change)="attachmentDateChange('year')"
-                                [(ngModel)]='attachmentDateYear' [ngModelOptions]="{standalone: true}"
-                                id="{{'attachmentDateYear_'+_index}}"
-                                (keyup.enter)="focusNext('payment_order_attachement_note'+_index)" [OnlyNumber]="true">
-                        </mat-form-field>
+                    <input class="form-control" placeholder="الشهر" (change)="attachmentDateChange('month')"
+                        [(ngModel)]='attachmentDateMonth' [ngModelOptions]="{standalone: true}"
+                        id="{{'attachmentDateMonth_'+_index}}" (keyup.enter)="focusNext('attachmentDateYear_'+_index)"
+                        [OnlyNumber]="true">
+
+                    <input class="form-control" placeholder="السنة" (change)="attachmentDateChange('year')"
+                        [(ngModel)]='attachmentDateYear' [ngModelOptions]="{standalone: true}"
+                        id="{{'attachmentDateYear_'+_index}}"
+                        (keyup.enter)="focusNext('payment_order_attachement_note'+_index)" [OnlyNumber]="true">
+
+                </div>
+
             </div>
+        </c-col>
 
 
 
-
-    <mat-form-field style="width: 96%;">
-        <mat-label>بيان المرفق</mat-label>
-        <input matInput id="{{'payment_order_attachement_note'+_index}}"
-            [formControl]="payment_order_attachement_note">
-    </mat-form-field>
-
-
+        <c-col [cCol]="4">
+            <mat-form-field appearance="outline">
+                <mat-label>بيان المرفق</mat-label>
+                <input matInput id="{{'payment_order_attachement_note'+_index}}"
+                    [formControl]="payment_order_attachement_note">
+            </mat-form-field>
+        </c-col>
+    </c-row>
 </form>

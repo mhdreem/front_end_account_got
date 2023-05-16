@@ -25,7 +25,7 @@ export class AccountFinalListComponent {
 
   account_final_List: account_final[] = [];
   dataSource = new MatTableDataSource<account_final>();
-  displayedColumns: string[] = ['account_final_name', 'action'];
+  displayedColumns: string[] = ['account_final_name','account_final_order', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
   isLoading: boolean= false;
   Subscription: Subscription = new Subscription();
@@ -95,7 +95,7 @@ export class AccountFinalListComponent {
 
   add() {
     const dialogRef = this.dialog.open(AccountFinalAddComponent, {
-      width: '300px',
+      width: '600px',
       position: {top: "8%" },
       data: {
         obj: null
@@ -111,7 +111,7 @@ export class AccountFinalListComponent {
   update(obj: account_final) {
 
     const dialogRef = this.dialog.open(AccountFinalAddComponent, {
-      width: '300px',
+      width: '600px',
       position: {top: "8%" },
       data: {
         obj: obj
@@ -132,7 +132,7 @@ export class AccountFinalListComponent {
   delete(obj: account_final) {
 
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
-      width: '300px',
+      width: '600px',
       data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },
     });
 
@@ -189,7 +189,7 @@ export class AccountFinalListComponent {
 
   importFromExcelClicked(){
     const dialogRef = this.dialog.open(ImportFromExcelComponent, {
-      width: '300px',
+      width: '600px',
       data: '',
     });
 

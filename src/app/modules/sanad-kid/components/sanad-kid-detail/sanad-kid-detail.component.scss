@@ -1,50 +1,19 @@
-@import '../../../../../theme.scss';
-
-button{
-    margin-top: 10px;
+:host
+{
+    font-size: small;
 }
 
-button, span, mat-form-field,:ng-deep .mat-mdc-form-field , ::ng-deep mat-label, th, td, label, output{
-    font-family: 'Noto Sans Arabic', sans-serif !important;
+
+mat-form-field
+{
+    width: 100% !important;
+    font-size: small;
 }
 
-form{
-    width: 100%;
-    padding: 10px;
+
+.mat-icon
+{
+    font-size: small;
+    font-weight: bold;
+    vertical-align: middle;
 }
-
-textarea{
-    resize: none;
-}
-
-::ng-deep .mat-mdc-form-field-underline::before{
-    background-color: black !important;
-}
-
-mat-form-field ::ng-deep .mat-mdc-form-field-flex, mat-form-field ::ng-deep .mat-mdc-text-field-wrapper{
-    background-color: white !important;
-}
-
-mat-form-field, ::ng-deep .mat-mdc-form-field-label{
-  color: black !important;
-}
-
-.small-width{
-    width: 80px !important;
-    margin-left: 0px !important;
-  }
-
-  mat-form-field{
-    width: 18%;
-    height: 70px;
-    font-size: 14px;
-    margin-right: 10px;
-  }
-
-  ::ng-deep .mat-mdc-floating-label, ::ng-deep .mat-mdc-input-element, ::ng-deep .mat-mdc-select-min-line{
-    font-size: 14px;
-  }
-
-  table, c-card{
-    zoom: 90%;
-  }

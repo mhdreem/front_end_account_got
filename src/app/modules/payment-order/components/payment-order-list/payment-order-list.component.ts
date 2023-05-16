@@ -6,7 +6,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { forkJoin, map, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
 import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/confirmationdialog/confirmationdialog.component';
@@ -16,6 +16,9 @@ import { sanad_kid_book } from 'src/app/modules/shared/models/sanad_kid_book';
 import { BranchService } from 'src/app/modules/shared/services/branch.service';
 import { PaymentOrderService } from 'src/app/modules/shared/services/payment-order.service';
 import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-book.service';
+import { PagePaymentOrderService } from '../../pageservice/page-payment-order.service';
+import { result } from 'src/app/modules/shared/models/result';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-payment-order-list',
@@ -23,12 +26,20 @@ import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-b
   styleUrls: ['./payment-order-list.component.scss']
 })
 export class PaymentOrderListComponent {
+
+  Request: any = {};// Represent Request 
+  Subscriptions: Subscription[] = [];
+
+  RowCount: number = 0;
+  SumTotal: number = 0;
+  
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.keyCode == 123) {
       event.preventDefault();
       this.add();
     }
+
     if (event.keyCode == 119) {
       event.preventDefault();
       this.View();
@@ -116,17 +127,17 @@ export class PaymentOrderListComponent {
 
   selected_order: payment_order = {};
 
-  paymentPrintInput: payment_order= {};
-  paymentPrintRowsInput: payment_order[]= [];
-  displayed_rows: payment_order[]= [];
+
 
   constructor(
+    private ActivatedRoute:ActivatedRoute,
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
     @Inject(DOCUMENT) private _document: Document,
     private router: Router,
     private paymentOrderService: PaymentOrderService,
+    private PagePaymentOrderService:PagePaymentOrderService,
     private sanadKidBookService: SanadKidBookService,
     private BranchService: BranchService,
   ) {
@@ -148,11 +159,13 @@ export class PaymentOrderListComponent {
 
   }
 
+  
     
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
+    /*
     this.paginator.page
       .pipe(
         startWith({}),
@@ -165,11 +178,11 @@ export class PaymentOrderListComponent {
       .subscribe((data: any) => {
         this.totalRows = data.total_row_count;
         this.dataSource = new MatTableDataSource(data.value);
-        this.displayed_rows= data.value;
         this.isLoading= false;
         if (data.value?.length != 0)
           this.dataSourceIsEmpty= false;
       });
+      */
   }
 
 
@@ -289,32 +302,77 @@ export class PaymentOrderListComponent {
     return '';
   }
 
-  onViewClick(){
-    this.currentPage=0;
-    this.pageSize=5;
-    this.View().subscribe((data: any)=>{
-      this.totalRows = data.total_row_count;
-      this.dataSource = new MatTableDataSource(data.value);
-      this.displayed_rows= data.value;
-      this.isLoading= false;
-      if (data.value?.length != 0)
-        this.dataSourceIsEmpty= false;
-    });
+  onViewClick(request: any) {
+
+    this.Request = request;
+    this.isLoading = true;
+    this.Subscriptions.push
+      (
+
+        this.paymentOrderService.search(request)
+          .subscribe((data: any) => {
+            this.totalRows = data.total_row_count;
+            this.dataSource = new MatTableDataSource(data.value);
+            this.isLoading = false;
+            if (data.value?.length != 0)
+              this.dataSourceIsEmpty = false;
+
+
+            this.totalRows = data.total_row_count;
+            this.RowCount = data.total_row_count;
+
+            let arr: payment_order[] = [];
+
+            arr = (data.value as payment_order[]);
+            if (arr != null && arr.length > 0) {
+              this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.total_value : 0), 0);
+            }
+
+          })
+
+      )
+
+
+
+
   }
 
   View() {
+    this.isLoading = true;
+    if (this.Request != null) {
+      this.Request.page_index = this.currentPage;
+      this.Request.row_count = this.pageSize;
 
-    this.isLoading= true;
+    }
 
-    this.page_index.setValue(this.currentPage);
-    this.row_count.setValue(this.pageSize);
+    this.paymentOrderService.search(this.Request).subscribe((data: any) => {
 
-    return this.paymentOrderService.search(this.Form.value);
+
+      this.dataSource = new MatTableDataSource(data.value);
+      this.isLoading = false;
+      if (data.value?.length != 0)
+        this.dataSourceIsEmpty = false;
+
+
+
+      this.totalRows = data.total_row_count;
+      this.RowCount = data.total_row_count;
+
+      let arr: payment_order[] = [];
+
+      arr = (data.value as payment_order[]);
+      if (arr != null && arr.length > 0) {
+        this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.total_value : 0), 0);
+      }
+
+    });
 
 
   }
 
-  
+
+
+
 
   public focusNext(id: string) {
     let element = this._document.getElementById(id);
@@ -327,9 +385,51 @@ export class PaymentOrderListComponent {
     this.dataSource.data = [];
   }
 
-  exportToExcel() {
+
+  Delete(order: payment_order) {
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },
+    });
+
+    dialogRef.afterClosed().subscribe(res => {
+      if (res == 1) {
+        this.paymentOrderService.delete(order.payment_order_seq!).subscribe(res => {
+          if (res != null && (res as result) != null && (res as result).success == true) {
+            this.snackBar.open('تم الحذف بنجاح', '', {
+              duration: 3000,
+              panelClass: ['green-snackbar'],
+            });
+            this.View();
+            return;
+
+          } else {
+            this.snackBar.open('خطأ لم يتم الحذف', 'خطأ', {
+              duration: 3000,
+              panelClass: ['green-snackbar'],
+            });
+            return;
+          }
+
+        })
+      }
+    });
+  }
+
+  Update(order: payment_order) {
+    this.PagePaymentOrderService.payment_order = order;
+    this.PagePaymentOrderService.$payment_order.next(order);
+
+    this.router.navigate(['../edit'], { relativeTo: this.ActivatedRoute });
 
   }
+
+  add() {
+    this.PagePaymentOrderService.payment_order = {};
+    this.PagePaymentOrderService.$payment_order.next({});
+    this.router.navigate(['../edit'], { relativeTo: this.ActivatedRoute });
+  }
+
+/*
 
   Delete(order: payment_order) {
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
@@ -354,9 +454,27 @@ export class PaymentOrderListComponent {
   }
 
   add() {
-    this.router.navigate(['/paymentOrder/module/paymentOrderEdit', { id: 0 }]);
+    this.router.navigate(['../edit'],{relativeTo: this.ActivatedRoute});
   }
 
+
+  View() {
+
+    this.isLoading= true;
+
+    if (this.Request!= null)
+    {
+      this.Request.page_index= this.currentPage;
+      this.Request.row_count= this.pageSize;
+  
+    }
+
+    return this.paymentOrderService.search(this.Request);
+
+
+  }
+
+  */
 
   fromSanadDateChange(changeSource: string) {
     if (changeSource == 'day')
@@ -431,11 +549,14 @@ export class PaymentOrderListComponent {
   }
 
 
-  printOne(sanad_kid: payment_order){
-    this.paymentPrintInput= sanad_kid;
-   }
+  
+  exportToExcel() {
+    this.paymentOrderService.export2Excel().subscribe(
+      (res) => {
+        const file: Blob = new Blob([res], { type: 'application/xlsx' });
+        saveAs(file, `سندات القيد.xlsx`);
+      }
+    );
+  }
 
-   printRows(rows: payment_order[]){
-    this.paymentPrintRowsInput= rows;
-   }
 }

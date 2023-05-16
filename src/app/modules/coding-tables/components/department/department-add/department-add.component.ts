@@ -111,6 +111,7 @@ export class DepartmentAddComponent implements OnInit {
   ResetForm()
   {
     this.Form.reset();
+    this.focusNext('department_name')
   }
 
   save()

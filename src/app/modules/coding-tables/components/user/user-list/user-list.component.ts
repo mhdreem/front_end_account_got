@@ -77,7 +77,7 @@ export class UserListComponent implements OnInit {
 
   add() {
     const dialogRef = this.dialog.open(UserAddComponent, {
-      width: '300px',
+      width: '600px',
       position: {top: "8%" },
       data: {
         obj: null
@@ -93,7 +93,7 @@ export class UserListComponent implements OnInit {
   update(obj: user) {
 
     const dialogRef = this.dialog.open(UserAddComponent, {
-      width: '300px',
+      width: '600px',
       position: {top: "8%" },
       data: {
         obj: obj
@@ -113,7 +113,7 @@ export class UserListComponent implements OnInit {
 
   delete(obj: user) {
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
-      width: '300px',
+      width: '600px',
       data: { message: 'هل أنت متأكد؟', buttonText: { ok: 'نعم', cancel: 'الغاء الأمر' } },
     });
 

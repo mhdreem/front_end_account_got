@@ -1,0 +1,173 @@
+<button type="button" class="btn btn-primary btn-sm" (click)="openBasicModal(itemsModal)">
+    <mat-icon>search</mat-icon>
+    {{Title}}
+</button>
+
+
+<!-- Modal -->
+<ng-template #itemsModal let-modal>
+    <div class="modal-header">
+        <h2 class="modal-title">
+            <i class="feather icon-columns fs-3 me-2"></i>
+            {{Title}}
+        </h2>
+        <button type="button" class="btn-close" (click)="modal.close('by: close icon')" aria-label="Close"></button>
+    </div>
+
+    <div class="sidebar-sub-header">
+        <a class="settings-sidebar-toggler" (click)="modal.close()">
+            <i class="icon feather icon-settings"></i>
+        </a>
+    </div>
+    <div class="modal-body bg-gray-100">
+
+        <c-container fluid>
+
+
+            <form class="example-form" [formGroup]="Form" #form="ngForm">
+
+                <div class="row">
+
+                    <div class="col-6 col-6 mb-1">
+                        <mat-form-field  appearance="outline">
+                            <mat-label>من رقم حساب</mat-label>
+                            <input  matInput [formControl]="account_id_from"
+                             id="account_id_from"
+                                (keyup.enter)="focusNext('account_id_to')" [OnlyNumber]="true">
+                        </mat-form-field>
+                    </div>
+
+
+                    <div class="col-6 col-6 mb-1">
+                        <mat-form-field  appearance="outline">
+                            <mat-label>الى رقم حساب</mat-label>
+                            <input  matInput [formControl]="account_id_to"
+                             id="account_id_to"
+                                (keyup.enter)="focusNext('account_name')" [OnlyNumber]="true">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-6 col-6 mb-1">
+                        <mat-form-field  appearance="outline">
+                            <mat-label>اسم الحساب</mat-label>
+                            <input matInput [formControl]="account_name"
+                             id="account_name"
+                                (keyup.enter)="focusNext('account_type_fk')">
+                        </mat-form-field>
+
+                    </div>
+
+
+
+                    <div class="col-6 col-6 mb-1">
+                        <label class="form-label">رصيد الحساب </label>
+                        <ng-select id="account_type_fk" 
+                        (keyup.enter)="focusNext('account_level_fk')"
+                            formControlName="account_type_fk" [items]="accountType_List" bindValue="account_type_seq"
+                            bindLabel="account_type_name" placeholder="قم باختيار رصيد الحساب"></ng-select>
+
+                    </div>
+
+
+                    <div class="col-6 col-6 mb-1">
+                        <label class="form-label">مستوى الحساب </label>
+                        <ng-select id="account_level_fk" 
+                        (keyup.enter)="focusNext('account_group_list')"
+                            formControlName="account_level_fk" [items]="accountLevel_List" bindValue="account_level_seq"
+                            bindLabel="account_level_name" placeholder="قم باختيار مستوى الحساب"></ng-select>
+
+                    </div>
+
+
+                    <div class="col-6 col-6 mb-1">
+                        <label class="form-label">مجموعة الحساب </label>
+                        <ng-select id="account_group_list" 
+                        (keyup.enter)="focusNext('account_class_fk')"
+                            formControlName="account_group_fk" [items]="accountGroup_List" bindValue="account_group_seq"
+                            bindLabel="account_group_name" placeholder="قم باختيار مجموعة الحساب"></ng-select>
+                    </div>
+
+
+
+
+
+                    <div class="col-6 col-6 mb-1">
+                        <label class="form-label">تصنيف الحساب </label>
+                        <ng-select id="account_class_fk" 
+                        (keyup.enter)="focusNext('finance_list_fk')"
+                            formControlName="account_class_fk" [items]="accountClass_List" bindValue="account_class_seq"
+                            bindLabel="account_class_name" placeholder="  قم باختيار تصنيف الحساب"></ng-select>
+                    </div>
+
+
+
+
+                    <div class="col-6 col-6 ">
+                        <label class="form-label">القائمة المالية </label>
+                        <ng-select id="finance_list_fk" 
+                        (keyup.enter)="focusNext('sub_financial_list_fk')"
+                            formControlName="finance_list_fk" [items]="financeList_List" bindValue="finance_list_seq"
+                            bindLabel="finance_list_name" placeholder="قم باختيار القائمة المالية"></ng-select>
+                    </div>
+
+                    <div class="col-6 col-6 ">
+                        <label class="form-label">القائمة المالية الفرعية </label>
+                        <ng-select id="sub_financial_list_fk" 
+                        (keyup.enter)="focusNext('account_type_fk')"
+                            formControlName="sub_financial_list_fk" 
+                            [items]="sub_financial_list_list" 
+                            bindValue="sub_financial_list_seq"
+                            bindLabel="sub_financial_list_name" 
+                            placeholder="قم باختيار القائمة المالية الفرعية"></ng-select>
+                    </div>
+
+
+                    <div class="col-6 col-6 ">
+                        <label class="form-label">طبيعة الحساب </label>
+                        <ng-select id="account_type_fk" 
+                        formControlName="account_type_fk" 
+                        (keyup.enter)="focusNext('branch_fk_list')"
+                            
+                            [items]="accountType_List" 
+                            bindValue="account_type_seq"
+                            bindLabel="account_type_name" 
+                            placeholder="قم باختيار طبيعة الحساب"></ng-select>
+                    </div>
+
+                    <div class="col-6 col-6 mb-1">
+                        <label class="form-label">الفرع </label>
+                        <ng-select id="branch_fk" 
+                        (keyup.enter)="focusNext('branch_fk_list')"
+                            formControlName="branch_fk" [items]="branch_List" bindValue="branch_seq"
+                            bindLabel="branch_name" placeholder="قم باختيار الفرع"></ng-select>
+                    </div>
+
+
+
+                </div>
+
+            </form>
+
+
+        </c-container>
+    </div>
+    <div class="modal-footer">
+
+        <button type="button" class="btn btn-icon-text btn-success me-1" (click)="modal.close(1)">
+            <i class="feather icon-save btn-icon-prepend"></i>
+            بحث
+        </button>
+
+        <button type="button" class="btn btn-icon-text btn-warning me-1" (click)="ClearForm()">
+            <i class="feather icon-save btn-icon-prepend"></i>
+            افراغ حقول البحث
+        </button>
+
+        <button type="button" class="btn btn-icon-text btn-outline me-1" (click)="modal.close(2)">
+            <i class="feather icon-x btn-icon-prepend"></i>
+            الغاء
+        </button>
+
+
+    </div>
+</ng-template>

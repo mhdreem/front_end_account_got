@@ -108,6 +108,7 @@ export class AttachmentTypeAddComponent {
   ResetForm()
   {
     this.Form.reset();
+    this.focusNext('attachement_type_name')
   }
 
   save()

@@ -210,9 +210,11 @@ export class PaymentOrderStageAddComponent {
         }
   }
 
+ 
   ResetForm()
   {
     this.Form.reset();
+    this.focusNext('pay_ord_stg_name')
   }
 
   save()

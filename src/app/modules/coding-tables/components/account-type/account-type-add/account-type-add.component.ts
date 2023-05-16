@@ -110,6 +110,7 @@ export class AccountTypeAddComponent {
   ResetForm()
   {
     this.Form.reset();
+    this.focusNext('account_type_name')
   }
 
   save()

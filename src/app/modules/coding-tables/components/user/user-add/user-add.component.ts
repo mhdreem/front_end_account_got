@@ -238,10 +238,13 @@ export class UserAddComponent implements OnInit {
         }
   }
 
+ 
   ResetForm()
   {
     this.Form.reset();
+    this.focusNext('user_first_name')
   }
+
 
   save()
   {

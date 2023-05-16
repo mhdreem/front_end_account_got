@@ -32,11 +32,11 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {PaymentOrderSearchBarComponent} from './components/payment-order-search-bar/payment-order-search-bar.component'
-import {NgxPrintModule} from 'ngx-print';
-import { PaymentOrderPrintComponent } from './components/payment-order-print/payment-order-print.component';
-import { PaymentOrderPrintRowsComponent } from './components/payment-order-print-rows/payment-order-print-rows.component';
-import { PaymentOrderEntriesViewComponent } from './components/payment-order-entries-view/payment-order-entries-view.component';
-import {MatDialogModule} from '@angular/material/dialog';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { ViewsModule } from '../views/views.module';
+import { PaymentOrderListSearchComponent } from './components/payment-order-list-search/payment-order-list-search.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const Import_Corui = [
   GridModule,
@@ -50,9 +50,7 @@ const Import_Corui = [
     PaymentOrderDetailsComponent,
     PaymentOrderAttachmentsComponent,
     PaymentOrderSearchBarComponent,
-    PaymentOrderPrintComponent,
-    PaymentOrderPrintRowsComponent,
-    PaymentOrderEntriesViewComponent
+    PaymentOrderListSearchComponent
   ],
   imports: [
     CommonModule,
@@ -79,8 +77,10 @@ const Import_Corui = [
     MatListModule,
     MatDividerModule,
     MatProgressBarModule,
-    NgxPrintModule,
-    MatDialogModule
+    NgSelectModule,
+    NgbModule,
+    ViewsModule,
+    FontAwesomeModule
     
   ]
 })

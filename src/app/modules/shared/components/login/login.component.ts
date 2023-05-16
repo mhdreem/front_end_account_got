@@ -55,9 +55,10 @@ export class LoginComponent implements OnInit {
     this._Subscription.add(
       this.UserService.login(user)
       .subscribe((res: any) => {
-        console.log('res123',res);
+      
         this.isLoadingResults = false;
         if (res.error != null) {
+          localStorage.setItem('isLoggedin', 'false');
           this.LoginResultState = 'اسم المستحدم أو كلمة السر خاطئة ';
         } else if (res.value!= null) {
 
@@ -66,8 +67,10 @@ export class LoginComponent implements OnInit {
 
           // localStorage.setItem('token', res.token);
           localStorage.setItem('User', res.value);
+          localStorage.setItem('isLoggedin', 'true');
+          
 
-        //  this.shamelPrivilige.List_User_Windows('00100');
+       
           this.router.navigate(['']);
         }
 

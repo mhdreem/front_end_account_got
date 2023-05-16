@@ -16,4 +16,9 @@ export interface  receipt_order_attachement
     attachement_type?: attachement_type;
 
     receipt_order_attachement_note?: string;
+
+    
+   receipt_order_ownership ?:string ;
+   receipt_order_Source_number?:string ;
+
 }

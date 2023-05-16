@@ -241,6 +241,7 @@ export class SanadKidBookAddComponent {
   ResetForm()
   {
     this.Form.reset();
+    this.focusNext('sanad_kid_book_name')
   }
 
   save()

@@ -1,5 +1,5 @@
 import { branch } from "./branch";
-import { SanadKidEntry } from "./sanad-kid-entry";
+import { sanad_kid_entry } from "./sanad-kid-entry";
 import { sanad_kid_attachement } from "./sanad_kid_attachement";
 import { sanad_kid_book } from "./sanad_kid_book";
 import { sanad_kid_detail } from "./sanad_kid_detail";
@@ -39,10 +39,13 @@ export interface sanad_kid {
 
     sanad_kid_details?:sanad_kid_detail[];    
     sanad_kid_attachements?:sanad_kid_attachement[];
-    sanad_kid_entries?: SanadKidEntry[]
+    sanad_kid_entries?: sanad_kid_entry[]
 
     book_fk?: number;
     sanad_kid_book?:sanad_kid_book;
 
     sanad_kid_type_fk?: number;
+
+    
+
 }

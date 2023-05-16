@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, HostListener, EventEmitter, Inject, Input, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { Component, HostListener, EventEmitter, Inject, Input, OnDestroy, Output, SimpleChanges, OnChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
@@ -14,7 +14,7 @@ import { PageReceiptOrderService } from '../../pageservice/page-receipt-order.se
   templateUrl: './receipt-order-attachments.component.html',
   styleUrls: ['./receipt-order-attachments.component.scss']
 })
-export class ReceiptOrderAttachmentsComponent {
+export class ReceiptOrderAttachmentsComponent implements OnDestroy,OnChanges {
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
     // enter
@@ -28,27 +28,18 @@ export class ReceiptOrderAttachmentsComponent {
   @Input() set index(i: number) {
     this._index = i;
   }
-
-  get receipt_order_attachment(): receipt_order_attachement {
-    if (
-      this.PageReceiptOrderService.receipt_order != null &&
-      this.PageReceiptOrderService.receipt_order.receipt_order_attachements != null &&
-      this._index >= 0 &&
-      this._index < this.PageReceiptOrderService.receipt_order.receipt_order_attachements?.length) {
-      return this.PageReceiptOrderService.receipt_order.receipt_order_attachements[this._index];
-    }
-    return {};
+  get index(): number {
+    return this._index;
   }
 
-  set receipt_order_attachment(obj: receipt_order_attachement) {
-    if (
-      this.PageReceiptOrderService.receipt_order != null &&
-      this.PageReceiptOrderService.receipt_order.receipt_order_attachements != null &&
-      this._index >= 0 &&
-      this._index <= this.PageReceiptOrderService.receipt_order.receipt_order_attachements?.length) {
-      this.PageReceiptOrderService.receipt_order.receipt_order_attachements[this.index] = obj;
-    }
+  _receipt_order_attachement: receipt_order_attachement;
 
+  get receipt_order_attachement(): receipt_order_attachement {
+    return this._receipt_order_attachement;
+  }
+
+  @Input() set receipt_order_attachement(obj: receipt_order_attachement) {
+    this._receipt_order_attachement = obj;
   }
 
   _Subscription!: Subscription;
@@ -101,7 +92,7 @@ export class ReceiptOrderAttachmentsComponent {
       // load data must executed before set value
       this.Load_Data();
       //this.SetValue();
-      this.bindModelToForm(this.receipt_order_attachment, this.Form);
+      this.bindModelToForm(this.receipt_order_attachement, this.Form);
 
     }
   }
@@ -203,20 +194,20 @@ export class ReceiptOrderAttachmentsComponent {
     try {
 
 
-      if (this.receipt_order_attachment != null && this.receipt_order_attachment?.receipt_order_attachement_seq != null)
-        this.receipt_order_attachement_seq.setValue(this.receipt_order_attachment.receipt_order_attachement_seq);
+      if (this.receipt_order_attachement != null && this.receipt_order_attachement?.receipt_order_attachement_seq != null)
+        this.receipt_order_attachement_seq.setValue(this.receipt_order_attachement.receipt_order_attachement_seq);
 
 
-      if (this.receipt_order_attachment != null && this.receipt_order_attachment.receipt_order_fk != null)
-        this.receipt_order_fk.setValue(this.receipt_order_attachment.receipt_order_fk);
+      if (this.receipt_order_attachement != null && this.receipt_order_attachement.receipt_order_fk != null)
+        this.receipt_order_fk.setValue(this.receipt_order_attachement.receipt_order_fk);
 
 
-      if (this.receipt_order_attachment != null && this.receipt_order_attachment.receipt_order_attachement_id != null)
-        this.receipt_order_attachement_id.setValue(this.receipt_order_attachment.receipt_order_attachement_id);
+      if (this.receipt_order_attachement != null && this.receipt_order_attachement.receipt_order_attachement_id != null)
+        this.receipt_order_attachement_id.setValue(this.receipt_order_attachement.receipt_order_attachement_id);
 
 
-      if (this.receipt_order_attachment != null && this.receipt_order_attachment.receipt_order_attachement_date != null){
-        this.receipt_order_attachement_date.setValue(this.receipt_order_attachment.receipt_order_attachement_date);
+      if (this.receipt_order_attachement != null && this.receipt_order_attachement.receipt_order_attachement_date != null){
+        this.receipt_order_attachement_date.setValue(this.receipt_order_attachement.receipt_order_attachement_date);
         this.attachmentDateDay = moment(this.receipt_order_attachement_date.value).date() + '';
         this.attachmentDateMonth = (moment(this.receipt_order_attachement_date.value).month() + 1) + '';
         this.attachmentDateYear = moment(this.receipt_order_attachement_date.value).year() + '';
@@ -226,17 +217,17 @@ export class ReceiptOrderAttachmentsComponent {
       }
 
 
-      if (this.receipt_order_attachment != null && this.receipt_order_attachment.type_fk != null)
-        this.type_fk.setValue(this.receipt_order_attachment.type_fk);
+      if (this.receipt_order_attachement != null && this.receipt_order_attachement.type_fk != null)
+        this.type_fk.setValue(this.receipt_order_attachement.type_fk);
 
 
-      // if (this.receipt_order_attachment != null && this.receipt_order_attachment.attachement_type != null)
-      //   this.attachement_type.setValue(this.receipt_order_attachment.attachement_type);
+      // if (this.receipt_order_attachement != null && this.receipt_order_attachement.attachement_type != null)
+      //   this.attachement_type.setValue(this.receipt_order_attachement.attachement_type);
 
 
 
-      if (this.receipt_order_attachment != null && this.receipt_order_attachment.receipt_order_attachement_note != null)
-        this.receipt_order_attachement_note.setValue(this.receipt_order_attachment.receipt_order_attachement_note);
+      if (this.receipt_order_attachement != null && this.receipt_order_attachement.receipt_order_attachement_note != null)
+        this.receipt_order_attachement_note.setValue(this.receipt_order_attachement.receipt_order_attachement_note);
 
 
 
@@ -249,27 +240,27 @@ export class ReceiptOrderAttachmentsComponent {
 
 
   getValue() {
-    if (this.receipt_order_attachment != null && this.receipt_order_attachement_seq.value != null)
-      this.receipt_order_attachment.receipt_order_attachement_seq = this.receipt_order_attachement_seq.value;
+    if (this.receipt_order_attachement != null && this.receipt_order_attachement_seq.value != null)
+      this.receipt_order_attachement.receipt_order_attachement_seq = this.receipt_order_attachement_seq.value;
 
 
-    if (this.receipt_order_attachment != null && this.receipt_order_fk.value != null)
-      this.receipt_order_attachment.receipt_order_fk = this.receipt_order_fk.value;
+    if (this.receipt_order_attachement != null && this.receipt_order_fk.value != null)
+      this.receipt_order_attachement.receipt_order_fk = this.receipt_order_fk.value;
 
-    if (this.receipt_order_attachment != null && this.receipt_order_attachement_id.value != null)
-      this.receipt_order_attachment.receipt_order_attachement_id = this.receipt_order_attachement_id.value;
+    if (this.receipt_order_attachement != null && this.receipt_order_attachement_id.value != null)
+      this.receipt_order_attachement.receipt_order_attachement_id = this.receipt_order_attachement_id.value;
 
-    if (this.receipt_order_attachment != null && this.receipt_order_attachement_date.value != null)
-      this.receipt_order_attachment.receipt_order_attachement_date = this.receipt_order_attachement_date.value;
+    if (this.receipt_order_attachement != null && this.receipt_order_attachement_date.value != null)
+      this.receipt_order_attachement.receipt_order_attachement_date = this.receipt_order_attachement_date.value;
 
-      if (this.receipt_order_attachment != null && this.type_fk.value != null)
-      this.receipt_order_attachment.type_fk = this.type_fk.value;
+      if (this.receipt_order_attachement != null && this.type_fk.value != null)
+      this.receipt_order_attachement.type_fk = this.type_fk.value;
 
-    // if (this.receipt_order_attachment != null && this.type_fk.value != null)
-    //   this.receipt_order_attachment.attachement_type = this.attachment_type_list.find(type => type.attachement_type_seq == this.type_fk.value);
+    // if (this.receipt_order_attachement != null && this.type_fk.value != null)
+    //   this.receipt_order_attachement.attachement_type = this.attachment_type_list.find(type => type.attachement_type_seq == this.type_fk.value);
 
-    if (this.receipt_order_attachment != null && this.receipt_order_attachement_note.value != null)
-      this.receipt_order_attachment.receipt_order_attachement_note = this.receipt_order_attachement_note.value;
+    if (this.receipt_order_attachement != null && this.receipt_order_attachement_note.value != null)
+      this.receipt_order_attachement.receipt_order_attachement_note = this.receipt_order_attachement_note.value;
   }
 
   
