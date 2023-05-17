@@ -101,7 +101,7 @@ export class ExchangeOrderStageAddComponent {
     return this.Form.get('users') as FormArray;
   }
 
-  create_receipt_order_stage_user_form()
+  create_receipt_order_stage_user_form(addEmpty: boolean)
   {
     if ( this.users_list != null && this.users_list.length>0)
     {
@@ -124,7 +124,7 @@ export class ExchangeOrderStageAddComponent {
         Form.controls['ex_ord_stg_fk'].setValue(this._selected_Exchange_order_stage.ex_ord_stg_seq);
 
         if (this.selected_Exchange_order_stage!= null &&
-          this.selected_Exchange_order_stage.exchange_order_stage_users!= null 
+          this.selected_Exchange_order_stage.exchange_order_stage_users!= null && !addEmpty
          )
          {
           var arr  =this.selected_Exchange_order_stage.exchange_order_stage_users.filter(x=>x.user_fk==tempuser.user_seq);
@@ -135,6 +135,7 @@ export class ExchangeOrderStageAddComponent {
 
           
          }
+         this.users.clear();
          this.users.push( Form ); 
       });
      
@@ -179,7 +180,7 @@ export class ExchangeOrderStageAddComponent {
         if (this.selected_Exchange_order_stage!.ex_ord_stg_order! != null)
         this.ex_ord_stg_order.setValue(this.selected_Exchange_order_stage!.ex_ord_stg_order);
 
-        this.create_receipt_order_stage_user_form();
+        this.create_receipt_order_stage_user_form(false);
 
     }
   }
@@ -231,6 +232,7 @@ export class ExchangeOrderStageAddComponent {
           {
             this.SnackBar.open('تم التعديل بنجاح','',{duration: 3000, panelClass: ['green-snackbar']});
             this.ResetForm();
+            this.create_receipt_order_stage_user_form(true);
           }else 
           {
             this.SnackBar.open('لم يتم التعديل بنجاح','',{panelClass: ['red-snackbar']});
@@ -251,6 +253,7 @@ export class ExchangeOrderStageAddComponent {
           {
             this.SnackBar.open('تمت الإضافة بنجاح','',{duration: 3000, panelClass: ['green-snackbar']});
             this.ResetForm();
+            this.create_receipt_order_stage_user_form(true);
           }else 
           {
             this.SnackBar.open('لم تتم الإضافة بنجاح','',{panelClass: ['red-snackbar']});

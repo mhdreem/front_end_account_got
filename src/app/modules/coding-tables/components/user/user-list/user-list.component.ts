@@ -103,7 +103,6 @@ export class UserListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
 
-      if (result == true)
         this.LoadData();
 
     });

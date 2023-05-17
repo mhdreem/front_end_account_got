@@ -123,6 +123,7 @@ export class BranchListComponent implements OnInit {
       this.branchService.delete(obj.branch_seq!).subscribe
       (
         res => {
+          console.log('res', res);
           if (res != null && (res as result)!= null &&  (res as result).success){
 
             this._snaker.open('تم الحذف بنجاح', '', {

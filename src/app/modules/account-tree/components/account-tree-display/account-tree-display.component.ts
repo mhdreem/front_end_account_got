@@ -63,6 +63,7 @@ export class AccountTreeDisplayComponent {
     ).subscribe(
       res => {
         this.Root = res[0];
+console.log('this.Root', this.Root);
         this.LoadingFinish = true;
       }
     )

@@ -142,6 +142,7 @@ export class FinanceListListComponent {
       this.financeListService.delete(obj.finance_list_seq!).subscribe
       (
         res => {
+          console.log('res', res);
           if (res != null && (res as result)!= null &&  (res as result).success){
 
             this._snaker.open('تم الحذف بنجاح', '', {

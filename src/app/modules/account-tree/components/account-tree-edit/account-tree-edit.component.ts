@@ -263,7 +263,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
               this.filteredBranchOptions = of(this.branch_List);
               this.branchService.List_Branch = this.branch_List;
               this.branchService.List_Branch_BehaviorSubject.next(this.branch_List);
-
+                console.log('this.branch_List', this.branch_List);
 
               this.sub_financial_list_list = res[8];
               /*
