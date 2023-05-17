@@ -101,7 +101,7 @@ export class SanadKidStageAddComponent {
     return this.Form.get('users') as FormArray;
   }
 
-  create_receipt_order_stage_user_form()
+  create_receipt_order_stage_user_form(addEmpty: boolean)
   {
     if ( this.users_list != null && this.users_list.length>0)
     {
@@ -124,7 +124,7 @@ export class SanadKidStageAddComponent {
         Form.controls['snd_kid_stg_fk'].setValue(this._selected_Sanad_kid_stage.snd_kid_stg_seq);
 
         if (this.selected_Sanad_kid_stage!= null &&
-          this.selected_Sanad_kid_stage.sanad_kid_stage_users!= null 
+          this.selected_Sanad_kid_stage.sanad_kid_stage_users!= null && !addEmpty
          )
          {
           var arr  =this.selected_Sanad_kid_stage.sanad_kid_stage_users.filter(x=>x.user_fk==tempuser.user_seq);
@@ -135,6 +135,7 @@ export class SanadKidStageAddComponent {
 
           
          }
+         this.users.clear();
          this.users.push( Form ); 
       });
      
@@ -171,7 +172,7 @@ export class SanadKidStageAddComponent {
   {
     if (this.Form!= null )
     {
-      if (this.selected_Sanad_kid_stage!.snd_kid_stg_seq!!= null)
+      if (this.selected_Sanad_kid_stage!.snd_kid_stg_seq! != null)
         this.snd_kid_stg_seq.setValue(this.selected_Sanad_kid_stage!.snd_kid_stg_seq);
 
         if (this.selected_Sanad_kid_stage!.snd_kid_stg_name! != null)
@@ -180,7 +181,7 @@ export class SanadKidStageAddComponent {
         if (this.selected_Sanad_kid_stage!.snd_kid_stg_order! != null)
         this.snd_kid_stg_order.setValue(this.selected_Sanad_kid_stage!.snd_kid_stg_order);
 
-        this.create_receipt_order_stage_user_form();
+        this.create_receipt_order_stage_user_form(false);
 
     }
   }
@@ -235,6 +236,7 @@ export class SanadKidStageAddComponent {
           {
             this.SnackBar.open('تم التعديل بنجاح','',{duration: 3000, panelClass: ['green-snackbar']});
             this.ResetForm();
+            this.create_receipt_order_stage_user_form(true);
           }else 
           {
             this.SnackBar.open('لم يتم التعديل بنجاح','',{panelClass: ['red-snackbar']});
@@ -255,6 +257,7 @@ export class SanadKidStageAddComponent {
           {
             this.SnackBar.open('تمت الإضافة بنجاح','',{duration: 3000, panelClass: ['green-snackbar']});
             this.ResetForm();
+            this.create_receipt_order_stage_user_form(true);
           }else 
           {
             this.SnackBar.open('لم تتم الإضافة بنجاح','',{panelClass: ['red-snackbar']});

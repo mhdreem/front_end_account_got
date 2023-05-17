@@ -16,3 +16,23 @@ th, td{
   border: 1px solid #e0e0e0;
 }
 
+mat-accordion{
+  margin-top: 45px;
+}
+
+nav{
+  height: 70px !important;
+}
+
+button, app-account-tree-list-search{
+  display: flex;
+  margin-left: 10px;
+  align-items: center;
+}
+
+table{
+  margin-top: 40px;
+  width: 100%;
+  overflow-x: scroll;
+  display: block;
+}

@@ -6,7 +6,7 @@
             <div>
                 <button mat-raised-button class="add" (click)="add()">
                     +اضافة</button>
-                <button mat-raised-button class="add" (click)="view()">
+                <button mat-raised-button class="add viewButton" (click)="view()">
                     <mat-icon>visibility</mat-icon>عرض
                 </button>
                 <button mat-raised-button id="excel" (click)="add()">
@@ -65,7 +65,7 @@
             </ng-container>
 
             <ng-container matColumnDef="total">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>العام  </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>الاجمالي  </th>
                 <td mat-cell *matCellDef="let element"> <span *ngIf="element.account_center_id.toString().length==1">{{element.account_center_id}}</span> </td>
             </ng-container>
 

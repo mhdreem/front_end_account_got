@@ -123,7 +123,6 @@ export class SubFinancialListComponent implements OnInit, AfterViewInit, OnDestr
 
     dialogRef.afterClosed().subscribe(result => {
 
-      if (result == true)
         this.LoadData();
 
     });
@@ -131,7 +130,7 @@ export class SubFinancialListComponent implements OnInit, AfterViewInit, OnDestr
 
 
 
-  delete(obj: account_center) {
+  delete(obj: sub_financial_list) {
 
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
       width: '600px',
@@ -142,7 +141,7 @@ export class SubFinancialListComponent implements OnInit, AfterViewInit, OnDestr
     dialogRef.afterClosed().subscribe(result => {
 
       if (result == 1)
-      this.subFinancialListService.delete(obj.account_center_seq!).subscribe
+      this.subFinancialListService.delete(obj.sub_financial_list_seq!).subscribe
       (
         res => {
           if (res != null && (res as result)!= null &&  (res as result).success){

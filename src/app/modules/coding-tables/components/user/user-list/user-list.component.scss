@@ -131,3 +131,13 @@ mat-form-field{
 table{
   zoom: 90%;
 }
+
+.viewButton ::ng-deep .mdc-button__label{
+  height: 27px !important
+}
+
+.add{
+  mat-icon{
+    margin-left: 2px !important;
+  }
+}

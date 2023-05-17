@@ -100,10 +100,6 @@ mat-expansion-panel{
   margin-top: 20px;
 }
 
-::ng-deep .mat-expansion-indicator {
-  position: relative;
-  left: 1050px;
-}
 
 .small-width{
   width: 90px !important;
@@ -140,4 +136,14 @@ mat-form-field
 {
     width: 100% !important;
     font-size: small;
+}
+
+.viewButton ::ng-deep .mdc-button__label{
+  height: 27px !important
+}
+
+.add{
+  mat-icon{
+    margin-left: 2px !important;
+  }
 }

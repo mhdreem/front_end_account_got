@@ -243,3 +243,5 @@ export class AccountCenterListComponent implements OnInit, AfterViewInit, OnDest
   this.LoadData();
  }
 }
+
+

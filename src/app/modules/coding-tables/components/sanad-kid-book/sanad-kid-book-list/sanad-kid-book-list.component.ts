@@ -103,7 +103,6 @@ export class SanadKidBookListComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
 
-      if (result == true)
         this.LoadData();
 
     });

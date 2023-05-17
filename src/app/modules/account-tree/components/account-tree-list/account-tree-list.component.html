@@ -23,13 +23,6 @@
                 إدخال F12
             </button>
 
-            <button type="button" class="btn btn-secondary btn-sm" (click)="add()">
-                <mat-icon>add</mat-icon>
-                شجرة الحسابات F12
-            </button>
-
-
-
             <button type="button" class="btn btn-info btn-sm" (click)="exportToExcel()">
                 <mat-icon>view_comfy</mat-icon>
                 تصدير الى اكسل F7
@@ -88,7 +81,7 @@
     <c-row>
 
 
-        <perfect-scrollbar style="margin-top: 40px; max-width: 900px; " >
+        <!-- <perfect-scrollbar style="margin-top: 40px; max-width: 900px; " > -->
 
             <table  mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
 
@@ -223,7 +216,7 @@
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;let idx=index;"></tr>
             </table>
-        </perfect-scrollbar>
+        <!-- </perfect-scrollbar> -->
 
 
      
