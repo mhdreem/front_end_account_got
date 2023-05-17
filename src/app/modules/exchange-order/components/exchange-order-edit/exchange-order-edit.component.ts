@@ -156,7 +156,6 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
   safe_detail: exchange_order_detail;
 
   constructor(
-
     public route: ActivatedRoute,
     private fb: FormBuilder,
     private snackBar: MatSnackBar,

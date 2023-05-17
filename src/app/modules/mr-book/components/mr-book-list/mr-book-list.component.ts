@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { forkJoin, map, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
+import { accounts_transactions } from 'src/app/modules/shared/models/accounts_transactions';
 import { accounts_tree } from 'src/app/modules/shared/models/accounts_tree';
 import { AccountTreeService } from 'src/app/modules/shared/services/account-tree.service';
 import { MrBookService } from 'src/app/modules/shared/services/mr-book.service';
@@ -19,6 +20,9 @@ import { MrBookService } from 'src/app/modules/shared/services/mr-book.service';
   styleUrls: ['./mr-book-list.component.scss']
 })
 export class MrBookListComponent {
+
+  Request : any ;
+
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.keyCode == 119) {
@@ -91,13 +95,19 @@ export class MrBookListComponent {
   accounts_tree_list: accounts_tree[];
   accounts_tree_filter: Observable<accounts_tree[]>;
 
-  _Subscription!: Subscription;
+  _Subscription: Subscription[]=[];
+
+
+
+  RowCount: number = 0;
+  SumTotal: number = 0;
 
   totalRows = 0;
   pageSize = 5;
   currentPage = 0;
   pageSizeOptions: number[] = [5, 10, 25, 100];
-  isLoading: boolean= false;
+  isLoading: boolean = false;
+
 
   constructor(
     private fb: FormBuilder,
@@ -106,12 +116,12 @@ export class MrBookListComponent {
     @Inject(DOCUMENT) private _document: Document,
     private router: Router,
     private accountTreeService: AccountTreeService,
-    private mrBookService: MrBookService
+    private mrBookService: MrBookService,
+
   ) {
     this.LoadingFinish = true;
 
-    this.BuildForm();
-    this.Load_Data();
+    
 
 
   }
@@ -123,13 +133,16 @@ export class MrBookListComponent {
       
   ngOnDestroy()
   {
-    this._Subscription.unsubscribe();
+    this._Subscription.forEach(Sub => {
+      if (Sub != null) Sub.unsubscribe();
+    });
   }
 
-    
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+    /*
     this.paginator.page
       .pipe(
         startWith({}),
@@ -143,97 +156,85 @@ export class MrBookListComponent {
         this.totalRows = data.total_row_count;
         this.dataSource = new MatTableDataSource(data.value);
         this.isLoading= false;
-        if (data.value.length != 0)
+        if (data.value?.length != 0)
           this.dataSourceIsEmpty= false;
+
       });
+      */
   }
 
+  onViewClick(request: any) {
 
-  public BuildForm() {
-    try {
+    this.Request = request;
+    this.isLoading = true;
+    this._Subscription.push
+      (
 
-      this.Form = this.fb.group(
-        {
-          'document_id_from': this.document_id_from = new FormControl<number | null>(null, []),
-          'document_id_to': this.document_id_to = new FormControl<number | null>(null, []),
-          'document_date_from': this.document_date_from = new FormControl<Date | null>(null, []),
-          'document_date_to': this.document_date_to = new FormControl<Date | null>(null, []),
-          'incumbent_id_from': this.incumbent_id_from = new FormControl<number | null>(null, []),
-          'incumbent_id_to': this.incumbent_id_to = new FormControl<number | null>(null, []),
-          'incumbent_date_from': this.incumbent_date_from = new FormControl<Date | null>(null, []),
-          'incumbent_date_to': this.incumbent_date_to = new FormControl<Date | null>(null, []),
-          'account_id_from': this.account_id_from = new FormControl<number | null>(null, []),
-          'account_id_to': this.account_id_to = new FormControl<number | null>(null, []),
-          'operation_types': this.operation_types = new FormControl<string | null>(null, []),
-          'with_sanad_lock': this.with_sanad_lock = new FormControl<number | null>(null, []),
-          'page_index': this.page_index = new FormControl<number | null>(null, []),
-          'row_count': this.row_count = new FormControl<number | null>(null, []),
-          'account_ids': this.account_ids = new FormControl<number[] | null>(null, []),
-
-        }
-      );
+        this.mrBookService.search(request)
+          .subscribe((data: any) => {
+            this.totalRows = data.total_row_count;
+            this.dataSource = new MatTableDataSource(data.value);
+            this.isLoading = false;
+            if (data.value?.length != 0)
+              this.dataSourceIsEmpty = false;
 
 
-    } catch (Exception: any) {
-      console.log(Exception);
-    }
+            this.totalRows = data.total_row_count;
+            this.RowCount = data.total_row_count;
+
+            let arr: accounts_transactions[] = [];
+
+            arr = (data.value as accounts_transactions[]);
+            if (arr != null && arr.length > 0) {
+              this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.total_value : 0), 0);
+            }
+
+          })
+
+      )
+
+
+
+
   }
-
-  Load_Data() {
-    this.LoadingFinish = false;
-    this._Subscription = forkJoin(
-      this.Load_Account_Tree(),
-    ).subscribe(
-      res => {
-        
-        this.accounts_tree_list = res[0];
-        console.log('this.accounts_tree_list', this.accounts_tree_list);
-        this.accounts_tree_filter = of(this.accounts_tree_list);
-        this.accountTreeService.List_AccountsTree = this.accounts_tree_list;
-        this.accountTreeService.List_AccountsTree_BehaviorSubject.next(this.accountTreeService.List_AccountsTree);
-
-
-        this.LoadingFinish = true;
-
-      }
-    )
-  }
-
-
-
-  Load_Account_Tree(): Observable<accounts_tree[]> {
-    if (this.accountTreeService.List_AccountsTree == null ||
-      this.accountTreeService.List_AccountsTree == undefined ||
-      this.accountTreeService.List_AccountsTree.length == 0)
-      return this.accountTreeService.list();
-    return of(this.accountTreeService.List_AccountsTree);
-  }
-
-  onViewClick(){
-    this.currentPage=0;
-    this.pageSize=5;
-    this.View().subscribe((data: any)=>{
-      this.totalRows = data.total_row_count;
-      this.dataSource = new MatTableDataSource(data.value);
-      this.isLoading= false;
-      if (data.value.length != 0)
-        this.dataSourceIsEmpty= false;
-    });
-  }
-
 
   View() {
-    this.isLoading= true;
-    this.account_ids.setValue(this.selected_account_ids);
-    this.page_index.setValue(this.currentPage);
-    this.row_count.setValue(this.pageSize);
 
-    console.log('this.Form.value', this.Form.value);
-    return this.mrBookService.search(this.Form.value);
+    this.isLoading = true;
+    if (this.Request != null) {
+      this.Request.page_index = this.currentPage;
+      this.Request.row_count = this.pageSize;
+
+    }
+
+    this.mrBookService.search(this.Request).subscribe((data: any) => {
+
+
+      this.dataSource = new MatTableDataSource(data.value);
+      this.isLoading = false;
+      if (data.value?.length != 0)
+        this.dataSourceIsEmpty = false;
+
+
+
+      this.totalRows = data.total_row_count;
+      this.RowCount = data.total_row_count;
+
+      let arr: accounts_transactions[] = [];
+
+      arr = (data.value as accounts_transactions[]);
+      if (arr != null && arr.length > 0) {
+        this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.total_value : 0), 0);
+      }
+
+    });
 
 
   }
 
+
+
+ 
   
 
   public focusNext(id: string) {

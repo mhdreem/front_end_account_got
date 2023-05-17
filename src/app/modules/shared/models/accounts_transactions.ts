@@ -6,13 +6,17 @@ import { sanad_kid_book } from "./sanad_kid_book";
 export interface accounts_transactions {
    
         seq ?:number;
+        sanad_kid_fk?:number;
 
         operation_fk?:number;
+        operation_code?:number;
+        operation_type_name?:string;
+
         operation_date?:number;
          operation_type?:string;
 
-        document_id?:number;
-        document_date?:Date;
+         document_id?:number;
+         document_date?:Date;
 
         incumbent_id ?:number;
         incumbent_date?:Date;
@@ -35,7 +39,11 @@ export interface accounts_transactions {
 
         debtor ?:number;
         creditor ?:number;
-
+        account_id?:string;
+        account_name?:string;
+        account_center_id?:string;
+        account_center_name?:string;
+        
         accounts_tree_fk ?:number;
         accounts_tree ?: accounts_tree;
 

@@ -71,7 +71,7 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
   branch_list: branch[];
   branch_filter: Observable<branch[]>;
 
-  _Subscription!: Subscription;
+  _Subscription: Subscription[]=[];
 
 
 
@@ -82,7 +82,7 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
 
 
-  selected_order: exchange_order = {};
+  selected_order: exchange_order []= [];
 
   exchangePrintRowsInput: exchange_order[]= [];
   displayed_rows: exchange_order[]= [];
@@ -115,7 +115,9 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-
+    this._Subscription.forEach(Sub => {
+      if (Sub != null) Sub.unsubscribe();
+    });
   }
 
 
@@ -146,7 +148,8 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
 
   Load_Data() {
     this.LoadingFinish = false;
-    this._Subscription = forkJoin(
+    this._Subscription .push(
+       forkJoin(
       this.Load_sanad_kid_book(),
       this.Load_branch(),
     ).subscribe(
@@ -166,6 +169,7 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
 
       }
     )
+    );
   }
 
 
@@ -186,16 +190,6 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
   }
 
 
-
-  private _filter_book(value: string): sanad_kid_book[] {
-    const filterValue = value.toLowerCase();
-    return this.book_list.filter(option => option.sanad_kid_book_name != null && option.sanad_kid_book_name.includes(filterValue));
-  }
-
-
-  private _filter_branch(value: string): branch[] {
-    return this.branch_list.filter(option => option.branch_name != null && option.branch_name.includes(value));
-  }
 
 
   public display_Book_Property(value: number): string {
