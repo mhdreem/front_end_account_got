@@ -29,8 +29,8 @@ export class SanadKidListComponent implements OnInit {
   Request: any = {};// Represent Request 
   Subscriptions: Subscription[] = [];
 
-  RowCount : number = 0;
-  SumTotal: number = 0 ;
+  RowCount: number = 0;
+  SumTotal: number = 0;
 
 
 
@@ -58,7 +58,7 @@ export class SanadKidListComponent implements OnInit {
 
   dataSource = new MatTableDataSource<sanad_kid>();
   displayedColumns: string[] =
-    ['operation_type_fk', 'operation_code_fk' , 'date_time_create', 'document_id', 'document_date', 'total_value', 'incumbent_id', 'incumbent_date', 'sanad_close', 'name_of_owner', 'branch_name', 'action'];
+    ['operation_type_fk', 'operation_code_fk', 'date_time_create', 'document_id', 'document_date', 'total_value', 'incumbent_id', 'incumbent_date', 'sanad_close', 'name_of_owner', 'branch_name', 'action'];
   dataSourceIsEmpty: boolean = true;
   fromDateDay: string = '';
   fromDateMonth: string = '';
@@ -173,23 +173,25 @@ export class SanadKidListComponent implements OnInit {
 
         this.sanadKidService.search(request)
           .subscribe((data: any) => {
-            this.totalRows = data.total_row_count;
-            this.dataSource = new MatTableDataSource(data.value);
-            this.isLoading = false;
-            if (data.value?.length != 0)
-              this.dataSourceIsEmpty = false;
+            if (data != null && data.value != null) {
+              this.totalRows = data.total_row_count;
+              this.dataSource = new MatTableDataSource(data.value);
+              this.isLoading = false;
+              if (data.value?.length != 0)
+                this.dataSourceIsEmpty = false;
 
-              
-        this.totalRows = data.total_row_count;
-        this.RowCount =  data.total_row_count;
-  
-        let  arr : sanad_kid[] =[];
 
-          arr  = (data.value as sanad_kid[]) ;
-if (arr != null && arr.length>0)
-{
-this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.total_value:0) , 0);
-}
+              this.totalRows = data.total_row_count;
+              this.RowCount = data.total_row_count;
+
+              let arr: sanad_kid[] = [];
+
+              arr = (data.value as sanad_kid[]);
+              if (arr != null && arr.length > 0) {
+                this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.total_value : 0), 0);
+              }
+
+            }
 
           })
 
@@ -209,7 +211,7 @@ this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.to
     }
 
     this.sanadKidService.search(this.Request).subscribe((data: any) => {
-      
+
 
       this.dataSource = new MatTableDataSource(data.value);
       this.isLoading = false;
@@ -218,16 +220,15 @@ this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.to
 
 
 
-        this.totalRows = data.total_row_count;
-        this.RowCount =  data.total_row_count;
-  
-        let  arr : sanad_kid[] =[];
+      this.totalRows = data.total_row_count;
+      this.RowCount = data.total_row_count;
 
-          arr  = (data.value as sanad_kid[]) ;
-if (arr != null && arr.length>0)
-{
-this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.total_value:0) , 0);
-}
+      let arr: sanad_kid[] = [];
+
+      arr = (data.value as sanad_kid[]);
+      if (arr != null && arr.length > 0) {
+        this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.total_value : 0), 0);
+      }
 
     });
 
@@ -263,8 +264,7 @@ this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.to
     dialogRef.afterClosed().subscribe(res => {
       if (res == 1) {
         this.sanadKidService.delete(sanad.sanad_kid_seq!).subscribe(res => {
-          if (res!=  null && (res as result)!= null && (res as result).success == true )
-          {
+          if (res != null && (res as result) != null && (res as result).success == true) {
             this.snackBar.open('تم الحذف بنجاح', '', {
               duration: 3000,
               panelClass: ['green-snackbar'],
@@ -272,8 +272,7 @@ this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.to
             this.View();
             return;
 
-          }else 
-          {
+          } else {
             this.snackBar.open('خطأ لم يتم الحذف', 'خطأ', {
               duration: 3000,
               panelClass: ['green-snackbar'],
@@ -287,19 +286,31 @@ this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.to
   }
 
   Update(order: sanad_kid) {
-    this.PageSanadKidService.sanad_kid = order;
-    this.PageSanadKidService.$sanad_kid.next(order);
 
-    this.router.navigate(['../edit'], { relativeTo: this.ActivatedRoute });
+    if (order != null && order.operation_type_fk == 4) {
+      this.PageSanadKidService.sanad_kid = order;
+      this.PageSanadKidService.$sanad_kid.next(order);
+
+      this.router.navigate(['../edit'], { relativeTo: this.ActivatedRoute });
+
+    } else {
+      this.snackBar.open('خطأ .. لا يجوز تعديل سند قيد مرتبط بأحد أوامر الصرف أو القبض أو الدفع', 'خطأ', {
+        duration: 3000,
+        panelClass: ['green-snackbar'],
+      });
+      return;
+
+    }
+
 
   }
 
   add() {
     this.PageSanadKidService.sanad_kid = {
-      sanad_kid_details:[],
-      sanad_kid_attachements:[],
-      sanad_close:0,
-      sanad_opening:0
+      sanad_kid_details: [],
+      sanad_kid_attachements: [],
+      sanad_close: 0,
+      sanad_opening: 0
     };
     this.PageSanadKidService.$sanad_kid.next({});
     this.router.navigate(['../edit'], { relativeTo: this.ActivatedRoute });
@@ -307,10 +318,10 @@ this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.to
 
   add_sanad_opening() {
     this.PageSanadKidService.sanad_kid = {
-      sanad_kid_details:[],
-      sanad_kid_attachements:[],
-      sanad_close:0,
-      sanad_opening:1
+      sanad_kid_details: [],
+      sanad_kid_attachements: [],
+      sanad_close: 0,
+      sanad_opening: 1
     };
     this.PageSanadKidService.$sanad_kid.next({});
     this.router.navigate(['../edit'], { relativeTo: this.ActivatedRoute });
@@ -318,10 +329,10 @@ this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.to
 
   add_sanad_closing() {
     this.PageSanadKidService.sanad_kid = {
-      sanad_kid_details:[],
-      sanad_kid_attachements:[],
-      sanad_close:1,
-      sanad_opening:0
+      sanad_kid_details: [],
+      sanad_kid_attachements: [],
+      sanad_close: 1,
+      sanad_opening: 0
     };
     this.PageSanadKidService.$sanad_kid.next({});
     this.router.navigate(['../edit'], { relativeTo: this.ActivatedRoute });
