@@ -17,3 +17,14 @@ mat-form-field
     font-weight: bold;
     vertical-align: middle;
 }
+
+button{
+    display: flex;
+    margin-left: 10px;
+  }
+  
+  mat-icon{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }

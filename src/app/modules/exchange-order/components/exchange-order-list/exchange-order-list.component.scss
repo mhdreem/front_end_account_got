@@ -306,3 +306,25 @@ table, c-card{
   zoom: 90%;
 }
 */
+
+button{
+  display: flex;
+  margin-right: 10px;
+}
+
+mat-icon{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.mat-mdc-row:nth-child(even){
+  background-color: grey;
+}
+.mat-mdc-row:nth-child(odd){
+  background-color: white;
+}
+
+app-exchange-order-print, app-exchange-order-print-rows{
+  display: none;
+}

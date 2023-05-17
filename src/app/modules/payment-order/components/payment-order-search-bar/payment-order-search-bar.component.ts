@@ -68,6 +68,7 @@ export class PaymentOrderSearchBarComponent {
   
   
   ngOnInit(): void {
+    this.PerformSearch();
     
   }
   

@@ -34,14 +34,8 @@
                 تصدير الى اكسل F7
             </button>
 
-            <button id="print"  type="button"   class="btn btn-light btn-sm"  [disabled]="dataSourceIsEmpty" printSectionId="rank-section"
-            ngxPrint>
-            <mat-icon>print</mat-icon>
-            طباعة
-        </button>
 
-        <button id="print2" type="button"   class="btn btn-link btn-sm" [disabled]="dataSourceIsEmpty" printSectionId="rank-section"
-        ngxPrint>
+        <button id="print2" type="button"   class="btn btn-link btn-sm" [disabled]="dataSourceIsEmpty" printSectionId="printPaymentRows-section" (mouseover)="printRows(displayed_rows)" ngxPrint>
         <mat-icon>print</mat-icon>
         طباعة السندات المعروضة
     </button>
@@ -128,10 +122,10 @@
             <th mat-header-cell *matHeaderCellDef> حذف\تعديل </th>
     
             <td mat-cell *matCellDef="let element" style="width:20%">
-                <button class="delete" mat-icon-button color="warn" (click)="Delete(element)">
+                <button class="delete" mat-icon-button color="warn" (click)="Delete(element)" style="display: inline-block;">
                     <mat-icon>delete</mat-icon>
                 </button>
-                <button class="edit" mat-icon-button (click)="Update(element)">
+                <button class="edit" mat-icon-button (click)="Update(element)" style="display: inline-block;">
                     <mat-icon>edit</mat-icon>
                 </button>
     
@@ -153,3 +147,7 @@
     <mat-paginator #paginator [length]="totalRows" 
         [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>
     </c-row>
+
+    <div id="printPaymentRows-section">
+        <app-payment-order-print-rows [documents]="paymentPrintRowsInput"></app-payment-order-print-rows>
+    </div> 

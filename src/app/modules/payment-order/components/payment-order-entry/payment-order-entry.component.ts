@@ -12,7 +12,7 @@ import { PaymentOrderService } from 'src/app/modules/shared/services/payment-ord
 @Component({
   selector: 'app-payment-order-entry',
   templateUrl: './payment-order-entry.component.html',
-  styleUrls: ['./payment-order-entry.component.css'],
+  styleUrls: ['./payment-order-entry.component.scss'],
 })
 export class PaymentOrderEntryComponent implements OnDestroy, OnInit, AfterViewInit, OnChanges {
   @ViewChild(PaymentOrderEditComponent) PaymentOrder: PaymentOrderEditComponent;
@@ -175,6 +175,7 @@ export class PaymentOrderEntryComponent implements OnDestroy, OnInit, AfterViewI
 
 
   OnSelectItem(payment_order: payment_order) {
+    this.PaymentOrder= JSON.parse(JSON.stringify(payment_order));
 
   }
 

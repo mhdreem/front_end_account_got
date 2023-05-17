@@ -67,6 +67,7 @@ export class SanadKidSearchBarComponent {
   
   
   ngOnInit(): void {
+    this.PerformSearch();
     
   }
   

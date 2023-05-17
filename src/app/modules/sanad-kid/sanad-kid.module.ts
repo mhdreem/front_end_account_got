@@ -39,7 +39,8 @@ import { ViewsModule } from '../views/views.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { SanadKidEntryComponent } from './components/sanad-kid-entry/sanad-kid-entry.component';
-
+import {NgxPrintModule} from 'ngx-print';
+import {SanadKidPrintRowsComponent} from './components/sanad-kid-print-rows/sanad-kid-print-rows.component'
 
 const Import_Corui = [
   GridModule,
@@ -55,7 +56,8 @@ const Import_Corui = [
     SanadKidAttachmentsComponent,
     SanadKidSearchBarComponent,
     SanadKidListSearchComponent,
-    SanadKidEntryComponent
+    SanadKidEntryComponent,
+    SanadKidPrintRowsComponent
     
   ],
   imports: [
@@ -88,7 +90,8 @@ const Import_Corui = [
     ViewsModule,
     FontAwesomeModule,
     IconModule,
-    NgbDropdownModule
+    NgbDropdownModule,
+    NgxPrintModule
   ],
   providers:[
     IconSetService

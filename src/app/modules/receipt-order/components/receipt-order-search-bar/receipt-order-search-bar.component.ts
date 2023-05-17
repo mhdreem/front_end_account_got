@@ -69,6 +69,7 @@ export class ReceiptOrderSearchBarComponent {
   
   
   ngOnInit(): void {
+    this.PerformSearch();
     
   }
   

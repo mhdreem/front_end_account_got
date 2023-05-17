@@ -9,3 +9,14 @@ mat-form-field
     width: 100% !important;
     font-size: small;
 }
+
+button{
+    display: flex;
+    margin-left: 10px;
+  }
+  
+  mat-icon{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }

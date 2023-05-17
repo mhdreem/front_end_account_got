@@ -126,7 +126,9 @@ export class ReceiptOrderListComponent {
 
   selected_order: receipt_order = {};
 
+  displayed_rows: receipt_order[]= [];
 
+  receiptPrintRowsInput: receipt_order[]= [];
 
   constructor(
     private fb: FormBuilder,
@@ -314,6 +316,8 @@ export class ReceiptOrderListComponent {
           .subscribe((data: any) => {
             this.totalRows = data.total_row_count;
             this.dataSource = new MatTableDataSource(data.value);
+            this.displayed_rows= data.value;
+
             this.isLoading = false;
             if (data.value?.length != 0)
               this.dataSourceIsEmpty = false;
@@ -350,6 +354,7 @@ export class ReceiptOrderListComponent {
 
 
       this.dataSource = new MatTableDataSource(data.value);
+      this.displayed_rows= data.value;
       this.isLoading = false;
       if (data.value?.length != 0)
         this.dataSourceIsEmpty = false;
@@ -542,4 +547,7 @@ export class ReceiptOrderListComponent {
     );
   }
 
+  printRows(rows: receipt_order[]){
+    this.receiptPrintRowsInput= rows;
+   }
 }

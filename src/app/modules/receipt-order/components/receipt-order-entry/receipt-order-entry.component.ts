@@ -10,7 +10,7 @@ import { ReceiptOrderService } from "src/app/modules/shared/services/receipt-ord
 @Component({
   selector: 'app-receipt-order-entry',
   templateUrl: './receipt-order-entry.component.html',
-  styleUrls: ['./receipt-order-entry.component.css'],
+  styleUrls: ['./receipt-order-entry.component.scss'],
 })
 export class ReceiptOrderEntryComponent implements OnDestroy, OnInit, AfterViewInit, OnChanges {
   @ViewChild(ReceiptOrderEditComponent) ExchangeOrder: ReceiptOrderEditComponent;
@@ -173,6 +173,7 @@ export class ReceiptOrderEntryComponent implements OnDestroy, OnInit, AfterViewI
 
 
   OnSelectItem(receipt_order: receipt_order) {
+    this.receipt_order= JSON.parse(JSON.stringify(receipt_order));
 
   }
 

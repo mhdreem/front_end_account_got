@@ -10,7 +10,7 @@ import { SanadKidService } from 'src/app/modules/shared/services/sanad-kid.servi
 @Component({
   selector: 'app-exchange-order-entry',
   templateUrl: './exchange-order-entry.component.html',
-  styleUrls: ['./exchange-order-entry.component.css'],
+  styleUrls: ['./exchange-order-entry.component.scss'],
 })
 export class ExchangeOrderEntryComponent implements OnDestroy, OnInit, AfterViewInit, OnChanges {
   @ViewChild(ExchangeOrderEditComponent) ExchangeOrder: ExchangeOrderEditComponent;
@@ -173,7 +173,7 @@ export class ExchangeOrderEntryComponent implements OnDestroy, OnInit, AfterView
 
 
   OnSelectItem(exchange_order: exchange_order) {
-
+    this.exchange_order= JSON.parse(JSON.stringify(exchange_order));
   }
 
 

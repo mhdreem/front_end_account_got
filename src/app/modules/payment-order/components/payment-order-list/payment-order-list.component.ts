@@ -127,7 +127,8 @@ export class PaymentOrderListComponent {
 
   selected_order: payment_order = {};
 
-
+  displayed_rows: payment_order[]= [];
+  paymentPrintRowsInput: payment_order[]= [];
 
   constructor(
     private ActivatedRoute:ActivatedRoute,
@@ -313,6 +314,7 @@ export class PaymentOrderListComponent {
           .subscribe((data: any) => {
             this.totalRows = data.total_row_count;
             this.dataSource = new MatTableDataSource(data.value);
+            this.displayed_rows= data.value;
             this.isLoading = false;
             if (data.value?.length != 0)
               this.dataSourceIsEmpty = false;
@@ -349,6 +351,7 @@ export class PaymentOrderListComponent {
 
 
       this.dataSource = new MatTableDataSource(data.value);
+      this.displayed_rows= data.value;
       this.isLoading = false;
       if (data.value?.length != 0)
         this.dataSourceIsEmpty = false;
@@ -558,5 +561,9 @@ export class PaymentOrderListComponent {
       }
     );
   }
+
+  printRows(rows: payment_order[]){
+    this.paymentPrintRowsInput= rows;
+   }
 
 }

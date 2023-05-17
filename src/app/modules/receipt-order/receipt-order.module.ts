@@ -40,6 +40,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ReceiptOrderEntryComponent } from './components/receipt-order-entry/receipt-order-entry.component';
 import { ReceiptOrderPrintRowsComponent } from './components/receipt-order-print-rows/receipt-order-print-rows.component';
 import { ReceiptOrderPrintComponent } from './components/receipt-order-print/receipt-order-print.component';
+import {NgxPrintModule} from 'ngx-print';
 
 const Import_Corui = [
   GridModule,
@@ -89,7 +90,8 @@ const Import_Corui = [
     NgSelectModule,
     NgbModule ,    
     ViewsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    NgxPrintModule
   ]
 })
 export class ReceiptOrderModule { }

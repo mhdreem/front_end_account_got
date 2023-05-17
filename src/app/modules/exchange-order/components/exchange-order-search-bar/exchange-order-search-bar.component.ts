@@ -69,7 +69,8 @@ export class ExchangeOrderSearchBarComponent {
   
   
   ngOnInit(): void {
-    
+    console.log('exchange_order_list', this.exchange_order_list);
+    this.PerformSearch();
   }
   
   PerformSearch()
@@ -93,6 +94,7 @@ export class ExchangeOrderSearchBarComponent {
   
   SelectItemChange (Selected_Exchange_order: exchange_order)
   {
+    console.log('Selected_Exchange_order', Selected_Exchange_order);
     this.Selected_Exchange_order = Selected_Exchange_order;
     this.pageService.$exchange_order.next(this.Selected_Exchange_order);
     this.OnSelectItem.emit(this.Selected_Exchange_order);

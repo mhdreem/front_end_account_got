@@ -166,12 +166,12 @@ export class ExchangeOrderDetailComponent implements OnDestroy, OnChanges {
       isDebtor &&
       this.getControls('debtor', FormGroup) != null
     )
-      this.getControls('debtor', FormGroup).setValue(null);
+      this.getControls('debtor', FormGroup).setValue('');
     else if ($event.target.value == '0' &&
       !isDebtor &&
       this.getControls('creditor', FormGroup) != null
     )
-      this.getControls('creditor', FormGroup).setValue(null);
+      this.getControls('creditor', FormGroup).setValue('');
 
 
   }

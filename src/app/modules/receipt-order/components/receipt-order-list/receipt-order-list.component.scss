@@ -305,3 +305,25 @@ mat-form-field
   .isVisible{
       visibility: collapse;
       }
+
+      button{
+        display: flex;
+        margin-right: 10px;
+      }
+      
+      mat-icon{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+      }
+
+      .mat-mdc-row:nth-child(even){
+        background-color: grey;
+      }
+      .mat-mdc-row:nth-child(odd){
+        background-color: white;
+      }
+
+      app-receipt-order-print, app-receipt-order-print-rows{
+        display: none;
+      }

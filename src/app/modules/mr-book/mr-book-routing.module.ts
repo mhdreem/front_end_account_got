@@ -5,29 +5,15 @@ import { MrBookComponent } from './mr-book.component';
 
 const routes: Routes = [
   {
-    path: 'module',
-    component: MrBookComponent,
-    data:
-      {
-        title: 'دفتر الأستاذ'
-      },
-      children:[
-        {
-          path: 'mrBook', component: MrBookListComponent,
+        
+          path: 'list', component: MrBookListComponent,
           data:
           {
             title: 'عرض دفتر الأستاذ'
           }
         },
-        // {
-        //   path: 'exchangeOrderEdit', component: ExchangeOrderEditComponent,
-        //   data:
-        //   {
-        //     title: 'تعديل أمر الصرف'
-        //   }
-        // },
-      ]
-    }
+        
+    
   ];
 
 @NgModule({

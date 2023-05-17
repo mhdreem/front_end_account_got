@@ -4,22 +4,14 @@ import { MrBookAccountCenterListComponent } from './components/mr-book-account-c
 import { MrBookAccountCenterComponent } from './mr-book-account-center.component';
 
 const routes: Routes = [
-  { path: 'module',
-  component: MrBookAccountCenterComponent,
-  data:
-      {
-        title: 'دفتر الأستاذ مركز الكلفة'
-      },
-      children:[
         {
-          path: 'mrBookAccountCenter', component: MrBookAccountCenterListComponent,
+          path: 'list', component: MrBookAccountCenterListComponent,
           data:
           {
             title: 'عرض دفتر الأستاذ مركز الكلفة'
           }
         },
-      ]
-}];
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

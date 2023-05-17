@@ -95,7 +95,8 @@ export class SanadKidListComponent implements OnInit {
   isLoading: boolean = false;
   selected_sanad: sanad_kid = {};
 
-
+  displayed_rows: sanad_kid[]= [];
+  sanadPrintRowsInput: sanad_kid[]= [];
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -176,6 +177,8 @@ export class SanadKidListComponent implements OnInit {
             if (data != null && data.value != null) {
               this.totalRows = data.total_row_count;
               this.dataSource = new MatTableDataSource(data.value);
+              this.displayed_rows= data.value;
+
               this.isLoading = false;
               if (data.value?.length != 0)
                 this.dataSourceIsEmpty = false;
@@ -214,6 +217,8 @@ export class SanadKidListComponent implements OnInit {
 
 
       this.dataSource = new MatTableDataSource(data.value);
+      this.displayed_rows= data.value;
+
       this.isLoading = false;
       if (data.value?.length != 0)
         this.dataSourceIsEmpty = false;
@@ -373,5 +378,8 @@ export class SanadKidListComponent implements OnInit {
     }
   }
 
+  printRows(rows: sanad_kid[]){
+    this.sanadPrintRowsInput= rows;
+   }
 
 }

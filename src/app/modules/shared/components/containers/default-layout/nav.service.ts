@@ -56,6 +56,13 @@ export class NavService {
 
     },
 
+    {
+      name: ' دفتر الأستاذ مركز الكلفة',
+      iconComponent: { name: 'cil-pencil' },
+      url: 'mrBookAccountCenter/list',
+
+    },
+
 
     {
       name: 'قوائم فرعية',

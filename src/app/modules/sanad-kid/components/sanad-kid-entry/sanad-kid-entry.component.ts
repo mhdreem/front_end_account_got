@@ -9,7 +9,7 @@ import { SanadKidService } from "src/app/modules/shared/services/sanad-kid.servi
 @Component({
   selector: 'app-sanad-kid-entry',
   templateUrl: './sanad-kid-entry.component.html',
-  styleUrls: ['./sanad-kid-entry.component.css'],
+  styleUrls: ['./sanad-kid-entry.component.scss'],
 })
 export class SanadKidEntryComponent implements OnDestroy, OnInit, AfterViewInit, OnChanges {
   @ViewChild(SanadKidEditComponent) SanadKid: SanadKidEditComponent;
@@ -172,6 +172,7 @@ export class SanadKidEntryComponent implements OnDestroy, OnInit, AfterViewInit,
 
 
   OnSelectItem(sanad_kid: sanad_kid) {
+    this.SanadKid= JSON.parse(JSON.stringify(sanad_kid));
 
   }
 

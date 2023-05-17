@@ -43,6 +43,9 @@ import { ExchangeOrderEntryComponent } from './components/exchange-order-entry/e
 import { ExchangeOrderPrintRowsComponent } from './components/exchange-order-print-rows/exchange-order-print-rows.component';
 import { ExchangeOrderPrintComponent } from './components/exchange-order-print/exchange-order-print.component';
 import {MatTabsModule} from '@angular/material/tabs'; 
+import {NgxPrintModule} from 'ngx-print';
+
+
 const Import_Corui = [
   GridModule,
   CardModule,
@@ -101,7 +104,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     FontAwesomeModule,
     IconModule,
    PerfectScrollbarModule,
-   MatTabsModule
+   MatTabsModule,
+   NgxPrintModule
     
   ],providers:[
    
