@@ -19,7 +19,7 @@
                 <input class="form-control" 
                 formControlName="attachement_id" 
                 [OnlyNumber]="true"
-                  id="{{'exchange_order_attachement_id_'+_index}}" (keyup.enter)="focusNext('type_fk_'+_index)"
+                  id="{{'attachement_id_'+_index}}" (keyup.enter)="focusNext('type_fk_'+_index)"
                     placeholder="رقم المرفق">
             </td>
 
@@ -47,7 +47,7 @@
                 <div class=" input-group " container="body">
                     <input class="form-control" placeholder="تاريخ المرفق" name="attachement_date"
                         id="{{'attachement_date'+_index}}" formControlName="attachement_date"
-                        (keyup.enter)="focusNext('exchange_order_Source_number_'+_index)" ngbDatepicker
+                        (keyup.enter)="focusNext('source_number_'+_index)" ngbDatepicker
                         #attachement_date="ngbDatepicker" />
                     <button class="input-group-text" type="button" (click)="attachement_date.toggle()"
                         type="button"></button>
@@ -58,20 +58,20 @@
 
             <td>
                 <input class="form-control" formControlName="source_number" 
-                    id="{{'exchange_order_Source_number_'+_index}}"
-                    (keyup.enter)="focusNext('document_ownership_'+_index)" placeholder="رقم الوثيقة">
+                    id="{{'source_number_'+_index}}"
+                    (keyup.enter)="focusNext('ownership_'+_index)" placeholder="رقم الوثيقة">
             </td>
 
 
             <td>
                 <input class="form-control" formControlName="ownership" 
-                    id="{{'document_ownership_'+_index}}"
-                    (keyup.enter)="focusNext('exchange_order_attachement_note_'+_index)" placeholder="عائدية الوثيقة">
+                    id="{{'ownership_'+_index}}"
+                    (keyup.enter)="focusNext('attachement_note_'+_index)" placeholder="عائدية الوثيقة">
             </td>
 
 
             <td>
-                <input class="form-control" id="{{'exchange_order_attachement_note_'+_index}}"
+                <input class="form-control" id="{{'attachement_note_'+_index}}"
                     formControlName="attachement_note" (keyup.enter)="focusNext('type_fk_'+_index)"
                     placeholder="بيان المرفق">
             </td>

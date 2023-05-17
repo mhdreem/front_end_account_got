@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SanadKidEditComponent } from './components/sanad-kid-edit/sanad-kid-edit.component';
 import { SanadKidListComponent } from './components/sanad-kid-list/sanad-kid-list.component';
 import { SanadKidComponent } from './sanad-kid.component';
+import { SanadKidEntryComponent } from './components/sanad-kid-entry/sanad-kid-entry.component';
 
 const routes: Routes = [
   {
@@ -13,7 +14,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'edit', component: SanadKidEditComponent,
+    path: 'edit', component: SanadKidEntryComponent,
     data:
     {
       title: 'تعديل سند القيد'

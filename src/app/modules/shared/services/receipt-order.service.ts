@@ -53,7 +53,14 @@ export class ReceiptOrderService extends BaseAPIService{
     return this.httpClient.get<result>(this.RestUrl +"Receipt_Order/GetBySeq/"+seq) as Observable<result>;      
   }
 
+  generate_incumbent_id(incumbent_id_generate_type_fk: number,month: number):Observable<result>{
+    return this.httpClient.get<result>(this.RestUrl +`Receipt_Order/generate_incumbent_id/${incumbent_id_generate_type_fk}/${month}`,this.httpOptions) as Observable<result>;      
+  }
 
+
+  generate_document_id(incumbent_id_generate_type_fk: number,month: number):Observable<result>{
+    return this.httpClient.get<result>(this.RestUrl +`Receipt_Order/generate_document_id/${incumbent_id_generate_type_fk}/${month}`,this.httpOptions) as Observable<result>;      
+  }
   
   export2Excel() {
     const headers = new HttpHeaders({

@@ -7,59 +7,45 @@
   <mat-card>
     <mat-card-content>
       <c-container>
+
         <c-row>
 
-          <div class="col-lg-6 col-md-6 col-6 col-sm-12 mb-3">
-
-            <mat-form-field appearance="outline">
-              <mat-label>
-                من رقم المذكرة <span class="text-danger"> </span>
-              </mat-label>
-              <input matInput (focusout)="PerformSearch()" [formControl]="incumbent_id_from" id="incumbent_id_from"
-                (keyup.enter)="focusNext('to_number')" />
-            </mat-form-field>
+          <div class="col-sm-4 mb-3">
+            <label class="form-label">
+              من رقم المذكرة
+            </label>
+            <input class="form-control" (focusout)="PerformSearch()" [formControl]="incumbent_id_from"
+              id="incumbent_id_from" (keyup.enter)="focusNext('to_number')" />
           </div>
 
-          <div class="col-lg-6 col-md-6 col-6 col-sm-12 mb-3">
-            <mat-form-field appearance="outline">
-              <mat-label>
-                إلى رقم المذكرة <span class="text-danger"> </span>
-              </mat-label>
-              <input matInput (focusout)="PerformSearch()" matInput [formControl]="incumbent_id_to" id="to_number"
-                (keyup.enter)="focusNext('document_id_from')" />
-            </mat-form-field>
+          <div class="col-sm-4 mb-3">
+            <label class="form-label">
+              إلى رقم المذكرة
+            </label>
+            <input class="form-control" (focusout)="PerformSearch()" matInput [formControl]="incumbent_id_to"
+              id="to_number" (keyup.enter)="focusNext('document_id_from')" />
           </div>
 
-
-          <div class="col-lg-6 col-md-6 col-6 col-sm-12 mb-3">
-            <mat-form-field appearance="outline">
-              <mat-label>من رقم مستند</mat-label>
-
-
-              <input matInput type="text" class="form-control" (focusout)="PerformSearch()"
-                [formControl]="document_id_from" id="document_id_from" (keyup.enter)="focusNext('document_id_to')" />
-            </mat-form-field>
+          <div class="col-sm-4 mb-3">
+            <label class="form-label">
+              من رقم مستند
+            </label>
+            <input class="form-control" type="text" (focusout)="PerformSearch()" [formControl]="document_id_from"
+              id="document_id_from" (keyup.enter)="focusNext('document_id_to')" />
           </div>
 
-          <div class="col-lg-6 col-md-6 col-6 col-sm-12 mb-3">
-            <mat-form-field appearance="outline">
-              <mat-label>
-                إلى رقم مستند <span class="text-danger"> </span>
-              </mat-label>
-              <input matInput (focusout)="PerformSearch()" matInput [formControl]="document_id_to" id="document_id_to"
-                (keyup.enter)="focusNext('sanad_month')" />
-            </mat-form-field>
+          <div class="col-sm-4 mb-3">
+            <label class="form-label">
+              إلى رقم مستند
+            </label>
+            <input class="form-control" (focusout)="PerformSearch()" matInput [formControl]="document_id_to"
+              id="document_id_to" (keyup.enter)="focusNext('sanad_month')" />
           </div>
 
-
-
-          <div class="col-lg-6 col-md-6 col-6 col-sm-12 mb-3">
-
+          <div class="col-sm-4 mb-3">
             <label class="form-label">
               شهر الوثيقة <span class="text-danger"> </span>
             </label>
-
-
             <ng-select [formControl]="sanad_month" [multiple]="true" [items]="months" bindValue="id" bindLabel="name"
               placeholder="قم باختيار الاشهر" id="sanad_month" (keyup.enter)="focusNext('incumbent_month')"
               (focusout)="PerformSearch()">
@@ -67,19 +53,15 @@
 
           </div>
 
-          <div class="col-lg-6 col-md-6 col-6 col-sm-12 mb-3">
+          <div class="col-sm-4 mb-3">
             <label class="form-label">
               شهر المذكرة <span class="text-danger"> </span>
             </label>
-
             <ng-select [formControl]="incumbent_month" id="incumbent_month" [multiple]="true" [items]="months"
               bindValue="id" bindLabel="name" (keyup.enter)="focusNext('from_number')" (focusout)="PerformSearch()">
             </ng-select>
-
           </div>
         </c-row>
-
-
 
         <c-row>
 
@@ -87,10 +69,11 @@
             [infiniteScrollThrottle]="100" (scrolled)="onScroll()" [scrollWindow]="false"
             style="height: 400px; overflow-y: scroll;">
 
-         
+
 
             <ul ngbNav #verticalNav="ngbNav" class="nav-tabs nav-tabs-vertical" orientation="vertical">
-              <li [ngbNavItem]="2" (click)="SelectItemChange(exchange_order)" *ngFor="let exchange_order of exchange_order_list">
+              <li [ngbNavItem]="2" (click)="SelectItemChange(exchange_order)"
+                *ngFor="let exchange_order of exchange_order_list">
                 <a ngbNavLink>
                   <i class="feather icon-file-text btn-icon-prepend fs-5 me-1"></i>
                   <div class="row">

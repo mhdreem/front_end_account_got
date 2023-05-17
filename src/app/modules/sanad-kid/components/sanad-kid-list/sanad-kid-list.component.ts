@@ -58,7 +58,7 @@ export class SanadKidListComponent implements OnInit {
 
   dataSource = new MatTableDataSource<sanad_kid>();
   displayedColumns: string[] =
-    ['date_time_create', 'document_id', 'document_date', 'sanad_total_value', 'incumbent_id', 'incumbent_date', 'sanad_close', 'name_of_owner', 'branch_name', 'action'];
+    ['operation_type_fk', 'operation_code_fk' , 'date_time_create', 'document_id', 'document_date', 'total_value', 'incumbent_id', 'incumbent_date', 'sanad_close', 'name_of_owner', 'branch_name', 'action'];
   dataSourceIsEmpty: boolean = true;
   fromDateDay: string = '';
   fromDateMonth: string = '';
@@ -188,7 +188,7 @@ export class SanadKidListComponent implements OnInit {
           arr  = (data.value as sanad_kid[]) ;
 if (arr != null && arr.length>0)
 {
-this.SumTotal = arr.reduce((acc, cur) => acc + (cur.sanad_total_value != null ? cur.sanad_total_value:0) , 0);
+this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.total_value:0) , 0);
 }
 
           })
@@ -226,7 +226,7 @@ this.SumTotal = arr.reduce((acc, cur) => acc + (cur.sanad_total_value != null ? 
           arr  = (data.value as sanad_kid[]) ;
 if (arr != null && arr.length>0)
 {
-this.SumTotal = arr.reduce((acc, cur) => acc + (cur.sanad_total_value != null ? cur.sanad_total_value:0) , 0);
+this.SumTotal = arr.reduce((acc, cur) => acc + (cur.total_value != null ? cur.total_value:0) , 0);
 }
 
     });
@@ -295,12 +295,37 @@ this.SumTotal = arr.reduce((acc, cur) => acc + (cur.sanad_total_value != null ? 
   }
 
   add() {
-    this.PageSanadKidService.sanad_kid = {};
+    this.PageSanadKidService.sanad_kid = {
+      sanad_kid_details:[],
+      sanad_kid_attachements:[],
+      sanad_close:0,
+      sanad_opening:0
+    };
     this.PageSanadKidService.$sanad_kid.next({});
     this.router.navigate(['../edit'], { relativeTo: this.ActivatedRoute });
   }
 
+  add_sanad_opening() {
+    this.PageSanadKidService.sanad_kid = {
+      sanad_kid_details:[],
+      sanad_kid_attachements:[],
+      sanad_close:0,
+      sanad_opening:1
+    };
+    this.PageSanadKidService.$sanad_kid.next({});
+    this.router.navigate(['../edit'], { relativeTo: this.ActivatedRoute });
+  }
 
+  add_sanad_closing() {
+    this.PageSanadKidService.sanad_kid = {
+      sanad_kid_details:[],
+      sanad_kid_attachements:[],
+      sanad_close:1,
+      sanad_opening:0
+    };
+    this.PageSanadKidService.$sanad_kid.next({});
+    this.router.navigate(['../edit'], { relativeTo: this.ActivatedRoute });
+  }
 
   detail() {
 

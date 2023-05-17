@@ -20,7 +20,7 @@
 
             </app-account-tree-display>
 
-            [disabled]="!Form.valid"
+         
 
             <button mat-raised-button id="save" class="add" (click)="save()" >
                 <mat-icon class="mat-icon-rtl-mirror">save
@@ -60,13 +60,14 @@
 
                 <c-row>
 
-                    <div class="col-6">
+                    <div class="col-4">
                         <mat-form-field appearance="outline">
                             <mat-label #label_branch_fk>الفرع</mat-label>
                             <input matInput [formControl]="branch_fk" [matAutocomplete]="autobranch" id="branch_fk"
                                 (keyup.enter)="focusNext('account_id')">
                             <mat-autocomplete #autobranch="matAutocomplete"
                                 [displayWith]="displayBranchProperty.bind(this)">
+
                                 <mat-option *ngFor="let option of filteredBranchOptions | async"
                                     [value]="option.branch_seq">
                                     {{option.branch_name}}
@@ -85,7 +86,7 @@
                     </div>
 
                     
-                    <div class="col-6">
+                   <div class="col-4">
                         <mat-form-field appearance="outline">
                             <mat-label #label_account_id>رقم حساب</mat-label>
                             <input matInput [formControl]="account_id" id="account_id"
@@ -104,7 +105,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="col-6">
+                   <div class="col-4">
                         <mat-form-field appearance="outline">
                             <mat-label #label_account_name>اسم الحساب</mat-label>
                             <input matInput [formControl]="account_name" id="account_name"
@@ -122,13 +123,14 @@
                     </div>
 
 
-                    <div class="col-6">
+                   <div class="col-4">
                         <mat-form-field appearance="outline">
                             <mat-label #label_finance_list>القائمة المالية</mat-label>
                             <input matInput [formControl]="finance_list_fk" [matAutocomplete]="autofinanceList"
                                 id="finance_list_fk" (keyup.enter)="focusNext('sub_financial_list_fk')">
                             <mat-autocomplete #autofinanceList="matAutocomplete"
                                 [displayWith]="displayFinanceListProperty.bind(this)">
+                                <mat-option >عدم تحديد</mat-option>
                                 <mat-option *ngFor="let option of filteredfinanceListOptions | async"
                                     [value]="option.finance_list_seq">
                                     {{option.finance_list_name}}
@@ -146,7 +148,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="col-6">
+                   <div class="col-4">
                         <mat-form-field appearance="outline">
                             <mat-label #label_sub_financial_list_fk>القائمة المالية الفرعية</mat-label>
                             <input matInput [formControl]="sub_financial_list_fk"
@@ -154,6 +156,9 @@
                                 (keyup.enter)="focusNext('account_type_fk')">
                             <mat-autocomplete #auto_sub_financial_list_fk="matAutocomplete"
                                 [displayWith]="display_Sub_FinalList.bind(this)">
+
+                                <mat-option >عدم تحديد</mat-option>
+
                                 <mat-option *ngFor="let option of filtered_sub_financial_list_list | async"
                                     [value]="option.sub_financial_list_seq">
                                     {{option.sub_financial_list_name}}
@@ -171,13 +176,14 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="col-6">
+                   <div class="col-4">
                         <mat-form-field appearance="outline">
                             <mat-label #label_account_type_fk>طبيعة الحساب</mat-label>
                             <input matInput [formControl]="account_type_fk" [matAutocomplete]="auto_account_type_fk"
                                 id="account_type_fk" (keyup.enter)="focusNext('account_final_fk')">
                             <mat-autocomplete #auto_account_type_fk="matAutocomplete"
                                 [displayWith]="display_Account_TypeProperty.bind(this)">
+                                <mat-option >عدم تحديد</mat-option>
                                 <mat-option *ngFor="let option of filtered_account_type_list | async"
                                     [value]="option.account_type_seq">
                                     {{option.account_type_name}}
@@ -195,13 +201,16 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="col-6">
+                   <div class="col-4">
                         <mat-form-field appearance="outline">
                             <mat-label #label_account_final>الحساب الختامي</mat-label>
                             <input matInput [formControl]="account_final_fk" [matAutocomplete]="autoaccount_final"
                                 id="account_final_fk" (keyup.enter)="focusNext('account_parent_seq')">
                             <mat-autocomplete #autoaccount_final="matAutocomplete"
                                 [displayWith]="displayAccountFinalProperty.bind(this)">
+
+                                <mat-option >عدم تحديد</mat-option>
+
                                 <mat-option *ngFor="let option of filteredAccountFinalOptions | async"
                                     [value]="option.account_final_seq">
                                     {{option.account_final_name}}
@@ -221,7 +230,7 @@
 
 
                     
-                    <div class="col-6">
+                   <div class="col-4">
 
                         <mat-form-field appearance="outline">
                             <mat-label>اسم الحساب الأب</mat-label>
@@ -229,6 +238,8 @@
                                 id="account_parent_seq" (keyup.enter)="focusNext('account_level_fk')">
                             <mat-autocomplete #autoparentaccountName="matAutocomplete"
                                 [displayWith]="displayParentAccountNameProperty.bind(this)">
+
+                                <mat-option >الجذر أو المستوى الأول</mat-option>
 
                                 <mat-option *ngFor="let option of filteredparentAccountNameOptions | async"
                                     [value]="option.seq">
@@ -240,7 +251,7 @@
 
                  
 
-                    <div class="col-6">
+                   <div class="col-4">
                         <mat-form-field appearance="outline">
                             <mat-label #label_account_level>مستوى الحساب</mat-label>
                             <input matInput [formControl]="account_level_fk" [matAutocomplete]="autoaccountLevel"
@@ -264,7 +275,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="col-6">
+                   <div class="col-4">
                         <mat-form-field appearance="outline">
                             <mat-label #label_account_group>مجموعة الحساب</mat-label>
                             <input matInput [formControl]="account_group_fk" [matAutocomplete]="autoaccountGroup"
@@ -288,7 +299,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="col-6">
+                   <div class="col-4">
                         <mat-form-field appearance="outline">
                             <mat-label #label_account_class>تصنيف الحساب</mat-label>
                             <input matInput [formControl]="account_class_fk" [matAutocomplete]="autoaccountClass"
@@ -313,7 +324,7 @@
                     </div>
 
                     <!--
-                    <div class="col-6">
+                   <div class="col-4">
                         <mat-form-field appearance="outline">
                             <mat-label>مركز الكلفة</mat-label>
                             <input matInput [formControl]="account_center_fk" [matAutocomplete]="autoaccount_center_fk"
@@ -333,7 +344,7 @@
                   
             
 
-                    <div class="col-6">
+                   <div class="col-4">
 
 
                         <mat-form-field appearance="outline">
@@ -342,21 +353,21 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="col-6">
+                   <div class="col-4">
                         <mat-form-field appearance="outline">
                             <mat-label>الموبايل</mat-label>
                             <input matInput [formControl]="mobil" id="mobil" (keyup.enter)="focusNext('fax')">
                         </mat-form-field>
                     </div>
 
-                    <div class="col-6">
+                   <div class="col-4">
                         <mat-form-field appearance="outline">
                             <mat-label>الفاكس</mat-label>
                             <input matInput [formControl]="fax" id="fax" (keyup.enter)="focusNext('address')">
                         </mat-form-field>
                     </div>
 
-                    <div class="col-6">
+                   <div class="col-4">
                         <mat-form-field appearance="outline">
                             <mat-label>العنوان</mat-label>
                             <input matInput [formControl]="address" id="address" (keyup.enter)="focusNext('notice')">

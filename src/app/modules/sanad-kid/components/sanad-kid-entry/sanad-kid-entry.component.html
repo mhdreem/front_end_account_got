@@ -1,0 +1,109 @@
+<ng-template #MainToolBar>
+  <nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item fw-bold">
+        <a routerLink=".">
+          سندات القيد
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        سندات القيد
+      </li>
+    </ol>
+
+    <div class="d-flex justify-content-end ms-auto">
+
+
+
+
+      <app-sanad-kid-search-bar [Title]="'لائحة أوامر الصرف'" (OnSelectItem)="OnSelectItem($event)">
+      </app-sanad-kid-search-bar>
+
+      <button type="button" class="btn btn-info btn-sm" (click)="new_record()">
+        <mat-icon>save</mat-icon>
+      جديد
+      </button>
+
+      <button type="button" class="btn btn-info btn-sm" (click)="save()">
+        <mat-icon>save</mat-icon>
+        حفظ
+      </button>
+
+
+      <button type="button" class="btn btn-info btn-sm" (click)="save_as_draft()">
+        <mat-icon>save</mat-icon>
+        حفظ كمسودة
+      </button>
+
+
+
+
+    </div>
+
+  </nav>
+
+
+</ng-template>
+
+
+<div class="has-tabs-breadcrumb">
+  <nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item fw-bold">
+        <a routerLink=".">
+          سندات قيد
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        إضافة سندات القيد
+      </li>
+    </ol>
+    <div class="d-flex justify-content-end ms-auto">
+
+      <app-tool-bar [ngTemplateOutlet]="MainToolBar">
+      </app-tool-bar>
+    </div>
+
+  </nav>
+
+
+  <nav class="page-tabs">
+    <ul ngbNav #defaultNav="ngbNav" [(activeId)]="defaultNavActiveId" class="nav-fu mx-xs-3 mx-sm-3 mx-md-4 mx-lg-0">
+      <li [ngbNavItem]="1" [destroyOnHide]="false">
+        <a ngbNavLink class="px-2 px-md-4">
+          <i class="feather icon-credit-card btn-icon-prepend fs-5 me-1"></i>
+          بيانات سند القيد
+        </a>
+        <ng-template ngbNavContent>
+          <br />
+          <br />
+          <br />
+          <br />
+          <app-sanad-kid-edit [sanad_kid]="this.sanad_kid" (OnSaveComplete)="re_load_data($event)">
+
+          </app-sanad-kid-edit>
+        </ng-template>
+      </li>
+
+     
+
+      <li [ngbNavItem]="3" [destroyOnHide]="true">
+        <a ngbNavLink class="px-2 px-md-4">
+          <i class="feather icon-credit-card btn-icon-prepend fs-5 me-1"></i>
+          طباعة سند القيد
+        </a>
+        <ng-template ngbNavContent>
+          <br />
+          <br />
+          <br />
+          <br />
+        
+        </ng-template>
+
+      </li>
+    </ul>
+  </nav>
+  <div class="page-content container">
+    <div [ngbNavOutlet]="defaultNav"></div>
+  </div>
+</div>

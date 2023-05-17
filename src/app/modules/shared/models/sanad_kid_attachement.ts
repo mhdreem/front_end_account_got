@@ -13,8 +13,8 @@ export interface sanad_kid_attachement {
 
     attachement_type?: attachement_type;
 
-    receipt_order_ownership?: string;
-    receipt_order_Source_number?: string;
+    ownership?: string;
+    source_number?: string;
 
     attachement_note?: string;
 

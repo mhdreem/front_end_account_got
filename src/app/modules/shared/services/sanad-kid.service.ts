@@ -68,6 +68,15 @@ export class SanadKidService extends BaseAPIService{
     return this.httpClient.get<result>(this.RestUrl +`Sanad_Kid/getByOperationCode/${operation_code_fk}/${operation_type_fk}`,this.httpOptions) as Observable<result>;      
   }
 
+  generate_incumbent_id(incumbent_id_generate_type_fk: number,month: number):Observable<result>{
+    return this.httpClient.get<result>(this.RestUrl +`Sanad_Kid/generate_incumbent_id/${incumbent_id_generate_type_fk}/${month}`,this.httpOptions) as Observable<result>;      
+  }
+
+
+  generate_document_id(incumbent_id_generate_type_fk: number,month: number):Observable<result>{
+    return this.httpClient.get<result>(this.RestUrl +`Sanad_Kid/generate_document_id/${incumbent_id_generate_type_fk}/${month}`,this.httpOptions) as Observable<result>;      
+  }
+
   export2Excel() {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',

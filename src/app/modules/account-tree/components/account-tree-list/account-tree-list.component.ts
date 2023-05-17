@@ -50,7 +50,7 @@ export class AccountTreeListComponent implements OnInit, OnDestroy {
    'assistant',
    'sub',
    'partial',
-   'analytical', 'account_name', 'account_center_name', 'account_class_name', 'account_final_name', 'account_group_name', 'account_level_name', 'finance_list_name', 'mobil', 'phone', 'fax', 'address', 'notice', 'action'];
+   'analytical','detailed', 'account_name', 'account_class_name', 'account_final_name', 'account_group_name', 'account_level_name', 'finance_list_name' , 'action'];
   dataSourceIsEmpty: boolean = true;
 
   _Subscriptions: Subscription[] = [];

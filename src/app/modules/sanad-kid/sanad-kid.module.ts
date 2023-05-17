@@ -34,10 +34,11 @@ import {MatListModule} from '@angular/material/list';
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { SanadKidListSearchComponent } from './components/sanad-kid-list-search/sanad-kid-list-search.component';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ViewsModule } from '../views/views.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconModule, IconSetService } from '@coreui/icons-angular';
+import { SanadKidEntryComponent } from './components/sanad-kid-entry/sanad-kid-entry.component';
 
 
 const Import_Corui = [
@@ -54,6 +55,7 @@ const Import_Corui = [
     SanadKidAttachmentsComponent,
     SanadKidSearchBarComponent,
     SanadKidListSearchComponent,
+    SanadKidEntryComponent
     
   ],
   imports: [
@@ -85,7 +87,8 @@ const Import_Corui = [
     NgbModule ,    
     ViewsModule,
     FontAwesomeModule,
-    IconModule
+    IconModule,
+    NgbDropdownModule
   ],
   providers:[
     IconSetService

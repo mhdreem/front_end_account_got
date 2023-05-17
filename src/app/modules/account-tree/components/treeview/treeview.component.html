@@ -1,37 +1,38 @@
-<ul>
-    <li>
-
-
-        <div class="row">
-            <div class="col-1"><button (click)="FireSelectEvent()">اختيار</button></div>
-            <div class="col-1"> <span *ngIf="root.balance_debtor!= null">{{root.balance_debtor}} </span> </div>
-            <div class="col-1"> <span *ngIf="root.balance_creditor!= null">{{root.balance_creditor}}</span> </div>
-            <div class="col-1"> <span
-                    *ngIf="root.account_id!= null && root.account_id.toString().length==1">{{root.account_id}}</span>
-            </div>
-            <div class="col-1"> <span
-                    *ngIf="root.account_id!= null && root.account_id.toString().length==2">{{root.account_id}}</span>
-            </div>
-            <div class="col-1"> <span
-                    *ngIf="root.account_id!= null && root.account_id.toString().length==3">{{root.account_id}}</span>
-            </div>
-            <div class="col-1"> <span
-                    *ngIf="root.account_id!= null && root.account_id.toString().length==4">{{root.account_id}}</span>
-            </div>
-            <div class="col-1"> <span
-                    *ngIf="root.account_id!= null && root.account_id.toString().length==5">{{root.account_id}}</span>
-            </div>
-            <div class="col-1"> <span
-                    *ngIf="root.account_id!= null && root.account_id.toString().length==6">{{root.account_id}}</span>
-            </div>
-            <div class="col-3"> 
-                <span *ngIf="root?.account_name!= null"
-                >
-                {{root.account_name}}
-                </span>
-                </div>
+<div class="row">
+        
+        <div class="col-1"> <span *ngIf="root.balance_debtor!= null">{{root.balance_debtor}} </span> </div>
+        <div class="col-1"> <span *ngIf="root.balance_creditor!= null">{{root.balance_creditor}}</span> </div>
+        <div class="col-1"> <span
+                        *ngIf="root.account_id!= null && root.account_id.toString().length==1">{{root.account_id}}</span>
         </div>
-    </li>
-</ul>
-<app-treeview *ngFor="let node of Children()" [root]="node" (OnSelect)="OnSelectItem($event)">
-</app-treeview>
+        <div class="col-1"> <span
+                        *ngIf="root.account_id!= null && root.account_id.toString().length==2">{{root.account_id}}</span>
+        </div>
+        <div class="col-1"> <span
+                        *ngIf="root.account_id!= null && root.account_id.toString().length==3">{{root.account_id}}</span>
+        </div>
+        <div class="col-1"> <span
+                        *ngIf="root.account_id!= null && root.account_id.toString().length==4">{{root.account_id}}</span>
+        </div>
+        <div class="col-1"> <span
+                        *ngIf="root.account_id!= null && root.account_id.toString().length==5">{{root.account_id}}</span>
+        </div>
+        <div class="col-1"> <span
+                        *ngIf="root.account_id!= null && root.account_id.toString().length==6">{{root.account_id}}</span>
+        </div>
+        <div class="col-1"> <span
+                        *ngIf="root.account_id!= null && root.account_id.toString().length==7">{{root.account_id}}</span>
+        </div>
+        <div class="col-2">
+                <li (click)="FireSelectEvent()">
+                        <span *ngIf="root?.account_name!= null" >
+                                {{root.account_name}}
+                        </span>
+                </li>
+
+        </div>
+</div>
+
+
+        <app-treeview *ngFor="let node of Children()" [root]="node" (OnSelect)="OnSelectItem($event)">
+        </app-treeview>

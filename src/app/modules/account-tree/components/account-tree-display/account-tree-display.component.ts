@@ -1,6 +1,6 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { DOCUMENT } from '@angular/common';
-import { Component, EventEmitter, Inject, Input, Output, TemplateRef } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Observable, Subscription, combineLatest, forkJoin, of } from 'rxjs';
@@ -21,6 +21,7 @@ interface extende_accounts_tree extends accounts_tree {
   styleUrls: ['./account-tree-display.component.scss']
 })
 export class AccountTreeDisplayComponent {
+  @ViewChild("btn_update") btn_update: ElementRef;
 
   SelectedParent: any;
   Root: accounts_tree;
@@ -117,6 +118,19 @@ export class AccountTreeDisplayComponent {
 
   SelectAccountTree(node: extende_accounts_tree) {
     this.SelectedParent = node;
+    var btn_update = document.getElementById("btn_update");
+    if (btn_update!= null)
+    {
+        btn_update.click();
+    }
+
+    /*
+   if (this.btn_update!= null && this.btn_update.nativeElement!= null )
+   {
+    this.btn_update.nativeElement.click();
+   }
+   */
+
   }
 
 

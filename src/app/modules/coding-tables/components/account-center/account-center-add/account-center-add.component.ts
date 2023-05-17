@@ -41,7 +41,7 @@ export class AccountCenterAddComponent implements OnInit, OnDestroy {
 
   Form: FormGroup;
   account_center_seq: FormControl<number | null>;
-  account_center_id: FormControl<number | null>;
+  account_center_id: FormControl<string | null>;
   account_center_name: FormControl<string | null>;
   account_center_final_seq: FormControl<number | null>;
   account_center_order: FormControl<number | null>;
@@ -107,7 +107,7 @@ export class AccountCenterAddComponent implements OnInit, OnDestroy {
     this.Form = this.frmBuilder.group(
       {
         'account_center_seq': this.account_center_seq = new FormControl<number | null>(null, []),
-        'account_center_id': this.account_center_id = new FormControl<number | null>(null, [Validators.required]),
+        'account_center_id': this.account_center_id = new FormControl<string | null>(null, [Validators.required]),
         'account_center_name': this.account_center_name = new FormControl<string | null>(null, [Validators.required]),
         'account_center_final_seq': this.account_center_final_seq = new FormControl<number | null>(null, []),
         'account_center_parent_fk': this.account_center_parent_fk = new FormControl<number | null>(null, []),

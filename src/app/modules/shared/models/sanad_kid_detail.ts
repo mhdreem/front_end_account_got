@@ -5,7 +5,7 @@ import { sanad_kid } from "./sanad-kid";
 
 export interface sanad_kid_detail {
     seq?: number;
-    sanad_Kid_fk?: number;
+    sanad_kid_fk?: number;
     sanad_kid?: sanad_kid ;
     debtor?: number  | null;
     creditor?: number | null;

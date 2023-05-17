@@ -20,11 +20,17 @@ import { payment_safe } from 'src/app/modules/shared/models/payment_safe';
 import { PaymentSafeService } from 'src/app/modules/shared/services/payment_safe.service';
 import { BranchService } from 'src/app/modules/shared/services/branch.service';
 import { payment_order_detail } from 'src/app/modules/shared/models/payment_order_detail';
+import { NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import { CustomAdapter, CustomDateParserFormatter } from 'src/app/modules/shared/services/date-formate';
 
 @Component({
   selector: 'app-payment-order-edit',
   templateUrl: './payment-order-edit.component.html',
-  styleUrls: ['./payment-order-edit.component.scss']
+  styleUrls: ['./payment-order-edit.component.scss'],
+  providers: [
+    { provide: NgbDateAdapter, useClass: CustomAdapter },
+    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
+  ],
 })
 export class PaymentOrderEditComponent implements OnInit, AfterViewInit {
   @HostListener('window:keydown', ['$event'])

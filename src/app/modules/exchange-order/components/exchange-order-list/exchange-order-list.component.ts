@@ -332,7 +332,10 @@ export class ExchangeOrderListComponent implements OnInit, OnDestroy {
   }
 
   add() {
-    this.PageExchangeOrderService.exchange_order = {};
+    this.PageExchangeOrderService.exchange_order = {
+      exchange_order_details:[],
+      exchange_order_attachements:[]
+    };
     this.PageExchangeOrderService.$exchange_order.next({});
     this.router.navigate(['../edit'], { relativeTo: this.ActivatedRoute });
   }

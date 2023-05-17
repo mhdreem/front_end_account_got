@@ -7,9 +7,7 @@ import { Subscription } from 'rxjs';
 
 
 import { result } from 'src/app/modules/shared/models/result';
-import { FinanceListService } from 'src/app/modules/shared/services/finance-list.service';
 import { FormValidationHelpersService } from 'src/app/modules/shared/services/form-validation-helpers.service';
-import { validateFinanceListName } from '../../finance-list/finance-list-add/Validators/validateFinanceListName';
 import { FinanceListAddComponent } from '../../finance-list/finance-list-add/finance-list-add.component';
 import { PaymentSafeService } from 'src/app/modules/shared/services/payment_safe.service';
 import { AccountTreeService } from 'src/app/modules/shared/services/account-tree.service';
@@ -179,12 +177,25 @@ export class PaymentSafeAddComponent {
     this.payment_safe_name.addAsyncValidators([validatePaymentSafetName(this.PaymentSafeService, this.payment_safe_name.value)]);
 
   }
-
-  public focusNext(id: string) {
+  focusNext(id: string) {
     let element = this._document.getElementById(id);
-    if (element) {
+
+    if (element != null && element.tagName != null && element.tagName.toLowerCase() == 'ng-select') {
+      var elements = element?.firstElementChild?.firstElementChild?.lastElementChild?.getElementsByTagName('input');
+      if (elements != null && elements.length > 0) {
+        var inputSearchElement = elements.item(0);
+        if (inputSearchElement != null) {
+          inputSearchElement.focus();
+        }
+
+      }
+
+    } else if (element) {
       element.focus();
     }
+
+
+
   }
 
   public fieldHasErrors(form: any, field: string) {

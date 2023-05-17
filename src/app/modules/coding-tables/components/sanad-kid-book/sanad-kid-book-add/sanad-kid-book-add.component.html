@@ -44,7 +44,7 @@
                                 [displayWith]="display_Accounts_tree_Property.bind(this)"
                                 >
                                     <mat-option *ngFor="let option of cash_account_filter | async" [value]="option.seq">
-                                    {{option.account_name}}
+                                    {{option.account_id + '-' + option.account_name}}
                                     </mat-option>
                                 </mat-autocomplete>
                             </mat-form-field>

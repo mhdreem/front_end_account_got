@@ -17,13 +17,30 @@
             <app-sanad-kid-list-search [Title]="'عناصر البحث'"
                 (OnSeachCommandExecute)="onViewClick($event)"></app-sanad-kid-list-search>
 
+                <div ngbDropdown container="body">
+                    <button type="button" ngbDropdownToggle class="btn btn-sm btn-primary square btn-icon-text me-1">
+                        <i class="feather icon-settings btn-icon-prepend me-0 me-sm-1"></i> 
+                        <span class="d-none d-sm-block">
+                            الأجراءات
+                        </span>
+                    </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownMenuButton1" class="p-0">
+                    <a ngbDropdownItem class="d-flex align-items-center" (click)="add()">
+                      <i class="feather icon-plus-circle fs-5 me-1"></i>
+                      ادخال سند قيد
+                    </a>
+                    <a ngbDropdownItem class="d-flex align-items-center" (click)="add_sanad_opening()">
+                      <i class="feather icon-trash-2 fs-5 me-1"></i>
+                      ادخال سند قيد افتتاحي
+                    </a>
+                    <a ngbDropdownItem class="d-flex align-items-center" (click)="add_sanad_closing()">
+                        <i class="feather icon-eye fs-5 me-1"></i>
+                        ادخال سند قيد اغلاق
+                    </a>
+                </div>
+                </div>
 
-            <button type="button" class="btn btn-info btn-sm" (click)="add()">
-                <mat-icon>add</mat-icon>
-                إدخال F12
-            </button>
-
-
+           
 
             <button type="button" class="btn btn-secondary btn-sm" (click)="exportToExcel()">
                 <mat-icon>view_comfy</mat-icon>
@@ -81,6 +98,16 @@
 
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort style="margin-top: 40px;">
 
+                <ng-container matColumnDef="operation_type_fk">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>نوع السند </th>
+                    <td mat-cell *matCellDef="let element"  >  <span *ngIf="element!= null && element?.operation_type!= null"> {{element?.operation_type?.operation_type_name }} </span> </td>
+                </ng-container>
+
+                <ng-container matColumnDef="operation_code_fk">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>رقم العملية </th>
+                    <td mat-cell *matCellDef="let element"> <span *ngIf="element!= null && element?.operation_code_fk!= null"> {{element?.operation_code_fk }} </span> </td>
+                </ng-container>
+
                 <ng-container matColumnDef="date_time_create">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>تاريخ إدخال </th>
                     <td mat-cell *matCellDef="let element">{{element?.date_time_create | date:'yyyy/MM/dd'}}</td>
@@ -97,9 +124,9 @@
                 </ng-container>
 
 
-                <ng-container matColumnDef="sanad_total_value">
+                <ng-container matColumnDef="total_value">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>مبلغ السند </th>
-                    <td mat-cell *matCellDef="let element">{{element?.sanad_total_value}}</td>
+                    <td mat-cell *matCellDef="let element">{{element?.total_value}}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="incumbent_id">

@@ -15,6 +15,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./exchange-order-search-bar.component.scss']
 })
 export class ExchangeOrderSearchBarComponent {
+  
   @Input() Title:string = '';
   @Output() OnSelectItem : EventEmitter<any> = new EventEmitter<any>();
 

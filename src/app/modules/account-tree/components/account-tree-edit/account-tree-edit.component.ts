@@ -165,18 +165,15 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
         {
           'seq': this.seq = new FormControl<number | undefined>(undefined, []),
           'account_parent_seq': this.account_parent_seq = new FormControl<number | undefined>(undefined, []),
-          'account_id': this.account_id = new FormControl<string | undefined>(undefined, [Validators.required]),
+          'account_id': this.account_id = new FormControl<string | undefined>(undefined, [Validators.required,Validators.maxLength(7)]),
           'account_name': this.account_name = new FormControl<string | undefined>(undefined, [Validators.required]),
-          'account_level_fk': this.account_level_fk = new FormControl<number | undefined>({ value: undefined, disabled: true }, [Validators.required]),
-          'account_group_fk': this.account_group_fk = new FormControl<number | undefined>({ value: undefined, disabled: true }, [Validators.required]),
-          'account_class_fk': this.account_class_fk = new FormControl<number | undefined>({ value: undefined, disabled: true }, [Validators.required]),
-          'finance_list_fk': this.finance_list_fk = new FormControl<number | undefined>(undefined, [Validators.required]),
-
+          'account_level_fk': this.account_level_fk = new FormControl<number | undefined>({ value: undefined, disabled: true }, []),
+          'account_group_fk': this.account_group_fk = new FormControl<number | undefined>({ value: undefined, disabled: true }, []),
+          'account_class_fk': this.account_class_fk = new FormControl<number | undefined>({ value: undefined, disabled: true }, []),
+          'finance_list_fk': this.finance_list_fk = new FormControl<number | undefined>(undefined, []),
           'sub_financial_list_fk': this.sub_financial_list_fk = new FormControl<number | undefined>(undefined, []),
           'account_type_fk': this.account_type_fk = new FormControl<number | undefined>(undefined, []),
-
-
-          'account_final_fk': this.account_final_fk = new FormControl<number | undefined>(undefined, [Validators.required]),
+          'account_final_fk': this.account_final_fk = new FormControl<number | undefined>(undefined, []),
           'phone': this.phone = new FormControl<number | undefined>(undefined),
           'mobile': this.mobil = new FormControl<number | undefined>(undefined),
           'fax': this.fax = new FormControl<number | undefined>(undefined),
@@ -243,6 +240,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
               this.accountFinalService.List_AccountFinal_BehaviorSubject.next(this.accountFinal_List);
 
               this.parentAccountName_List = res[5];
+            /*
               this.parentAccountName_List.push(
                 {
                   account_name: 'الجذر',
@@ -250,6 +248,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
                   seq: undefined
                 }
               );
+            */
 
               this.filteredparentAccountNameOptions = of(this.parentAccountName_List);
               this.accountTreeService.List_AccountsTree = this.parentAccountName_List;
@@ -267,12 +266,14 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
 
 
               this.sub_financial_list_list = res[8];
+              /*
               this.sub_financial_list_list.push(
                 {
                   sub_financial_list_name: 'عدم تحديد',
                   sub_financial_list_seq: undefined
                 }
               );
+              */
 
               this.filtered_sub_financial_list_list = of(this.sub_financial_list_list);
               this.SubFinancialListService.List_sub_financial_list = this.sub_financial_list_list;
@@ -281,12 +282,14 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
 
 
               this.account_type_list = res[9];
+              /*
               this.account_type_list.push(
                 {
                   account_type_name: 'عدم تحديد',
                   account_type_seq: undefined
                 }
               );
+              */
 
               this.filtered_account_type_list = of(this.account_type_list);
               this.account_typeService.List_account_type = this.account_type_list;
@@ -452,6 +455,14 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
           var arr_level = this.accountLevel_List.filter(x =>
             x.account_level_seq != null &&
             x.account_level_seq == 6
+          );
+          if (arr_level != null && arr_level.length > 0) {
+            this.account_level_fk.setValue(arr_level[0].account_level_seq);
+          }
+        }else if (value.length == 7) {
+          var arr_level = this.accountLevel_List.filter(x =>
+            x.account_level_seq != null &&
+            x.account_level_seq == 7
           );
           if (arr_level != null && arr_level.length > 0) {
             this.account_level_fk.setValue(arr_level[0].account_level_seq);
@@ -949,6 +960,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
     console.log('this.selected_Account', this.Form.getRawValue());
     if (this.seq.value == 0 || this.seq.value == undefined || this.seq.value == null) {
       this.accountTreeService.add(this.Form.getRawValue()).subscribe(res => {
+
         console.log('res', res);
         if (res != null && (res as result) != null && (res as result).success) {
           this.snackBar.open('تمت الإضافة بنجاح', '', {
@@ -970,11 +982,15 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
 
     else if (this.seq.value != null && this.seq.value > 0) {
       this.accountTreeService.update(this.Form.getRawValue()).subscribe(res => {
-        if (res != null && res.value != null && (res.value as extende_accounts_tree) != null) {
-          this.snackBar.open('تم التعديل بنجاح', '', {
+
+
+        console.log('res', res);
+        if (res != null && (res as result) != null && (res as result).success) {
+          this.snackBar.open('تمت الإضافة بنجاح', '', {
             duration: 3000,
             panelClass: ['green-snackbar'],
           });
+          this.Form.reset();
           this.Refresh_ParentAccountName_List();
           this.ReBuildTree();
         }
@@ -984,6 +1000,9 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
             duration: 3000,
             panelClass: ['red-snackbar'],
           });
+
+          
+
       });
     }
 

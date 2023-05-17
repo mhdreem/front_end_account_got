@@ -20,12 +20,18 @@ import { payment_safe } from 'src/app/modules/shared/models/payment_safe';
 import { PaymentSafeService } from 'src/app/modules/shared/services/payment_safe.service';
 import { BranchService } from 'src/app/modules/shared/services/branch.service';
 import { receipt_order_detail } from 'src/app/modules/shared/models/receipt_order_detail';
+import { NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import { CustomAdapter, CustomDateParserFormatter } from 'src/app/modules/shared/services/date-formate';
 
 
 @Component({
   selector: 'app-receipt-order-edit',
   templateUrl: './receipt-order-edit.component.html',
-  styleUrls: ['./receipt-order-edit.component.scss']
+  styleUrls: ['./receipt-order-edit.component.scss'],
+  providers: [
+    { provide: NgbDateAdapter, useClass: CustomAdapter },
+    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
+  ],
 })
 export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewInit{
 

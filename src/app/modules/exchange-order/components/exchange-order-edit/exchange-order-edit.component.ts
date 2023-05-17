@@ -823,7 +823,6 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
 
     formGroup.controls['accounts_tree_fk'].setAsyncValidators([validate_account_center(this.get_detail_formarray().value, this.AccountTreeService)])
 
-
     if (this.exchange_order.exchange_order_details != null &&
       this.exchange_order.exchange_order_details.length > index &&
       index >= 0)

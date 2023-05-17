@@ -105,7 +105,7 @@
     
     
                 <ng-container matColumnDef="total">
-                    <th class="table-column-100" mat-header-cell *matHeaderCellDef mat-sort-header>العام  </th>
+                    <th class="table-column-100" mat-header-cell *matHeaderCellDef mat-sort-header>الاجمالي  </th>
                     <td class="table-column-100" mat-cell *matCellDef="let element"> <span *ngIf="element.account_id.toString().length==1">{{element.account_id}}</span> </td>
                 </ng-container>
     
@@ -138,7 +138,10 @@
                 </ng-container>
     
     
-    
+                <ng-container matColumnDef="detailed">
+                    <th class="table-column-100" mat-header-cell *matHeaderCellDef mat-sort-header>السباعي  </th>
+                    <td class="table-column-100" mat-cell *matCellDef="let element"> <span *ngIf="element.account_id.toString().length==7">{{element.account_id}}</span> </td>
+                </ng-container>
                
     
                 <ng-container matColumnDef="account_name">
@@ -146,10 +149,7 @@
                     <td class="table-column-100" mat-cell *matCellDef="let element">{{element?.account_name}}</td>
                 </ng-container>
     
-                <ng-container matColumnDef="account_center_name">
-                    <th class="table-column-100" mat-header-cell *matHeaderCellDef mat-sort-header>مركز الكلفة </th>
-                    <td class="table-column-100" mat-cell *matCellDef="let element">{{element?.account_center?.account_center_name}}</td>
-                </ng-container>
+             
     
                 <ng-container matColumnDef="account_class_name">
                     <th class="table-column-100" mat-header-cell *matHeaderCellDef mat-sort-header>تصنيف الحساب </th>
@@ -176,6 +176,9 @@
                     <td class="table-column-100" mat-cell *matCellDef="let element"> <span *ngIf="element?.finance_list!= null"> {{element?.finance_list.finance_list_name}} </span> </td>
                 </ng-container>
     
+                <!-- 
+
+
                 <ng-container matColumnDef="mobil">
                     <th class="table-column-100" mat-header-cell *matHeaderCellDef mat-sort-header>الموبايل </th>
                     <td class="table-column-100" mat-cell *matCellDef="let element">{{element?.mobil ==null? '' : element?.mobil}}</td>
@@ -201,7 +204,7 @@
                     <td class="table-column-100" at-cell *matCellDef="let element">{{element?.notice ==null? '' : element?.notice}}</td>
                 </ng-container>
     
-    
+                    -->
     
                 <ng-container matColumnDef="action">
                     <th class="table-column-100" mat-header-cell *matHeaderCellDef> حذف\تعديل </th>

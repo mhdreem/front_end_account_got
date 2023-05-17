@@ -147,7 +147,10 @@ export class SanadKidBookAddComponent {
       
       private _filter_accounts_tree(value: string): accounts_tree[] {
         const filterValue = value.toLowerCase();      
-        return this.cash_account_list.filter(option => option.account_name!= null  &&  option.account_name.includes(filterValue));
+        return this.cash_account_list.filter(option => 
+          option.account_name!= null  &&
+          option.account_id!= null  &&
+          (option.account_id + '-'+option.account_name).includes(filterValue));
       }
 
       public display_Branch_Property(value: branch): string {
@@ -163,8 +166,8 @@ export class SanadKidBookAddComponent {
       public display_Accounts_tree_Property(value: accounts_tree): string {
         if (value && this.cash_account_list) {      
           let account: any = this.cash_account_list.find(account => account.seq!.toString() == value);      
-          if (account)
-            return account.account_name!;
+          if (account && account.account_id != null && account.account_name != null)
+            return account.account_id + '-' +account.account_name!;
             
         }
         return '';
