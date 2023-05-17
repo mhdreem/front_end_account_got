@@ -21,6 +21,7 @@ import { CardModule, GridModule } from '@coreui/angular';
 import {MatSelectModule} from '@angular/material/select';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { BookSeachListSearchComponent } from './components/book-seach-list-search/book-seach-list-search.component';
 
 const Import_Corui = [
   GridModule,
@@ -30,7 +31,8 @@ const Import_Corui = [
 @NgModule({
   declarations: [
     MrBookComponent,
-    MrBookListComponent
+    MrBookListComponent,
+    BookSeachListSearchComponent
   ],
   imports: [
     CommonModule,
