@@ -3,11 +3,11 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item fw-bold">
         <a routerLink=".">
-          سندات القيد
+          أوامر الدفع
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
-        سندات القيد
+        أمر دفع
       </li>
     </ol>
 
@@ -16,8 +16,8 @@
 
 
 
-      <app-sanad-kid-search-bar [Title]="'لائحة السندات'" (OnSelectItem)="OnSelectItem($event)">
-      </app-sanad-kid-search-bar>
+      <app-payment-order-search-bar [Title]="'لائحة أوامر الدفع'" (OnSelectItem)="OnSelectItem($event)">
+      </app-payment-order-search-bar>
 
       <button type="button" class="btn btn-info btn-sm" (click)="new_record()">
         <mat-icon>save</mat-icon>
@@ -51,11 +51,11 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item fw-bold">
         <a routerLink=".">
-          سندات قيد
+          امر دفع
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
-        إضافة سندات القيد
+        إضافة أوامر الدفع
       </li>
     </ol>
     <div class="d-flex justify-content-end ms-auto">
@@ -72,32 +72,51 @@
       <li [ngbNavItem]="1" [destroyOnHide]="false">
         <a ngbNavLink class="px-2 px-md-4">
           <i class="feather icon-credit-card btn-icon-prepend fs-5 me-1"></i>
-          بيانات سند القيد
+          بيانات امر الدفع
         </a>
         <ng-template ngbNavContent>
           <br />
           <br />
           <br />
           <br />
-          <app-sanad-kid-edit [sanad_kid]="this.sanad_kid" (OnSaveComplete)="re_load_data($event)">
+          <app-payment-order-edit [payment_order]="this.payment_order" (OnSaveComplete)="re_load_data($event)">
 
-          </app-sanad-kid-edit>
+          </app-payment-order-edit>
         </ng-template>
       </li>
 
-     
+      <li [ngbNavItem]="2" [destroyOnHide]="true">
+        <a ngbNavLink class="px-2 px-md-4">
+          <i class="feather icon-credit-card btn-icon-prepend fs-5 me-1"></i>
+          بيانات القيد المحاسبي المرتبط به
+        </a>
+        <ng-template ngbNavContent>
+          <br />
+          <br />
+          <br />
+          <br />
+          <app-automatic-sanad-kid 
+            [operation_code_fk]="this.operation_code_fk"
+            [operation_type_fk]="this.operation_type_fk">
+
+          </app-automatic-sanad-kid>
+        </ng-template>
+
+
+      </li>
 
       <li [ngbNavItem]="3" [destroyOnHide]="true">
         <a ngbNavLink class="px-2 px-md-4">
           <i class="feather icon-credit-card btn-icon-prepend fs-5 me-1"></i>
-          طباعة سند القيد
+          طباعة أمر الدفع
         </a>
         <ng-template ngbNavContent>
           <br />
           <br />
           <br />
           <br />
-        
+          <app-payment-order-print [seq]="this.seq">
+          </app-payment-order-print>
         </ng-template>
 
       </li>

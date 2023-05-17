@@ -2,11 +2,12 @@ import { DOCUMENT } from '@angular/common';
 import { Component, EventEmitter, Inject, Input, Output, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { receipt_order } from 'src/app/modules/shared/models/receipt_order';
-import { ReceiptOrderService } from 'src/app/modules/shared/services/receipt-order.service';
-import { PageReceiptOrderService } from '../../pageservice/page-receipt-order.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { month, months } from 'src/app/modules/shared/models/month';
+import { receipt_order } from 'src/app/modules/shared/models/receipt_order';
+
+import { ReceiptOrderService } from 'src/app/modules/shared/services/receipt-order.service';
+import { PageReceiptOrderService } from '../../pageservice/page-receipt-order.service';
 
 @Component({
   selector: 'app-receipt-order-search-bar',
@@ -18,8 +19,8 @@ export class ReceiptOrderSearchBarComponent {
   @Input() Title:string = '';
   @Output() OnSelectItem : EventEmitter<any> = new EventEmitter<any>();
 
-  Selected_receipt_order: receipt_order;  
-  receipt_order_list: receipt_order[]= [];
+
+  Selected_receipt_order: receipt_order;
 
   months:month[]=months ;
 
@@ -35,6 +36,8 @@ export class ReceiptOrderSearchBarComponent {
   incumbent_month:  FormControl<number[]|null> ;
   page_index:  FormControl<number|null> ;
   
+  receipt_order_list: receipt_order[]= [];
+  
   from_num_is_inserted: boolean= false;
   to_num_is_inserted: boolean= false;
   
@@ -42,25 +45,24 @@ export class ReceiptOrderSearchBarComponent {
   
   darkTheme: boolean;
   
-  
   constructor(
     private modalService: NgbModal,  
     private fb: FormBuilder,
-    private pageService:PageReceiptOrderService,
+    private PageReceiptOrderService:PageReceiptOrderService,
     public dialog: MatDialog,
-    private receiptOrderService: ReceiptOrderService,
+    private ReceiptOrderService: ReceiptOrderService,
     @Inject(DOCUMENT) private _document: Document) {
-      
-        
-        this.Form =this.fb.group({        
-          'incumbent_id_from':this.incumbent_id_from = new  FormControl<number|null>(null) ,
-          'incumbent_id_to':this.incumbent_id_to=new  FormControl<number|null> (null),
-          'document_id_from':this.document_id_from = new  FormControl<number|null>(null) ,
-          'document_id_to':this.document_id_to=new  FormControl<number|null> (null),
-          'month_incumbent':this.sanad_month= new  FormControl<number[]|null> (null),
-          'month_document':this.incumbent_month=new  FormControl<number[]|null> (null),
-          'page_index':this.page_index=new  FormControl<number|null> (1),
-          });
+
+      console.log(this.months);
+      this.Form =this.fb.group({        
+      'incumbent_id_from':this.incumbent_id_from = new  FormControl<number|null>(null) ,
+      'incumbent_id_to':this.incumbent_id_to=new  FormControl<number|null> (null),
+      'document_id_from':this.document_id_from = new  FormControl<number|null>(null) ,
+      'document_id_to':this.document_id_to=new  FormControl<number|null> (null),
+      'month_incumbent':this.sanad_month= new  FormControl<number[]|null> (null),
+      'month_document':this.incumbent_month=new  FormControl<number[]|null> (null),
+      'page_index':this.page_index=new  FormControl<number|null> (1),
+      });
   
      
      }
@@ -69,19 +71,6 @@ export class ReceiptOrderSearchBarComponent {
   ngOnInit(): void {
     
   }
-  
-  
-  
-  
-  
-  
-  
-  
- 
-
-  
-  
-  
   
   PerformSearch()
   {
@@ -93,21 +82,22 @@ export class ReceiptOrderSearchBarComponent {
   RefreshList()
   {    
     console.log('this.Form.value', this.Form.value);
-    this.receiptOrderService.search(this.Form.value).subscribe((res: any) =>{  
+    this.ReceiptOrderService.search(this.Form.value).subscribe((res: any) =>{  
       console.log('res', res);
       this.receipt_order_list=[...this.receipt_order_list ,... res.value] ;
+      console.log('this.receipt_order_list', this.receipt_order_list);
     });
   
   }
   
   
- 
-  
-  
-  SelectItemChange (Selected_Exchange_order: receipt_order)
+  SelectItemChange (Selected_receipt_order: receipt_order)
   {
-    this.Selected_receipt_order = Selected_Exchange_order;
-    this.pageService.$receipt_order.next(this.Selected_receipt_order);
+    this.Selected_receipt_order = Selected_receipt_order;
+    this.PageReceiptOrderService.$receipt_order.next(this.Selected_receipt_order);
+    this.OnSelectItem.emit(this.Selected_receipt_order);
+   
+
   }
   
   
@@ -151,5 +141,4 @@ else
     });
   }
 
- 
 }

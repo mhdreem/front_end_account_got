@@ -429,6 +429,7 @@ export class ReceiptOrderListComponent {
     this.PageReceiptOrderService.$receipt_order.next({});
     this.router.navigate(['../edit'], { relativeTo: this.ActivatedRoute });
   }
+  
   /*
 
   Delete(order: receipt_order) {

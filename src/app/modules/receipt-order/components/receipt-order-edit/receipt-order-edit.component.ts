@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, HostListener, Inject, OnDestroy, ViewChild, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, HostListener, Inject, OnDestroy, ViewChild, OnInit, AfterViewInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
@@ -22,6 +22,13 @@ import { BranchService } from 'src/app/modules/shared/services/branch.service';
 import { receipt_order_detail } from 'src/app/modules/shared/models/receipt_order_detail';
 import { NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { CustomAdapter, CustomDateParserFormatter } from 'src/app/modules/shared/services/date-formate';
+import { AccountTreeService } from 'src/app/modules/shared/services/account-tree.service';
+import { accounts_tree } from 'src/app/modules/shared/models/accounts_tree';
+import { account_center } from 'src/app/modules/shared/models/account_center';
+import { validate_account_tree } from '../receipt-order-details/validators/validate_account_tree';
+import { validate_account_center } from '../receipt-order-details/validators/validate_account_center';
+import { receipt_order_attachement } from 'src/app/modules/shared/models/receipt_order_attachement';
+import { attachement_type } from 'src/app/modules/shared/models/attachement_type';
 
 
 @Component({
@@ -33,47 +40,92 @@ import { CustomAdapter, CustomDateParserFormatter } from 'src/app/modules/shared
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
-export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewInit{
+export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewInit, OnChanges {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
-
-  @HostListener('window:keydown', ['$event'])
-  keyEvent(event: KeyboardEvent) {
-    if (event.keyCode == 120) {
-      event.preventDefault();
-      this.save();
-    }
-
-    if (event.keyCode == 114) {
-      event.preventDefault();
-    
-    }
-  }
+  @Output() OnSaveComplete: EventEmitter<any> = new EventEmitter<any>();
 
 
   _receipt_order: receipt_order;
-
   get receipt_order(): receipt_order {
     return this._receipt_order;
   }
 
-  set receipt_order(obj: receipt_order) {
+  @Input() set receipt_order(obj: receipt_order) {
+
+
+    this._receipt_order = {};
+    this.clear();
+
+
     this._receipt_order = obj;
+
+    if (this._receipt_order == null)
+      this._receipt_order = {};
+
+    if (this._receipt_order.receipt_order_attachements == null ||
+      this._receipt_order.receipt_order_attachements.length == 0)
+      this._receipt_order.receipt_order_attachements = [];
+
+    if (this._receipt_order == null ||
+      this._receipt_order.receipt_order_details == null ||
+      this._receipt_order.receipt_order_details.length == 0)
+      this._receipt_order.receipt_order_details = [];
+
+    if (this._receipt_order == null ||
+      this._receipt_order.receipt_order_entries == null ||
+      this._receipt_order.receipt_order_entries.length == 0)
+      this._receipt_order.receipt_order_entries = [];
+
+
     this.SetValue();
+
+
+    if (this._receipt_order != null &&
+      this._receipt_order.receipt_order_details != null)
+      this._receipt_order.receipt_order_details.forEach((detail, index) => {
+        this.get_detail_formarray().push(this.add_detail(detail, index));
+
+
+      });
+    this.update_details_data();
+
+    if (this._receipt_order != null &&
+      this._receipt_order.receipt_order_attachements != null &&
+      this._receipt_order.receipt_order_attachements.length > 0)
+      this._receipt_order.receipt_order_attachements.forEach((detail, index) => {
+        this.get_attachments_formarray().push(this.add_attachment(detail, index));
+
+
+      });
+    this.update_attachenets_data();
+
+
+    if (this._receipt_order != null &&
+      this._receipt_order.receipt_order_entries != null) {
+      this.dataSource_receipt_order_entry.data = this.receipt_order.receipt_order_entries!;
+    }
   }
 
 
-  
-
 
   _Subscription: Subscription[] = [];
+  List_Payment_Safe: payment_safe[] = [];
+  list_branch: branch[] = [];
+  List_sanad_kid_book: sanad_kid_book[];
+  filter_List_sanad_kid_book: Observable<sanad_kid_book[]>;
+
+  selected_sanad_kid_book: sanad_kid_book;
+
 
   Form!: FormGroup;
   receipt_order_seq!: FormControl<number | null>;
   sanad_kid_fk!: FormControl<number | null>;
   document_id!: FormControl<number | null>;
-  document_date!: FormControl<Date | null>;
+  document_date!: FormControl<string | null>;
   incumbent_id!: FormControl<number | null>;
-  incumbent_date!: FormControl<Date | null>;
+  incumbent_date!: FormControl<string | null>;
   receipt_order_type_fk!: FormControl<number | null>;
   total_value: FormControl<number | null>;
   name_of_owner: FormControl<string | null>;
@@ -83,31 +135,8 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
   branch: FormControl<branch | null>;
 
 
-  selected_sanad_kid_book: sanad_kid_book;
-  List_Payment_Safe: payment_safe[] = [];
-  list_branch: branch[] = [];
-  List_sanad_kid_book: sanad_kid_book[];
-  filter_List_sanad_kid_book: Observable<sanad_kid_book[]>;
-
-
-  sanadDateDay: string = '';
-  sanadDateMonth: string = '';
-  sanadDateYear: string = '';
-  incumbentDateDay: string = '';
-  incumbentDateMonth: string = '';
-  incumbentDateYear: string = '';
-
-  sanadDateDayIsFilled: boolean = false;
-  sanadDateMonthIsFilled: boolean = false;
-  sanadDateYearIsFilled: boolean = false;
-  incumbentDateDayIsFilled: boolean = false;
-  incumbentDateMonthIsFilled: boolean = false;
-  incumbentDateYearIsFilled: boolean = false;
-
   LoadingFinish: boolean;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
 
   dataSource_receipt_order_entry = new MatTableDataSource<receipt_order_entry>();
   receipt_order_entry_displayedColumns: string[] =
@@ -118,22 +147,25 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
   currentPage = 1;
   pageSizeOptions: number[] = [5, 10, 25, 100];
 
-  sumCreditor: number= 0;
-  sumDebtor: number= 0;
-  balance: number= 0;
-  actionNum: number= 0;
+  sumCreditor: number = 0;
+  sumDebtor: number = 0;
+  balance: number = 0;
+  Length_details: number = 0;
+  Length_attachements: number = 0;
+
+  safe_detail: receipt_order_detail;
 
   constructor(
-    private router: Router,
+
     public route: ActivatedRoute,
     private fb: FormBuilder,
-    private PageReceiptOrderService: PageReceiptOrderService,
     private snackBar: MatSnackBar,
     private SanadKidBookService: SanadKidBookService,
     @Inject(DOCUMENT) private _document: Document,
-    private receiptOrderService: ReceiptOrderService,
+    private ReceiptOrderService: ReceiptOrderService,
     private PaymentSafeService: PaymentSafeService,
     private BranchService: BranchService,
+    private AccountTreeService: AccountTreeService,
   ) {
 
     this.LoadingFinish = true;
@@ -142,124 +174,51 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
 
     this.loadData();
 
-    this.PageReceiptOrderService.$receipt_order.subscribe(res=>{
-      this.receipt_order= res;
-      this.updateSum();
-      this.actionNum= this.receipt_order.receipt_order_details?.length!;
-    });
+  }
 
-    if (this.receipt_order != null && 
-      this.receipt_order.receipt_order_entries!= null)
-      this.dataSource_receipt_order_entry.data = this.receipt_order.receipt_order_entries!;
+  ngOnChanges(changes: SimpleChanges): void {
 
   }
 
   ngOnDestroy(): void {
+
     this._Subscription.forEach(Sub => {
       if (Sub != null) Sub.unsubscribe();
     });
   }
 
+  public Load_Payment_Safe(): Observable<any[]> {
+    return this.PaymentSafeService.list();
+  }
 
-  public Load_Receipt_Order(receipt_order_seq: number | number | undefined): Observable<result> {
+  public Load_Branch(): Observable<any[]> {
+    return this.BranchService.list();
+  }
+
+
+  public Load_receipt_order(receipt_order_seq: number | number | undefined): Observable<result> {
     if (receipt_order_seq == null ||
       receipt_order_seq == undefined ||
       receipt_order_seq == 0) {
-        this.receipt_order= {};
-        this.receipt_order.receipt_order_details= [];
-        this.receipt_order.receipt_order_attachements= [];
-        this.Form.reset();
-          this.dataSource_receipt_order_entry.data= [];
-          this.sumDebtor= 0;
-          this.sumCreditor= 0;
-          this.balance= 0;
-          this.sanadDateDay= '';
-          this.sanadDateMonth= '';
-          this.sanadDateYear= '';
-          this.incumbentDateDay= '';
-          this.incumbentDateMonth= '';
-          this.incumbentDateYear= '';
-  
-          this.sanadDateDayIsFilled= false;
-          this.sanadDateMonthIsFilled= false;
-          this.sanadDateYearIsFilled= false;
-          this.incumbentDateDayIsFilled= false;
-          this.incumbentDateMonthIsFilled= false;
-          this.incumbentDateYearIsFilled= false;
-          let result: result = {
-            value: this.receipt_order,
-            error: '',
-            success: true
-          }
+      this.receipt_order = {};
+      this.receipt_order.receipt_order_details = [];
+      this.receipt_order.receipt_order_attachements = [];
+      this.clear();
+      this.dataSource_receipt_order_entry.data = [];
+      this.sumDebtor = 0;
+      this.sumCreditor = 0;
+      this.balance = 0;
+
+      let result: result = {
+        value: this.receipt_order,
+        error: '',
+        success: true
+      }
       return of(result);
     }
 
-    return this.receiptOrderService.getBySeq(receipt_order_seq);
+    return this.ReceiptOrderService.getBySeq(receipt_order_seq);
   }
-
-
-  ngOnInit() {
-    /*
-    this.PageReceiptOrderService.new();
-
-    let seq: number = this.route.snapshot.params['id'];
-    if (seq != null && seq > 0) {
-      this._Subscription.add(this.receiptOrderService.getBySeq(seq).subscribe((res: any) => {
-        if (res.value != null && (res.value as receipt_order) != null) {
-          this.PageReceiptOrderService.set(res.value);
-          this.updateSum();
-          this.actionNum= this.receipt_order.receipt_order_details?.length!;
-
-        }
-      }));
-
-
-    }
-    else{
-      
-    }
-
- */
-  }
-
-  ngAfterViewInit() {
-    this.dataSource_receipt_order_entry.paginator = this.paginator;
-    this.dataSource_receipt_order_entry.sort = this.sort;
-
-    setTimeout(()=>{
-      document.querySelector('c-sidebar')?.classList.add('hide');
-    }, 1000);
-   
-  }
-
-  public BuildForm() {
-    try {
-
-      this.Form = this.fb.group(
-        {
-          'receipt_order_seq': this.receipt_order_seq = new FormControl<number | null>(null, []),// Primary Key
-          'sanad_kid_fk': this.sanad_kid_fk = new FormControl<number | null>(null, []),
-          'document_id': this.document_id = new FormControl<number | null>(null, [Validators.required]),
-          'document_date': this.document_date = new FormControl<Date | null>(null, [Validators.required]),
-          'incumbent_id': this.incumbent_id = new FormControl<number | null>(null, []),
-          'incumbent_date': this.incumbent_date = new FormControl<Date | null>(null, []),
-          'receipt_order_type_fk': this.receipt_order_type_fk = new FormControl<number | null>(null, []),
-          'total_value': this.total_value = new FormControl<number | null>(null, []),
-          'name_of_owner': this.name_of_owner = new FormControl<string | null>(null, []),
-          'book_fk': this.book_fk = new FormControl<number | null>(null, [Validators.required]),
-          'sanad_kid_book': this.sanad_kid_book = new FormControl<sanad_kid_book | null>(null, []),
-          'branch_fk': this.branch_fk = new FormControl<number | null>(null, []),
-          'branch': this.branch = new FormControl<branch | null>(null, []),
-
-        },
-      );
-
-
-    } catch (Exception: any) {
-      console.log(Exception);
-    }
-  }
-
 
   load_sanad_kid_book(): Observable<sanad_kid_book[]> {
     if (this.SanadKidBookService.List_SanadKidBook != null &&
@@ -271,40 +230,16 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
 
   }
 
-  public Load_Payment_Safe(): Observable<any[]> {
-    return this.PaymentSafeService.list();
-  }
-
- 
-
-  public Load_Branch(): Observable<any[]> {
-    return this.BranchService.list();
-  }
-
-
-
-  
 
   loadData() {
 
-    
-    combineLatest(this.PageReceiptOrderService.$receipt_order).subscribe(
-      res => {
-        this.receipt_order = res[0];
-        let receipt_order_seq: number | undefined | null = res[0]?.receipt_order_seq;
-
-        this.updateSum();
-        this.actionNum = this.receipt_order.receipt_order_details?.length!;
-
-        
     this._Subscription.push
       (
         forkJoin(
           this.load_sanad_kid_book(),
           this.Load_Payment_Safe(),
           this.Load_Branch(),
-          this.Load_Receipt_Order(receipt_order_seq)
-         
+
         ).subscribe(
           res => {
 
@@ -320,94 +255,75 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
 
             this.list_branch = res[2];
 
-
-            if (res[3] != null && res[3].value != null)
-              this.receipt_order = res[3].value;
-
-            this.updateSum();
-
-            this.actionNum = this.receipt_order.receipt_order_details?.length!;
-
-            if (this.receipt_order != null &&
-              this.receipt_order.receipt_order_entries != null) {
-              this.dataSource_receipt_order_entry.data = this.receipt_order.receipt_order_entries!;
-            }
-
-            this.Init_AutoComplete();
+            this.SetValue();
           }
         )
       );
+  }
+
+
+
+  ngOnInit() {
+
+  }
+
+  ngAfterViewInit() {
+    this.dataSource_receipt_order_entry.paginator = this.paginator;
+    this.dataSource_receipt_order_entry.sort = this.sort;
+  }
+
+  public BuildForm() {
+    try {
+
+      this.Form = this.fb.group(
+        {
+          'receipt_order_seq': this.receipt_order_seq = new FormControl<number | null>(null, []),// Primary Key
+          'sanad_kid_fk': this.sanad_kid_fk = new FormControl<number | null>(null, []),
+          'document_id': this.document_id = new FormControl<number | null>(null, [Validators.required]),
+          'document_date': this.document_date = new FormControl<string | null>(null, [Validators.required]),
+          'incumbent_id': this.incumbent_id = new FormControl<number | null>(null, []),
+          'incumbent_date': this.incumbent_date = new FormControl<string | null>(null, []),
+          'receipt_order_type_fk': this.receipt_order_type_fk = new FormControl<number | null>(null, []),
+          'total_value': this.total_value = new FormControl<number | null>(null, []),
+          'name_of_owner': this.name_of_owner = new FormControl<string | null>(null, []),
+          'book_fk': this.book_fk = new FormControl<number | null>(null, [Validators.required]),
+          'sanad_kid_book': this.sanad_kid_book = new FormControl<sanad_kid_book | null>(null, []),
+          'branch_fk': this.branch_fk = new FormControl<number | null>(null, []),
+          'branch': this.branch = new FormControl<branch | null>(null, []),
+          'receipt_order_details': new FormArray([], [Validators.required]),
+          'receipt_order_attachements': new FormArray([], [])
+        },
+      );
+
+
+    } catch (Exception: any) {
+      console.log(Exception);
     }
-    );
   }
-
-
-
-  public async Init_AutoComplete() {
-
-    if (this.List_sanad_kid_book != null) {
-      this.filter_List_sanad_kid_book = this.book_fk.valueChanges
-        .pipe(
-          startWith(''),
-          map(value => value && typeof value === 'string' ? this._filterBook(value) : this.List_sanad_kid_book.slice())
-        );
-    }
-
-
-  }
-
-  private _filterBook(value: string): sanad_kid_book[] {
-    if (this.List_sanad_kid_book != null)
-      return this.List_sanad_kid_book.filter(option => option.sanad_kid_book_name != null && option.sanad_kid_book_name?.toString().includes(value));
-    return [];
-  }
-
-
-  public displayBookProperty(value: string): string {
-
-    if (value != null && this.List_sanad_kid_book != null) {
-      let sanad_kid_book: sanad_kid_book | undefined = this.List_sanad_kid_book.find(val => val.sanad_kid_book_seq != null && val.sanad_kid_book_seq.toString() == value);
-      if (sanad_kid_book != null && sanad_kid_book.sanad_kid_book_name != null)
-        return sanad_kid_book.sanad_kid_book_name;
-    }
-    return '';
-  }
-
-
-
-
-  rowClicked!: number;
-  changeTableRowColor(idx: any) {
-    if (this.rowClicked === idx) this.rowClicked = -1;
-    else this.rowClicked = idx;
-  }
-
 
   public SetValue() {
 
-    
-    if (this.receipt_order != null && this.receipt_order.receipt_order_seq != null)
-    this.receipt_order_seq.setValue(this.receipt_order?.receipt_order_seq!);
+    if (this.Form == null) return;
+
+    if (this.receipt_order != null &&
+      this.receipt_order.receipt_order_seq != null)
+      this.receipt_order_seq.setValue(this.receipt_order?.receipt_order_seq!);
 
 
-    if (this.receipt_order != null && this.receipt_order.document_date != null) {
-      this.document_date.setValue(this.receipt_order.document_date);
-      this.sanadDateDay = moment(this.document_date.value).date() + '';
-      this.sanadDateMonth = (moment(this.document_date.value).month() + 1) + '';
-      this.sanadDateYear = moment(this.document_date.value).year() + '';
-      this.sanadDateDayIsFilled = true;
-      this.sanadDateMonthIsFilled = true;
-      this.sanadDateYearIsFilled = true;
+    if (this.receipt_order != null &&
+      this.receipt_order.document_date != null
+      && moment(this.receipt_order.document_date).isValid()
+    ) {
+      this.document_date.setValue(moment(this.receipt_order.document_date).format("DD-MM-YYYY"));
+
     }
 
-    if (this.receipt_order != null && this.receipt_order.incumbent_date != null){
-      this.incumbent_date.setValue(this.receipt_order?.incumbent_date!);
-    this.incumbentDateDay = moment(this.incumbent_date.value).date() + '';
-    this.incumbentDateMonth = (moment(this.incumbent_date.value).month() + 1) + '';
-    this.incumbentDateYear = moment(this.incumbent_date.value).year() + '';
-    this.incumbentDateDayIsFilled = true;
-    this.incumbentDateMonthIsFilled = true;
-    this.incumbentDateYearIsFilled = true;
+    if (this.receipt_order != null &&
+      this.receipt_order.incumbent_date != null &&
+      moment(this.receipt_order.incumbent_date).isValid()
+    ) {
+      this.incumbent_date.setValue(moment(this.receipt_order?.incumbent_date).format("DD-MM-YYYY"));
+
     }
 
 
@@ -419,11 +335,11 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
       this.incumbent_id.setValue(this.receipt_order?.incumbent_id!);
 
 
-      if (this.receipt_order != null && this.receipt_order.book_fk != null)
+    if (this.receipt_order != null && this.receipt_order.book_fk != null)
       this.book_fk.setValue(this.receipt_order?.book_fk!);
 
 
-      if (this.receipt_order != null && this.receipt_order.sanad_kid_book != null)
+    if (this.receipt_order != null && this.receipt_order.sanad_kid_book != null)
       this.sanad_kid_book.setValue(this.receipt_order?.sanad_kid_book!);
 
 
@@ -432,7 +348,7 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
 
     if (this.receipt_order != null && this.receipt_order.total_value != null)
       this.total_value.setValue(this.receipt_order?.total_value!);
-    
+
     if (this.receipt_order != null && this.receipt_order.receipt_order_type_fk != null)
       this.receipt_order_type_fk.setValue(this.receipt_order?.receipt_order_type_fk!);
 
@@ -446,55 +362,83 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
     if (this.receipt_order != null && this.receipt_order.sanad_kid_fk != null)
       this.sanad_kid_fk.setValue(this.receipt_order?.sanad_kid_fk!);
 
-
-      
+    this.focusNext('document_date');
   }
 
   getValue() {
 
     this.total_value.setValue(this.sum_details_debtor());
-    this.receipt_order.total_value= this.total_value.value!;
+    this.receipt_order.total_value = this.total_value.value!;
 
-    this.receipt_order.document_date = moment(this.sanadDateMonth + '/' + this.sanadDateDay + '/' + this.sanadDateYear).set({ hour: 4 }).toDate();
-   
-    this.receipt_order.incumbent_date = moment(this.incumbentDateMonth + '/' + this.incumbentDateDay + '/' + this.incumbentDateYear).set({ hour: 4 }).toDate();
+    if (this.document_date.value != null &&
+      moment(this.document_date.value).isValid()
+    )
+      this.receipt_order.document_date = moment(this.document_date.value).toDate();
+
+
+    if (this.incumbent_date.value != null &&
+      moment(this.incumbent_date.value).isValid())
+      this.receipt_order.incumbent_date = moment(this.incumbent_date.value).toDate();
 
     this.receipt_order.document_id = this.document_id.value!;
     this.receipt_order.incumbent_id = this.incumbent_id.value!;
 
     this.receipt_order.book_fk = this.book_fk.value!;
     this.receipt_order.sanad_kid_book = this.sanad_kid_book.value!;
-    this.receipt_order.receipt_order_type_fk= this.receipt_order_type_fk.value!;
-
+    this.receipt_order.receipt_order_type_fk = this.receipt_order_type_fk.value!;
     this.receipt_order.branch = this.branch.value!;
     this.receipt_order.branch_fk = this.branch_fk.value!;
-
-
-
-    
-
     this.receipt_order.name_of_owner = this.name_of_owner.value!;
-    
     this.receipt_order.total_value = this.total_value.value!;
 
+    if (this.receipt_order != null &&
+      this.receipt_order.receipt_order_attachements != null &&
+      this.receipt_order.receipt_order_attachements.length > 0)
+      this.receipt_order.receipt_order_attachements.forEach(element => {
+        if (element.attachement_date != null &&
+          moment(element.attachement_date).isValid()) {
+          element.attachement_date = moment(element.attachement_date).toDate();
+        }
 
+
+      });
 
 
   }
-
-
 
   clear() {
-    this.Form.reset();
+    try {
+      if (this.Form != null) {
+        this.Form.reset();
+        this.get_detail_formarray().clear();
+        this.get_attachments_formarray().clear();
+        this.focusNext('document_date');
+      }
+    } catch { }
+
+
+
   }
-
-
 
   focusNext(id: string) {
     let element = this._document.getElementById(id);
-    if (element) {
+
+    if (element != null && element.tagName != null && element.tagName.toLowerCase() == 'ng-select') {
+      var elements = element?.firstElementChild?.firstElementChild?.lastElementChild?.getElementsByTagName('input');
+      if (elements != null && elements.length > 0) {
+        var inputSearchElement = elements.item(0);
+        if (inputSearchElement != null) {
+          inputSearchElement.focus();
+        }
+
+      }
+
+    } else if (element) {
       element.focus();
     }
+
+
+
   }
 
 
@@ -503,43 +447,6 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
 
 
 
-  addAttachment() {
-    this.receipt_order.receipt_order_attachements?.push({ receipt_order_fk: this.receipt_order.receipt_order_seq });
-    this.PageReceiptOrderService.set(this.receipt_order);
-    }
- 
-
-  onAttachmentDelete(index: number) {
-    this.getValue();
-    this.receipt_order.receipt_order_attachements?.splice(index, 1);
-    this.PageReceiptOrderService.set(this.receipt_order);
-
-  }
-
-
-  onDetailsDelete(index: number) {
-    this.receipt_order.receipt_order_details?.splice(index, 1);
-    this.PageReceiptOrderService.set(this.receipt_order);
-
-    this.sum_details_creditor();
-    this.sum_details_debtor();
-    this.actionNum= this.receipt_order.receipt_order_details?.length!;
-
-  }
-
-
-  addDetails() {
-    this.receipt_order.receipt_order_details?.push({ receipt_order_fk: this.receipt_order.receipt_order_seq });  
-    this.PageReceiptOrderService.set(this.receipt_order);
-
-    this.actionNum= this.receipt_order.receipt_order_details?.length!;
-    this.sum_details_creditor();
-    this.sum_details_debtor();
-  }
-
-  updateSum(){
-    this.balance= this.sum_details_creditor()-  this.sum_details_debtor();
-  }
 
 
   Payment_Safe_Check(receipt_order_detail: receipt_order_detail): boolean {
@@ -552,7 +459,8 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
 
   }
 
-  Add_Account_Tree_Payment_Safe_To_Details() {
+  Add_Account_Tree_Payment_Safe_To_Details(): boolean {
+
     if (this.book_fk != null && this.book_fk.value != null && this.book_fk.value > 0) {
 
       var Results = this.List_sanad_kid_book.filter(x => x.sanad_kid_book_seq == this.book_fk.value);
@@ -562,57 +470,28 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
         var sum_creditor = this.sum_details_creditor();
 
 
-        if (sum_creditor-sum_debtor>0)
-        {
+        if (sum_creditor  - sum_debtor > 0) {
           let receipt_order_detail: receipt_order_detail = {
             account_center_fk: undefined,
             accounts_tree_fk: sanad_kid_book.cash_account_fk,
             creditor: 0,
-            debtor: sum_creditor-sum_debtor,
+            debtor: sum_creditor  - sum_debtor,
             account_notice: 'اضافة حساب الصندوق للموازنة'
           }
+          let index = this.receipt_order.receipt_order_details?.length;
           this.receipt_order.receipt_order_details?.push(receipt_order_detail);
-        } 
-          
-        
-
-
-
+          if (index != null && index >= 0)
+            this.get_detail_formarray()?.push(this.add_detail(receipt_order_detail, index));
+          return true;
+        } else return false;
 
       }
 
-
-
-      if (
-        this.List_Payment_Safe != null &&
-        this.List_Payment_Safe.length > 0 &&
-        this.receipt_order != null && this.receipt_order.receipt_order_details != null) {
-        let indexFound: number[] = [];
-
-        this.receipt_order.receipt_order_details.forEach((det, index) => {
-          if (det != null && det.accounts_tree_fk != null) {
-            if (this.Payment_Safe_Check(det))
-              indexFound.push(index);
-          }
-        });
-        if (indexFound != null &&
-          indexFound.length > 0) {
-          indexFound.forEach(index => {
-            this.receipt_order.receipt_order_details = this.receipt_order.receipt_order_details?.splice(index, 1);
-          });
-        }
-
-
-      }
-
-
-    }
+    } return true;
   }
 
 
   Reomve_Account_Tree_Payment_Safe_From_Details() {
-
-
     if (
       this.List_Payment_Safe != null &&
       this.List_Payment_Safe.length > 0 &&
@@ -631,7 +510,8 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
       if (indexFound != null &&
         indexFound.length > 0) {
         indexFound.forEach(index => {
-          this.receipt_order.receipt_order_details = this.receipt_order.receipt_order_details?.splice(index, 1);
+          this.receipt_order.receipt_order_details?.splice(index, 1);
+          this.get_detail_controls()?.splice(index, 1);
         });
       }
 
@@ -643,7 +523,8 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
   }
 
 
-  select_Book_Option(event: any) {
+
+  select_book_option(event: any) {
 
     const selectedValue = event.option.value;
 
@@ -667,7 +548,349 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
 
   }
 
+
+  delete_detail(index: number) {
+    this.receipt_order.receipt_order_details?.splice(index, 1);
+    this.get_detail_formarray()?.controls.splice(index, 1);
+
+    this.update_details_data();
+  }
+
+
+
+
+
+
+  vaidate_details() {
+
+
+  }
+
+  save_as_draft() {
+
+    this.receipt_order_type_fk.setValue(2);
+
+
+
+    this.Reomve_Account_Tree_Payment_Safe_From_Details();
+
+    var result_add = this.Add_Account_Tree_Payment_Safe_To_Details();
+    if (result_add != true) {
+      this.snackBar.open('يوجد خطأ في التفاصيل', '', {
+        duration: 3000,
+        panelClass: ['red-snackbar'],
+      });
+      return;
+
+    }
+
+    let Sum_Debt = this.sum_details_debtor();
+    let Sum_Creditor = this.sum_details_creditor();
+    if (Sum_Debt != Sum_Creditor) {
+      this.snackBar.open('يجب أن يتساوى مجموع الدائن مع مجموع المدين', '', {
+        duration: 3000,
+        panelClass: ['red-snackbar'],
+      });
+      return;
+
+    }
+
+    this.getValue();
+    if (this.receipt_order.receipt_order_seq != null && this.receipt_order.receipt_order_seq > 0) {
+      this.ReceiptOrderService.update(this.receipt_order).subscribe(res => {
+        if (res != null && (res as result) != null &&
+          (res as result).value != null &&
+          (res as result).success) {
+
+          this.OnSaveComplete.emit((res as result).value);
+
+
+
+          this.snackBar.open('تم الحفظ بنجاح', '', {
+            duration: 3000,
+            panelClass: ['green-snackbar'],
+          });
+        }
+        else
+          this.snackBar.open('حدث خطأ', '', {
+            duration: 3000,
+            panelClass: ['red-snackbar'],
+          });
+      });
+    }
+    else {
+      console.log('this.receipt_order', this.receipt_order);
+      this.ReceiptOrderService.add(this.receipt_order).subscribe(res => {
+        console.log('res', res);
+        if (res != null && (res as result) != null && (res as result).success && (res as result).value != null) {
+
+          this.OnSaveComplete.emit((res as result).value);
+
+
+          this.snackBar.open('تم الحفظ بنجاح', '', {
+            duration: 3000,
+            panelClass: ['green-snackbar'],
+          });
+        }
+        else
+          this.snackBar.open('حدث خطأ', '', {
+            duration: 3000,
+            panelClass: ['red-snackbar'],
+          });
+      });
+    }
+  }
+
+
+  save() {
+
+    this.receipt_order_type_fk.setValue(1);
+
+    this.Reomve_Account_Tree_Payment_Safe_From_Details();
+
+    var result_add = this.Add_Account_Tree_Payment_Safe_To_Details();
+    if (result_add != true) {
+      this.snackBar.open('يوجد خطأ في التفاصيل', '', {
+        duration: 3000,
+        panelClass: ['red-snackbar'],
+      });
+      return;
+
+    }
+    let Sum_Debt = this.sum_details_debtor();
+    let Sum_Creditor = this.sum_details_creditor();
+    if (Sum_Debt != Sum_Creditor) {
+
+      this.snackBar.open('يجب أن يتساوى مجموع الدائن مع مجموع المدين', '', {
+        duration: 3000,
+        panelClass: ['red-snackbar'],
+      });
+      return;
+
+    }
+
+    this.getValue();
+
+    if (this.receipt_order.receipt_order_seq != null && this.receipt_order.receipt_order_seq > 0) {
+      this.ReceiptOrderService.update(this.receipt_order).subscribe(res => {
+
+        if (res != null && (res as result) != null && (res as result).success && (res as result).value != null) {
+
+          this.OnSaveComplete.emit((res as result).value);
+
+          this.snackBar.open('تم الحفظ بنجاح', '', {
+            duration: 3000,
+            panelClass: ['green-snackbar'],
+          });
+        }
+        else
+          this.snackBar.open('حدث خطأ', '', {
+            duration: 3000,
+            panelClass: ['red-snackbar'],
+          });
+      });
+    }
+    else {
+      console.log('this.receipt_order', this.receipt_order);
+      this.ReceiptOrderService.add(this.receipt_order).subscribe(res => {
+        console.log('res', res);
+        if (res != null && (res as result) != null && (res as result).success && (res as result).value != null) {
+
+          this.OnSaveComplete.emit((res as result).value);
+
+          this.snackBar.open('تم الحفظ بنجاح', '', {
+            duration: 3000,
+            panelClass: ['green-snackbar'],
+          });
+        }
+        else
+          this.snackBar.open('حدث خطأ', '', {
+            duration: 3000,
+            panelClass: ['red-snackbar'],
+          });
+      });
+    }
+  }
+
+
+
+
+
+
+  OnSelectItem(receipt_order: receipt_order) {
+
+  }
+
+
+
+
+  bindModelToForm(model: any, form: FormGroup, index: number) {
+    if (model == null || form == null)
+      return;
+    const keys = Object.keys(form.controls);
+    keys.forEach(key => {
+
+      form.controls[key].valueChanges.subscribe(
+        (newValue) => {
+          console.log('نمط المعطيات');
+          console.log(typeof model[key]);
+          if (newValue != null && typeof model[key] === "number") {
+            model[key] = +newValue;
+          } else if (newValue != null && typeof model[key] === "string") {
+            model[key] = newValue.toString();
+          } else if (newValue != null && typeof model[key] === "object" && key.includes('date')) {
+            if (moment(newValue.toString()).isValid())
+              model[key] = moment(newValue.toString()).toDate();
+          } else if (newValue != null && typeof model[key] === "object" && !key.includes('date')) {
+            model[key] = newValue;
+          } else {
+            model[key] = newValue;
+          }
+
+
+          this.update_details_data();
+          this.update_attachenets_data();
+
+        })
+    });
+
+
+
+
+
+  }
+
+
+  ///////////////////////////////////
+  //detais
+  ////////////////////////////////////
+
+  public get_detail_formarray(): FormArray {
+    return this.Form.get('receipt_order_details') as FormArray;
+  }
+
+  public get_detail_controls() {
+    console.log(this.get_detail_formarray()?.controls);
+    return this.get_detail_formarray()?.controls;
+  }
+
+  public add_detail(receipt_order_detail: receipt_order_detail, index: number): FormGroup {
+    var FromGroup = new FormGroup({
+      'index': new FormControl<number | null | undefined>(index, [Validators.required]),
+      'seq': new FormControl<number | null | undefined | undefined>(receipt_order_detail.seq, [Validators.required]),
+      'receipt_order_fk': new FormControl<number | null | undefined | undefined>(receipt_order_detail.receipt_order_fk, [Validators.required]),
+      'debtor': new FormControl<number | null | undefined>(receipt_order_detail.debtor, []),
+      'creditor': new FormControl<number | null | undefined>(receipt_order_detail.creditor, []),
+      'accounts_tree_fk': new FormControl<number | null | undefined>(receipt_order_detail.accounts_tree_fk, [Validators.required]),
+      'accounts_tree': new FormControl<accounts_tree | null | undefined>(receipt_order_detail.accounts_tree, []),
+      'account_center_fk': new FormControl<number | null | undefined>(receipt_order_detail.account_center_fk, []),
+      'account_center': new FormControl<account_center | null | undefined>(receipt_order_detail.account_center, []),
+      'account_notice': new FormControl<string | null | undefined>(receipt_order_detail.account_notice, [])
+    });
+
+    FromGroup.controls['accounts_tree_fk'].setAsyncValidators([validate_account_tree(this.get_detail_formarray().value)])
+
+    FromGroup.controls['accounts_tree_fk'].setAsyncValidators([validate_account_center(this.get_detail_formarray().value, this.AccountTreeService)])
+
+
+    if (this.receipt_order.receipt_order_details != null &&
+      index >= 0)
+      this.bindModelToForm(this.receipt_order.receipt_order_details[index], FromGroup, index);
+
+
+
+
+    return FromGroup;
+  }
+
+  public add_empty_detail(index: number): FormGroup {
+    var formGroup = new FormGroup({
+      'index': new FormControl<number | null | undefined>(index, []),
+      'seq': new FormControl<number | null | undefined>(null, []),
+      'receipt_order_fk': new FormControl<number | null | undefined>(null, []),
+      'debtor': new FormControl<number | null | undefined>(null, []),
+      'creditor': new FormControl<number | null | undefined>(null, []),
+      'accounts_tree_fk': new FormControl<number | null | undefined>(null, [Validators.required]),
+      'accounts_tree': new FormControl<accounts_tree | null | undefined>(null, []),
+      'account_center_fk': new FormControl<number | null | undefined>(null, []),
+      'account_center': new FormControl<account_center | null | undefined>(null, []),
+      'account_notice': new FormControl<string | null | undefined>(null, [])
+
+
+    });
+
+    formGroup.controls['accounts_tree_fk'].setAsyncValidators([validate_account_tree(this.get_detail_formarray().value)])
+
+    formGroup.controls['accounts_tree_fk'].setAsyncValidators([validate_account_center(this.get_detail_formarray().value, this.AccountTreeService)])
+
+    if (this.receipt_order.receipt_order_details != null &&
+      this.receipt_order.receipt_order_details.length > index &&
+      index >= 0)
+      this.bindModelToForm(this.receipt_order.receipt_order_details[index], formGroup, index);
+
+
+    return formGroup;
+  }
+
+  new_detail() {
+    var index = this.receipt_order.receipt_order_details?.length;
+    this.receipt_order.receipt_order_details?.push({});
+    if (index != null && index >= 0)
+      this.get_detail_formarray().push(this.add_empty_detail(index));
+    this.update_details_data();
+  }
+
+
+  update_details_data() {
+
+    if (this.receipt_order == null ||
+      this.receipt_order.receipt_order_details == null ||
+      this.receipt_order.receipt_order_details.length == 0)
+      return;
+
+
+
+
+    this.sum_details_debtor();
+    this.sum_details_creditor();
+    this.balance = this.sum_details_creditor() - this.sum_details_debtor();
+
+    this.Length_details = this.receipt_order.receipt_order_details?.length!;
+
+    if (
+      this.List_Payment_Safe != null &&
+      this.List_Payment_Safe.length > 0 &&
+      this.receipt_order != null &&
+      this.receipt_order.receipt_order_details != null &&
+      this.receipt_order.receipt_order_details.length > 0) {
+      let indexFound: number[] = [];
+
+      this.receipt_order.receipt_order_details.forEach((det, index) => {
+        if (det != null && det.accounts_tree_fk != null) {
+          if (this.Payment_Safe_Check(det))
+            indexFound.push(index);
+        }
+      });
+
+      if (indexFound != null &&
+        indexFound.length > 0) {
+
+        this.safe_detail = this.receipt_order.receipt_order_details[indexFound[0]];
+
+      }
+
+
+
+
+
+    }
+  }
+
+
+
+
   sum_details_debtor(): number {
+    this.sumDebtor = 0;
     if (this.receipt_order != null &&
       this.receipt_order.receipt_order_details != null &&
       this.receipt_order.receipt_order_details.length > 0) {
@@ -688,6 +911,8 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
   }
 
   sum_details_creditor(): number {
+    this.sumCreditor = 0;
+
     if (this.receipt_order != null &&
       this.receipt_order.receipt_order_details != null &&
       this.receipt_order.receipt_order_details.length > 0) {
@@ -704,148 +929,194 @@ export class ReceiptOrderEditComponent implements OnDestroy, OnInit, AfterViewIn
     return 0;
   }
 
-  vaidate_details() {
+  ///////////////////////////////////
+  //attachment
+  ////////////////////////////////////
+
+  new_attachment() {
+    var index = this.receipt_order.receipt_order_attachements?.length;
+    this.receipt_order.receipt_order_attachements?.push({});
+    if (index != null && index >= 0)
+      this.get_attachments_formarray().push(this.add_empty_attachment(index));
+  }
+
+
+  delete_attachment(index: number) {
+    this.receipt_order.receipt_order_attachements?.splice(index, 1);
+    this.get_attachments_controls()?.splice(index, 1);
+
+    this.update_attachenets_data();
 
 
   }
 
-  save_as_draft() {
+  public add_empty_attachment(index: number): FormGroup {
+    var formGroup = new FormGroup({
+      'index': new FormControl<number | null | undefined>(index, []),
+      'attachement_seq': new FormControl<number | null | undefined>(null, []),
+      'attachement_id': new FormControl<number | null | undefined>(null, []),
+      'attachement_date': new FormControl<string | null | undefined>(null, []),
+      'type_fk': new FormControl<number | null | undefined>(null, []),
+      'attachement_type': new FormControl<attachement_type | null | undefined>(null, [Validators.required]),
+      'attachement_note': new FormControl<string | null | undefined>(null, []),
+      'ownership': new FormControl<string | null | undefined>(null, []),
+      'source_number': new FormControl<string | null | undefined>(null, []),
 
-    this.receipt_order_type_fk.setValue(2);
 
-    let Sum_Debt = this.sum_details_debtor();
-    let Sum_Creditor = this.sum_details_creditor();
-    if ( Sum_Debt!= Sum_Creditor)
-    {
-      this.snackBar.open('يجب أن يتساوى مجموع الدائن مع مجموع المدين', '', {
-        duration: 3000,
-        panelClass: ['red-snackbar'],
-      });
-      return ;
 
-    }
+    });
 
-    this.getValue();
-    if (this.receipt_order.receipt_order_seq != null && this.receipt_order.receipt_order_seq > 0) {
-      this.receiptOrderService.update(this.receipt_order).subscribe(res => {
-        if (res != null && (res as result) != null && (res as result).success) {
-          this.snackBar.open('تم الحفظ بنجاح', '', {
-            duration: 3000,
-            panelClass: ['green-snackbar'],
-          });
-        }
-        else
-          this.snackBar.open('حدث خطأ', '', {
-            duration: 3000,
-            panelClass: ['red-snackbar'],
-          });
-      });
-    }
-    else {
-      console.log('this.receipt_order', this.receipt_order);
-      this.receiptOrderService.add(this.receipt_order).subscribe(res => {
-        console.log('res', res);
-        if (res != null && (res as result) != null && (res as result).success) {
-          this.snackBar.open('تم الحفظ بنجاح', '', {
-            duration: 3000,
-            panelClass: ['green-snackbar'],
-          });
-        }
-        else
-          this.snackBar.open('حدث خطأ', '', {
-            duration: 3000,
-            panelClass: ['red-snackbar'],
-          });
-      });
-    }
+
+
+    if (this.receipt_order.receipt_order_attachements != null &&
+      index >= 0)
+      this.bindModelToForm(this.receipt_order.receipt_order_attachements[index], formGroup, index);
+
+
+    return formGroup;
   }
 
-  
-  save() {
+  moment_date(date: Date | string | undefined) {
+    if (date != null && moment(date).isValid())
+      return moment(date).format("DD-MM-YYYY");
+    return undefined;
+  }
 
-    this.receipt_order_type_fk.setValue(1);
-    
-    let Sum_Debt = this.sum_details_debtor();
-    let Sum_Creditor = this.sum_details_creditor();
-    if ( Sum_Debt!= Sum_Creditor)
-    {
+  public add_attachment(receipt_order_attachement: receipt_order_attachement, index: number): FormGroup {
+    var formGroup = new FormGroup({
+      'index': new FormControl<number | null | undefined>(index, []),
+      'attachement_seq': new FormControl<number | null | undefined>(receipt_order_attachement.attachement_seq, []),
+      'attachement_id': new FormControl<number | null | undefined>(receipt_order_attachement.attachement_id, []),
+      'attachement_date': new FormControl<string | null | undefined>(this.moment_date(receipt_order_attachement.attachement_date), []),
+      'type_fk': new FormControl<number | null | undefined>(receipt_order_attachement.type_fk, []),
+      'attachement_type': new FormControl<attachement_type | null | undefined>(receipt_order_attachement.attachement_type, [Validators.required]),
+      'attachement_note': new FormControl<string | null | undefined>(receipt_order_attachement.attachement_note, []),
+      'ownership': new FormControl<string | null | undefined>(receipt_order_attachement.ownership, []),
+      'source_number': new FormControl<string | null | undefined>(receipt_order_attachement.source_number, []),
+    });
 
-      this.snackBar.open('يجب أن يتساوى مجموع الدائن مع مجموع المدين', '', {
-        duration: 3000,
-        panelClass: ['red-snackbar'],
-      });
-      return ;
+    if (this.receipt_order.receipt_order_attachements != null &&
+      this.receipt_order.receipt_order_attachements.length > index &&
+      index >= 0)
+      this.bindModelToForm(this.receipt_order.receipt_order_attachements[index], formGroup, index);
+    return formGroup;
+  }
 
-    }
+  public get_attachments_formarray(): FormArray {
+    return this.Form.get('receipt_order_attachements') as FormArray;
+  }
 
-  
-    this.getValue();
-    if (this.receipt_order.receipt_order_seq != null && this.receipt_order.receipt_order_seq > 0) {
-      this.receiptOrderService.update(this.receipt_order).subscribe(res => {
-        if (res != null && (res as result) != null && (res as result).success) {
-          this.snackBar.open('تم الحفظ بنجاح', '', {
-            duration: 3000,
-            panelClass: ['green-snackbar'],
-          });
-        }
-        else
-          this.snackBar.open('حدث خطأ', '', {
-            duration: 3000,
-            panelClass: ['red-snackbar'],
-          });
-      });
-    }
-    else {
-      console.log('this.receipt_order', this.receipt_order);
-      this.receiptOrderService.add(this.receipt_order).subscribe(res => {
-        console.log('res', res);
-        if (res != null && (res as result) != null && (res as result).success) {
-          this.snackBar.open('تم الحفظ بنجاح', '', {
-            duration: 3000,
-            panelClass: ['green-snackbar'],
-          });
-        }
-        else
-          this.snackBar.open('حدث خطأ', '', {
-            duration: 3000,
-            panelClass: ['red-snackbar'],
-          });
-      });
-    }
+  public get_attachments_controls() {
+    return this.get_attachments_formarray()?.controls;
+  }
+
+  update_attachenets_data() {
+
+    if (this.receipt_order == null ||
+      this.receipt_order.receipt_order_attachements == null ||
+      this.receipt_order.receipt_order_attachements.length == 0)
+      return;
+
+    this.Length_attachements = this.receipt_order.receipt_order_attachements?.length!;
   }
 
 
-  sanadDateChange(changeSource: string) {
-    if (changeSource == 'day')
-      this.sanadDateDayIsFilled = true;
-    else if (changeSource == 'month')
-      this.sanadDateMonthIsFilled = true;
-    else if (changeSource == 'year')
-      this.sanadDateYearIsFilled = true;
+  onselect_book_fk(sanad_kid_book_seq: any) {
 
-    if (this.sanadDateDayIsFilled && this.sanadDateMonthIsFilled && this.sanadDateYearIsFilled) {
-      this.document_date.setValue(moment(this.sanadDateMonth + '/' + this.sanadDateDay + '/' + this.sanadDateYear).set({ hour: 4 }).toDate());
+    if (sanad_kid_book_seq != null) {
+
+      var books = this.List_sanad_kid_book.filter(x => x.sanad_kid_book_seq == sanad_kid_book_seq);
+      if (books != null && books.length > 0 && books[0].branch_fk != null) {
+
+
+        this.generate_document_id(books[0]);
+        this.generate_incumbent_id(books[0]);
+
+
+        this.branch_fk.setValue(books[0].branch_fk);
+        this.sanad_kid_book.setValue(books[0]);
+        this.receipt_order.sanad_kid_book = books[0];
+      }
+
+    }
+
+  }
+
+  public generate_document_id(sanad_kid_book: sanad_kid_book) {
+    if (this.receipt_order.receipt_order_seq == null ||
+      this.receipt_order.receipt_order_seq == undefined) {
+      if (sanad_kid_book.incumbent_id_generate_type_fk != null &&
+        sanad_kid_book.incumbent_id_generate_type_fk > 0 &&
+        sanad_kid_book.incumbent_id_generate_type_fk == 1
+      ) {
+
+        this.ReceiptOrderService.generate_document_id(sanad_kid_book.incumbent_id_generate_type_fk, 0)
+          .subscribe(
+            result => {
+              if (result != null && result.value != null && result.value > 0)
+                this.document_id.setValue(result.value);
+
+            }
+          )
+      } else if (sanad_kid_book.incumbent_id_generate_type_fk != null &&
+        sanad_kid_book.incumbent_id_generate_type_fk > 0 &&
+        sanad_kid_book.incumbent_id_generate_type_fk == 2 &&
+        this.document_date.value != null &&
+        moment(this.document_date.value).isValid()
+      ) {
+        this.ReceiptOrderService.generate_document_id(sanad_kid_book.incumbent_id_generate_type_fk, moment(this.document_date.value).month())
+          .subscribe(
+            result => {
+              if (result != null && result.value != null && result.value > 0)
+                this.document_id.setValue(result.value);
+
+            }
+          );
+
+      }
+
+
+
     }
   }
 
+  public generate_incumbent_id(sanad_kid_book: sanad_kid_book) {
+    if (this.receipt_order.receipt_order_seq == null ||
+      this.receipt_order.receipt_order_seq == undefined) {
+      if (sanad_kid_book.incumbent_id_generate_type_fk != null &&
+        sanad_kid_book.incumbent_id_generate_type_fk > 0 &&
+        sanad_kid_book.incumbent_id_generate_type_fk == 1
+      ) {
 
-  incumbentDateChange(changeSource: string) {
-    if (changeSource == 'day')
-      this.incumbentDateDayIsFilled = true;
-    else if (changeSource == 'month')
-      this.incumbentDateMonthIsFilled = true;
-    else if (changeSource == 'year')
-      this.incumbentDateYearIsFilled = true;
+        this.ReceiptOrderService.generate_incumbent_id(sanad_kid_book.incumbent_id_generate_type_fk, 0)
+          .subscribe(
+            result => {
+              if (result != null && result.value != null && result.value > 0)
+                this.incumbent_id.setValue(result.value);
 
-    if (this.incumbentDateDayIsFilled && this.incumbentDateMonthIsFilled && this.incumbentDateYearIsFilled) {
-      this.incumbent_date.setValue(moment(this.incumbentDateMonth + '/' + this.incumbentDateDay + '/' + this.incumbentDateYear).set({ hour: 4 }).toDate());
+            }
+          )
+      } else if (sanad_kid_book.incumbent_id_generate_type_fk != null &&
+        sanad_kid_book.incumbent_id_generate_type_fk > 0 &&
+        sanad_kid_book.incumbent_id_generate_type_fk == 2 &&
+        this.incumbent_date.value != null &&
+        moment(this.incumbent_date.value).isValid()
+      ) {
+        this.ReceiptOrderService.generate_incumbent_id(sanad_kid_book.incumbent_id_generate_type_fk, moment(this.incumbent_date.value).month())
+          .subscribe(
+            result => {
+              if (result != null && result.value != null && result.value > 0)
+                this.incumbent_id.setValue(result.value);
+
+            }
+          );
+
+      }
+
+
+
     }
   }
 
-
-  OnSelectItem(receipt_order:receipt_order)
-  {
-
-  }
 
 }

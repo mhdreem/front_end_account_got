@@ -162,12 +162,12 @@ export class SanadKidDetailComponent implements OnDestroy, OnChanges {
       isDebtor &&
       this.getControls('debtor', FormGroup) != null
     )
-      this.getControls('debtor', FormGroup).setValue('');
+      this.getControls('debtor', FormGroup).setValue(null);
     else if ($event.target.value == '0' &&
       !isDebtor &&
       this.getControls('creditor', FormGroup) != null
     )
-      this.getControls('creditor', FormGroup).setValue('');
+      this.getControls('creditor', FormGroup).setValue(null);
 
 
   }

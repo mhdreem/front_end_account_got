@@ -1,0 +1,424 @@
+<div class=WordSection1>
+
+    <div align=center>
+    
+    <table class=MsoTableGrid dir=rtl border=0 cellspacing=0 cellpadding=0
+     style='border-collapse:collapse;border:none'>
+     <tr style='height:19.75pt'>
+      <td width=208 rowspan=3 style='width:155.8pt;padding:0in 5.4pt 0in 5.4pt;
+      height:19.75pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SY
+      style='font-family:"Arial",sans-serif'>الجمهورية العربية السورية</span><span
+      dir=ltr><br>
+      </span><span lang=AR-SY style='font-family:"Arial",sans-serif'>وزارة الصناعة<br>
+      المؤسسة العامة للتبغ<br>
+      مديرية: </span><span *ngIf="receipt_order!= null && receipt_order.branch!= null ">{{ getByObject (receipt_order.branch,'branch_name')}}</span><span lang=AR-SY style='font-family:
+      "Arial",sans-serif'><br>
+      قسم: </span><span>القسم المحاسبي</span></p>
+      </td>
+      <td width=208 colspan=2 style='width:155.85pt;padding:0in 5.4pt 0in 5.4pt;
+      height:19.75pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-size:18.0pt;font-family:"Arial",sans-serif'>أمر قبض</span></p>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>&nbsp;</span></p>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span dir=ltr
+      style='font-size:12.0pt'>&nbsp;</span></p>
+      </td>
+     </tr>
+     <tr style='height:21.55pt'>
+      <td width=208 colspan=2 style='width:155.85pt;padding:0in 5.4pt 0in 5.4pt;
+      height:21.55pt'>
+      <p class=MsoNormal dir=rtl style='margin-bottom:0in;text-align:right;
+      line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-size:12.0pt;font-family:"Arial",sans-serif'>اسم الدافع: </span><span
+    style='font-size:12.0pt'></span></p>
+      </td>
+     </tr>
+     <tr style='height:1.8pt'>
+      <td width=104 style='width:77.9pt;padding:0in 5.4pt 0in 5.4pt;height:1.8pt'>
+      <p class=MsoNormal dir=rtl style='margin-bottom:0in;text-align:right;
+      line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SY
+      style='font-size:12.0pt;font-family:"Arial",sans-serif'>الرقم: </span><span
+      style='font-size:12.0pt'>{{receipt_order.document_id}}</span></p>
+      </td>
+      <td width=104 style='width:77.95pt;padding:0in 5.4pt 0in 5.4pt;height:1.8pt'>
+      <p class=MsoNormal dir=rtl style='margin-bottom:0in;text-align:right;
+      line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SY
+      style='font-size:12.0pt;font-family:"Arial",sans-serif'>التاريخ: </span><span
+      dir=ltr style='font-size:12.0pt'>{{receipt_order.document_date| date:'yyyy/MM/dd'}}</span></p>
+      </td>
+     </tr>
+    </table>
+    
+    </div>
+    
+    <p class=MsoNormal align=center dir=rtl style='text-align:center;direction:
+    rtl;unicode-bidi:embed'><span lang=AR-SA style='font-family:"Arial",sans-serif'>&nbsp;</span></p>
+    
+    <p class=MsoNormal align=center dir=rtl style='text-align:center;direction:
+    rtl;unicode-bidi:embed'><span lang=AR-SA style='font-family:"Arial",sans-serif'>المرفقات<br>
+    <br>
+    </span></p>
+    
+    <div align=center>
+    
+    <table class=MsoTableGrid dir=rtl border=1 cellspacing=0 cellpadding=0
+     style='border-collapse:collapse;border:none'>
+     <tr>
+      <td width=156 valign=top style='width:116.85pt;border:solid windowtext 1.0pt;
+      padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>رقم المرفق</span></p>
+      </td>
+      <td width=156 valign=top style='width:116.85pt;border:solid windowtext 1.0pt;
+      border-right:none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>تاريخ المرفق</span></p>
+      </td>
+      <td width=156 valign=top style='width:116.9pt;border:solid windowtext 1.0pt;
+      border-right:none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>نوع</span></p>
+      </td>
+      <td width=156 valign=top style='width:116.9pt;border:solid windowtext 1.0pt;
+      border-right:none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>بيان</span></p>
+      </td>
+     </tr>
+     <tr *ngFor="let attachment of receipt_order.receipt_order_attachements">
+      <td width=156 valign=top style='width:116.85pt;border:solid windowtext 1.0pt;
+      border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>{{attachment.attachement_id}}</span></p>
+      </td>
+      <td width=156 valign=top style='width:116.85pt;border-top:none;border-left:
+      solid windowtext 1.0pt;border-bottom:solid windowtext 1.0pt;border-right:
+      none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>{{attachment.attachement_date | date:'yyyy/MM/dd'}}</span></p>
+      </td>
+      <td width=156 valign=top style='width:116.9pt;border-top:none;border-left:
+      solid windowtext 1.0pt;border-bottom:solid windowtext 1.0pt;border-right:
+      none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>{{attachment.type_fk}}</span></p>
+      </td>
+      <td width=156 valign=top style='width:116.9pt;border-top:none;border-left:
+      solid windowtext 1.0pt;border-bottom:solid windowtext 1.0pt;border-right:
+      none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>{{attachment.attachement_note}}</span></p>
+      </td>
+     </tr>
+    </table>
+    
+    </div>
+    
+    <p class=MsoNormal align=center dir=rtl style='text-align:center;direction:
+    rtl;unicode-bidi:embed'><span lang=AR-SA style='font-family:"Arial",sans-serif'>&nbsp;</span></p>
+    
+    <p class=MsoNormal align=center dir=rtl style='text-align:center;direction:
+    rtl;unicode-bidi:embed'><span lang=AR-SA style='font-family:"Arial",sans-serif'>&nbsp;</span></p>
+    
+    <div align=center>
+    
+    <table class=MsoTableGrid dir=rtl border=1 cellspacing=0 cellpadding=0
+     style='border-collapse:collapse;border:none'>
+     <tr>
+      <td width=125 valign=top style='width:93.5pt;border:solid windowtext 1.0pt;
+      padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>المبلغ المقبوض</span></p>
+      </td>
+      <td width=125 valign=top style='width:93.5pt;border:solid windowtext 1.0pt;
+      border-right:none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>المبلغ المدفوع</span></p>
+      </td>
+      <td width=125 rowspan=2 style='width:93.5pt;border:solid windowtext 1.0pt;
+      border-right:none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>اسم الحساب والبيان المقبوض</span></p>
+      </td>
+      
+      <td width=125 rowspan=2 style='width:93.5pt;border:solid windowtext 1.0pt;
+      border-right:none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>رقم الحساب الفرعي</span></p>
+      </td>
+     </tr>
+     <tr>
+      <td width=125 valign=top style='width:93.5pt;border:solid windowtext 1.0pt;
+      border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>ليرة سورية</span></p>
+      </td>
+      <td width=125 valign=top style='width:93.5pt;border-top:none;border-left:
+      solid windowtext 1.0pt;border-bottom:solid windowtext 1.0pt;border-right:
+      none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>ليرة سورية</span></p>
+      </td>
+     </tr>
+     <tr *ngFor="let detail of receipt_order.receipt_order_details; let i= index;">
+      <td width=125 valign=top style='width:93.5pt;border:solid windowtext 1.0pt;
+      border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>{{detail?.debtor}}</span></p>
+      </td>
+      <td width=125 valign=top style='width:93.5pt;border-top:none;border-left:
+      solid windowtext 1.0pt;border-bottom:solid windowtext 1.0pt;border-right:
+      none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>{{detail?.creditor}}</span></p>
+      </td>
+      <td width=125 valign=top style='width:93.5pt;border-top:none;border-left:
+      solid windowtext 1.0pt;border-bottom:solid windowtext 1.0pt;border-right:
+      none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>{{detail?.account_notice}}&nbsp;-&nbsp;{{accounts_name[i]}}</span></p>
+      </td>
+      <td width=125 valign=top style='width:93.5pt;border-top:none;border-left:
+      solid windowtext 1.0pt;border-bottom:solid windowtext 1.0pt;border-right:
+      none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>{{detail?.accounts_tree_fk}}</span></p>
+      </td>
+     </tr>
+     <tr>
+      <td width=125 valign=top style='width:93.5pt;border:solid windowtext 1.0pt;
+      border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span dir=ltr>{{debtor_sum}}</span></p>
+      </td>
+      <td width=125 valign=top style='width:93.5pt;border-top:none;border-left:
+      solid windowtext 1.0pt;border-bottom:solid windowtext 1.0pt;border-right:
+      none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span dir=ltr>{{creditor_sum}}</span></p>
+      </td>
+      <td width=374 colspan=3 valign=top style='width:280.5pt;border-top:none;
+      border-left:solid windowtext 1.0pt;border-bottom:solid windowtext 1.0pt;
+      border-right:none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal dir=rtl style='margin-bottom:0in;text-align:right;
+      line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>المبلغ المقبوض وقدره </span><span
+      >{{debtor_sum}}</span></p>
+      </td>
+     </tr>
+    </table>
+    
+    </div>
+    
+    <p class=MsoNormal align=center dir=rtl style='text-align:center;direction:
+    rtl;unicode-bidi:embed'><span dir=ltr>&nbsp;</span></p>
+    
+    <p class=MsoNormal align=center dir=rtl style='text-align:center;direction:
+    rtl;unicode-bidi:embed'><span lang=AR-SY style='font-family:"Arial",sans-serif'>&nbsp;</span></p>
+    
+    <div align=center>
+    
+    <table class=MsoTableGrid dir=rtl border=1 cellspacing=0 cellpadding=0
+     style='border-collapse:collapse;border:none'>
+     <tr>
+      <td width=162 valign=top style='width:121.2pt;border-top:solid windowtext 1.0pt;
+      border-left:none;border-bottom:none;border-right:solid windowtext 1.0pt;
+      padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal dir=rtl style='margin-bottom:0in;text-align:right;
+      line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SY
+      style='font-family:"Arial",sans-serif'>المرحل للحساب الفرعي اليومي<br>
+      رئيس قسم التدقيق</span></p>
+      </td>
+      <td width=81 valign=top style='width:60.6pt;border-top:solid windowtext 1.0pt;
+      border-left:none;border-bottom:none;border-right:solid windowtext 1.0pt;
+      padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SY
+      style='font-family:"Arial",sans-serif'>أمين الصندوق</span></p>
+      </td>
+      <td width=78 valign=top style='width:58.5pt;border:none;border-top:solid windowtext 1.0pt;
+      padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>رئيس التدقيق</span></p>
+      </td>
+      <td width=96 valign=top style='width:71.65pt;border:none;border-top:solid windowtext 1.0pt;
+      padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>رئيس المحاسبة</span></p>
+      </td>
+      <td width=102 valign=top style='width:76.5pt;border:none;border-top:solid windowtext 1.0pt;
+      padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>المدير المالي</span></p>
+      </td>
+      <td width=102 valign=top style='width:76.3pt;border-top:solid windowtext 1.0pt;
+      border-left:solid windowtext 1.0pt;border-bottom:none;border-right:none;
+      padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>المدير العام</span></p>
+      </td>
+     </tr>
+     <tr style='height:.1in'>
+      <td width=162 valign=top style='width:121.2pt;border-top:none;border-left:
+      none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+      padding:0in 5.4pt 0in 5.4pt;height:.1in'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:250%;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>&nbsp;</span></p>
+      </td>
+      <td width=81 valign=top style='width:60.6pt;border-top:none;border-left:none;
+      border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+      padding:0in 5.4pt 0in 5.4pt;height:.1in'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:250%;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>&nbsp;</span></p>
+      </td>
+      <td width=78 valign=top style='width:58.5pt;border:none;border-bottom:solid windowtext 1.0pt;
+      padding:0in 5.4pt 0in 5.4pt;height:.1in'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:250%;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>&nbsp;</span></p>
+      </td>
+      <td width=96 valign=top style='width:71.65pt;border:none;border-bottom:solid windowtext 1.0pt;
+      padding:0in 5.4pt 0in 5.4pt;height:.1in'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:250%;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>&nbsp;</span></p>
+      </td>
+      <td width=102 valign=top style='width:76.5pt;border:none;border-bottom:solid windowtext 1.0pt;
+      padding:0in 5.4pt 0in 5.4pt;height:.1in'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:250%;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>&nbsp;</span></p>
+      </td>
+      <td width=102 valign=top style='width:76.3pt;border-top:none;border-left:
+      solid windowtext 1.0pt;border-bottom:solid windowtext 1.0pt;border-right:
+      none;padding:0in 5.4pt 0in 5.4pt;height:.1in'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:250%;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>&nbsp;</span></p>
+      </td>
+     </tr>
+    </table>
+    
+    </div>
+    
+    <p class=MsoNormal align=center dir=rtl style='text-align:center;direction:
+    rtl;unicode-bidi:embed'><span lang=AR-SA style='font-family:"Arial",sans-serif'>&nbsp;</span></p>
+    
+    <div align=center>
+    
+    <table class=MsoTableGrid dir=rtl border=0 cellspacing=0 cellpadding=0
+     style='border-collapse:collapse;border:none'>
+     <tr>
+      <td width=89 rowspan=2 valign=top style='width:66.75pt;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>منظم اشعار قيد</span></p>
+      </td>
+      <td width=89 valign=top style='width:66.75pt;border:none;border-bottom:solid windowtext 1.0pt;
+      padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>مدين</span></p>
+      </td>
+      <td width=89 rowspan=2 valign=top style='width:66.8pt;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal dir=rtl style='margin-bottom:0in;text-align:right;
+      line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>رقم</span></p>
+      </td>
+      <td width=89 rowspan=2 valign=top style='width:66.8pt;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>تاريخ</span></p>
+      </td>
+      <td width=89 valign=top style='width:66.8pt;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>&nbsp;</span></p>
+      </td>
+      <td width=178 valign=top style='width:133.6pt;border:none;border-bottom:solid windowtext 1.0pt;
+      padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal dir=rtl style='margin-bottom:0in;text-align:right;
+      line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>الفرع</span></p>
+      </td>
+     </tr>
+     <tr>
+      <td width=89 valign=top style='width:66.75pt;border:none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>دائن</span></p>
+      </td>
+      <td width=89 valign=top style='width:66.8pt;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>&nbsp;</span></p>
+      </td>
+      <td width=178 valign=top style='width:133.6pt;border:none;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal dir=rtl style='margin-bottom:0in;text-align:right;
+      line-height:normal;direction:rtl;unicode-bidi:embed'><span lang=AR-SA
+      style='font-family:"Arial",sans-serif'>المديرية</span></p>
+      </td>
+     </tr>
+    </table>
+    
+    </div>
+    
+    <p class=MsoNormal align=center dir=rtl style='text-align:center;direction:
+    rtl;unicode-bidi:embed'><span lang=AR-SA style='font-family:"Arial",sans-serif'>&nbsp;</span></p>
+    
+    <div align=center>
+    
+    <table class=MsoTableGrid dir=rtl border=0 cellspacing=0 cellpadding=0
+     style='border-collapse:collapse;border:none'>
+     <tr>
+      <td width=208 valign=top style='width:155.8pt;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span dir=ltr>Name</span></p>
+      </td>
+      <td width=208 valign=top style='width:155.85pt;padding:0in 5.4pt 0in 5.4pt'>
+      <p class=MsoNormal align=center dir=rtl style='margin-bottom:0in;text-align:
+      center;line-height:normal;direction:rtl;unicode-bidi:embed'><span>{{today_date | date:'yyyy/MM/dd'}}</span></p>
+      </td>
+     </tr>
+    </table>
+    
+    </div>
+    
+    <p class=MsoNormal align=center dir=rtl style='text-align:center;direction:
+    rtl;unicode-bidi:embed'><span lang=AR-SA style='font-family:"Arial",sans-serif'>&nbsp;</span></p>
+    
+    <p class=MsoNormal align=center dir=rtl style='text-align:center;direction:
+    rtl;unicode-bidi:embed'><span dir=ltr>&nbsp;</span></p>
+    
+    </div>
+    

@@ -27,29 +27,22 @@ import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-b
 })
 export class PaymentOrderListSearchComponent {
   
+  @Input() Title: string = '';
+  @Output() OnSeachCommandExecute: EventEmitter<any> = new EventEmitter<any>();
 
-  List_Type_Sanad :any []=[
-    {value:1,name:'كامل'},
-    {value:2,name:'مسودة'},
-  ]
 
-  
-  @Input() Title:string = '';
-  @Output() OnSeachCommandExecute : EventEmitter<any> = new EventEmitter<any>();
-
-  
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    
+    if (event.keyCode == 123) {
+      event.preventDefault();
+
+    }
     if (event.keyCode == 119) {
       event.preventDefault();
-      this.View();
+      this.onViewClick();
     }
-    
-  }
 
-  
-  list_attachement_type:attachement_type[] = [];
+  }
 
   fromSanadDateDay: string = '';
   fromSanadDateMonth: string = '';
@@ -89,72 +82,73 @@ export class PaymentOrderListSearchComponent {
   incumbent_id_to!: FormControl<number | null>;
   incumbent_date_from!: FormControl<Date | null>;
   incumbent_date_to!: FormControl<Date | null>;
-  payment_order_type_fk!: FormControl<number | null>;
+  exchange_order_type_fk!: FormControl<number | null>;
   book_fk!: FormControl<number | null>;
+  attachement_id!: FormControl<number | null>;
+  ownership!: FormControl<string | null>;
+  source_number!: FormControl<string | null>;
   name_of_owner!: FormControl<string | null>;
-  attach!: FormControl<string | null>;
   branch_fk!: FormControl<number | null>;
   page_index!: FormControl<number | null>;
   row_count!: FormControl<number | null>;
+
+
+
+  List_Type_Sanad: any[] = [
+    { value: 1, name: 'كامل' },
+    { value: 2, name: 'مسودة' },
+    { value: undefined, name: 'الجميع' },
+  ]
 
   LoadingFinish: boolean;
 
   book_list: sanad_kid_book[];
   book_filter: Observable<sanad_kid_book[]>;
-
+  list_attachement_type: attachement_type[] = [];
   branch_list: branch[];
   branch_filter: Observable<branch[]>;
 
-  _Subscription!: Subscription;
-
-
-
-
+  _Subscription : Subscription[] = [];
 
   totalRows = 0;
   pageSize = 5;
   currentPage = 0;
   pageSizeOptions: number[] = [5, 10, 25, 100];
-  isLoading: boolean= false;
-  
+  isLoading: boolean = false;
+
 
   selected_order: payment_order = {};
 
 
 
   constructor(
-    private modalService: NgbModal,  
+    private modalService: NgbModal,
     private fb: FormBuilder,
-    private snackBar: MatSnackBar,
     public dialog: MatDialog,
     @Inject(DOCUMENT) private _document: Document,
-    private AttachmentTypeService:AttachmentTypeService,
-    private router: Router,
-    private paymentOrderService: PaymentOrderService,
     private sanadKidBookService: SanadKidBookService,
     private BranchService: BranchService,
+    private AttachmentTypeService: AttachmentTypeService,
   ) {
     this.LoadingFinish = true;
-
     this.BuildForm();
     this.Load_Data();
-
-
   }
 
   ngOnInit(): void {
- 
-  }
-      
-      
-  ngOnDestroy()
-  {
 
   }
 
-    
+
+  ngOnDestroy() {
+    this._Subscription.forEach(Sub => {
+      if (Sub != null) Sub.unsubscribe();
+    });
+  }
+
+
   ngAfterViewInit() {
-   
+
   }
 
 
@@ -172,18 +166,18 @@ export class PaymentOrderListSearchComponent {
           'incumbent_id_to': this.incumbent_id_to = new FormControl<number | null>(null, []),
           'incumbent_date_from': this.incumbent_date_from = new FormControl<Date | null>(null, []),
           'incumbent_date_to': this.incumbent_date_to = new FormControl<Date | null>(null, []),
-          'payment_order_type_fk': this.payment_order_type_fk = new FormControl<number | null>(null, []),
+          'exchange_order_type_fk': this.exchange_order_type_fk = new FormControl<number | null>(null, []),
           'book_fk': this.book_fk = new FormControl<number | null>(null, []),
-          'type_fk': this.branch_fk = new FormControl<number | null>(null, []),
           'name_of_owner': this.name_of_owner = new FormControl<string | null>(null, []),
-          'attach': this.attach = new FormControl<string | null>(null, []),
+          'attachement_id': this.attachement_id = new FormControl<number | null>(null, []),
+          'ownership': this.ownership = new FormControl<string | null>(null, []),
+          'source_number': this.source_number = new FormControl<string | null>(null, []),
           'branch_fk': this.branch_fk = new FormControl<number | null>(null, []),
+          'type_fk': this.branch_fk = new FormControl<number | null>(null, []),
           'page_index': this.page_index = new FormControl<number | null>(null, []),
           'row_count': this.row_count = new FormControl<number | null>(null, []),
         }
       );
-
-
     } catch (Exception: any) {
       console.log(Exception);
     }
@@ -191,46 +185,49 @@ export class PaymentOrderListSearchComponent {
 
   Load_Data() {
     this.LoadingFinish = false;
-    this._Subscription = forkJoin(
-      this.Load_sanad_kid_book(),
-      this.Load_branch(),
-      this.Load_attachement_type()
-    ).subscribe(
-      res => {
-        this.book_list = res[0];
-        this.book_filter = of(this.book_list);
-        this.sanadKidBookService.List_SanadKidBook = this.book_list;
-        this.sanadKidBookService.List_SanadKidBook_BehaviorSubject.next(this.sanadKidBookService.List_SanadKidBook);
-
-        this.branch_list = res[1];
-        this.branch_filter = of(this.branch_list);
-        this.BranchService.List_Branch = this.branch_list;
-        this.BranchService.List_Branch_BehaviorSubject.next(this.BranchService.List_Branch);
-
-
-        this.list_attachement_type = res[2];        
-        this.AttachmentTypeService.List_attachment_type = this.list_attachement_type;
-        this.AttachmentTypeService.List_attachment_type_BehaviorSubject.next(this.list_attachement_type);
-
-
-      
-        this.Init_AutoComplete();
-
-        this.LoadingFinish = true;
-
-      }
-    )
+    this._Subscription.push(
+      forkJoin(
+        this.Load_sanad_kid_book(),
+        this.Load_branch(),
+        this.Load_attachement_type()
+      ).subscribe(
+        res => {
+          this.book_list = res[0];
+          this.book_filter = of(this.book_list);
+          this.sanadKidBookService.List_SanadKidBook = this.book_list;
+          this.sanadKidBookService.List_SanadKidBook_BehaviorSubject.next(this.sanadKidBookService.List_SanadKidBook);
+  
+          this.branch_list = res[1];
+          this.branch_filter = of(this.branch_list);
+          this.BranchService.List_Branch = this.branch_list;
+          this.BranchService.List_Branch_BehaviorSubject.next(this.BranchService.List_Branch);
+  
+          this.list_attachement_type = res[2];
+          this.AttachmentTypeService.List_attachment_type = this.list_attachement_type;
+          this.AttachmentTypeService.List_attachment_type_BehaviorSubject.next(this.list_attachement_type);
+  
+  
+  
+          //    this.Init_AutoComplete();
+  
+          this.LoadingFinish = true;
+  
+        }
+      )
+    )  
+    
   }
 
 
-  
-  Load_attachement_type():Observable<attachement_type[]> {
+
+  Load_attachement_type(): Observable<attachement_type[]> {
     if (this.AttachmentTypeService.List_attachment_type == null ||
       this.AttachmentTypeService.List_attachment_type == undefined ||
       this.AttachmentTypeService.List_attachment_type.length == 0)
       return this.AttachmentTypeService.list();
     return of(this.AttachmentTypeService.List_attachment_type);
   }
+
 
 
 
@@ -283,7 +280,7 @@ export class PaymentOrderListSearchComponent {
 
 
   public display_Book_Property(value: number): string {
-    if (value) {
+    if (value != null) {
       var books = this.book_list.filter(x => x.sanad_kid_book_seq == value);
       if (books != null && books.length > 0 && books[0].sanad_kid_book_name != null) {
 
@@ -295,32 +292,29 @@ export class PaymentOrderListSearchComponent {
     return '';
   }
 
- 
-
-  View() {
-
-    this.isLoading= true;
-
-    this.page_index.setValue(this.currentPage);
-    this.row_count.setValue(this.pageSize);
-
-    return this.paymentOrderService.search(this.Form.value);
 
 
-  }
 
-  
-
-  public focusNext(id: string) {
+  focusNext(id: string) {
     let element = this._document.getElementById(id);
-    if (element) {
+    if (element != null && element.tagName != null && element.tagName.toLowerCase() == 'ng-select') {
+      var elements = element?.firstElementChild?.firstElementChild?.lastElementChild?.getElementsByTagName('input');
+      if (elements != null && elements.length > 0) {
+        var inputSearchElement = elements.item(0);
+        if (inputSearchElement != null) {
+          inputSearchElement.focus();
+        }
+
+      }
+
+    } else if (element) {
       element.focus();
     }
   }
 
 
 
-  
+
   fromSanadDateChange(changeSource: string) {
     if (changeSource == 'day')
       this.fromSanadDateDayIsFilled = true;
@@ -383,29 +377,29 @@ export class PaymentOrderListSearchComponent {
 
       var books = this.book_list.filter(x => x.sanad_kid_book_seq == selectedValue);
       if (books != null && books.length > 0 && books[0].branch_fk != null) {
-        
         this.branch_fk.setValue(books[0].branch_fk);
-
-
       }
 
     }
 
   }
 
-  openBasicModal(content: TemplateRef<any>) {
-    this.modalService.open(content, { windowClass: 'sidepanel sidepanel-fade', size: 'side-70', backdropClass: 'light-blue-backdrop' }).result.then((Result) => {  
 
-if (Result==1)
-      {
-        this.currentPage=0;
-    this.pageSize=5;
-    this.page_index.setValue(this.currentPage);
-    this.row_count.setValue(this.pageSize);
-    this.OnSeachCommandExecute.emit(this.Form.value);
+
+
+
+  openBasicModal(content: TemplateRef<any>) {
+    this.modalService.open(content, { windowClass: 'sidepanel sidepanel-fade', size: 'side-70', backdropClass: 'light-blue-backdrop' }).result.then((Result) => {
+
+      if (Result == 1) {
+        this.currentPage = 0;
+        this.pageSize = 5;
+        this.page_index.setValue(this.currentPage);
+        this.row_count.setValue(this.pageSize);
+        this.OnSeachCommandExecute.emit(this.Form.value);
       }
-else 
-this.OnSeachCommandExecute.emit({});
+      else
+        this.OnSeachCommandExecute.emit({});
 
 
     }).catch(() => {
@@ -413,14 +407,14 @@ this.OnSeachCommandExecute.emit({});
     });
   }
 
-public onViewClick()
-{
-  this.currentPage=0;
-    this.pageSize=5;
+  public onViewClick() {
+    this.currentPage = 0;
+    this.pageSize = 5;
     this.page_index.setValue(this.currentPage);
     this.row_count.setValue(this.pageSize);
     this.OnSeachCommandExecute.emit(this.Form.value);
+  }
 
-}
+
 
 }

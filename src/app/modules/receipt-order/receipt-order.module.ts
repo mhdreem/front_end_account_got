@@ -37,6 +37,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ViewsModule } from '../views/views.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ReceiptOrderEntryComponent } from './components/receipt-order-entry/receipt-order-entry.component';
+import { ReceiptOrderPrintRowsComponent } from './components/receipt-order-print-rows/receipt-order-print-rows.component';
+import { ReceiptOrderPrintComponent } from './components/receipt-order-print/receipt-order-print.component';
 
 const Import_Corui = [
   GridModule,
@@ -53,6 +56,10 @@ const Import_Corui = [
     ReceiptOrderAttachmentsComponent,
     ReceiptOrderSearchBarComponent,
     ReceiptOrderListSearchComponent,
+    ReceiptOrderEntryComponent,
+    ReceiptOrderPrintRowsComponent,
+    ReceiptOrderPrintComponent
+
   ],
   imports: [
     CommonModule,

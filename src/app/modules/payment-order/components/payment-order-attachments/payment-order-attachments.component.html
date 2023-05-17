@@ -1,68 +1,86 @@
-<form [formGroup]="Form" #form="ngForm">
-    <c-row>
-        <c-col [cCol]="1">
-            <button type="button" class="btn btn-danger btn-sm" (click)="delete()">
-                حذف
-                <span class="badge bg-info"> {{index+1}} </span>
-            </button>
-        </c-col>
+<table class="table table-edit table-bordered table-middel bg-gray-50" 
+[formGroup]="formGroup">
+    <thead>
+        <tr>
+            <th class="max-width-80 min-width-80"> رقم المرفق</th>
+            <th class="max-width-130 min-width-130"> نوع المرفق</th>
+            <th class="max-width-100 min-width-100"> تاريخ المرفق </th>
+            <th class="max-width-80 min-width-80"> رقم الوثيقة</th>
+            <th class="max-width-150 min-width-150"> عائدية الوثيقة</th>
+            <th class="max-width-150 min-width-150"> بيان المرفق</th>
+            <th class="max-width-80 min-width-80"> عمليات</th>
+        </tr>
+    </thead>
+    <tbody [formArrayName]="name">
+       
+        <tr *ngFor="let attach of FormArray; let _index = index;"
+         [formGroupName]="_index">
+            <td>
+                <input class="form-control" 
+                formControlName="attachement_id" 
+                [OnlyNumber]="true"
+                  id="{{'attachement_id_'+_index}}" (keyup.enter)="focusNext('type_fk_'+_index)"
+                    placeholder="رقم المرفق">
+            </td>
 
-        <c-col [cCol]="2">            
-            <mat-form-field appearance="outline">
-                <mat-label>رقم المرفق</mat-label>
-                <input matInput [formControl]="payment_order_attachement_id" [OnlyNumber]="true"
-                    id="{{'payment_order_attachement_id'+_index}}" (keyup.enter)="focusNext('type_fk_'+_index)">
-            </mat-form-field>
-        </c-col>
-
-        <c-col [cCol]="2">
-            <mat-form-field appearance="outline">
-                <mat-label #label_accounts_tree_fk>نوع المرفق</mat-label>
-                <input matInput [formControl]="type_fk" [matAutocomplete]="autoattachement_type"
-                    id="{{'type_fk_'+_index}}" (keyup.enter)="focusNext('attachmentDateDay_'+_index)">
-                <mat-autocomplete #autoattachement_type="matAutocomplete"
-                    [displayWith]="display_Attachement_Type_Property.bind(this)">
-                    <mat-option *ngFor="let option of attachment_type_filter | async"
-                        [value]="option.attachement_type_seq">
-                        {{option.attachement_type_name}}
-                    </mat-option>
-                </mat-autocomplete>
-
-            </mat-form-field>
-        </c-col>
-
-        <c-col [cCol]="3">
-            <div class="date">
-                <span class="white" style=" display: block;">تاريخ المرفق</span>
-                <div class="input-group inline input-group-lg">
-                    <input class="form-control" placeholder="اليوم" (change)="attachmentDateChange('day')"
-                        [(ngModel)]='attachmentDateDay' [ngModelOptions]="{standalone: true}"
-                        id="{{'attachmentDateDay_'+_index}}" (keyup.enter)="focusNext('attachmentDateMonth_'+_index)"
-                        [OnlyNumber]="true">
-
-                    <input class="form-control" placeholder="الشهر" (change)="attachmentDateChange('month')"
-                        [(ngModel)]='attachmentDateMonth' [ngModelOptions]="{standalone: true}"
-                        id="{{'attachmentDateMonth_'+_index}}" (keyup.enter)="focusNext('attachmentDateYear_'+_index)"
-                        [OnlyNumber]="true">
-
-                    <input class="form-control" placeholder="السنة" (change)="attachmentDateChange('year')"
-                        [(ngModel)]='attachmentDateYear' [ngModelOptions]="{standalone: true}"
-                        id="{{'attachmentDateYear_'+_index}}"
-                        (keyup.enter)="focusNext('payment_order_attachement_note'+_index)" [OnlyNumber]="true">
+            <td>
+                <ng-select formControlName="type_fk" id="{{'type_fk_'+_index}}"
+                    (keyup.enter)="focusNext('attachement_date'+_index)" [closeOnSelect]="true" [searchable]="true"
+                    [openOnEnter]="false">
+                    <ng-option *ngFor="let option of attachment_type_list " [value]="option.attachement_type_seq">
+                        {{option.attachement_type_name }}
+                    </ng-option>
+                </ng-select>
+                <div *ngIf="getControls('type_fk',attach) != null &&
+                getControls('type_fk',attach) .invalid " class="invalid-feedback">
+                    <div *ngIf="getControls('type_fk',attach) .hasError('required')">Supplier is
+                        required</div>
+                    <div *ngIf="getControls('type_fk',attach) .hasError('accountTreeExists')">
+                        accountTreeExists</div>
 
                 </div>
+            </td>
 
-            </div>
-        </c-col>
+            <td>
 
 
+                <div class=" input-group " container="body">
+                    <input class="form-control" placeholder="تاريخ المرفق" name="attachement_date"
+                        id="{{'attachement_date'+_index}}" formControlName="attachement_date"
+                        (keyup.enter)="focusNext('source_number_'+_index)" ngbDatepicker
+                        #attachement_date="ngbDatepicker" />
+                    <button class="input-group-text" type="button" (click)="attachement_date.toggle()"
+                        type="button"></button>
+                </div>
 
-        <c-col [cCol]="4">
-            <mat-form-field appearance="outline">
-                <mat-label>بيان المرفق</mat-label>
-                <input matInput id="{{'payment_order_attachement_note'+_index}}"
-                    [formControl]="payment_order_attachement_note">
-            </mat-form-field>
-        </c-col>
-    </c-row>
-</form>
+            </td>
+
+
+            <td>
+                <input class="form-control" formControlName="source_number" 
+                    id="{{'source_number_'+_index}}"
+                    (keyup.enter)="focusNext('ownership_'+_index)" placeholder="رقم الوثيقة">
+            </td>
+
+
+            <td>
+                <input class="form-control" formControlName="ownership" 
+                    id="{{'ownership_'+_index}}"
+                    (keyup.enter)="focusNext('attachement_note_'+_index)" placeholder="عائدية الوثيقة">
+            </td>
+
+
+            <td>
+                <input class="form-control" id="{{'attachement_note_'+_index}}"
+                    formControlName="attachement_note" (keyup.enter)="focusNext('type_fk_'+_index)"
+                    placeholder="بيان المرفق">
+            </td>
+
+            <td class="p-0">
+                <button class="btn btn-success square px-3" (click)="onDelete.emit(_index)">
+
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>

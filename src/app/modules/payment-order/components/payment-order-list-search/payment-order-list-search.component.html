@@ -4,10 +4,6 @@
 </button>
 
 
-
-
-
-
 <!-- Modal -->
 <ng-template #itemsModal let-modal>
     <div class="modal-header">
@@ -32,7 +28,7 @@
 
             <form class="example-form" [formGroup]="Form" #form="ngForm">
                 <div class="row">
-                    <div class="col-6 col-6 mb-1">
+                    <div class="col-6">
 
                         <div class="date">
                             <span class="white" style="  display: block;">من تاريخ سند</span>
@@ -65,7 +61,7 @@
 
                     </div>
 
-                    <div class="col-6 col-6 mb-1">
+                    <div class="col-6">
                         <div class="date">
                             <span class="white" style="  display: block;">الى تاريخ سند</span>
                             <div class="input-group inline ">
@@ -82,7 +78,7 @@
 
 
 
-                                <input class="form-control" placeholder="عام" (change)="toSanadDateChange('year')"
+                                <input class="form-control" placeholder="العام" (change)="toSanadDateChange('year')"
                                     [(ngModel)]='toSanadDateYear' [ngModelOptions]="{standalone: true}"
                                     id="toSanadDateYear" (keyup.enter)="focusNext('fromIncumbentDateDay')">
 
@@ -91,7 +87,7 @@
                     </div>
 
 
-                    <div class="col-6 col-6 mb-1">
+                    <div class="col-6">
 
                         <div class="date">
                             <span class="white" style="  display: block;">من تاريخ مذكرة</span>
@@ -119,29 +115,27 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-6 col-6 mb-1">
+                    <div class="col-6">
                         <div class="date">
                             <span class="white" style="  display: block;">الى تاريخ مذكرة</span>
 
 
                             <div class="input-group inline ">
 
-                                <input class="form-control" placeholder="ex: 21" (change)="toIncumbentDateChange('day')"
+                                <input class="form-control" placeholder="اليوم" (change)="toIncumbentDateChange('day')"
                                     [(ngModel)]='toIncumbentDateDay' [ngModelOptions]="{standalone: true}"
                                     id="toIncumbentDateDay" (keyup.enter)="focusNext('toIncumbentDateMonth')">
 
 
-                                <input class="form-control" placeholder="ex: 1"
+                                <input class="form-control" placeholder="الشهر"
                                     (change)="toIncumbentDateChange('month')" [(ngModel)]='toIncumbentDateMonth'
                                     [ngModelOptions]="{standalone: true}" id="toIncumbentDateMonth"
                                     (keyup.enter)="focusNext('toIncumbentDateYear')">
 
 
-                                <input class="form-control" placeholder="ex: 2023"
-                                    (change)="toIncumbentDateChange('year')" [(ngModel)]='toIncumbentDateYear'
-                                    [ngModelOptions]="{standalone: true}" id="toIncumbentDateYear"
-                                    (keyup.enter)="focusNext('book_fk')">
+                                <input class="form-control" placeholder="العام" (change)="toIncumbentDateChange('year')"
+                                    [(ngModel)]='toIncumbentDateYear' [ngModelOptions]="{standalone: true}"
+                                    id="toIncumbentDateYear" (keyup.enter)="focusNext('exchange_order_type_fk')">
 
                             </div>
 
@@ -149,130 +143,108 @@
 
                     </div>
 
-
-                   
-
-                        <div class="col-6 col-6 mb-1">
-                            <label class="form-label">دفتر الفرع </label>
-                            <ng-select id="type_fk"                        
-                                formControlName="book_fk"
-                                [items]="book_list" 
-                                bindValue="sanad_kid_book_seq"
-                                bindLabel="sanad_kid_book_name" 
-                                placeholder="قم باختيار الدفتر"
-                                (keyup.enter)="focusNext('name_of_owner')"
-                                ></ng-select>
-    
-                            <!--
-     <mat-form-field   appearance="outline">
-                                <mat-label>دفتر السندات</mat-label>
-                                <input matInput [formControl]="book_fk" [matAutocomplete]="autoBook_fk" id="book_fk"
-                                    (keyup.enter)="focusNext('name_of_owner')">
-                                <mat-autocomplete #autoBook_fk="matAutocomplete"
-                                    [displayWith]="display_Book_Property.bind(this)">
-                                    <mat-option *ngFor="let option of book_filter | async"
-                                        [value]="option.sanad_kid_book_seq">
-                                        {{option.sanad_kid_book_name}}
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field>
-                            -->
-                           
-    
-    
-    
-    
-    
-                        </div>
+                    <div class="col-6">
+                        <label class="form-label">نوع أمر الدفع مسودة أم كامل </label>
+                        <ng-select 
+                        id="exchange_order_type_fk"
+                         formControlName="exchange_order_type_fk"
+                            [items]="List_Type_Sanad" bindValue="value" bindLabel="name"
+                            (keyup.enter)="focusNext('book_fk')"
+                            placeholder="قم باختيار نوع الأمر"></ng-select>
+                    </div>
 
 
+                    <div class="col-6">
+                        <label class="form-label">دفتر </label>
+                        <ng-select id="book_fk" formControlName="book_fk" [items]="book_list"
+                            bindValue="sanad_kid_book_seq" bindLabel="sanad_kid_book_name"
+                            placeholder="قم باختيار الدفتر" (keyup.enter)="focusNext('name_of_owner')"></ng-select>
 
+                    </div>
 
+                    <div class="col-12">
 
-                   
+                        <label class="form-label"> اسم صاحب الاستحقاق</label>
+                        <input class="form-control" [formControl]="name_of_owner" id="name_of_owner"
+                            (keyup.enter)="focusNext('document_id_from')">
 
-                    <div class="col-6 col-6 mb-1">
-
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>اسم صاحب الاستحقاق</mat-label>
-                            <input matInput [formControl]="name_of_owner" id="name_of_owner"
-                                (keyup.enter)="focusNext('document_id_from')">
-                        </mat-form-field>
                     </div>
 
 
 
-                    <div class="col-6 col-6 mb-1">
+                    <div class="col-6">
 
-                        <mat-form-field appearance="outline">
-                            <mat-label>من رقم سند</mat-label>
-                            <input matInput [formControl]="document_id_from" id="document_id_from"
-                                (keyup.enter)="focusNext('document_id_to')">
-                        </mat-form-field>
+
+                        <label class="form-label">من رقم سند</label>
+                        <input class="form-control" [formControl]="document_id_from" id="document_id_from"
+                            (keyup.enter)="focusNext('document_id_to')">
+
                     </div>
+                    <div class="col-6">
 
-                    <div class="col-6 col-6 mb-1">
-                        <mat-form-field appearance="outline">
-                            <mat-label>الى رقم سند</mat-label>
-                            <input matInput [formControl]="document_id_to" id="document_id_to"
-                                (keyup.enter)="focusNext('incumbent_id_from')">
-                        </mat-form-field>
+                        <label class="form-label">الى رقم سند</label>
+                        <input class="form-control" [formControl]="document_id_to" id="document_id_to"
+                            (keyup.enter)="focusNext('incumbent_id_from')">
+
 
 
                     </div>
 
 
 
-                    <div class="col-6 col-6 mb-1">
+                    <div class="col-6">
 
 
-                        <mat-form-field appearance="outline">
-                            <mat-label>من رقم مذكرة</mat-label>
-                            <input matInput [formControl]="incumbent_id_from" id="incumbent_id_from"
-                                (keyup.enter)="focusNext('incumbent_id_to')">
-                        </mat-form-field>
+
+                        <label class="form-label">من رقم مذكرة</label>
+                        <input class="form-control" [formControl]="incumbent_id_from" id="incumbent_id_from"
+                            (keyup.enter)="focusNext('incumbent_id_to')">
+
                     </div>
 
-                    <div class="col-6 col-6 mb-1">
-                        <mat-form-field appearance="outline">
-                            <mat-label>الى رقم مذكرة</mat-label>
-                            <input matInput [formControl]="incumbent_id_to" id="incumbent_id_to"
-                                (keyup.enter)="focusNext('attach')">
-                        </mat-form-field>
-                    </div>
+                    <div class="col-6">
 
-                    <div class="col-6 col-6 mb-1">
-                        <mat-form-field appearance="outline">
-                            <mat-label>المرفق</mat-label>
-                            <input matInput [formControl]="attach" id="attach"
-                                (keyup.enter)="focusNext('account_type')">
-                        </mat-form-field>
+                        <label class="form-label">الى رقم مذكرة</label>
+                        <input class="form-control" [formControl]="incumbent_id_to" id="incumbent_id_to"
+                            (keyup.enter)="focusNext('attachement_id')">
 
                     </div>
 
 
+
+                    <div class="col-6">
+                        <label class="form-label">رقم المرفق</label>
+                        <input class="form-control" [formControl]="attachement_id" id="attachement_id"
+                            (keyup.enter)="focusNext('type_fk')">
+                    </div>
 
                     <div class="col-6">
                         <label class="form-label">نوع المرفق </label>
-                        <ng-select id="type_fk" formControlName="type_fk"
-                            [items]="list_attachement_type"
+                        <ng-select id="type_fk" 
+                        formControlName="type_fk" [items]="list_attachement_type"
                             bindValue="attachement_type_seq"
                              bindLabel="attachement_type_name"
+                             (keyup.enter)="focusNext('ownership')"
                             placeholder="قم باختيار نوع المرفق"></ng-select>
-    
-                    </div>
 
+                    </div>
 
                     <div class="col-6">
-                        <label class="form-label">نوع الأمر </label>
-                        <ng-select id="payment_order_type_fk" formControlName="payment_order_type_fk"
-                            [items]="List_Type_Sanad"
-                            bindValue="value"
-                             bindLabel="name"
-                            placeholder="قم باختيار نوع الأمر"></ng-select>
-    
+                        <label class="form-label">عائدية الوثيقة</label>
+                        <input class="form-control" [formControl]="ownership" id="ownership"
+                            (keyup.enter)="focusNext('source_number')">
                     </div>
+
+                    <div class="col-6">
+                        <label class="form-label">رقم الوثيقة</label>
+                        <input class="form-control" [formControl]="source_number" id="source_number"
+                            (keyup.enter)="focusNext('type_fk')">
+                    </div>
+
+
+
+
+
 
 
                 </div>
@@ -290,12 +262,12 @@
             بحث
         </button>
 
-
         <button type="button" class="btn btn-icon-text btn-warning me-1" (click)="this.Form.reset()">
             <i class="feather icon-save btn-icon-prepend"></i>
             افراغ مفاتيح البحث
         </button>
-        
+
+
         <button type="button" class="btn btn-icon-text btn-outline me-1" (click)="modal.close(2)">
             <i class="feather icon-x btn-icon-prepend"></i>
             الغاء

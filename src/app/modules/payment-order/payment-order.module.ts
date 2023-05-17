@@ -37,6 +37,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ViewsModule } from '../views/views.module';
 import { PaymentOrderListSearchComponent } from './components/payment-order-list-search/payment-order-list-search.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { PaymentOrderEntryComponent } from './components/payment-order-entry/payment-order-entry.component';
+import { PaymentOrderPrintRowsComponent } from './components/payment-order-print-rows/payment-order-print-rows.component';
+import { PaymentOrderPrintComponent } from './components/payment-order-print/payment-order-print.component';
 
 const Import_Corui = [
   GridModule,
@@ -50,7 +53,10 @@ const Import_Corui = [
     PaymentOrderDetailsComponent,
     PaymentOrderAttachmentsComponent,
     PaymentOrderSearchBarComponent,
-    PaymentOrderListSearchComponent
+    PaymentOrderListSearchComponent,
+    PaymentOrderEntryComponent,
+    PaymentOrderPrintRowsComponent,
+    PaymentOrderPrintComponent
   ],
   imports: [
     CommonModule,

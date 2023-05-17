@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PaymentOrderEditComponent } from './components/payment-order-edit/payment-order-edit.component';
 import { PaymentOrderListComponent } from './components/payment-order-list/payment-order-list.component';
+import { PaymentOrderEntryComponent } from './components/payment-order-entry/payment-order-entry.component';
 
 const routes: Routes = [
 
@@ -13,7 +14,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'edit', component: PaymentOrderEditComponent,
+    path: 'edit', component: PaymentOrderEntryComponent,
     data:
     {
       title: 'تعديل أمر الدفع'
