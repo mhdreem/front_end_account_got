@@ -200,7 +200,7 @@ export class BookSeachListSearchComponent {
     if (this.accountTreeService.List_AccountsTree == null ||
       this.accountTreeService.List_AccountsTree == undefined ||
       this.accountTreeService.List_AccountsTree.length == 0)
-      return this.accountTreeService.list();
+      return this.accountTreeService.list_account_tree();
     return of(this.accountTreeService.List_AccountsTree);
   }
 

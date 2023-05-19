@@ -41,7 +41,18 @@ export class MrBookListComponent {
 
   dataSource = new MatTableDataSource<any>();
   displayedColumns: string[] =
-    ['document_id', 'incumbent_date', 'document_id','account_center_name',  'document_date', 'account_center_name', 'operation_type', 'sanad_kid_book_name'];
+    [
+      'debtor',
+    'creditor',
+    'account_id',
+    'account_name',
+    'account_center_id',
+    'account_center_name',
+    'document_id',
+    'document_date',
+    'incumbent_id',
+    'incumbent_date',
+    'operation_type_name'];
   dataSourceIsEmpty: boolean= true;
   fromSanadDateDay: string = '';
   fromSanadDateMonth: string = '';
