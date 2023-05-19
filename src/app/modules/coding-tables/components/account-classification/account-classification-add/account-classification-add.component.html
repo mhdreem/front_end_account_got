@@ -14,15 +14,15 @@
                     <c-row>
                         <c-col>
                             <mat-form-field>
-                                <mat-label #label_account_class_name>اسم تصنيف الحساب</mat-label>
-                                <input matInput [formControl]="account_class_name" id="account_class_name"
-                                    (keyup.enter)="focusNext('account_class_order')">
-                                <mat-error *ngIf="fieldHasErrors(Form, 'account_class_name')">
+                                <mat-label #label_classification_name>اسم تصنيف الحساب</mat-label>
+                                <input matInput [formControl]="classification_name" id="classification_name"
+                                    (keyup.enter)="focusNext('account_center_id')">
+                                <mat-error *ngIf="fieldHasErrors(Form, 'classification_name')">
                                     {{
                                     autoPrintFirstErrorMessage(
                                     Form,
-                                    "account_class_name",
-                                    label_account_class_name.innerHTML
+                                    "classification_name",
+                                    label_classification_name.innerHTML
                                     )
                                     }}
                                 </mat-error>
@@ -30,7 +30,7 @@
                         </c-col>
                     </c-row>
                     
-                    <c-row>
+                    <!-- <c-row>
                         <c-col>
                             <mat-form-field>
                                 <mat-label>ترتيب تصنيف الحساب</mat-label>
@@ -38,7 +38,7 @@
                                     (keyup.enter)="focusNext('account_class_order')" [OnlyNumber]="true">
                             </mat-form-field>
                         </c-col>
-                    </c-row>
+                    </c-row> -->
 
 
 

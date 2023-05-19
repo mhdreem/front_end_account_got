@@ -1,5 +1,4 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, ViewChild } from '@angular/core';
+import { Component , ViewChild} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,24 +8,23 @@ import { ExportToCsv } from 'export-to-csv';
 import { Subscription } from 'rxjs';
 import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/confirmationdialog/confirmationdialog.component';
 import { ImportFromExcelComponent } from 'src/app/modules/shared/components/import-from-excel/import-from-excel.component';
-import { account_class } from 'src/app/modules/shared/models/account_class';
+import { BeneficiaryType } from 'src/app/modules/shared/models/beneficiary-type';
 import { result } from 'src/app/modules/shared/models/result';
-import { account_centerService } from 'src/app/modules/shared/services/account-center.service';
-import { AccountClassService } from 'src/app/modules/shared/services/account-class.service';
-import { AccountClassAddComponent } from '../account-class-add/account-class-add.component';
+import { BeneficiaryTypeService } from 'src/app/modules/shared/services/beneficiary-type.service';
+import { BeneficiaryTypeEditComponent } from '../beneficiary-type-edit/beneficiary-type-edit.component';
 
 @Component({
-  selector: 'app-account-class-list',
-  templateUrl: './account-class-list.component.html',
-  styleUrls: ['./account-class-list.component.scss']
+  selector: 'app-beneficiary-type-list',
+  templateUrl: './beneficiary-type-list.component.html',
+  styleUrls: ['./beneficiary-type-list.component.scss']
 })
-export class AccountClassListComponent {
+export class BeneficiaryTypeListComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  account_class_List: account_class[] = [];
-  dataSource = new MatTableDataSource<account_class>();
-  displayedColumns: string[] = ['account_class_name','account_class_order', 'action'];
+  beneficiaryType_List: BeneficiaryType[] = [];
+  dataSource = new MatTableDataSource<BeneficiaryType>();
+  displayedColumns: string[] = ['beneficiary_type_name','beneficiary_type_code','beneficiary_type_note',  'action'];
   pageSizeOptions: number[] = [20, 40, 60];
   isLoading: boolean= false;
   Subscription: Subscription = new Subscription();
@@ -39,11 +37,11 @@ export class AccountClassListComponent {
     decimalSeparator: '.',
     showLabels: true,
     showTitle: true,
-    title: 'أصناف الحسابات',
+    title: 'نوع المستفيد',
     useTextFile: false,
     useBom: true,
     useKeysAsHeaders: false,
-    headers: ['اسم الصنف']
+    headers: ['اسم المستفيد']
   };
 
   selectedFile:any;
@@ -51,7 +49,7 @@ export class AccountClassListComponent {
 
 
   constructor(public dialog: MatDialog,
-    private accountClassService: AccountClassService,
+    private beneficiaryTypeService: BeneficiaryTypeService,
     private _snaker: MatSnackBar,
     
   ) {
@@ -82,11 +80,11 @@ export class AccountClassListComponent {
     this.isLoading= true;
 
     this.Subscription.add(
-      this.accountClassService.list().subscribe(
+      this.beneficiaryTypeService.list().subscribe(
         res => {
           if (res != null)
-            this.account_class_List = res;
-          this.dataSource.data = this.account_class_List;
+            this.beneficiaryType_List = res;
+          this.dataSource.data = this.beneficiaryType_List;
           this.isLoading= false;
 
         }
@@ -96,7 +94,7 @@ export class AccountClassListComponent {
 
 
   add() {
-    const dialogRef = this.dialog.open(AccountClassAddComponent, {
+    const dialogRef = this.dialog.open(BeneficiaryTypeEditComponent, {
       width: '600px',
       position: {top: "8%" },
       data: {
@@ -110,9 +108,9 @@ export class AccountClassListComponent {
     });
   }
 
-  update(obj: account_class) {
+  update(obj: BeneficiaryType) {
 
-    const dialogRef = this.dialog.open(AccountClassAddComponent, {
+    const dialogRef = this.dialog.open(BeneficiaryTypeEditComponent, {
       width: '600px',
       position: {top: "8%" },
       data: {
@@ -131,7 +129,7 @@ export class AccountClassListComponent {
 
 
 
-  delete(obj: account_class) {
+  delete(obj: BeneficiaryType) {
 
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
       width: '600px',
@@ -142,7 +140,7 @@ export class AccountClassListComponent {
     dialogRef.afterClosed().subscribe(result => {
 
       if (result == 1)
-      this.accountClassService.delete(obj.account_class_seq!).subscribe
+      this.beneficiaryTypeService.delete(obj.beneficiary_type_seq!).subscribe
       (
         res => {
           if (res != null && (res as result)!= null &&  (res as result).success){
@@ -170,22 +168,22 @@ export class AccountClassListComponent {
 
 
 
-  drop(event: CdkDragDrop<string[]>) {
+  // drop(event: CdkDragDrop<string[]>) {
    
-    moveItemInArray(this.account_class_List, event.previousIndex, event.currentIndex);
-    this.dataSource.data = this.account_class_List;
-    let orderReq: any[] = [];
-    this.account_class_List.forEach((ele, index) => {
-      orderReq.push({ pk: ele.account_class_seq, order: index });
-    });
-    console.log('orderReq', orderReq);
-    this.accountClassService.orderRow(orderReq).subscribe(
-      result =>
-      {
+  //   moveItemInArray(this.beneficiaryType_List, event.previousIndex, event.currentIndex);
+  //   this.dataSource.data = this.beneficiaryType_List;
+  //   let orderReq: any[] = [];
+  //   this.beneficiaryType_List.forEach((ele, index) => {
+  //     orderReq.push({ pk: ele.beneficiaryType_seq, order: index });
+  //   });
+  //   console.log('orderReq', orderReq);
+  //   this.beneficiaryTypeService.orderRow(orderReq).subscribe(
+  //     result =>
+  //     {
 
-      }
-    );
-  }
+  //     }
+  //   );
+  // }
 
   
 
@@ -207,7 +205,7 @@ export class AccountClassListComponent {
   importFromExcel(){
     const formData = new FormData();
     formData.append('file', this.selectedFile, this.selectedFile.name);
-    this.accountClassService.importExcel(formData).subscribe(res=>{
+    this.beneficiaryTypeService.importExcel(formData).subscribe(res=>{
       if (res != null && (res as result)!= null &&  (res as result).success){
   
         this._snaker.open('تم الاستيراد بنجاح', '', {

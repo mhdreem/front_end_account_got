@@ -95,8 +95,18 @@ export class NavService {
       iconComponent: { name: 'cil-pencil' },
     },
     {
-      name: 'تصنيف الحساب',
+      name: 'صنف الحساب',
       url: 'codingTable/module/class',
+      iconComponent: { name: 'cil-pencil' },
+    },
+    {
+      name: 'تصنيف الحساب',
+      url: 'codingTable/module/classification',
+      iconComponent: { name: 'cil-pencil' },
+    },
+    {
+      name: 'نوع المستفيد',
+      url: 'codingTable/module/beneficiaryType',
       iconComponent: { name: 'cil-pencil' },
     },
     {

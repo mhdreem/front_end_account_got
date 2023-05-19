@@ -48,19 +48,28 @@
 
     <!--جزء الخاص بالجدول-->
     <c-container>
-        <table cdkDropList mat-table [dataSource]="dataSource" matSort class="my-table mat-elevation-z8"
-            (cdkDropListDropped)="drop($event)">
+        <table mat-table [dataSource]="dataSource" matSort class="my-table mat-elevation-z8">
 
-            <ng-container matColumnDef="account_class_name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> اسم صنف الحساب</th>
-                <td mat-cell *matCellDef="let element"> {{element.account_class_name}} </td>
+            <ng-container matColumnDef="beneficiary_type_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> اسم نوع المستفيد</th>
+                <td mat-cell *matCellDef="let element"> {{element.beneficiary_type_name}} </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="beneficiary_type_code">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> كود نوع المستفيد</th>
+                <td mat-cell *matCellDef="let element"> {{element.beneficiary_type_code}} </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="beneficiary_type_note">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ملاحظات نوع المستفيد</th>
+                <td mat-cell *matCellDef="let element"> {{element.beneficiary_type_note}} </td>
             </ng-container>
 
 
-            <ng-container matColumnDef="account_class_order">
+            <!-- <ng-container matColumnDef="beneficiary_type_code">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> ترتيب صنف الحساب</th>
                 <td mat-cell *matCellDef="let element"> <span *ngIf="element.account_class_order!= null">{{element.account_class_order}}</span>  </td>
-            </ng-container>
+            </ng-container> -->
 
 
             <!-- Action Column -->
@@ -73,7 +82,7 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr cdkDrag mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
     </c-container>
 

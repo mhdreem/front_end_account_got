@@ -7,6 +7,7 @@ import { branch } from "./branch";
 import { finance_list } from "./finance_list";
 import { sub_financial_list } from "./sub_financial_list";
 import { account_type } from "./account_type";
+import { AccountClassification } from "./account-classification";
 
 
 export interface accounts_tree {
@@ -70,5 +71,8 @@ export interface accounts_tree {
 
     account_parent?: accounts_tree;
 
-    children?: accounts_tree[]
+    children?: accounts_tree[],
+
+    classification_fk?: number,
+    account_classification?: AccountClassification 
 }

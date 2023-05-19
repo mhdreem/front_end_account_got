@@ -26,6 +26,8 @@ import { account_typeService } from 'src/app/modules/shared/services/account-typ
 import { BranchService } from 'src/app/modules/shared/services/branch.service';
 import { FinanceListService } from 'src/app/modules/shared/services/finance-list.service';
 import { SubFinancialListService } from 'src/app/modules/shared/services/sub_financial_list.service';
+import { AccountClassification } from 'src/app/modules/shared/models/account-classification';
+import { AccountclassificationService } from 'src/app/modules/shared/services/account-classification.service';
 
 @Component({
   selector: 'app-account-tree-list-search',
@@ -58,6 +60,7 @@ export class AccountTreeListSearchComponent implements OnInit, OnDestroy {
   account_level_fk!: FormControl<number | null>;
   account_group_fk!: FormControl<number | null>;
   account_class_fk!: FormControl<number | null>;
+  account_classification_fk!: FormControl<number | null>;
   finance_list_fk!: FormControl<number | null>;
   sub_financial_list_fk!: FormControl<number | null>;
 
@@ -75,6 +78,8 @@ export class AccountTreeListSearchComponent implements OnInit, OnDestroy {
   filteredAccountGroupOptions!: Observable<account_group[]>;
   accountClass_List: account_class[] = [];
   filteredAccountClassOptions!: Observable<account_class[]>;
+  accountClassification_List: AccountClassification[] = [];
+  filteredAccountClassificationOptions!: Observable<AccountClassification[]>;
   financeList_List: finance_list[] = [];
   filteredfinanceListOptions!: Observable<finance_list[]>;
   branch_List: branch[] = [];
@@ -101,6 +106,7 @@ export class AccountTreeListSearchComponent implements OnInit, OnDestroy {
     private accountLevelService: AccountLevelService,
     private accountGroupService: AccountGroupService,
     private accountClassService: AccountClassService,
+    private accountclassificationService: AccountclassificationService,
     private financeListService: FinanceListService,
     private accountTreeService: AccountTreeService,
     private branchService: BranchService,
@@ -126,6 +132,7 @@ export class AccountTreeListSearchComponent implements OnInit, OnDestroy {
             'account_level_fk': this.account_level_fk = new FormControl<number | null>(null, []),
             'account_group_fk': this.account_group_fk = new FormControl<number | null>(null, []),
             'account_class_fk': this.account_class_fk = new FormControl<number | null>(null, []),
+            'account_classification_fk': this.account_classification_fk = new FormControl<number | null>(null, []),
             'finance_list_fk': this.finance_list_fk = new FormControl<number | null>(null, []),
             
             'sub_financial_list_fk': this.sub_financial_list_fk = new FormControl<number | null>(null, []),
@@ -161,6 +168,7 @@ export class AccountTreeListSearchComponent implements OnInit, OnDestroy {
         this.Load_AccountLevel(),
         this.Load_AccountGroup(),
         this.Load_AccountClass(),
+        this.Load_AccountClassification(),
         this.Load_FinanceList(),
         this.Load_Branch(),
         this.Load_SubFinancialList()
@@ -185,19 +193,24 @@ export class AccountTreeListSearchComponent implements OnInit, OnDestroy {
           this.filteredAccountClassOptions = of(this.accountClass_List);
           this.accountClassService.List_AccountClass = this.accountClass_List;
           this.accountClassService.List_AccountClass_BehaviorSubject.next(this.accountClass_List);
+          
+          this.accountClassification_List = res[4];
+          this.filteredAccountClassificationOptions = of(this.accountClassification_List);
+          this.accountclassificationService.List_Accountclassification = this.accountClassification_List;
+          this.accountclassificationService.List_Accountclassification_BehaviorSubject.next(this.accountClassification_List);
   
-          this.financeList_List = res[4];
+          this.financeList_List = res[5];
           this.filteredfinanceListOptions = of(this.financeList_List);
           this.financeListService.List_FinanceList = this.financeList_List;
           this.financeListService.List_FinanceList_BehaviorSubject.next(this.financeList_List);
   
-          this.branch_List = res[5];
+          this.branch_List = res[6];
           this.filteredBranchOptions = of(this.branch_List);
           this.branchService.List_Branch = this.branch_List;
           this.branchService.List_Branch_BehaviorSubject.next(this.branch_List);
 
   
-          this.sub_financial_list_list = res[6];
+          this.sub_financial_list_list = res[7];
           
           this.SubFinancialListService.List_sub_financial_list = this.sub_financial_list_list;
           this.SubFinancialListService.List_sub_financial_list_BehaviorSubject.next(this.sub_financial_list_list);
@@ -241,6 +254,14 @@ export class AccountTreeListSearchComponent implements OnInit, OnDestroy {
         this.accountClassService.List_AccountClass.length == 0)
         return this.accountClassService.list();
       return of(this.accountClassService.List_AccountClass);
+    }
+    
+    Load_AccountClassification(){
+      if (this.accountclassificationService.List_Accountclassification == null ||
+        this.accountclassificationService.List_Accountclassification == undefined ||
+        this.accountclassificationService.List_Accountclassification.length == 0)
+        return this.accountclassificationService.list();
+      return of(this.accountclassificationService.List_Accountclassification);
     }
   
     Load_FinanceList(){

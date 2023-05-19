@@ -1,0 +1,104 @@
+<c-container>
+
+    <mat-card>
+
+        <mat-card-header>
+            <mat-card-title>نوع المستفيد</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <form [formGroup]="Form">
+
+                <c-container>
+                    <c-row>
+                        <c-col>
+                            <mat-form-field>
+                                <mat-label #label_beneficiary_type_name>اسم نوع المستفيد</mat-label>
+                                <input matInput [formControl]="beneficiary_type_name" id="beneficiary_type_name"
+                                    (keyup.enter)="focusNext('beneficiary_type_code')">
+                                <mat-error *ngIf="fieldHasErrors(Form, 'beneficiary_type_name')">
+                                    {{
+                                    autoPrintFirstErrorMessage(
+                                    Form,
+                                    "beneficiary_type_name",
+                                    label_beneficiary_type_name.innerHTML
+                                    )
+                                    }}
+                                </mat-error>
+                            </mat-form-field>
+                        </c-col>
+                    </c-row>
+                   
+                    <c-row>
+                        <c-col>
+                            <mat-form-field>
+                                <mat-label #label_beneficiary_type_code>كود نوع المستفيد</mat-label>
+                                <input matInput [formControl]="beneficiary_type_code" id="beneficiary_type_code"
+                                    (keyup.enter)="focusNext('beneficiary_type_note')">
+                                <mat-error *ngIf="fieldHasErrors(Form, 'beneficiary_type_code')">
+                                    {{
+                                    autoPrintFirstErrorMessage(
+                                    Form,
+                                    "beneficiary_type_code",
+                                    label_beneficiary_type_code.innerHTML
+                                    )
+                                    }}
+                                </mat-error>
+                            </mat-form-field>
+                        </c-col>
+                    </c-row>
+                   
+                    <c-row>
+                        <c-col>
+                            <mat-form-field class="example-full-width fitContent" appearance="fill">
+                                <mat-label #label_classification_fk>تصنيف الحساب</mat-label>
+                                <input matInput
+                                        formControlName="classification_fk"
+                                        id="classification_fk"
+                                        (keyup.enter)="focusNext('tax_status')"
+                                        [matAutocomplete]="auto_classification_fk"
+                                        >
+                                <mat-error *ngIf="fieldHasErrors(Form, 'classification_fk')">
+                                    {{
+                                    autoPrintFirstErrorMessage(
+                                    Form,
+                                    "classification_fk",
+                                    label_classification_fk.innerHTML
+                                    )
+                                    }}
+                                </mat-error>
+                                <mat-autocomplete #auto_classification_fk="matAutocomplete">
+                                  <mat-option *ngFor="let option of List_beneficiary_type_Filter | async" [value]="option.beneficiary_type_seq">
+                                    {{option.beneficiary_type_name}}
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
+                        </c-col>
+                    </c-row>
+                    
+                    <!-- <c-row>
+                        <c-col>
+                            <mat-form-field>
+                                <mat-label>ترتيب تصنيف الحساب</mat-label>
+                                <input matInput [formControl]="account_class_order" id="account_class_order"
+                                    (keyup.enter)="focusNext('account_class_order')" [OnlyNumber]="true">
+                            </mat-form-field>
+                        </c-col>
+                    </c-row> -->
+
+
+
+                </c-container>
+
+             
+            </form>
+
+
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button class="add" (click)="save()" [disabled]="!Form.valid">F9 حفظ </button>
+            <button mat-raised-button (click)="closeDialog()" color="warn">إلغاء</button>
+        </mat-card-actions>
+    </mat-card>
+</c-container>

@@ -9,24 +9,23 @@ import { ExportToCsv } from 'export-to-csv';
 import { Subscription } from 'rxjs';
 import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/confirmationdialog/confirmationdialog.component';
 import { ImportFromExcelComponent } from 'src/app/modules/shared/components/import-from-excel/import-from-excel.component';
-import { account_class } from 'src/app/modules/shared/models/account_class';
+import { AccountClassification } from 'src/app/modules/shared/models/account-classification';
 import { result } from 'src/app/modules/shared/models/result';
-import { account_centerService } from 'src/app/modules/shared/services/account-center.service';
-import { AccountClassService } from 'src/app/modules/shared/services/account-class.service';
-import { AccountClassAddComponent } from '../account-class-add/account-class-add.component';
+import { AccountclassificationService } from 'src/app/modules/shared/services/account-classification.service';
+import { AccountClassificationAddComponent } from '../account-classification-add/account-classification-add.component';
 
 @Component({
-  selector: 'app-account-class-list',
-  templateUrl: './account-class-list.component.html',
-  styleUrls: ['./account-class-list.component.scss']
+  selector: 'app-account-classification-list',
+  templateUrl: './account-classification-list.component.html',
+  styleUrls: ['./account-classification-list.component.scss']
 })
-export class AccountClassListComponent {
+export class AccountClassificationListComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  account_class_List: account_class[] = [];
-  dataSource = new MatTableDataSource<account_class>();
-  displayedColumns: string[] = ['account_class_name','account_class_order', 'action'];
+  AccountClassification_List: AccountClassification[] = [];
+  dataSource = new MatTableDataSource<AccountClassification>();
+  displayedColumns: string[] = ['classification_name', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
   isLoading: boolean= false;
   Subscription: Subscription = new Subscription();
@@ -39,11 +38,11 @@ export class AccountClassListComponent {
     decimalSeparator: '.',
     showLabels: true,
     showTitle: true,
-    title: 'أصناف الحسابات',
+    title: 'تصنيفات الحسابات',
     useTextFile: false,
     useBom: true,
     useKeysAsHeaders: false,
-    headers: ['اسم الصنف']
+    headers: ['اسم التصنيف']
   };
 
   selectedFile:any;
@@ -51,7 +50,7 @@ export class AccountClassListComponent {
 
 
   constructor(public dialog: MatDialog,
-    private accountClassService: AccountClassService,
+    private accountclassificationService: AccountclassificationService,
     private _snaker: MatSnackBar,
     
   ) {
@@ -82,11 +81,11 @@ export class AccountClassListComponent {
     this.isLoading= true;
 
     this.Subscription.add(
-      this.accountClassService.list().subscribe(
+      this.accountclassificationService.list().subscribe(
         res => {
           if (res != null)
-            this.account_class_List = res;
-          this.dataSource.data = this.account_class_List;
+            this.AccountClassification_List = res;
+          this.dataSource.data = this.AccountClassification_List;
           this.isLoading= false;
 
         }
@@ -96,7 +95,7 @@ export class AccountClassListComponent {
 
 
   add() {
-    const dialogRef = this.dialog.open(AccountClassAddComponent, {
+    const dialogRef = this.dialog.open(AccountClassificationAddComponent, {
       width: '600px',
       position: {top: "8%" },
       data: {
@@ -110,9 +109,9 @@ export class AccountClassListComponent {
     });
   }
 
-  update(obj: account_class) {
+  update(obj: AccountClassification) {
 
-    const dialogRef = this.dialog.open(AccountClassAddComponent, {
+    const dialogRef = this.dialog.open(AccountClassificationAddComponent, {
       width: '600px',
       position: {top: "8%" },
       data: {
@@ -131,7 +130,7 @@ export class AccountClassListComponent {
 
 
 
-  delete(obj: account_class) {
+  delete(obj: AccountClassification) {
 
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
       width: '600px',
@@ -142,7 +141,7 @@ export class AccountClassListComponent {
     dialogRef.afterClosed().subscribe(result => {
 
       if (result == 1)
-      this.accountClassService.delete(obj.account_class_seq!).subscribe
+      this.accountclassificationService.delete(obj.classification_seq!).subscribe
       (
         res => {
           if (res != null && (res as result)!= null &&  (res as result).success){
@@ -172,14 +171,14 @@ export class AccountClassListComponent {
 
   drop(event: CdkDragDrop<string[]>) {
    
-    moveItemInArray(this.account_class_List, event.previousIndex, event.currentIndex);
-    this.dataSource.data = this.account_class_List;
+    moveItemInArray(this.AccountClassification_List, event.previousIndex, event.currentIndex);
+    this.dataSource.data = this.AccountClassification_List;
     let orderReq: any[] = [];
-    this.account_class_List.forEach((ele, index) => {
-      orderReq.push({ pk: ele.account_class_seq, order: index });
+    this.AccountClassification_List.forEach((ele, index) => {
+      orderReq.push({ pk: ele.classification_seq, order: index });
     });
     console.log('orderReq', orderReq);
-    this.accountClassService.orderRow(orderReq).subscribe(
+    this.accountclassificationService.orderRow(orderReq).subscribe(
       result =>
       {
 
@@ -207,7 +206,7 @@ export class AccountClassListComponent {
   importFromExcel(){
     const formData = new FormData();
     formData.append('file', this.selectedFile, this.selectedFile.name);
-    this.accountClassService.importExcel(formData).subscribe(res=>{
+    this.accountclassificationService.importExcel(formData).subscribe(res=>{
       if (res != null && (res as result)!= null &&  (res as result).success){
   
         this._snaker.open('تم الاستيراد بنجاح', '', {

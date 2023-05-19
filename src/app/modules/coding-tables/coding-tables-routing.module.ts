@@ -20,6 +20,8 @@ import { SanadKidStageListComponent } from './components/sanad-kid-stage/sanad-k
 import { UserListComponent } from './components/user/user-list/user-list.component';
 import { PaymentSafeListComponent } from './components/payment_safe/payment_safe-list/payment_safe-list.component';
 import { SubFinancialListComponent } from './components/sub-financial-list/sub-financial-list-list/sub-financial-list-list.component';
+import { AccountClassificationListComponent } from './components/account-classification/account-classification-list/account-classification-list.component';
+import { BeneficiaryTypeListComponent } from './components/beneficiary-Type/beneficiary-type-list/beneficiary-type-list.component';
 
 const routes: Routes = [
   {
@@ -87,6 +89,20 @@ const routes: Routes = [
           data:
           {
             title: 'صنف الحساب'
+          }
+        },
+        { 
+          path: 'classification', component: AccountClassificationListComponent,
+          data:
+          {
+            title: 'تصنيف الحساب'
+          }
+        },
+        { 
+          path: 'beneficiaryType', component: BeneficiaryTypeListComponent,
+          data:
+          {
+            title: 'نوع المستفيد'
           }
         },
         { 

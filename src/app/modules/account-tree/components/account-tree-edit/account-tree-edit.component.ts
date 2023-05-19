@@ -33,6 +33,8 @@ import { sub_financial_list } from 'src/app/modules/shared/models/sub_financial_
 import { account_type } from 'src/app/modules/shared/models/account_type';
 import { SubFinancialListService } from 'src/app/modules/shared/services/sub_financial_list.service';
 import { account_typeService } from 'src/app/modules/shared/services/account-type.service';
+import { AccountClassification } from 'src/app/modules/shared/models/account-classification';
+import { AccountclassificationService } from 'src/app/modules/shared/services/account-classification.service';
 
 interface extende_accounts_tree extends accounts_tree {
   expandable?: boolean
@@ -69,6 +71,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
   account_level_fk!: FormControl<number | undefined | null>;
   account_group_fk!: FormControl<number | undefined | null>;
   account_class_fk!: FormControl<number | undefined | null>;
+  account_classification_fk!: FormControl<number | undefined | null>;
   finance_list_fk!: FormControl<number | undefined | null>;
   sub_financial_list_fk!: FormControl<number | undefined | null>;
   account_type_fk!: FormControl<number | undefined | null>;
@@ -95,6 +98,8 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
   filteredAccountGroupOptions!: Observable<account_group[]>;
   accountClass_List: account_class[] = [];
   filteredAccountClassOptions!: Observable<account_class[]>;
+  accountClassification_List: AccountClassification[] = [];
+  filteredAccountClassificationOptions!: Observable<AccountClassification[]>;
   financeList_List: finance_list[] = [];
   filteredfinanceListOptions!: Observable<finance_list[]>;
   accountFinal_List: account_final[] = [];
@@ -130,6 +135,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
     private accountLevelService: AccountLevelService,
     private accountGroupService: AccountGroupService,
     private accountClassService: AccountClassService,
+    private accountclassificationService: AccountclassificationService,
     private financeListService: FinanceListService,
     private accountFinalService: AccountFinalService,
     private accountTreeService: AccountTreeService,
@@ -170,6 +176,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
           'account_level_fk': this.account_level_fk = new FormControl<number | undefined>({ value: undefined, disabled: true }, []),
           'account_group_fk': this.account_group_fk = new FormControl<number | undefined>({ value: undefined, disabled: true }, []),
           'account_class_fk': this.account_class_fk = new FormControl<number | undefined>({ value: undefined, disabled: true }, []),
+          'account_classification_fk': this.account_classification_fk = new FormControl<number | undefined>(undefined, []),
           'finance_list_fk': this.finance_list_fk = new FormControl<number | undefined>(undefined, []),
           'sub_financial_list_fk': this.sub_financial_list_fk = new FormControl<number | undefined>(undefined, []),
           'account_type_fk': this.account_type_fk = new FormControl<number | undefined>(undefined, []),
@@ -203,6 +210,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
             this.Load_AccountLevel(),
             this.Load_AccountGroup(),
             this.Load_AccountClass(),
+            this.Load_AccountClassification(),
             this.Load_FinanceList(),
             this.Load_AccountFinal(),
             this.Load_ParentAccountName(),
@@ -228,18 +236,23 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
               this.filteredAccountClassOptions = of(this.accountClass_List);
               this.accountClassService.List_AccountClass = this.accountClass_List;
               this.accountClassService.List_AccountClass_BehaviorSubject.next(this.accountClass_List);
+              
+              this.accountClassification_List = res[3];
+              this.filteredAccountClassificationOptions = of(this.accountClass_List);
+              this.accountclassificationService.List_Accountclassification = this.accountClassification_List;
+              this.accountclassificationService.List_Accountclassification_BehaviorSubject.next(this.accountClassification_List);
 
-              this.financeList_List = res[3];
+              this.financeList_List = res[4];
               this.filteredfinanceListOptions = of(this.financeList_List);
               this.financeListService.List_FinanceList = this.financeList_List;
               this.financeListService.List_FinanceList_BehaviorSubject.next(this.financeList_List);
 
-              this.accountFinal_List = res[4];
+              this.accountFinal_List = res[5];
               this.filteredAccountFinalOptions = of(this.accountFinal_List);
               this.accountFinalService.List_AccountsFinal = this.accountFinal_List;
               this.accountFinalService.List_AccountFinal_BehaviorSubject.next(this.accountFinal_List);
 
-              this.parentAccountName_List = res[5];
+              this.parentAccountName_List = res[6];
             /*
               this.parentAccountName_List.push(
                 {
@@ -254,18 +267,18 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
               this.accountTreeService.List_AccountsTree = this.parentAccountName_List;
               this.accountTreeService.List_AccountsTree_BehaviorSubject.next(this.parentAccountName_List);
 
-              this.account_center_list = res[6];
+              this.account_center_list = res[7];
               this.account_center_filter = of(this.account_center_list);
               this.account_centerService.List_account_center = this.account_center_list;
               this.account_centerService.List_account_center_BehaviorSubject.next(this.account_center_list);
 
-              this.branch_List = res[7];
+              this.branch_List = res[8];
               this.filteredBranchOptions = of(this.branch_List);
               this.branchService.List_Branch = this.branch_List;
               this.branchService.List_Branch_BehaviorSubject.next(this.branch_List);
                 console.log('this.branch_List', this.branch_List);
 
-              this.sub_financial_list_list = res[8];
+              this.sub_financial_list_list = res[9];
               /*
               this.sub_financial_list_list.push(
                 {
@@ -281,7 +294,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
 
 
 
-              this.account_type_list = res[9];
+              this.account_type_list = res[10];
               /*
               this.account_type_list.push(
                 {
@@ -532,6 +545,14 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
       return this.accountClassService.list();
     return of(this.accountClassService.List_AccountClass);
   }
+  
+  Load_AccountClassification() {
+    if (this.accountclassificationService.List_Accountclassification == null ||
+      this.accountclassificationService.List_Accountclassification == undefined ||
+      this.accountclassificationService.List_Accountclassification.length == 0)
+      return this.accountclassificationService.list();
+    return of(this.accountclassificationService.List_Accountclassification);
+  }
 
   Load_FinanceList() {
     if (this.financeListService.List_FinanceList == null ||
@@ -607,6 +628,12 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
           map(value => value && typeof value === 'string' ? this._filterAccountClass(value) : this.accountClass_List.slice())
         );
 
+        this.filteredAccountClassificationOptions = this.account_classification_fk.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => value && typeof value === 'string' ? this._filterAccountClassification(value) : this.accountClassification_List.slice())
+        );
+
       this.filteredfinanceListOptions = this.finance_list_fk.valueChanges
         .pipe(
           startWith(''),
@@ -677,6 +704,12 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
     return this.accountClass_List.filter(option => option.account_class_name!.toString().includes(filterValue));
   }
 
+  private _filterAccountClassification(value: string): AccountClassification[] {
+    const filterValue = value.toLowerCase();
+
+    return this.accountClassification_List.filter(option => option.classification_name!.toString().includes(filterValue));
+  }
+
   private _filterFinanceList(value: string): finance_list[] {
     const filterValue = value.toLowerCase();
 
@@ -743,6 +776,15 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
       let cer: any = this.accountClass_List.find(cer => cer.account_class_seq!.toString() == value);
       if (cer)
         return cer.account_class_name;
+    }
+    return '';
+  }
+  
+  public displayAccountClassificationProperty(value: string): string {
+    if (value && this.accountClassification_List) {
+      let cer: any = this.accountClassification_List.find(cer => cer.classification_seq!.toString() == value);
+      if (cer)
+        return cer.classification_name;
     }
     return '';
   }
@@ -868,6 +910,9 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
 
       if (this.selected_Account != null && this.selected_Account.account_class_fk != null)
         this.account_class_fk.setValue(this.selected_Account.account_class_fk);
+
+        if (this.selected_Account != null && this.selected_Account.classification_fk != null)
+        this.account_classification_fk.setValue(this.selected_Account.classification_fk);
 
       if (this.selected_Account != null && this.selected_Account.finance_list_fk != null)
         this.finance_list_fk.setValue(this.selected_Account.finance_list_fk);

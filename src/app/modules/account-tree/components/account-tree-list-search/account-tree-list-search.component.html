@@ -92,11 +92,19 @@
 
 
                     <div class="col-6 col-6 mb-1">
-                        <label class="form-label">تصنيف الحساب </label>
+                        <label class="form-label">صنف الحساب </label>
                         <ng-select id="account_class_fk" 
-                        (keyup.enter)="focusNext('finance_list_fk')"
+                        (keyup.enter)="focusNext('account_classification_fk')"
                             formControlName="account_class_fk" [items]="accountClass_List" bindValue="account_class_seq"
-                            bindLabel="account_class_name" placeholder="  قم باختيار تصنيف الحساب"></ng-select>
+                            bindLabel="account_class_name" placeholder="  قم باختيار صنف الحساب"></ng-select>
+                    </div>
+
+                    <div class="col-6 col-6 mb-1">
+                        <label class="form-label">تصنيف الحساب </label>
+                        <ng-select id="account_classification_fk" 
+                        (keyup.enter)="focusNext('finance_list_fk')"
+                            formControlName="account_classification_fk" [items]="accountClass_List" bindValue="classification_seq"
+                            bindLabel="classification_name" placeholder="  قم باختيار تصنيف الحساب"></ng-select>
                     </div>
 
 

@@ -59,7 +59,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { IconModule, IconSetService  } from '@coreui/icons-angular';
 import { SubFinancialListAddComponent } from './components/sub-financial-list/sub-financial-list-add/sub-financial-list-add.component';
 import { SubFinancialListComponent } from './components/sub-financial-list/sub-financial-list-list/sub-financial-list-list.component';
-
+import { AccountClassificationListComponent } from './components/account-classification/account-classification-list/account-classification-list.component';
+import { AccountClassificationAddComponent } from './components/account-classification/account-classification-add/account-classification-add.component';
+import { BeneficiaryTypeListComponent } from './components/beneficiary-Type/beneficiary-type-list/beneficiary-type-list.component';
+import { BeneficiaryTypeEditComponent } from './components/beneficiary-Type/beneficiary-type-edit/beneficiary-type-edit.component';
 
 const Import_Materail = [
   MatDialogModule,
@@ -125,7 +128,11 @@ const Import_Corui = [
     PaymentSafeAddComponent,
     PaymentSafeListComponent,
     SubFinancialListAddComponent,
-    SubFinancialListComponent
+    SubFinancialListComponent,
+    AccountClassificationListComponent,
+    AccountClassificationAddComponent,
+    BeneficiaryTypeListComponent,
+    BeneficiaryTypeEditComponent
   ],
   imports: [
     CommonModule,

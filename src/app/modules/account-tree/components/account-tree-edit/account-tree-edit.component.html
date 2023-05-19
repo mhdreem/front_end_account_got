@@ -24,7 +24,9 @@
 
             <button mat-raised-button id="save" class="add" (click)="save()" >
                 <mat-icon class="mat-icon-rtl-mirror">save
+                    
                 </mat-icon>
+                حفظ
             </button>
 
         </div>
@@ -301,9 +303,9 @@
 
                    <div class="col-4">
                         <mat-form-field appearance="outline">
-                            <mat-label #label_account_class>تصنيف الحساب</mat-label>
+                            <mat-label #label_account_class>صنف الحساب</mat-label>
                             <input matInput [formControl]="account_class_fk" [matAutocomplete]="autoaccountClass"
-                                id="account_class_fk" (keyup.enter)="focusNext('phone')">
+                                id="account_class_fk" (keyup.enter)="focusNext('account_classification_fk')">
                             <mat-autocomplete #autoaccountClass="matAutocomplete"
                                 [displayWith]="displayAccountClassProperty.bind(this)">
                                 <mat-option *ngFor="let option of filteredAccountClassOptions | async"
@@ -317,6 +319,30 @@
                                 Form,
                                 "account_class_fk",
                                 label_account_class.innerHTML
+                                )
+                                }}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label #label_account_classification>تصنيف الحساب</mat-label>
+                            <input matInput [formControl]="account_classification_fk" [matAutocomplete]="autoaccountclassification"
+                                id="account_classification_fk" (keyup.enter)="focusNext('phone')">
+                            <mat-autocomplete #autoaccountclassification="matAutocomplete"
+                                [displayWith]="displayAccountClassificationProperty.bind(this)">
+                                <mat-option *ngFor="let option of filteredAccountClassificationOptions | async"
+                                    [value]="option.classification_seq">
+                                    {{option.classification_name}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error *ngIf="fieldHasErrors(Form, 'account_classification_fk')">
+                                {{
+                                autoPrintFirstErrorMessage(
+                                Form,
+                                "account_classification_fk",
+                                label_account_classification.innerHTML
                                 )
                                 }}
                             </mat-error>
