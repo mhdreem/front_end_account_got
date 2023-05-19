@@ -79,7 +79,9 @@
           <br />
           <br />
           <br />
-          <app-payment-order-edit [payment_order]="this.payment_order" (OnSaveComplete)="re_load_data($event)">
+          <app-payment-order-edit 
+          [payment_order]="this.payment_order" 
+          (OnSaveComplete)="re_load_data($event)">
 
           </app-payment-order-edit>
         </ng-template>

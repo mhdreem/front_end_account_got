@@ -112,7 +112,8 @@ export class AutomaticSanadKidComponent implements OnInit, OnChanges {
       } else if (temp != null && typeof temp === "object" && property_name.includes('date')) {
         if (moment(temp.toString()).isValid())
           return moment(temp.toString()).format('DD/MM/YYYY');
-      }
+      }else if (temp!= null) return temp.toString();
+
 
     }
 

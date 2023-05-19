@@ -675,6 +675,7 @@ export class ExchangeOrderEditComponent implements OnDestroy, OnInit, AfterViewI
 
         if (res != null && (res as result) != null && (res as result).success && (res as result).value != null) {
 
+          
           this.OnSaveComplete.emit((res as result).value);
 
           this.snackBar.open('تم الحفظ بنجاح', '', {

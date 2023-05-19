@@ -192,7 +192,8 @@ export class ExchangeOrderEntryComponent implements OnDestroy, OnInit, AfterView
 
 
     if (exchange_order != null) {
-
+      this.exchange_order =exchange_order; 
+      this.operation_type_fk = 1;
       this.operation_code_fk = this.exchange_order.exchange_order_seq;
       this.seq = this.exchange_order.exchange_order_seq;
 

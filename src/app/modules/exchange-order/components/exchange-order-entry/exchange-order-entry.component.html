@@ -79,7 +79,9 @@
           <br />
           <br />
           <br />
-          <app-exchange-order-edit [exchange_order]="exchange_order" (OnSaveComplete)="re_load_data($event)">
+          <app-exchange-order-edit 
+          [exchange_order]="exchange_order" 
+          (OnSaveComplete)="re_load_data($event)">
 
           </app-exchange-order-edit>
         </ng-template>

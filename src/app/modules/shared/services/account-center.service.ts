@@ -18,6 +18,13 @@ export class account_centerService extends BaseAPIService {
     super(httpClient)
   }
 
+  
+
+  list_account_center(): Observable<account_center[]> {
+    return this.httpClient.get<account_center[]>(this.RestUrl + "Account_Center/list_account_center", this.httpOptions);
+  }
+
+
   list(): Observable<account_center[]> {
     return this.httpClient.get<account_center[]>(this.RestUrl + "Account_Center/list", this.httpOptions);
   }

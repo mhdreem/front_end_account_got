@@ -18,6 +18,10 @@ export class AccountTreeService extends BaseAPIService{
     super(httpClient)
   }
 
+  list_account_tree() : Observable<accounts_tree[]> {
+    return this.httpClient.get<accounts_tree[]>(this.RestUrl +"Accounts_Tree/list_account_tree",this.httpOptions) ;  
+    
+  }
 
   list() : Observable<accounts_tree[]> {
     return this.httpClient.get<accounts_tree[]>(this.RestUrl +"Accounts_Tree/list",this.httpOptions) ;  

@@ -195,7 +195,8 @@ export class PaymentOrderEntryComponent implements OnDestroy, OnInit, AfterViewI
 
 
     if (payment_order != null) {
-
+      this.payment_order =payment_order; 
+      this.operation_type_fk = 2;
       this.operation_code_fk = this.payment_order.payment_order_seq;
       this.seq = this.payment_order.payment_order_seq;
 

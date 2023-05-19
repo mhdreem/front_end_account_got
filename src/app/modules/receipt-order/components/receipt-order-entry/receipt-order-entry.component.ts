@@ -193,7 +193,8 @@ export class ReceiptOrderEntryComponent implements OnDestroy, OnInit, AfterViewI
 
 
     if (receipt_order != null) {
-
+      this.receipt_order =receipt_order; 
+      this.operation_type_fk = 3;
       this.operation_code_fk = this.receipt_order.receipt_order_seq;
       this.seq = this.receipt_order.receipt_order_seq;
 
