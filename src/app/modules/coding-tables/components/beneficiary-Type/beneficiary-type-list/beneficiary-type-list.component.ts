@@ -8,7 +8,7 @@ import { ExportToCsv } from 'export-to-csv';
 import { Subscription } from 'rxjs';
 import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/confirmationdialog/confirmationdialog.component';
 import { ImportFromExcelComponent } from 'src/app/modules/shared/components/import-from-excel/import-from-excel.component';
-import { BeneficiaryType } from 'src/app/modules/shared/models/beneficiary-type';
+import { beneficiary_type } from 'src/app/modules/shared/models/beneficiary-type';
 import { result } from 'src/app/modules/shared/models/result';
 import { BeneficiaryTypeService } from 'src/app/modules/shared/services/beneficiary-type.service';
 import { BeneficiaryTypeEditComponent } from '../beneficiary-type-edit/beneficiary-type-edit.component';
@@ -22,8 +22,8 @@ export class BeneficiaryTypeListComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  beneficiaryType_List: BeneficiaryType[] = [];
-  dataSource = new MatTableDataSource<BeneficiaryType>();
+  beneficiaryType_List: beneficiary_type[] = [];
+  dataSource = new MatTableDataSource<beneficiary_type>();
   displayedColumns: string[] = ['beneficiary_type_name','beneficiary_type_code','beneficiary_type_note',  'action'];
   pageSizeOptions: number[] = [20, 40, 60];
   isLoading: boolean= false;
@@ -108,7 +108,7 @@ export class BeneficiaryTypeListComponent {
     });
   }
 
-  update(obj: BeneficiaryType) {
+  update(obj: beneficiary_type) {
 
     const dialogRef = this.dialog.open(BeneficiaryTypeEditComponent, {
       width: '600px',
@@ -129,7 +129,7 @@ export class BeneficiaryTypeListComponent {
 
 
 
-  delete(obj: BeneficiaryType) {
+  delete(obj: beneficiary_type) {
 
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
       width: '600px',

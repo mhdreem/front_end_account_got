@@ -1,4 +1,5 @@
-import { accounts_tree } from "./account-tree";
+import { accounts_tree } from "./accounts_tree";
+
 
 export interface BalanceType {
     account_type_seq?: number,

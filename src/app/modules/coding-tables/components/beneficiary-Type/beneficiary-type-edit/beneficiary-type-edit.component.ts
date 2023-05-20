@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin, map, Observable, of, startWith, Subscription } from 'rxjs';
-import { BeneficiaryType } from 'src/app/modules/shared/models/beneficiary-type';
+import { beneficiary_type } from 'src/app/modules/shared/models/beneficiary-type';
 import { result } from 'src/app/modules/shared/models/result';
 import { BeneficiaryTypeService } from 'src/app/modules/shared/services/beneficiary-type.service';
 import { FormValidationHelpersService } from 'src/app/modules/shared/services/form-validation-helpers.service';
@@ -26,13 +26,13 @@ export class BeneficiaryTypeEditComponent {
     }
     
   }
-  _selected_beneficiaryType:BeneficiaryType= {};
-  set selected_beneficiaryType(obj:BeneficiaryType)
+  _selected_beneficiaryType:beneficiary_type= {};
+  set selected_beneficiaryType(obj:beneficiary_type)
   {
     this._selected_beneficiaryType =  obj;
     this.setValue();
   }
-  get  selected_beneficiaryType():BeneficiaryType
+  get  selected_beneficiaryType():beneficiary_type
   {
     return this._selected_beneficiaryType ;
   }
@@ -45,8 +45,8 @@ export class BeneficiaryTypeEditComponent {
   classification_fk: FormControl<number | null>;
   // beneficiaryType_order: FormControl<number | null>;
 
-  List_beneficiary_type: BeneficiaryType[] = [];
-    List_beneficiary_type_Filter: Observable<BeneficiaryType[]> = of([]);
+  List_beneficiary_type: beneficiary_type[] = [];
+    List_beneficiary_type_Filter: Observable<beneficiary_type[]> = of([]);
   
     LoadingFinish : boolean;
 
@@ -86,7 +86,7 @@ export class BeneficiaryTypeEditComponent {
     );
   }
 
-  LoadBeneficiary_type(): Observable<BeneficiaryType[]> {
+  LoadBeneficiary_type(): Observable<beneficiary_type[]> {
     if (this.beneficiaryTypeService.list == null ||
       this.beneficiaryTypeService.List_beneficiary_type == undefined ||
       this.beneficiaryTypeService.List_beneficiary_type.length == 0)
@@ -118,7 +118,7 @@ export class BeneficiaryTypeEditComponent {
         })
       }
 
-      private _filteredBeneficiary_type(value: string): BeneficiaryType[] {
+      private _filteredBeneficiary_type(value: string): beneficiary_type[] {
         if (value) {
           const filterValue = value;
           return this.List_beneficiary_type.filter(obj => obj.beneficiary_type_name!.includes(filterValue));
@@ -214,6 +214,7 @@ export class BeneficiaryTypeEditComponent {
             this.SnackBar.open('لم يتم التعديل بنجاح','',{panelClass: ['red-snackbar']});
           
           }
+          
           
         },
         err => console.log('HTTP Error', err),

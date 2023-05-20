@@ -6,7 +6,7 @@ import { account_centerService } from 'src/app/modules/shared/services/account-c
 import { of } from 'rxjs';
 import { account_class } from 'src/app/modules/shared/models/account_class';
 import { BeneficiaryTypeService } from 'src/app/modules/shared/services/beneficiary-type.service';
-import { BeneficiaryType } from 'src/app/modules/shared/models/beneficiary-type';
+import { beneficiary_type } from 'src/app/modules/shared/models/beneficiary-type';
 
 export function validateBeneficiaryTypeCode( beneficiaryTypeService:BeneficiaryTypeService,                                    
                                             name:string|null,) : AsyncValidatorFn
@@ -36,7 +36,7 @@ export function validateBeneficiaryTypeCode( beneficiaryTypeService:BeneficiaryT
 
         //Create Request For Add and Update
 
-        let request: BeneficiaryType = {
+        let request: beneficiary_type = {
             beneficiary_type_code: control.value,
             beneficiary_type_seq: pk
         }

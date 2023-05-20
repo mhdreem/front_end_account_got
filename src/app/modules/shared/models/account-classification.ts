@@ -1,9 +1,9 @@
 import { accounts_tree } from "./accounts_tree"
-import { BeneficiaryType } from "./beneficiary-type"
+import { beneficiary_type } from "./beneficiary-type"
 
-export interface AccountClassification {
+export interface account_classification {
     classification_seq?: number,
     classification_name?: string,
     accounts_trees?: accounts_tree[]
-    beneficiary_types?: BeneficiaryType[]
+    beneficiary_types?: beneficiary_type[]
 }

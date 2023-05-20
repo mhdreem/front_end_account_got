@@ -26,7 +26,7 @@ import { account_typeService } from 'src/app/modules/shared/services/account-typ
 import { BranchService } from 'src/app/modules/shared/services/branch.service';
 import { FinanceListService } from 'src/app/modules/shared/services/finance-list.service';
 import { SubFinancialListService } from 'src/app/modules/shared/services/sub_financial_list.service';
-import { AccountClassification } from 'src/app/modules/shared/models/account-classification';
+import { account_classification } from 'src/app/modules/shared/models/account-classification';
 import { AccountclassificationService } from 'src/app/modules/shared/services/account-classification.service';
 
 @Component({
@@ -78,8 +78,8 @@ export class AccountTreeListSearchComponent implements OnInit, OnDestroy {
   filteredAccountGroupOptions!: Observable<account_group[]>;
   accountClass_List: account_class[] = [];
   filteredAccountClassOptions!: Observable<account_class[]>;
-  accountClassification_List: AccountClassification[] = [];
-  filteredAccountClassificationOptions!: Observable<AccountClassification[]>;
+  accountClassification_List: account_classification[] = [];
+  filteredAccountClassificationOptions!: Observable<account_classification[]>;
   financeList_List: finance_list[] = [];
   filteredfinanceListOptions!: Observable<finance_list[]>;
   branch_List: branch[] = [];

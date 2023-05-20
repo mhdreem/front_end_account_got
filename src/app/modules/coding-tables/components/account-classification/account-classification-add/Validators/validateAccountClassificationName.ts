@@ -7,7 +7,7 @@ import { AccountClassService } from 'src/app/modules/shared/services/account-cla
 import { of } from 'rxjs';
 import { account_class } from 'src/app/modules/shared/models/account_class';
 import { AccountclassificationService } from 'src/app/modules/shared/services/account-classification.service';
-import { AccountClassification } from 'src/app/modules/shared/models/account-classification';
+import { account_classification } from 'src/app/modules/shared/models/account-classification';
 
 export function validateAccountClassName( accountclassificationService:AccountclassificationService,                                    
                                             name:string|null,) : AsyncValidatorFn
@@ -37,7 +37,7 @@ export function validateAccountClassName( accountclassificationService:Accountcl
 
         //Create Request For Add and Update
 
-        let request: AccountClassification = {
+        let request: account_classification = {
             classification_name: control.value,
             classification_seq: pk
         }

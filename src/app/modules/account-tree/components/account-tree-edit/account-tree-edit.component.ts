@@ -33,7 +33,7 @@ import { sub_financial_list } from 'src/app/modules/shared/models/sub_financial_
 import { account_type } from 'src/app/modules/shared/models/account_type';
 import { SubFinancialListService } from 'src/app/modules/shared/services/sub_financial_list.service';
 import { account_typeService } from 'src/app/modules/shared/services/account-type.service';
-import { AccountClassification } from 'src/app/modules/shared/models/account-classification';
+import { account_classification } from 'src/app/modules/shared/models/account-classification';
 import { AccountclassificationService } from 'src/app/modules/shared/services/account-classification.service';
 
 interface extende_accounts_tree extends accounts_tree {
@@ -98,8 +98,8 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
   filteredAccountGroupOptions!: Observable<account_group[]>;
   accountClass_List: account_class[] = [];
   filteredAccountClassOptions!: Observable<account_class[]>;
-  accountClassification_List: AccountClassification[] = [];
-  filteredAccountClassificationOptions!: Observable<AccountClassification[]>;
+  accountClassification_List: account_classification[] = [];
+  filteredAccountClassificationOptions!: Observable<account_classification[]>;
   financeList_List: finance_list[] = [];
   filteredfinanceListOptions!: Observable<finance_list[]>;
   accountFinal_List: account_final[] = [];
@@ -704,7 +704,7 @@ export class AccountTreeEditComponent implements OnInit, OnDestroy {
     return this.accountClass_List.filter(option => option.account_class_name!.toString().includes(filterValue));
   }
 
-  private _filterAccountClassification(value: string): AccountClassification[] {
+  private _filterAccountClassification(value: string): account_classification[] {
     const filterValue = value.toLowerCase();
 
     return this.accountClassification_List.filter(option => option.classification_name!.toString().includes(filterValue));

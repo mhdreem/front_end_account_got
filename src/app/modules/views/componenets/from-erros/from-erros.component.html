@@ -1,0 +1,10 @@
+<div class="col-sm-12 mb-3" *ngIf="formErrors!= null && formErrors.length>0">
+    <strong>إملأ الحقول بشكل صحيح</strong>
+    <div class="alert alert-danger ps-5 mt-2">
+      <ul class="list-group fs-7 fw-normal mt-2">       
+       <li class="text-danger border-0 py-1" *ngFor="let error of formErrors">       
+        <ng-template #Arabic>{{error}}</ng-template>   
+       </li>                    
+      </ul>
+    </div>
+  </div>

@@ -9,7 +9,7 @@ import { ExportToCsv } from 'export-to-csv';
 import { Subscription } from 'rxjs';
 import { ConfirmationdialogComponent } from 'src/app/modules/shared/components/confirmationdialog/confirmationdialog.component';
 import { ImportFromExcelComponent } from 'src/app/modules/shared/components/import-from-excel/import-from-excel.component';
-import { AccountClassification } from 'src/app/modules/shared/models/account-classification';
+import { account_classification } from 'src/app/modules/shared/models/account-classification';
 import { result } from 'src/app/modules/shared/models/result';
 import { AccountclassificationService } from 'src/app/modules/shared/services/account-classification.service';
 import { AccountClassificationAddComponent } from '../account-classification-add/account-classification-add.component';
@@ -23,8 +23,8 @@ export class AccountClassificationListComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  AccountClassification_List: AccountClassification[] = [];
-  dataSource = new MatTableDataSource<AccountClassification>();
+  AccountClassification_List: account_classification[] = [];
+  dataSource = new MatTableDataSource<account_classification>();
   displayedColumns: string[] = ['classification_name', 'action'];
   pageSizeOptions: number[] = [20, 40, 60];
   isLoading: boolean= false;
@@ -109,7 +109,7 @@ export class AccountClassificationListComponent {
     });
   }
 
-  update(obj: AccountClassification) {
+  update(obj: account_classification) {
 
     const dialogRef = this.dialog.open(AccountClassificationAddComponent, {
       width: '600px',
@@ -130,7 +130,7 @@ export class AccountClassificationListComponent {
 
 
 
-  delete(obj: AccountClassification) {
+  delete(obj: account_classification) {
 
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
       width: '600px',

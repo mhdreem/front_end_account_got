@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import {AccountClassification} from '../models/account-classification'
+import {account_classification} from '../models/account-classification'
 import { HttpClient, HttpHeaders, HttpParamsOptions } from '@angular/common/http';
 import { BaseAPIService } from './base/base-api.service';
 
@@ -9,9 +9,9 @@ import { BaseAPIService } from './base/base-api.service';
 })
 export class AccountclassificationService extends BaseAPIService {
 
-  public List_Accountclassification:AccountClassification[] = [];
+  public List_Accountclassification:account_classification[] = [];
 
-  public List_Accountclassification_BehaviorSubject:BehaviorSubject<AccountClassification[]> = new BehaviorSubject<AccountClassification[]>([]);
+  public List_Accountclassification_BehaviorSubject:BehaviorSubject<account_classification[]> = new BehaviorSubject<account_classification[]>([]);
 
 
 
@@ -19,8 +19,8 @@ export class AccountclassificationService extends BaseAPIService {
     super(httpClient)
   }
 
-  list() :Observable<AccountClassification[]> {
-      return this.httpClient.get<AccountClassification[]>(this.RestUrl +"Account_Classification/list",this.httpOptions) ;  
+  list() :Observable<account_classification[]> {
+      return this.httpClient.get<account_classification[]>(this.RestUrl +"Account_Classification/list",this.httpOptions) ;  
     
   }
 
@@ -28,7 +28,7 @@ export class AccountclassificationService extends BaseAPIService {
   fill()  {
 
     this.Subscription.add(
-      this.httpClient.get<AccountClassification[]>(this.RestUrl +"Account_Classification/list",this.httpOptions) .subscribe    (
+      this.httpClient.get<account_classification[]>(this.RestUrl +"Account_Classification/list",this.httpOptions) .subscribe    (
         data=>
         {
           this.List_Accountclassification = data;
@@ -44,15 +44,15 @@ export class AccountclassificationService extends BaseAPIService {
      return this.httpClient.delete(this.RestUrl +"Account_Classification/delete/"+id,this.httpOptions);  
   }
 
-  add(obj : AccountClassification )  {
+  add(obj : account_classification )  {
      return this.httpClient.post(this.RestUrl +"Account_Classification/add",obj,this.httpOptions);  
   }
 
-  update(obj : AccountClassification )  {
+  update(obj : account_classification )  {
       return this.httpClient.put(this.RestUrl +"Account_Classification/update",obj,this.httpOptions);  
   }
 
-  validate_name(obj: AccountClassification) {
+  validate_name(obj: account_classification) {
     console.log('111');
     return this.httpClient.post(this.RestUrl + "Account_Classification/Validate_Name", obj, this.httpOptions);
   }

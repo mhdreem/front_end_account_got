@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { BeneficiaryType } from '../models/beneficiary-type';
+import { beneficiary_type } from '../models/beneficiary-type';
 import { HttpClient, HttpHeaders, HttpParamsOptions } from '@angular/common/http';
 import { BaseAPIService } from './base/base-api.service';
 
@@ -9,9 +9,9 @@ import { BaseAPIService } from './base/base-api.service';
 })
 export class BeneficiaryTypeService extends BaseAPIService {
 
-  public List_beneficiary_type:BeneficiaryType[] = [];
+  public List_beneficiary_type:beneficiary_type[] = [];
 
-  public List_beneficiary_type_BehaviorSubject:BehaviorSubject<BeneficiaryType[]> = new BehaviorSubject<BeneficiaryType[]>([]);
+  public List_beneficiary_type_BehaviorSubject:BehaviorSubject<beneficiary_type[]> = new BehaviorSubject<beneficiary_type[]>([]);
 
 
 
@@ -19,8 +19,8 @@ export class BeneficiaryTypeService extends BaseAPIService {
     super(httpClient)
   }
 
-  list() :Observable<BeneficiaryType[]> {
-      return this.httpClient.get<BeneficiaryType[]>(this.RestUrl +"Beneficiary_Type/list",this.httpOptions) ;  
+  list() :Observable<beneficiary_type[]> {
+      return this.httpClient.get<beneficiary_type[]>(this.RestUrl +"Beneficiary_Type/list",this.httpOptions) ;  
     
   }
 
@@ -28,7 +28,7 @@ export class BeneficiaryTypeService extends BaseAPIService {
   fill()  {
 
     this.Subscription.add(
-      this.httpClient.get<BeneficiaryType[]>(this.RestUrl +"Beneficiary_Type/list",this.httpOptions) .subscribe    (
+      this.httpClient.get<beneficiary_type[]>(this.RestUrl +"Beneficiary_Type/list",this.httpOptions) .subscribe    (
         data=>
         {
           this.List_beneficiary_type = data;
@@ -44,15 +44,15 @@ export class BeneficiaryTypeService extends BaseAPIService {
      return this.httpClient.delete(this.RestUrl +"Beneficiary_Type/delete/"+id,this.httpOptions);  
   }
 
-  add(obj : BeneficiaryType )  {
+  add(obj : beneficiary_type )  {
      return this.httpClient.post(this.RestUrl +"Beneficiary_Type/add",obj,this.httpOptions);  
   }
 
-  update(obj : BeneficiaryType )  {
+  update(obj : beneficiary_type )  {
       return this.httpClient.put(this.RestUrl +"Beneficiary_Type/update",obj,this.httpOptions);  
   }
 
-  validate_name(obj: BeneficiaryType) {
+  validate_name(obj: beneficiary_type) {
     console.log('111');
     return this.httpClient.post(this.RestUrl + "Beneficiary_Type/Validate_Name", obj, this.httpOptions);
   }

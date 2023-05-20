@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
-import { AccountClassification } from 'src/app/modules/shared/models/account-classification';
+import { account_classification } from 'src/app/modules/shared/models/account-classification';
 import { result } from 'src/app/modules/shared/models/result';
 import { AccountclassificationService } from 'src/app/modules/shared/services/account-classification.service';
 import { FormValidationHelpersService } from 'src/app/modules/shared/services/form-validation-helpers.service';
@@ -23,13 +23,13 @@ export class AccountClassificationAddComponent {
     }
     
   }
-  _selected_AccountClassification:AccountClassification= {};
-  set selected_AccountClassification(obj:AccountClassification)
+  _selected_AccountClassification:account_classification= {};
+  set selected_AccountClassification(obj:account_classification)
   {
     this._selected_AccountClassification =  obj;
     this.setValue();
   }
-  get  selected_AccountClassification():AccountClassification
+  get  selected_AccountClassification():account_classification
   {
     return this._selected_AccountClassification ;
   }
@@ -108,7 +108,7 @@ export class AccountClassificationAddComponent {
   ResetForm()
   {
     this.Form.reset();
-    this.focusNext('AccountClassification_name')
+    this.focusNext('classification_name')
   }
 
 
