@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, EventEmitter, HostListener, Inject, Input, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostListener, Inject, Input, OnChanges, OnDestroy, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -26,7 +26,7 @@ import { SanadKidBookService } from 'src/app/modules/shared/services/sanad-kid-b
   templateUrl: './exchange-order-list-search.component.html',
   styleUrls: ['./exchange-order-list-search.component.scss']
 })
-export class ExchangeOrderListSearchComponent {
+export class ExchangeOrderListSearchComponent implements OnDestroy, OnChanges {
 
   @Input() Title: string = '';
   @Output() OnSeachCommandExecute: EventEmitter<any> = new EventEmitter<any>();
@@ -134,6 +134,9 @@ export class ExchangeOrderListSearchComponent {
     this.LoadingFinish = true;
     this.BuildForm();
     this.Load_Data();
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    throw new Error('Method not implemented.');
   }
 
   ngOnInit(): void {
